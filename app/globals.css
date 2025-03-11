@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #060c0b;
+    --foreground: #fff;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: black;
+  }
+}
+
+:root {
+  --background: #060c0b;
+  --foreground: #fff;
+  --mind-brand: #00ffb1;
+  --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../public/fonts/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+}
+
+.button-white-border {
+  border-radius: 50%;
+  border-radius: 150px;
+  border: 1px solid #f5f7fa;
+  background-color: var(--btn-bg);
+  padding: 3px 12px;
+  font-size: 14px;
+}
+
+.mind-menu .ant-menu-dark {
+  color: var(--foreground);
+  background: transparent;
+}
+
+.mind-menu .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected,
+.mind-menu .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected:hover,
+.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-dark > .ant-menu .ant-menu-item-selected {
+  color: var(--mind-brand) !important;
+  background-color: transparent !important;
+}
+
+.mind-menu .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-selected,
+.mind-menu
+  .ant-menu-dark.ant-menu-horizontal
+  > .ant-menu-submenu-selected:hover {
+  background-color: transparent;
+}
+
+.ant-menu-dark.ant-menu-submenu-popup > .ant-menu {
+  background-color: #0c1312 !important;
+}
