@@ -78,7 +78,8 @@ body {
   width: 100%;
 }
 
-.btn-Link {
+.btn-Link-brand-font,
+.btn-Link-white-font {
   display: block;
   width: 100%;
   background: var(--btn-bg);
@@ -92,7 +93,9 @@ body {
   cursor: pointer;
   min-height: 30px;
 }
-.btn-Link:hover {
+
+.btn-Link-brand-font:hover,
+.btn-Link-white-font:hover {
   color: #fff;
 }
 
