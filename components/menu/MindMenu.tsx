@@ -15,35 +15,36 @@ type MenuItem = Required<MenuProps>["items"][number];
 const items: MenuItem[] = [
   {
     label: <Link href="/airdrop">Airdrop</Link>,
-    key: "airdrop",
+    key: "/airdrop",
   },
   {
     label: <Link href="/">Dashboard</Link>,
-    key: "dashboard",
+    key: "/",
   },
   {
     label: <Link href="/agenticworld">Agentic World</Link>,
-    key: "agenticworld",
+    key: "/agenticworld",
   },
   {
     label: <Link href="/agentlaunch">Agent Launch</Link>,
-    key: "agentlaunch",
+    key: "/agentlaunch",
   },
 ];
 
 const MindMenu: React.FC = () => {
-  const [current, setCurrent] = useState("dashboard");
+  // const [current, setCurrent] = useState("dashboard");
   const pathName = usePathname();
   const router = useRouter();
+  console.log("pathName", pathName);
 
   const onClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
+    // setCurrent(e.key);
   };
 
   return (
     <Menu
       onClick={onClick}
-      selectedKeys={[current]}
+      selectedKeys={[pathName]}
       mode="horizontal"
       items={items}
       // style={{ minWidth: 500 }}

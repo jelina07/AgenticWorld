@@ -29,6 +29,8 @@
   --layout-md: 30px;
   --layout-sm: 15px;
   --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);
+  --btn-border: #28a57f;
+  --border-width: 0.75px;
 }
 
 @font-face {
@@ -61,7 +63,37 @@ body {
   font-weight: 600 !important;
   font-size: 12px !important;
   border-radius: 20px !important;
-  border: 1px solid #00ffb1 !important;
+  border: 1px solid var(--mind-brand) !important;
+  width: 100%;
+}
+
+.button-brand-border-white-font {
+  background: var(--btn-bg) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--mind-brand) !important;
+  width: 100%;
+}
+
+.btn-Link {
+  display: block;
+  width: 100%;
+  background: var(--btn-bg);
+  border: 1px var(--mind-brand) solid;
+  color: #fff;
+  border-radius: 100px;
+  text-align: center;
+  padding: 4px 15px;
+  margin-top: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  min-height: 30px;
+}
+.btn-Link:hover {
+  color: #fff;
 }
 
 .mind-menu .ant-menu-dark {
@@ -93,7 +125,16 @@ body {
 .mind-input .ant-input-outlined:focus,
 .mind-input .ant-input-outlined:focus-within {
   background: #181818;
-  border: 1px solid #28a57f;
+  border: var(--border-width) solid var(--btn-border);
   border-radius: 10px;
   color: var(--mind-brand);
+}
+
+.mind-input .ant-input-outlined::placeholder {
+  color: var(--mind-grey);
+}
+
+.text-light-shadow {
+  color: #fff;
+  text-shadow: 0px 0px 6px rgba(0, 255, 177, 0.6);
 }
