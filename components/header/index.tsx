@@ -17,12 +17,12 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="py-[15px] flex justify-between">
+    <header className="px-[var(--layout-sm)] sm:px-[var(--layout-md)] py-[15px] flex justify-between sticky top-0 bg-[var(--background)] z-10">
       <MindLogo />
       <div className="flex gap-[10px] items-center mind-menu">
         <MindMenu />
         <WalletConnectBtn />
       </div>
-    </div>
+    </header>
   );
 }

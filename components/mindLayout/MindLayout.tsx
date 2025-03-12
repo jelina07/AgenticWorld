@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../header";
+import Footer from "../footer";
 
 export default function MindLayout({
   children,
@@ -7,9 +8,10 @@ export default function MindLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="px-[15px] md:px-[30px]">
-      <Header></Header>
+    <div>
+      <Header />
       <div>{children}</div>
+      <Footer />
     </div>
   );
 }

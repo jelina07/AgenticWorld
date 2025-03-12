@@ -24,6 +24,10 @@
   --background: #060c0b;
   --foreground: #fff;
   --mind-brand: #00ffb1;
+  --mind-grey: #878c8b;
+  --mind-red: #ff7853;
+  --layout-md: 30px;
+  --layout-sm: 15px;
   --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);
 }
 
@@ -44,12 +48,20 @@ body {
 }
 
 .button-white-border {
-  border-radius: 50%;
   border-radius: 150px;
   border: 1px solid #f5f7fa;
   background-color: var(--btn-bg);
   padding: 3px 12px;
   font-size: 14px;
+}
+.button-brand-border {
+  background: var(--btn-bg) !important;
+  box-shadow: none !important;
+  color: var(--mind-brand) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  border-radius: 20px !important;
+  border: 1px solid #00ffb1 !important;
 }
 
 .mind-menu .ant-menu-dark {
@@ -74,4 +86,14 @@ body {
 
 .ant-menu-dark.ant-menu-submenu-popup > .ant-menu {
   background-color: #0c1312 !important;
+}
+
+.mind-input .ant-input-outlined,
+.mind-input .ant-input-outlined:hover,
+.mind-input .ant-input-outlined:focus,
+.mind-input .ant-input-outlined:focus-within {
+  background: #181818;
+  border: 1px solid #28a57f;
+  border-radius: 10px;
+  color: var(--mind-brand);
 }

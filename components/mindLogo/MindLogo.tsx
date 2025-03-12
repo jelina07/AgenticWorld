@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function MindLogo() {
   return (
-    <div className="h-[70px] flex items-center justify-center">
+    <div className="h-[50px] flex items-center justify-center">
       <Link href="https://mindnetwork.xyz/" target="_blank">
         <Image
           src="/images/logo.png"
