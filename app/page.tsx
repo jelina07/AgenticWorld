@@ -1,6 +1,6 @@
-import LaunchAgent from "@/components/dashboard/LaunchAgent";
+import HubRecord from "@/components/dashboard/HubRecord";
 import MyAgent from "@/components/dashboard/MyAgent";
-import { Input } from "antd";
+import RewardRule from "@/components/dashboard/RewardRule";
 
 export default function Home() {
   return (
@@ -8,6 +8,10 @@ export default function Home() {
       <MyAgent />
       <div className="capitalize underline text-[12px] text-[var(--mind-brand)] text-right mt-[10px]">
         Permanently Shut Down My Agent?
+      </div>
+      <div className="pb-[200px]">
+        <HubRecord />
+        <RewardRule />
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="button-white-border"
+                    className="wallet-btn"
                   >
                     Connect Wallet
                   </button>
@@ -48,7 +48,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openChainModal}
                     type="button"
-                    className="button-white-border"
+                    className="wallet-btn"
                   >
                     Wrong network
                   </button>
@@ -60,7 +60,7 @@ export const WalletConnectBtn = () => {
                     onClick={openChainModal}
                     style={{ display: "flex", alignItems: "center" }}
                     type="button"
-                    className="button-white-border"
+                    className="wallet-btn"
                   >
                     {chain.hasIcon && (
                       <div
@@ -87,7 +87,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="button-white-border hidden md:block"
+                    className="wallet-btn hidden md:block"
                   >
                     {account.displayName}
                     {account.displayBalance

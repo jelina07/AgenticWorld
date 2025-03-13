@@ -23,12 +23,16 @@
 :root {
   --background: #060c0b;
   --foreground: #fff;
+  --bg-deep-grey: #181818;
   --mind-brand: #00ffb1;
   --mind-grey: #878c8b;
   --mind-red: #ff7853;
   --layout-md: 30px;
   --layout-sm: 15px;
   --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);
+  --btn-bg-green: linear-gradient(270deg, #74fab7 0%, #69e9ee 100%);
+  --blue-gradient: linear-gradient(180deg, #0061c3 0%, #1a1a32 100%);
+  --purple-gradient: linear-gradient(180deg, #ff8f00 0%, #1a1a32 100%);
   --btn-border: #28a57f;
   --border-width: 0.75px;
 }
@@ -49,33 +53,59 @@ body {
   padding: 0;
 }
 
-.button-white-border {
+.wallet-btn {
   border-radius: 150px;
   border: 1px solid #f5f7fa;
   background-color: var(--btn-bg);
   padding: 3px 12px;
   font-size: 14px;
 }
-.button-brand-border {
-  background: var(--btn-bg) !important;
-  box-shadow: none !important;
-  color: var(--mind-brand) !important;
-  font-weight: 600 !important;
-  font-size: 12px !important;
-  border-radius: 20px !important;
-  border: 1px solid var(--mind-brand) !important;
+/* font brand; border brand */
+.button-brand-border.ant-btn-variant-solid {
+  background: var(--btn-bg);
+  box-shadow: none;
+  color: var(--mind-brand);
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 20px;
+  border: 1px solid var(--mind-brand);
   width: 100%;
 }
-
-.button-brand-border-white-font {
-  background: var(--btn-bg) !important;
-  box-shadow: none !important;
-  color: #fff !important;
-  font-weight: 600 !important;
-  font-size: 12px !important;
-  border-radius: 20px !important;
-  border: 1px solid var(--mind-brand) !important;
+/* font white; border white */
+.button-white-border-white-font.ant-btn-variant-solid {
+  background: var(--btn-bg);
+  box-shadow: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 20px;
+  border: 1px solid #fff;
   width: 100%;
+}
+/* font white; border brand */
+.button-brand-border-white-font.ant-btn-variant-solid {
+  background: var(--btn-bg);
+  box-shadow: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 20px;
+  border: 1px solid var(--mind-brand);
+  width: 100%;
+}
+.button-brand-border:disabled,
+.button-white-border-white-font:disabled,
+.button-brand-border-white-font.ant-btn-variant-solid:disabled {
+  color: var(--mind-grey);
+}
+
+.button-brand-border-white-font.ant-btn-variant-solid:hover,
+.button-white-border-white-font.ant-btn-variant-solid:hover,
+.button-brand-border.ant-btn-variant-solid:hover {
+  background: var(--btn-bg) !important;
+}
+.button-brand-border.ant-btn-variant-solid:hover {
+  color: var(--mind-brand) !important;
 }
 
 .btn-Link-brand-font,
@@ -88,15 +118,29 @@ body {
   border-radius: 100px;
   text-align: center;
   padding: 4px 15px;
-  margin-top: 10px;
   font-size: 12px;
-  cursor: pointer;
   min-height: 30px;
 }
 
 .btn-Link-brand-font:hover,
 .btn-Link-white-font:hover {
   color: #fff;
+}
+
+.grent-btn-link {
+  display: inline-block;
+  background: var(--btn-bg-green);
+  border: 1px var(--mind-brand) solid;
+  color: black;
+  border-radius: 3px;
+  text-align: center;
+  padding: 4px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 30px;
+}
+.grent-btn-link:hover {
+  color: black;
 }
 
 .mind-menu .ant-menu-dark {
@@ -127,7 +171,7 @@ body {
 .mind-input .ant-input-outlined:hover,
 .mind-input .ant-input-outlined:focus,
 .mind-input .ant-input-outlined:focus-within {
-  background: #181818;
+  background: var(--bg-deep-grey);
   border: var(--border-width) solid var(--btn-border);
   border-radius: 10px;
   color: var(--mind-brand);
@@ -137,7 +181,135 @@ body {
   color: var(--mind-grey);
 }
 
+input:focus {
+  outline: 2px solid var(--btn-border);
+  border-radius: 5px;
+}
+
 .text-light-shadow {
   color: #fff;
   text-shadow: 0px 0px 6px rgba(0, 255, 177, 0.6);
+}
+
+.mind-table
+  .ant-table-wrapper
+  .ant-table-tbody
+  > tr.ant-table-placeholder:hover
+  > th,
+.ant-table-wrapper .ant-table-tbody > tr.ant-table-placeholder:hover > td,
+.ant-table-wrapper .ant-table-tbody > tr.ant-table-placeholder {
+  background: transparent !important;
+}
+
+.mind-table .ant-empty-normal .ant-empty-description {
+  color: #fff;
+}
+.mind-table .ant-empty-description {
+  font-size: 14px;
+}
+
+.mind-table .ant-table-wrapper .ant-table {
+  background: transparent;
+}
+
+.mind-table .ant-table-wrapper .ant-table-thead > tr > th {
+  background: #0b1110;
+  color: #fff;
+  font-size: 16px;
+  border-bottom: 1px solid #053c2b4d;
+  border-top: 1px solid #053c2b4d;
+}
+.mind-table .ant-table-wrapper .ant-table-cell-fix-left,
+.mind-table .ant-table-wrapper .ant-table-cell-fix-right {
+  background: #070c0b;
+}
+.mind-table .ant-table-wrapper .ant-table-cell {
+  padding: 20px 16px;
+  color: white;
+  font-weight: 700;
+}
+.mind-table.pool-table .ant-table-wrapper .ant-table-cell {
+  padding: 20px 16px;
+  font-size: 16px !important;
+}
+.mind-table .ant-table-wrapper .ant-table-tbody > tr > td {
+  border-bottom: 0.5px solid #d9d9d9;
+}
+
+.mind-table
+  .ant-table-wrapper
+  .ant-table-tbody
+  .ant-table-row
+  > .ant-table-cell-row-hover {
+  background: #194536;
+}
+.mind-table.pool-table
+  .ant-table-wrapper
+  .ant-table-tbody
+  .ant-table-row
+  > .ant-table-cell-row-hover {
+  background: unset;
+}
+
+.mind-table
+  .ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before {
+  display: none;
+}
+.mind-table
+  .ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  > *:first-child {
+  border-end-start-radius: 10px;
+  border-left: 1px solid #053c2b4d;
+}
+.mind-table
+  .ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  > *:last-child {
+  border-end-end-radius: 10px;
+  border-right: 1px solid #053c2b4d;
+}
+
+.mind-table .ant-table-wrapper .ant-table-filter-trigger:hover,
+.mind-table .ant-table-wrapper .ant-table-filter-trigger {
+  color: white;
+}
+
+.mind-collapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 0;
+  align-items: center;
+}
+.mind-collapse.mind-vote-collapse.ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header {
+  margin-top: 20px;
+}
+
+.mind-collapse .ant-collapse-borderless > .ant-collapse-item {
+  border-bottom: none;
+}
+.mind-collapse.ant-collapse > .ant-collapse-item {
+  border-bottom: none;
+}
+
+.mind-collapse .ant-collapse-expand-icon svg {
+  fill: #fff;
+}
+
+.blue-gradient {
+  background: var(--blue-gradient);
+}
+.purple-gradient {
+  background: var(--purple-gradient);
 }
