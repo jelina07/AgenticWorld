@@ -38,12 +38,13 @@ export default function AirdropRules() {
     <div className="px-[35px] pb-[35px] pt-[12px] mt-[20px] bg-[url('/icons/rule-bg.svg')] bg-no-repeat bg-center">
       <div className="text-[20px] font-[900]">Airdrops Rules</div>
       <div className="mt-[30px]">
-        {ruleList.map((item) => (
+        {ruleList.map((item, index) => (
           <RulesItem
             linkurl={item.linkurl}
             imgurl={item.imgurl}
             title={item.title}
             info={item.info}
+            key={index}
           />
         ))}
       </div>
@@ -51,7 +52,8 @@ export default function AirdropRules() {
         <span>Note: </span>
         <span className="text-[var(--mind-grey)]">
           To claim your tokens, you must be connected to the Miindchain network.
-          Use the "Switch to Mindchain" button tochange your network if needed.
+          Use the &quot;Switch to Mindchain&quot; button tochange your network
+          if needed.
         </span>
       </div>
     </div>
