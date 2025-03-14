@@ -19,7 +19,7 @@ export default function MyAgent() {
     setText(event.target.value);
     setIsEditing(false);
   };
-  const isAgent = true;
+  const isAgent = false;
   return (
     <div
       className="p-[35px] bg-[url('/images/my-agent-bg.png')] bg-center bg-cover mt-[80px] 

@@ -1,7 +1,5 @@
-import { Collapse, CollapseProps } from "antd";
 import React from "react";
-import HubList from "./HubList";
-
+import HubList from "../agenticworld/HubList";
 const subnetInfor: any = [
   {
     subnetId: 1,
@@ -89,38 +87,11 @@ const subnetInfor: any = [
   },
 ];
 
-const basicSubnet = subnetInfor.filter((item: any) => item.isBasic);
-const advanceSubnet = subnetInfor.filter((item: any) => !item.isBasic);
-
-export default function HubPage() {
-  const items: CollapseProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <div className="text-left text-[18px] sm:text-[26px] text-white font-[800] ">
-          Start with Basic Hub
-        </div>
-      ),
-      children: <HubList subnetInfor={basicSubnet} isBasic={true}></HubList>,
-    },
-    {
-      key: "2",
-      label: (
-        <div className="text-left text-[18px] sm:text-[26px] text-white font-[800]">
-          Earn More with Advance Hub
-        </div>
-      ),
-      children: <HubList subnetInfor={advanceSubnet} isBasic={false}></HubList>,
-    },
-  ];
+const requiredHub = subnetInfor.filter(
+  (item: any) => item.subnetLevel === "Required"
+);
+export default function RequiredHub() {
   return (
-    <div className="mt-[40px]">
-      <Collapse
-        items={items}
-        defaultActiveKey={["1", "2"]}
-        bordered={false}
-        className="mind-collapse mind-vote-collapse"
-      />
-    </div>
+    <HubList subnetInfor={requiredHub} isBasic={true} isLaunch={true}></HubList>
   );
 }

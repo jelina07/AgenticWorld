@@ -1,6 +1,5 @@
 import { Col, Row } from "antd";
 import React from "react";
-import SubnetBox from "./SubnetBox";
 import Link from "next/link";
 import Arraw from "@/public/icons/arraw.svg";
 import Lock from "@/components/utils/Lock";
@@ -8,9 +7,11 @@ import Lock from "@/components/utils/Lock";
 export default function HubList({
   subnetInfor,
   isBasic,
+  isLaunch = false,
 }: {
   subnetInfor: any;
   isBasic: boolean;
+  isLaunch?: boolean;
 }) {
   const learningId = 1;
   const lockTimeReach = false;
@@ -42,10 +43,10 @@ export default function HubList({
                     <div className="flex items-center gap-[5px]">
                       <span
                         className={`inline-block w-[16px] h-[16px] rounded-[50%] ${
-                          isBasic ? "blue-gradient" : "purple-gradient"
+                          isBasic ? "blue-gradient" : "yellow-gradient"
                         }`}
                       ></span>
-                      <span className="text-[18px] text-white font-[800]">
+                      <span className="text-[18px] text-white font-[800] leading-[1.2]">
                         {item.subnetName}
                       </span>
                     </div>
@@ -60,7 +61,7 @@ export default function HubList({
                       <Lock />
                     </div>
                   </div>
-                  {isBasic ? (
+                  {isBasic && !isLaunch ? (
                     <div className="text-[var(--mind-brand)] text-[18px] mt-[20px]">
                       {item.subnetLevel}
                     </div>

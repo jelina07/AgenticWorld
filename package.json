@@ -19,6 +19,9 @@
     "next": "14.2.24",
     "react": "^18",
     "react-dom": "^18",
+    "react-typewriter-plus": "^1.0.3",
+    "typewriter-effect": "^2.21.0",
+    "use-typewriter-hook": "^3.1.2",
     "viem": "^2.23.9",
     "wagmi": "^2.14.13"
   },

@@ -14,7 +14,7 @@ export default function Page() {
         alt="earth"
         className="absolute top-0 right-[20px] hidden sm:block"
       />
-      <div className="mt-[30px] sm:mt-[70px]">
+      <div className="mt-[30px] sm:mt-[70px] px-[20px]">
         <div className="text-[30px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
           Agentic World
         </div>
