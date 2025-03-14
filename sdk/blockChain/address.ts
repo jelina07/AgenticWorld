@@ -1,3 +1,5 @@
+const ENV = process.env.NEXT_PUBLIC_ENV || "dev";
+
 export const AIRDROP_ADDRESS_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
   dev: {
     chainId: 192940,
@@ -9,4 +11,30 @@ export const AIRDROP_ADDRESS_CONFIG: Record<string, { chainId: number; address: 
   },
 } as const;
 
-export const AIRDROP_ADDRESS = AIRDROP_ADDRESS_CONFIG[process.env.NEXT_PUBLIC_ENV || "dev"];
+export const AIRDROP_ADDRESS = AIRDROP_ADDRESS_CONFIG[ENV];
+
+export const AGENT1_ADDRESS_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
+  dev: {
+    chainId: 192940,
+    address: "0x432Ff2854dF63BEDDfFa6b48867F2977F3b46C2d",
+  },
+  prod: {
+    chainId: 228,
+    address: "0x",
+  },
+} as const;
+
+export const AGENT1_ADDRESS = AGENT1_ADDRESS_CONFIG[ENV];
+
+export const DAOKEN_ADDRESS_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
+  dev: {
+    chainId: 192940,
+    address: "0x7904d6914C538c642Fe58bd47Bb9BAA387C59557",
+  },
+  prod: {
+    chainId: 228,
+    address: "0x",
+  },
+} as const;
+
+export const DAOKEN_ADDRESS = DAOKEN_ADDRESS_CONFIG[ENV];

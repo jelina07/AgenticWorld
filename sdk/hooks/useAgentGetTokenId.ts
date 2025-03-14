@@ -1,0 +1,44 @@
+import { useRequest } from "ahooks";
+import { Options } from "../types";
+import { useAccount } from "wagmi";
+import { exceptionHandler } from "../utils/exception";
+import { readContract } from "wagmi/actions";
+import { config } from "../wagimConfig";
+import { AGENT1_ABI } from "../blockChain/abi";
+import { AGENT1_ADDRESS } from "../blockChain/address";
+
+export default function useAgentGetTokenId(options?: Options<unknown, [string]>) {
+  const { address } = useAccount();
+
+  const result = useRequest(
+    async () => {
+      if (!address) {
+        return;
+      }
+      const agentCount = (await readContract(config, {
+        abi: AGENT1_ABI,
+        address: AGENT1_ADDRESS.address,
+        functionName: "balanceOf",
+        args: [address],
+      })) as BigInt;
+      if (agentCount === BigInt(0)) {
+        // 表示 还没有stake 过
+        return 0;
+      }
+      const agentId = (await readContract(config, {
+        abi: AGENT1_ABI,
+        address: AGENT1_ADDRESS.address,
+        functionName: "tokenOfOwnerByIndex",
+        args: [address, 0],
+      })) as BigInt;
+      return agentId.toString();
+    },
+    {
+      refreshDeps: [address],
+      onError: (err) => exceptionHandler(err),
+      ...options,
+    }
+  );
+
+  return result;
+}

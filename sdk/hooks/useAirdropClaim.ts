@@ -1,31 +1,23 @@
 import { useRequest } from "ahooks";
 import { Options } from "../types";
-import { useAccount, useSwitchChain, useWriteContract } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useWriteContract } from "wagmi";
 import { isDev } from "../utils";
-import { mindtestnet } from "../wagimConfig";
+import { mindnet, mindtestnet } from "../wagimConfig";
 import { AIRDROP_ABI } from "../blockChain/abi";
 import { AIRDROP_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
+import useValidateChainWalletLink from "./useValidateChainWalletLink";
 
 export default function useAirdropClaim(options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }) {
-  const { address, chainId } = useAccount();
-  const { switchChain } = useSwitchChain();
-  const { openConnectModal } = useConnectModal();
+  const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
     async (amount: string, proof: string[]) => {
-      if (!address) {
-        openConnectModal?.();
-        return;
-      }
-      if (isDev() && chainId !== mindtestnet.id) {
-        switchChain({
-          chainId: mindtestnet.id,
-        });
+      const isValid = await validateAsync?.();
+      if (!isValid) {
         return;
       }
       const txHash = await writeContractAsync({
