@@ -51,23 +51,23 @@ export default function beginInfo() {
     <div>
       <div id="launchTitle">Buillding Agentic World</div>
       <div>
-        <div id="launchContent1">Hi, I'm the No.0 CitizenZ</div>
+        <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
         <br />
         <div id="launchContent2">
-          I'm here to shape the Agentic World with you together. Ready to begin
-          the journey?
+          I&apos;m here to shape the Agentic World with you together. Ready to
+          begin the journey?
           <br />
           <br />
-          As the journey begin, we'll gonna launch your own AI Agent together!
-          You'll just need some $FHE tokens to launch (minimum of 100). Don't
-          worry—you're always in control. You can withdraw your tokens anytime,
-          no lock-ups involved.
+          As the journey begin, we&apos;ll gonna launch your own AI Agent
+          together! You&apos;ll just need some $FHE tokens to launch (minimum of
+          100). Don&apos;t worry—you&apos;re always in control. You can withdraw
+          your tokens anytime, no lock-ups involved.
           <br />
           <br />
           Once your agent is launch, send your agent on adventures across
           various hubs to gain new skills and increase its potential. The
           smarter your agent becomes, the more it contributes to the network—and
-          the more rewards you'll earn!
+          the more rewards you&apos;ll earn!
         </div>
       </div>
     </div>
