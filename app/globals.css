@@ -27,6 +27,8 @@
   --mind-brand: #00ffb1;
   --mind-grey: #878c8b;
   --mind-red: #ff7853;
+  --header-layout-lg: 50px;
+  --layout-lg: 100px;
   --layout-md: 30px;
   --layout-sm: 15px;
   --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);
@@ -401,4 +403,67 @@ input:focus {
   display: block;
   opacity: 1;
   transition: opacity 0.5s ease-in; /* 过渡效果 */
+}
+
+.hub-box {
+  position: relative;
+  clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
+}
+
+/* .hub-box::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
+  background-image: linear-gradient(90deg, #24ea7f, #ffa08c);
+} */
+
+.ant-modal-root .ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+.mind-madal.ant-modal {
+  top: 0;
+}
+.ant-modal-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mind-madal.ant-modal .ant-modal-content {
+  background-color: var(--bg-deep-grey);
+  color: #fff;
+  border-radius: 20px;
+}
+.mind-madal.ant-modal .ant-modal-header {
+  background: var(--bg-deep-grey);
+  color: #fff;
+  margin-top: 20px;
+}
+.mind-madal.ant-modal .ant-modal-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+.mind-madal.ant-modal .ant-modal-close {
+  color: #00ffb1;
+  top: 16px;
+}
+.mind-madal.ant-modal .ant-modal-close:hover {
+  color: #00ffb1;
+}
+.mind-madal.ant-modal .ant-modal-footer {
+  margin-top: 20px;
+}
+
+.ant-modal-body .ant-otp .ant-input-outlined.ant-otp-input,
+.ant-collapse-content-box .ant-otp .ant-input-outlined.ant-otp-input {
+  border: 1px var(--mind-brand) solid;
+  background-color: transparent;
+  color: white;
+  margin: 10px 0;
+  width: 30px;
 }

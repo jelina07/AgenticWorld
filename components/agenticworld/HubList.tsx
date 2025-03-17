@@ -33,11 +33,15 @@ export default function HubList({
                 lg={{ span: 8 }}
               >
                 <div
-                  className={`p-[40px] h-full ${
+                  className={`hub-box p-[40px] h-full ${
                     isBasic
                       ? "bg-[url('/icons/subnet-box1.svg')]"
                       : "bg-[url('/icons/subnet-box2.svg')]"
-                  } bg-no-repeat bg-right-bottom border bg-cover`}
+                  } bg-no-repeat bg-right-bottom bg-cover ${
+                    item.subnetId !== learningId && !lockTimeReach
+                      ? "opacity-[0.5]"
+                      : ""
+                  }`}
                 >
                   <div className="flex items-center gap-[5px] justify-between">
                     <div className="flex items-center gap-[5px]">

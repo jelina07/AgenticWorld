@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Page() {
   return (
-    <div className="px-[var(--layout-sm)] sm:px-[var(--layout-md)] bg-[url('/icons/airdrop-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] bg-[url('/icons/airdrop-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]">
       <div className="max-w-[680px] mx-auto">
         <Eligibility />
         <AirdropRules />

@@ -6,7 +6,7 @@ export default function Page() {
   const isAgent = true;
   return (
     <div
-      className="px-[var(--layout-sm)] sm:px-[var(--layout-md)] bg-[url('/icons/agentic-world-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]
+      className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] bg-[url('/icons/agentic-world-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]
                     relative overflow-hidden"
     >
       <img

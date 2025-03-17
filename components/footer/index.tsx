@@ -7,7 +7,7 @@ import { Divider } from "antd";
 export default function Index() {
   return (
     <footer
-      className="w-full bg-[#080F0F] py-[10px] px-[var(--layout-sm)] sm:px-[var(--layout-md)] 
+      className="w-full bg-[#080F0F] py-[10px] px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--header-layout-lg)]
                       opacity-50 fixed bottom-0 left-0"
     >
       <div className="sm:flex justify-between items-center gap-[10px]">

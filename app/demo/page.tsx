@@ -27,7 +27,9 @@ export default function DemoPage() {
 
   const { data: agentTokenId, loading: agentTokenIdLoading, refresh } = useAgentGetTokenId();
 
-  const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({ waitForReceipt: true });
+  const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
+    waitForReceipt: true,
+  });
 
   const { data: agentStakeAmount, refresh: agentStakeAmountRefresh } = useAgentGetStakeAmount({
     tokenId: agentTokenId,
@@ -83,7 +85,7 @@ export default function DemoPage() {
   };
 
   return (
-    <div className="px-[var(--layout-sm)] sm:px-[var(--layout-md)] text-white">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] text-white">
       <Card title="airdrop">
         <Flex gap={10}>
           <Input value={checkWallet} onChange={(e) => setCheckWallet(e.target.value)} />
