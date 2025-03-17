@@ -230,9 +230,14 @@ input:focus {
   color: white;
   font-weight: 700;
 }
-.mind-table.pool-table .ant-table-wrapper .ant-table-cell {
+.mind-table .ant-table-wrapper .ant-table-cell {
   padding: 20px 16px;
-  font-size: 16px !important;
+}
+.mind-table.transaction-table .ant-table-wrapper .ant-table-cell {
+  font-size: 12px;
+}
+.mind-table.transaction-table .ant-table-wrapper .ant-table-cell {
+  font-weight: 500;
 }
 .mind-table .ant-table-wrapper .ant-table-tbody > tr > td {
   border-bottom: 0.5px solid #d9d9d9;
@@ -245,7 +250,7 @@ input:focus {
   > .ant-table-cell-row-hover {
   background: #194536;
 }
-.mind-table.pool-table
+.mind-table
   .ant-table-wrapper
   .ant-table-tbody
   .ant-table-row
@@ -376,6 +381,9 @@ input:focus {
   }
   #launchContent1 {
     font-size: 26px;
+  }
+  #launchContent2 {
+    font-size: 16px;
   }
   #launchContent3 {
     font-size: 16px;

@@ -5,7 +5,7 @@ import ShutDownAgent from "@/components/dashboard/ShutDownAgent";
 
 export default function Home() {
   return (
-    <div className=" sm:px-[var(--layout-md)]">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)]">
       <MyAgent />
       <ShutDownAgent />
       <div className="pb-[200px]">

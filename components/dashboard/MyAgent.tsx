@@ -24,7 +24,7 @@ export default function MyAgent() {
   const isAgent = true;
   return (
     <div
-      className="p-[35px] bg-[url('/images/my-agent-bg.png')] bg-center bg-cover mt-[80px] 
+      className="p-[15px] sm:p-[35px] bg-[url('/images/my-agent-bg.png')] bg-center bg-cover mt-[40px] sm:mt-[80px] 
                     lg:flex items-center justify-between gap-[20px]"
     >
       <div className="bg-[url('/icons/portrait.svg')] w-[180px] h-[180px] bg-contain bg-no-repeat mb-[50px] lg:mb-[0px] ">

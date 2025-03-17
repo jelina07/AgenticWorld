@@ -26,7 +26,6 @@ export default function ShutDownAgent() {
       <Modal
         title="Shut Down Your Agent"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         className="mind-madal"
         footer={null}

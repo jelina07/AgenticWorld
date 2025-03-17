@@ -1,12 +1,15 @@
 "use client";
+import useControlModal from "@/store/useControlModal";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import AccountModal from "../account/accountModal";
 export const WalletConnectBtn = () => {
+  const { openAccountModal } = useControlModal();
   return (
     <ConnectButton.Custom>
       {({
         account,
         chain,
-        openAccountModal,
+        // openAccountModal,
         openChainModal,
         openConnectModal,
         authenticationStatus,
@@ -94,6 +97,7 @@ export const WalletConnectBtn = () => {
                       ? ` (${account.displayBalance})`
                       : ""}
                   </button>
+                  <AccountModal gasBalance={account.displayBalance} />
                 </div>
               );
             })()}

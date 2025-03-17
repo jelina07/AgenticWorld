@@ -8,10 +8,6 @@ export default function DecreseModal() {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -27,7 +23,6 @@ export default function DecreseModal() {
       <Modal
         title="Deduct Your Stake To Agent"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         className="mind-madal"
         footer={null}

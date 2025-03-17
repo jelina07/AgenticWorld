@@ -23,7 +23,8 @@
     "typewriter-effect": "^2.21.0",
     "use-typewriter-hook": "^3.1.2",
     "viem": "^2.23.9",
-    "wagmi": "^2.14.13"
+    "wagmi": "^2.14.13",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

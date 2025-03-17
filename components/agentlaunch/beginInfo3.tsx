@@ -6,7 +6,6 @@ import RequiredHub from "./RequiredHub";
 import { useRouter } from "next/navigation";
 const string1 = `  
     <div>
-      <div id="launchTitle">Buillding Agentic World</div>
       <div>
         <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
         <br />
@@ -99,6 +98,7 @@ const BeginInfo3 = () => {
   }, [isLearnBasicHub, stringtypedout3]);
   return (
     <div className="mt-[30px] sm:mt-[70px]">
+      <div id="launchTitle">Buillding Agentic World</div>
       <Typewriter
         options={{
           loop: false,

@@ -36,7 +36,6 @@ export default function StartHubBtn({
       <Modal
         title="Confirm Your Action"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         className="mind-madal"
         footer={null}

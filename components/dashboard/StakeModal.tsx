@@ -27,7 +27,6 @@ export default function DecreseModal() {
       <Modal
         title="Add Stake To Your Agent"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
         className="mind-madal"
         footer={null}
