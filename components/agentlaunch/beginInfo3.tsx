@@ -4,6 +4,7 @@ import Typewriter from "typewriter-effect";
 import StakeLaunch from "./StakeLaunch";
 import RequiredHub from "./RequiredHub";
 import { useRouter } from "next/navigation";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 const string1 = `  
     <div>
       <div>
@@ -72,8 +73,9 @@ const BeginInfo3 = () => {
   const [stringtypedout1, setStringtypedout1] = useState(false);
   const [stringtypedout2, setStringtypedout2] = useState(false);
   const [stringtypedout3, setStringtypedout3] = useState(false);
-  const [isAgent, setIsAgent] = useState(false);
   const [isLearnBasicHub, setIsLearnBasicHub] = useState(false);
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const isAgent = agentTokenId !== 0;
   // const isAgent = true;
   // 判断是否学习了basicHub
   // const isLearnBasicHub = true;
@@ -121,9 +123,9 @@ const BeginInfo3 = () => {
       >
         <StakeLaunch />
       </div>
-      <div onClick={() => setIsAgent(true)}>Stake test</div>
+      {/* <div onClick={() => setIsAgent(true)}>Stake test</div> */}
 
-      {isAgent ? (
+      {isAgent && stringtypedout1 ? (
         <Typewriter
           options={{
             loop: false,

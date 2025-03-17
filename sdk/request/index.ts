@@ -11,15 +11,13 @@ request.interceptors.request.use((config) => config);
 request.interceptors.response.use(
   (response) => {
     const data = response.data || {};
-    if (data.code !== 0 && data.code !== 50005) {
+    if (data.code !== 0) {
       notification.error({
         message: "Server Error",
         description: data?.message || "Unknown Error",
       });
       throw new Error(data?.message || "Unknown Error");
       // return;
-    } else if (data.code === 50005) {
-      throw new Error(data?.message || "Unknown Error");
     }
     return data.data;
   },

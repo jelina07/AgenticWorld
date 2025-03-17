@@ -6,10 +6,15 @@ import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
-export default function useAgentGetTokenId(options?: Options<number | undefined, [string]>) {
+export default function useAgentGetTokenId(
+  options?: Options<number | undefined, [string]>
+) {
   const { address } = useAccount();
-
+  const setAgentTokenId = useAgentGetTokenIdStore(
+    (state) => state.setAgentTokenId
+  );
   const result = useRequest(
     async () => {
       if (!address) {
@@ -22,6 +27,7 @@ export default function useAgentGetTokenId(options?: Options<number | undefined,
         args: [address],
       })) as BigInt;
       if (agentCount === BigInt(0)) {
+        if (setAgentTokenId) setAgentTokenId(0);
         // 表示 还没有stake 过
         return 0;
       }
@@ -31,6 +37,7 @@ export default function useAgentGetTokenId(options?: Options<number | undefined,
         functionName: "tokenOfOwnerByIndex",
         args: [address, 0],
       })) as bigint;
+      if (setAgentTokenId) setAgentTokenId(Number(agentId));
       return Number(agentId);
     },
     {
