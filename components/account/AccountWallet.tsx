@@ -11,7 +11,9 @@ export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
   };
   return (
     <div>
-      <div className="text-[14px] font-[600] text-white">YOUR ADDRESS</div>
+      <div className="text-[14px] font-[600] text-white mt-[20px]">
+        YOUR ADDRESS
+      </div>
       <div className="px-[15px] py-[19px] bg-[var(--background)] flex justify-between items-center mt-[20px]">
         <span className="text-white text-[14px] min-w-[200px]">{address}</span>
         <span onClick={() => copyAddress(address!)} className="cursor-pointer">

@@ -1,12 +1,18 @@
+"use client";
 import HubInfo from "@/components/agenticworld/detials/HubInfo";
-import StartHubBtn from "@/components/agenticworld/detials/StartHubBtn";
+import StartConfirmModal from "@/components/agenticworld/detials/StartConfirmModal";
 import UseCase from "@/components/agenticworld/detials/UseCase";
 import { Button } from "antd";
-import React from "react";
+import React, { useRef } from "react";
 
 export default function page({ params }: { params: any }) {
+  const startModalRef: any = useRef(null);
   const learningId = 1;
   const lockTimeReach = true;
+  const showModal = () => {
+    startModalRef.current?.clickStartConfirmModal();
+  };
+
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
@@ -19,16 +25,20 @@ export default function page({ params }: { params: any }) {
           <HubInfo />
         </div>
         <div className="mt-[50px] w-[170px]">
-          <StartHubBtn
-            subnetId={Number(params.subnetId)}
-            learningId={learningId}
-            lockTimeReach={lockTimeReach}
-          />
+          <Button
+            type="primary"
+            className="button-brand-border-white-font"
+            disabled={learningId === Number(params.subnetId) || !lockTimeReach}
+            onClick={showModal}
+          >
+            {learningId === Number(params.subnetId) ? "Learning..." : "Start"}
+          </Button>
         </div>
         <div className="mt-[50px]">
           <UseCase />
         </div>
       </div>
+      <StartConfirmModal ref={startModalRef} learningId={learningId} />
     </div>
   );
 }

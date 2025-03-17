@@ -32,23 +32,21 @@ export default function AccountModal({ gasBalance }: { gasBalance?: string }) {
   };
 
   return (
-    <div>
-      <Modal
-        title="Your Wallet"
-        open={accountModalopen}
-        onCancel={handleCancel}
-        className="mind-madal"
-        footer={null}
+    <Modal
+      title="Your Wallet"
+      open={accountModalopen}
+      onCancel={handleCancel}
+      className="mind-madal mind-tab"
+      footer={null}
+    >
+      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Button
+        type="primary"
+        className="button-brand-border-white-font mt-[50px]"
+        onClick={() => disconnectWallet()}
       >
-        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        <Button
-          type="primary"
-          className="button-brand-border-white-font mt-[50px]"
-          onClick={() => disconnectWallet()}
-        >
-          Disconnect Wallet
-        </Button>
-      </Modal>
-    </div>
+        Disconnect Wallet
+      </Button>
+    </Modal>
   );
 }

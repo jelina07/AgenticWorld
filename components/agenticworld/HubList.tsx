@@ -1,8 +1,10 @@
+"use client";
 import { Col, Row } from "antd";
-import React from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
 import Arraw from "@/public/icons/arraw.svg";
 import Lock from "@/components/utils/Lock";
+import StartConfirmModal from "./detials/StartConfirmModal";
 
 export default function HubList({
   subnetInfor,
@@ -13,8 +15,13 @@ export default function HubList({
   isBasic: boolean;
   isLaunch?: boolean;
 }) {
+  const startModalRef: any = useRef(null);
   const learningId = 1;
-  const lockTimeReach = false;
+  const lockTimeReach = true;
+  const showModal = (event: any) => {
+    event.preventDefault();
+    startModalRef.current?.clickStartConfirmModal();
+  };
   return (
     <div>
       {
@@ -32,102 +39,107 @@ export default function HubList({
                 md={{ span: 12 }}
                 lg={{ span: 8 }}
               >
-                <div
-                  className={`hub-box p-[40px] h-full ${
-                    isBasic
-                      ? "bg-[url('/icons/subnet-box1.svg')]"
-                      : "bg-[url('/icons/subnet-box2.svg')]"
-                  } bg-no-repeat bg-right-bottom bg-cover ${
-                    item.subnetId !== learningId && !lockTimeReach
-                      ? "opacity-[0.5]"
-                      : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-[5px] justify-between">
-                    <div className="flex items-center gap-[5px]">
-                      <span
-                        className={`inline-block w-[16px] h-[16px] rounded-[50%] ${
-                          isBasic ? "blue-gradient" : "yellow-gradient"
+                <Link href={`/agenticworld/${item.subnetId}`}>
+                  <div
+                    className={`hub-box p-[40px] h-full ${
+                      isBasic
+                        ? "bg-[url('/icons/subnet-box1.svg')]"
+                        : "bg-[url('/icons/subnet-box2.svg')]"
+                    } bg-no-repeat bg-right-bottom bg-cover ${
+                      isLaunch && item.subnetId !== learningId && !lockTimeReach
+                        ? "opacity-[0.5]"
+                        : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-[5px] justify-between">
+                      <div className="flex items-center gap-[5px]">
+                        <span
+                          className={`inline-block w-[16px] h-[16px] rounded-[50%] ${
+                            isBasic ? "blue-gradient" : "yellow-gradient"
+                          }`}
+                        ></span>
+                        <span className="text-[18px] text-white font-[800] leading-[1.2]">
+                          {item.subnetName}
+                        </span>
+                      </div>
+
+                      <div
+                        className={`text-white ${
+                          item.subnetId === learningId && !lockTimeReach
+                            ? ""
+                            : "hidden"
                         }`}
-                      ></span>
-                      <span className="text-[18px] text-white font-[800] leading-[1.2]">
-                        {item.subnetName}
-                      </span>
-                    </div>
-
-                    <div
-                      className={`text-white ${
-                        item.subnetId === learningId && !lockTimeReach
-                          ? ""
-                          : "hidden"
-                      }`}
-                    >
-                      <Lock />
-                    </div>
-                  </div>
-                  {isBasic && !isLaunch ? (
-                    <div className="text-[var(--mind-brand)] text-[18px] mt-[20px]">
-                      {item.subnetLevel}
-                    </div>
-                  ) : (
-                    <div className="text-[14px] text-[#C7C7C7] mt-[20px] h-[100px]">
-                      {item.subnetInfo}
-                    </div>
-                  )}
-
-                  <div className="mt-[30px] text-white text-[14px]">
-                    <div className="flex justify-between gap-[3px]">
-                      <span>Payout Ratio:</span>
-                      <span>{item.payoutRatio}</span>
-                    </div>
-                    <div className="flex justify-between gap-[3px]">
-                      <span>Enrolled Agents:</span>
-                      <span>{item.agent}</span>
-                    </div>
-                    <div className="flex justify-between gap-[3px]">
-                      <span>Learning Lock-up:</span>
-                      <span>{item.lockup}</span>
-                    </div>
-                    <div
-                      className={`flex justify-between gap-[3px] items-start ${
-                        item.subnetRequire ? "" : "hidden"
-                      }`}
-                    >
-                      <span>Require:</span>
-                      <div className="text-right">
-                        {item.subnetRequire?.map((obj: any, index: number) => (
-                          <div className="text-[var(--mind-brand)]" key={index}>
-                            [{obj}]
-                          </div>
-                        ))}
+                      >
+                        <Lock />
                       </div>
                     </div>
+                    {isBasic && !isLaunch ? (
+                      <div className="text-[var(--mind-brand)] text-[18px] mt-[20px]">
+                        {item.subnetLevel}
+                      </div>
+                    ) : (
+                      <div className="text-[14px] text-[#C7C7C7] mt-[20px] h-[100px]">
+                        {item.subnetInfo}
+                      </div>
+                    )}
+
+                    <div className="mt-[30px] text-white text-[14px]">
+                      <div className="flex justify-between gap-[3px]">
+                        <span>Payout Ratio:</span>
+                        <span>{item.payoutRatio}</span>
+                      </div>
+                      <div className="flex justify-between gap-[3px]">
+                        <span>Enrolled Agents:</span>
+                        <span>{item.agent}</span>
+                      </div>
+                      <div className="flex justify-between gap-[3px]">
+                        <span>Learning Lock-up:</span>
+                        <span>{item.lockup}</span>
+                      </div>
+                      <div
+                        className={`flex justify-between gap-[3px] items-start ${
+                          item.subnetRequire ? "" : "hidden"
+                        }`}
+                      >
+                        <span>Require:</span>
+                        <div className="text-right">
+                          {item.subnetRequire?.map(
+                            (obj: any, index: number) => (
+                              <div
+                                className="text-[var(--mind-brand)]"
+                                key={index}
+                              >
+                                [{obj}]
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    {item.subnetId === learningId ? (
+                      <div className="flex items-center mt-[30px] justify-end">
+                        <span className="text-[var(--mind-brand)]">
+                          Learning
+                        </span>
+                        <img src="/icons/cz.svg" alt="cz" width={25} />
+                      </div>
+                    ) : !lockTimeReach ? (
+                      <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                        <span>Start</span>
+                      </div>
+                    ) : (
+                      <div className="text-white hover:text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                        <span onClick={showModal}>Start</span>
+                      </div>
+                    )}
                   </div>
-                  {item.subnetId === learningId ? (
-                    <div className="flex items-center mt-[30px] justify-end">
-                      <span className="text-[var(--mind-brand)]">Learning</span>
-                      <img src="/icons/cz.svg" alt="cz" width={25} />
-                    </div>
-                  ) : !lockTimeReach ? (
-                    <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                      <span>Start</span>
-                      <Arraw className="fill-[var(--mind-grey)]"></Arraw>
-                    </div>
-                  ) : (
-                    <Link
-                      href={`/agenticworld/${item.subnetId}`}
-                      className="text-white hover:text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end"
-                    >
-                      <span>Start</span>
-                      <Arraw></Arraw>
-                    </Link>
-                  )}
-                </div>
+                </Link>
               </Col>
             ))}
           </Row>
         )
       }
+      <StartConfirmModal ref={startModalRef} learningId={learningId} />
     </div>
   );
 }
