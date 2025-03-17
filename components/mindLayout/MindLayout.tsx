@@ -8,7 +8,7 @@ export default function MindLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="">
       <Header />
       <div>{children}</div>
       <Footer />

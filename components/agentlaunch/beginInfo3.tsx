@@ -87,15 +87,15 @@ const BeginInfo3 = () => {
     let timer: any;
     //have selectd learnedHub and type out
     if (isLearnBasicHub && stringtypedout3) {
-      timer = setTimeout(() => {
-        router.push("/");
-      }, 3000);
+      // timer = setTimeout(() => {
+      router.push("/");
+      // }, 3000);
     }
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
+    // return () => {
+    //   if (timer) {
+    //     clearTimeout(timer);
+    //   }
+    // };
   }, [isLearnBasicHub, stringtypedout3]);
   return (
     <div className="mt-[30px] sm:mt-[70px]">
@@ -156,7 +156,7 @@ const BeginInfo3 = () => {
           options={{
             loop: false,
             cursor: "",
-            delay: 10,
+            delay: 30,
           }}
           onInit={(typewriter) => {
             typewriter

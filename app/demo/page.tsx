@@ -23,13 +23,20 @@ export default function DemoPage() {
   const { runAsync: claim } = useAirdropClaim({ waitForReceipt: true });
   const [relayerClaimRes, setRelayerClaimRes] = useState<unknown>();
 
-  const { data: agentTokenId, loading: agentTokenIdLoading, refresh } = useAgentGetTokenId();
+  const {
+    data: agentTokenId,
+    loading: agentTokenIdLoading,
+    refresh,
+  } = useAgentGetTokenId();
 
-  const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({ waitForReceipt: true });
-
-  const { data: agentStakeAmount, refresh: agentStakeAmountRefresh } = useAgentGetStakeAmount({
-    tokenId: agentTokenId as BigInt,
+  const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
+    waitForReceipt: true,
   });
+
+  const { data: agentStakeAmount, refresh: agentStakeAmountRefresh } =
+    useAgentGetStakeAmount({
+      tokenId: agentTokenId as BigInt,
+    });
 
   const { data: hubList } = useHubList();
 
@@ -46,12 +53,17 @@ export default function DemoPage() {
   };
 
   const onClaim = async () => {
-    const res = await claim(checkWallet, ["0x2e14f1d18456355969b58236e84c6d2468695cc29ce5423378071835fd3a7f92"]);
+    const res = await claim(checkWallet, [
+      "0x2e14f1d18456355969b58236e84c6d2468695cc29ce5423378071835fd3a7f92",
+    ]);
     setRelayerClaimRes(res);
   };
 
   const onAgentStake = async () => {
-    const res = await agentStake(BigInt(agentTokenId as string), parseEther("100"));
+    const res = await agentStake(
+      BigInt(agentTokenId as string),
+      parseEther("100")
+    );
     if (res) {
       refresh();
       agentStakeAmountRefresh();
@@ -60,14 +72,21 @@ export default function DemoPage() {
 
   const onHubDelegate = async (hub: any) => {
     console.log("🚀 ~ onHubDelegate ~ hubId:", hub);
-    const res = await hubDelegate({ tokenId: Number(agentTokenId as number), hubId: hub.id, needSign: hub.needSign });
+    const res = await hubDelegate({
+      tokenId: Number(agentTokenId as number),
+      hubId: hub.id,
+      needSign: hub.needSign,
+    });
   };
 
   return (
-    <div className="px-[var(--layout-sm)] sm:px-[var(--layout-md)] text-white">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] text-white">
       <Card title="airdrop">
         <Flex gap={10}>
-          <Input value={checkWallet} onChange={(e) => setCheckWallet(e.target.value)} />
+          <Input
+            value={checkWallet}
+            onChange={(e) => setCheckWallet(e.target.value)}
+          />
           <Button type="primary" onClick={onCheckEligibility}>
             Check Eligibility
           </Button>
@@ -83,19 +102,29 @@ export default function DemoPage() {
             </Button>
           </div>
         )}
-        {(relayerClaimRes as string) && <div>{JSON.stringify(relayerClaimRes)}</div>}
+        {(relayerClaimRes as string) && (
+          <div>{JSON.stringify(relayerClaimRes)}</div>
+        )}
       </Card>
 
       <Card title="Agent Lanuch" className="!mt-6">
         <div>
           Agent Token Id: {agentTokenId as string}{" "}
           {!agentTokenIdLoading && (
-            <Button onClick={onAgentStake} type="primary" loading={agentStakeLoading}>
+            <Button
+              onClick={onAgentStake}
+              type="primary"
+              loading={agentStakeLoading}
+            >
               Stake
             </Button>
           )}
         </div>
-        <div>Agent Stake Amount: {(agentStakeAmount as bigint) && formatEther(agentStakeAmount as bigint)}</div>
+        <div>
+          Agent Stake Amount:{" "}
+          {(agentStakeAmount as bigint) &&
+            formatEther(agentStakeAmount as bigint)}
+        </div>
       </Card>
 
       <Card title="Hub" className="!mt-6">
@@ -104,7 +133,11 @@ export default function DemoPage() {
             <div key={hub.id}>
               <div>
                 Hub Name: {hub.name}{" "}
-                <Button size="small" onClick={() => onHubDelegate(hub)} type="primary">
+                <Button
+                  size="small"
+                  onClick={() => onHubDelegate(hub)}
+                  type="primary"
+                >
                   Start
                 </Button>
               </div>

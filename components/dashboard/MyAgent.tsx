@@ -6,6 +6,8 @@ import Edit from "@/public/icons/edit.svg";
 import Link from "next/link";
 import LaunchAgent from "./LaunchAgent";
 import { useState } from "react";
+import StakeModal from "./StakeModal";
+import DecreseModal from "./DecreseModal";
 
 export default function MyAgent() {
   const [isEditing, setIsEditing] = useState(false);
@@ -19,7 +21,7 @@ export default function MyAgent() {
     setText(event.target.value);
     setIsEditing(false);
   };
-  const isAgent = false;
+  const isAgent = true;
   return (
     <div
       className="p-[35px] bg-[url('/images/my-agent-bg.png')] bg-center bg-cover mt-[80px] 
@@ -113,19 +115,9 @@ export default function MyAgent() {
                       FHE
                     </span>
                   </div>
-                  <div className="mt-[40px] flex justify-between gap-[7px]">
-                    <Button
-                      type="primary"
-                      className="button-brand-border-white-font"
-                    >
-                      Increase
-                    </Button>
-                    <Button
-                      type="primary"
-                      className="button-brand-border-white-font"
-                    >
-                      Decrease
-                    </Button>
+                  <div className="mt-[40px] flex justify-between gap-[7px] mind-madal">
+                    <StakeModal />
+                    <DecreseModal />
                   </div>
                 </div>
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--mind-brand)] p-[11px]">
