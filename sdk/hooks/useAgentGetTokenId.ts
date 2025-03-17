@@ -7,7 +7,7 @@ import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 
-export default function useAgentGetTokenId(options?: Options<unknown, [string]>) {
+export default function useAgentGetTokenId(options?: Options<number | undefined, [string]>) {
   const { address } = useAccount();
 
   const result = useRequest(
@@ -30,8 +30,8 @@ export default function useAgentGetTokenId(options?: Options<unknown, [string]>)
         address: AGENT1_ADDRESS.address,
         functionName: "tokenOfOwnerByIndex",
         args: [address, 0],
-      })) as BigInt;
-      return agentId.toString();
+      })) as bigint;
+      return Number(agentId);
     },
     {
       refreshDeps: [address],

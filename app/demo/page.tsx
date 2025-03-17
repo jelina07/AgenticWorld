@@ -8,11 +8,13 @@ import {
   useAirdropClaim,
   useAirdropRelayerClaim,
   useHubDelegate,
+  useHubGetCurrent,
+  useHubGetCurrentExp,
   useHubList,
 } from "@/sdk";
+import useHubExitCurrent from "@/sdk/hooks/useHubExitCurrent";
 import { Button, Card, Flex, Input } from "antd";
 import { useState } from "react";
-import { formatEther, parseEther } from "viem";
 
 export default function DemoPage() {
   const [checkWallet, setCheckWallet] = useState("");
@@ -28,12 +30,14 @@ export default function DemoPage() {
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({ waitForReceipt: true });
 
   const { data: agentStakeAmount, refresh: agentStakeAmountRefresh } = useAgentGetStakeAmount({
-    tokenId: agentTokenId as BigInt,
+    tokenId: agentTokenId,
   });
 
   const { data: hubList } = useHubList();
 
-  const { runAsync: hubDelegate } = useHubDelegate();
+  const { data: currentHub } = useHubGetCurrent({ tokenId: Number(agentTokenId as number) });
+
+  const { runAsync: hubExitCurrent } = useHubExitCurrent();
 
   const onCheckEligibility = async () => {
     const res = await runAsync(checkWallet);
@@ -51,16 +55,31 @@ export default function DemoPage() {
   };
 
   const onAgentStake = async () => {
-    const res = await agentStake(BigInt(agentTokenId as string), parseEther("100"));
+    const res = await agentStake(agentTokenId!, 100);
     if (res) {
       refresh();
       agentStakeAmountRefresh();
     }
   };
 
-  const onHubDelegate = async (hub: any) => {
-    console.log("🚀 ~ onHubDelegate ~ hubId:", hub);
-    const res = await hubDelegate({ tokenId: Number(agentTokenId as number), hubId: hub.id, needSign: hub.needSign });
+  const onHubExitCurrent = async () => {
+    const res = await hubExitCurrent(agentTokenId!);
+    console.log("🚀 ~ onHubExitCurrent ~ res:", res);
+  };
+
+  const renderHubTitle = () => {
+    return (
+      <div>
+        Hub {currentHub ? `current hub: ${currentHub}` : ""}
+        {currentHub ? (
+          <Button type="primary" size="small" onClick={onHubExitCurrent}>
+            Exit
+          </Button>
+        ) : (
+          ""
+        )}
+      </div>
+    );
   };
 
   return (
@@ -88,29 +107,43 @@ export default function DemoPage() {
 
       <Card title="Agent Lanuch" className="!mt-6">
         <div>
-          Agent Token Id: {agentTokenId as string}{" "}
+          Agent Token Id: {agentTokenId}{" "}
           {!agentTokenIdLoading && (
             <Button onClick={onAgentStake} type="primary" loading={agentStakeLoading}>
               Stake
             </Button>
           )}
         </div>
-        <div>Agent Stake Amount: {(agentStakeAmount as bigint) && formatEther(agentStakeAmount as bigint)}</div>
+        <div>Agent Stake Amount: {agentStakeAmount}</div>
       </Card>
 
-      <Card title="Hub" className="!mt-6">
+      <Card title={renderHubTitle()} className="!mt-6">
         {Array.isArray(hubList) &&
-          hubList.map((hub) => (
-            <div key={hub.id}>
-              <div>
-                Hub Name: {hub.name}{" "}
-                <Button size="small" onClick={() => onHubDelegate(hub)} type="primary">
-                  Start
-                </Button>
-              </div>
-            </div>
-          ))}
+          agentTokenId &&
+          hubList.map((hub) => <Hub key={hub.id} hub={hub} currentHub={currentHub} agentTokenId={agentTokenId} />)}
       </Card>
+    </div>
+  );
+}
+
+function Hub({ hub, agentTokenId, currentHub }: any) {
+  const { runAsync: hubDelegate } = useHubDelegate();
+
+  const { data: currentExp } = useHubGetCurrentExp({ tokenId: Number(agentTokenId as number), hubId: hub.id });
+
+  const onHubDelegate = async (hub: any) => {
+    const res = await hubDelegate({ tokenId: Number(agentTokenId as number), hubId: hub.id, needSign: hub.needSign });
+  };
+
+  return (
+    <div key={hub.id}>
+      <div>
+        Hub Name: {hub.name}{" "}
+        <Button size="small" type="primary" onClick={() => onHubDelegate(hub)}>
+          Start
+        </Button>
+      </div>
+      <div>Current Exp: {currentExp}</div>
     </div>
   );
 }

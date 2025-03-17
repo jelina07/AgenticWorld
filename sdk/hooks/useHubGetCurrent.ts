@@ -4,27 +4,25 @@ import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
-import { formatEther } from "viem";
 
-export default function useAgentGetStakeAmount(options?: Options<string | undefined, []> & { tokenId?: number }) {
-  const { tokenId, ...rest } = options || {};
-
+export default function useHubGetCurrent(options?: Options<number | undefined, []> & { tokenId?: number }) {
   const result = useRequest(
     async () => {
-      if (!tokenId) {
+      if (!options?.tokenId) {
         return;
       }
-      const amount = (await readContract(config, {
+      const currentHub = (await readContract(config, {
         abi: AGENT1_ABI,
         address: AGENT1_ADDRESS.address,
-        functionName: "stakeAmount",
-        args: [tokenId],
+        functionName: "currentHub",
+        args: [options.tokenId],
       })) as bigint;
-      return formatEther(amount);
+
+      return Number(currentHub);
     },
     {
-      refreshDeps: [tokenId],
-      ...rest,
+      refreshDeps: [options?.tokenId],
+      ...options,
     }
   );
 

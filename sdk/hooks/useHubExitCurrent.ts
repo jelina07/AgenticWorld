@@ -1,46 +1,31 @@
 import { useRequest } from "ahooks";
-import { Options } from "../types";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import request from "../request";
-import { AGENT1_ADDRESS } from "../blockChain/address";
+import { Options, WriteConractHooksReturnType } from "../types";
+import { useWriteContract } from "wagmi";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { isDev } from "../utils";
 import { config, mindnet, mindtestnet } from "../wagimConfig";
-import { useWriteContract } from "wagmi";
 import { AGENT1_ABI } from "../blockChain/abi";
+import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
-import { exceptionHandler } from "../utils/exception";
 
-dayjs.extend(utc);
-
-type DelegatePayload = {
-  tokenId: number;
-  hubId: number;
-  needSign: boolean;
-};
-
-export default function useHubDelegate(options?: Options<unknown, [DelegatePayload]> & { waitForReceipt?: boolean }) {
+export default function useHubExitCurrent(
+  options?: Options<WriteConractHooksReturnType, [number]> & {
+    waitForReceipt?: boolean;
+  }
+) {
   const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
   const { writeContractAsync } = useWriteContract();
-
   const result = useRequest(
-    async (payload) => {
+    async (tokenId) => {
       const isValid = await validateAsync?.();
       if (!isValid) {
         return;
       }
-      const sigTs = dayjs().utc().unix();
-      let signature = "0x";
-      if (payload.needSign) {
-        signature = await request.post("/hub/verify", { ...payload, sigTs, address: AGENT1_ADDRESS.address });
-      }
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
-        functionName: "delegate",
+        functionName: "exitCurrentHub",
         address: AGENT1_ADDRESS.address,
-        args: [payload.tokenId, payload.hubId, signature, sigTs],
-        gas: BigInt(1000000),
+        args: [tokenId],
       });
       if (!options?.waitForReceipt) {
         return txHash;
@@ -49,7 +34,6 @@ export default function useHubDelegate(options?: Options<unknown, [DelegatePaylo
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err),
       manual: true,
       ...options,
     }

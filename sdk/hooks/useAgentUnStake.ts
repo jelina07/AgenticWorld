@@ -5,13 +5,13 @@ import { exceptionHandler } from "../utils/exception";
 import { isDev } from "../utils";
 import { mindnet, mindtestnet } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
-import { AGENT1_ABI, DAOTOKEN_ABI } from "../blockChain/abi";
-import { AGENT1_ADDRESS, DAOKEN_ADDRESS } from "../blockChain/address";
+import { AGENT1_ABI } from "../blockChain/abi";
+import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { parseEther } from "viem";
 
-export default function useAgentStake(options?: Options<unknown, [number, number]> & { waitForReceipt?: boolean }) {
+export default function useAgentUnStake(options?: Options<unknown, [number, number]> & { waitForReceipt?: boolean }) {
   const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
   const { writeContractAsync } = useWriteContract();
 
@@ -21,19 +21,10 @@ export default function useAgentStake(options?: Options<unknown, [number, number
       if (!isValid) {
         return;
       }
-      //approve
-      const txHash = await writeContractAsync({
-        abi: DAOTOKEN_ABI,
-        functionName: "approve",
-        address: DAOKEN_ADDRESS.address,
-        args: [AGENT1_ADDRESS.address, parseEther(amount + "")],
-      });
-      //等待出块
-      await waitForTransactionReceipt(config, { hash: txHash });
-      //stake
+      //unstake
       const txHash2 = await writeContractAsync({
         abi: AGENT1_ABI,
-        functionName: "stake",
+        functionName: "unstake",
         address: AGENT1_ADDRESS.address,
         args: [tokenId, parseEther(amount + "")],
       });
