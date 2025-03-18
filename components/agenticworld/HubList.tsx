@@ -9,6 +9,7 @@ import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
   useHubAgentCount,
+  useHubGetApy,
   useHubGetCurrent,
   useHubGetCurrentExp,
   useHubList,
@@ -46,8 +47,9 @@ export default function HubList({
     staleTime: 5 * 60 * 1000,
   });
   const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
+  const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
   console.log("useHubAgentCount", subnetList, hubAgentCount);
-
+  console.log("hubApy", subnetList, hubApy);
   const subnetInforAll = subnetList?.map((item: any, index: number) => {
     return {
       subnetId: item.id,
@@ -55,7 +57,7 @@ export default function HubList({
       subnetName: item.name,
       subnetInfo: item.desc,
       agent: hubAgentCount ? hubAgentCount[index] : "loading...",
-      payoutRatio: "",
+      payoutRatio: hubApy ? hubApy[index] : "loading...",
       lockup: item.lockUp,
       subnetLevel: item.note,
       subnetRequire: item.requireName,

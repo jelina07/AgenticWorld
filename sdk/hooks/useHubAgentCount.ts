@@ -14,11 +14,9 @@ export default function useHubAgentCount(
   const result = useRequest(
     async () => {
       if (!hubIds || !hubIds.length) {
-        return [];
+        return;
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);
-      console.log("justHubIds", justHubIds);
-
       const agentsCount = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
         address: DAO_INSPECTOR_ADDRESS.address,

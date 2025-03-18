@@ -5,7 +5,9 @@ import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 
-export default function useHubGetApy(options?: Options<unknown, []> & { hubIds: number[] }) {
+export default function useHubGetApy(
+  options?: Options<any, []> & { hubIds: number[] }
+) {
   const { hubIds, ...rest } = options || {};
 
   const result = useRequest(
@@ -13,12 +15,13 @@ export default function useHubGetApy(options?: Options<unknown, []> & { hubIds: 
       if (!hubIds?.length) {
         return;
       }
-
+      const justHubIds = hubIds.map((obj: any) => obj.id);
+      console.log("justHubIds", justHubIds);
       const amounts = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
         functionName: "getAPYBatch",
         address: DAO_INSPECTOR_ADDRESS.address,
-        args: [hubIds],
+        args: [justHubIds],
       })) as bigint[];
 
       return amounts.map((amount) => Number(amount));
