@@ -206,7 +206,7 @@ export default function MyAgent() {
           )}
         </div>
       </div>
-      {isAgent && <ShutDownAgent />}
+      {isAgent && <ShutDownAgent agentStakeAmount={agentStakeAmount} />}
     </>
   );
 }
