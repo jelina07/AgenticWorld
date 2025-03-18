@@ -3070,3 +3070,263 @@ export const MEMBER_POOL_ABI = [
     type: "function",
   },
 ];
+
+export const DAO_INSPECTOR_ABI = [
+  {
+    inputs: [],
+    name: "InvalidInitialization",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotInitializing",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "OwnableInvalidOwner",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "OwnableUnauthorizedAccount",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint64",
+        name: "version",
+        type: "uint64",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "contract MemberPool",
+        name: "memberPool",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "contract Agent1",
+        name: "agent1",
+        type: "address",
+      },
+    ],
+    name: "Setup",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "hubIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "getAgentCount",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "counts",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "hubId",
+        type: "uint256",
+      },
+    ],
+    name: "getAgentExpLengthSec",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "sec",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "hubIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "getAgentExpLengthSecBatch",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "secs",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "hubId",
+        type: "uint256",
+      },
+    ],
+    name: "getAgentLifetimeRewards",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+    ],
+    name: "getUserClaimableRewards",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_owner",
+        type: "address",
+      },
+    ],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract MemberPool",
+        name: "_memberPool",
+        type: "address",
+      },
+      {
+        internalType: "contract Agent1",
+        name: "_agent1",
+        type: "address",
+      },
+    ],
+    name: "setup",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];

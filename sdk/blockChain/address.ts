@@ -51,3 +51,16 @@ export const MEMBER_POOL_ADDRESS_CONFIG: Record<string, { chainId: number; addre
 } as const;
 
 export const MEMBER_POOL_ADDRESS = MEMBER_POOL_ADDRESS_CONFIG[ENV];
+
+export const DAO_INSPECTOR_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
+  dev: {
+    chainId: 192940,
+    address: "0x9E42B224E0B041375711dd6649B9e0E376b6032c",
+  },
+  prod: {
+    chainId: 228,
+    address: "0x",
+  },
+} as const;
+
+export const DAO_INSPECTOR_ADDRESS = DAO_INSPECTOR_CONFIG[ENV];

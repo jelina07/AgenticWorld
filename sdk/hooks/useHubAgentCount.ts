@@ -1,32 +1,31 @@
 import { useRequest } from "ahooks";
-import request from "../request";
 import { Options } from "../types";
 import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
-import { MEMBER_POOL_ABI } from "../blockChain/abi";
-import { MEMBER_POOL_ADDRESS } from "../blockChain/address";
+import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
+import { DAOKEN_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useHubAgentCount(options?: Options<undefined | number, []> & { hubId?: number }) {
-  const { hubId, ...rest } = options || {};
+export default function useHubAgentCount(options?: Options<undefined | number[], []> & { hubIds?: number[] }) {
+  const { hubIds, ...rest } = options || {};
 
   const result = useRequest(
     async () => {
-      if (!hubId) {
-        return;
+      if (!hubIds || !hubIds.length) {
+        return [];
       }
       const agentsCount = (await readContract(config, {
-        abi: MEMBER_POOL_ABI,
-        address: MEMBER_POOL_ADDRESS.address,
-        functionName: "hubAgentCount",
-        args: [hubId],
-      })) as bigint;
+        abi: DAO_INSPECTOR_ABI,
+        address: DAOKEN_ADDRESS.address,
+        functionName: "getAgentCount",
+        args: [hubIds],
+      })) as bigint[];
 
-      return Number(agentsCount);
+      return agentsCount.map((count) => Number(count));
     },
     {
       manual: true,
-      refreshDeps: [hubId],
+      refreshDeps: [hubIds],
       onError: (err) => exceptionHandler(err),
       ...rest,
     }
