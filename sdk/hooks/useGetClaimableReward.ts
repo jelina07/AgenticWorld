@@ -7,7 +7,7 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { formatEther } from "viem";
 
-export function useGetClaimableReward(options?: Options<undefined | string, []> & { address: string }) {
+export default function useGetClaimableReward(options?: Options<undefined | string, []> & { address: string }) {
   const { address, ...rest } = options || {};
 
   const result = useRequest(

@@ -5,7 +5,7 @@ import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 
-export function useGetClaimableReward(options?: Options<undefined | number[], []> & { hubIds: number[] }) {
+export default function useHubGetStakeAmount(options?: Options<undefined | number[], []> & { hubIds: number[] }) {
   const { hubIds, ...rest } = options || {};
   const result = useRequest(
     async () => {
