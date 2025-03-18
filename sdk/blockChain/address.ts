@@ -16,7 +16,7 @@ export const AIRDROP_ADDRESS = AIRDROP_ADDRESS_CONFIG[ENV];
 export const AGENT1_ADDRESS_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
   dev: {
     chainId: 192940,
-    address: "0x7A110e595a9fE807A2F03412a8Ba3F3D65397C91",
+    address: "0x1c977CDe8F15620C793e0F28b03c59985c04A0E2",
   },
   prod: {
     chainId: 228,
@@ -42,7 +42,7 @@ export const DAOKEN_ADDRESS = DAOKEN_ADDRESS_CONFIG[ENV];
 export const MEMBER_POOL_ADDRESS_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
   dev: {
     chainId: 192940,
-    address: "0xD63BbCc27648A84C0E6D7E25BcD98bBc7dA6B753",
+    address: "0x217F5e767D5Ab028e8ae00e6148e0484Dc0C7504",
   },
   prod: {
     chainId: 228,
@@ -55,7 +55,7 @@ export const MEMBER_POOL_ADDRESS = MEMBER_POOL_ADDRESS_CONFIG[ENV];
 export const DAO_INSPECTOR_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
   dev: {
     chainId: 192940,
-    address: "0x45d651dF33773C2e13E0fd7a4C5490c2C51BcC3e",
+    address: "0xfdf797d5f938aE85bfB5553d55996bD199bE9736",
   },
   prod: {
     chainId: 228,

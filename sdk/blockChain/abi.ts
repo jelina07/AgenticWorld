@@ -1037,6 +1037,19 @@ export const AGENT1_ABI = [
   },
   {
     inputs: [],
+    name: "BATCH_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "DEFAULT_ADMIN_ROLE",
     outputs: [
       {
@@ -1296,7 +1309,7 @@ export const AGENT1_ABI = [
         type: "uint256",
       },
     ],
-    name: "hubExpLengthSec",
+    name: "hubXpLengthSec",
     outputs: [
       {
         internalType: "uint256",
@@ -1320,7 +1333,7 @@ export const AGENT1_ABI = [
         type: "uint256",
       },
     ],
-    name: "hubExpPoints",
+    name: "hubXpPoints",
     outputs: [
       {
         internalType: "uint256",
@@ -1344,7 +1357,7 @@ export const AGENT1_ABI = [
         type: "uint256",
       },
     ],
-    name: "hubExpSettlementTimestamp",
+    name: "hubXpSettlementTimestamp",
     outputs: [
       {
         internalType: "uint256",
@@ -1461,7 +1474,7 @@ export const AGENT1_ABI = [
         type: "uint256",
       },
     ],
-    name: "minHubExpLengthSec",
+    name: "minHubXpLengthSec",
     outputs: [
       {
         internalType: "uint256",
@@ -1630,7 +1643,7 @@ export const AGENT1_ABI = [
         type: "uint256",
       },
     ],
-    name: "settleHubExp",
+    name: "settleHubXp",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1640,6 +1653,11 @@ export const AGENT1_ABI = [
       {
         internalType: "contract MemberPool",
         name: "_memberPool",
+        type: "address",
+      },
+      {
+        internalType: "contract Agent1SigVerifier",
+        name: "_agent1SigVerifier",
         type: "address",
       },
       {
@@ -1672,7 +1690,7 @@ export const AGENT1_ABI = [
       },
       {
         internalType: "uint256[]",
-        name: "_minHubExpLength",
+        name: "_minHubXpLength",
         type: "uint256[]",
       },
       {
@@ -1710,6 +1728,61 @@ export const AGENT1_ABI = [
       },
     ],
     name: "stake",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "agentID",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "hubID",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "action",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct Agent1SigVerifier.Message",
+        name: "message",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "signature",
+        type: "bytes",
+      },
+    ],
+    name: "stake712",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -3269,6 +3342,44 @@ export const DAO_INSPECTOR_ABI = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "hubId",
+        type: "uint256",
+      },
+    ],
+    name: "getAPY",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "apyX10000",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "hubIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "getAPYBatch",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "apyX10000",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256[]",
         name: "hubIds",
         type: "uint256[]",
@@ -3298,7 +3409,55 @@ export const DAO_INSPECTOR_ABI = [
         type: "uint256",
       },
     ],
-    name: "getAgentExpLengthSec",
+    name: "getAgentLifetimeRewards",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "hubIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "getAgentLifetimeRewardsBatch",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "rewards",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "hubId",
+        type: "uint256",
+      },
+    ],
+    name: "getAgentXpLengthSec",
     outputs: [
       {
         internalType: "uint256",
@@ -3322,7 +3481,7 @@ export const DAO_INSPECTOR_ABI = [
         type: "uint256[]",
       },
     ],
-    name: "getAgentExpLengthSecBatch",
+    name: "getAgentXpLengthSecBatch",
     outputs: [
       {
         internalType: "uint256[]",
@@ -3336,22 +3495,17 @@ export const DAO_INSPECTOR_ABI = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "agentId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "hubId",
-        type: "uint256",
+        internalType: "uint256[]",
+        name: "hubIds",
+        type: "uint256[]",
       },
     ],
-    name: "getAgentLifetimeRewards",
+    name: "getHubAssetAmountBatch",
     outputs: [
       {
-        internalType: "uint256",
-        name: "reward",
-        type: "uint256",
+        internalType: "uint256[]",
+        name: "assets",
+        type: "uint256[]",
       },
     ],
     stateMutability: "view",

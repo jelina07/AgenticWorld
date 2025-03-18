@@ -20,7 +20,7 @@ export default function useHubGetCurrentExp(
       const currentExp = (await readContract(config, {
         abi: AGENT1_ABI,
         address: AGENT1_ADDRESS.address,
-        functionName: "hubExpLengthSec",
+        functionName: "hubXpLengthSec",
         args: [tokenId, hubId],
       })) as bigint;
       console.log("currentExp", currentExp);
