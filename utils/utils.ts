@@ -1,5 +1,6 @@
 import { isDev, isProd } from "@/sdk/utils";
 import { message } from "antd";
+import millify from "millify";
 
 export const mindscan = (address: `0x${string}`) => {
   return isDev() || isProd()
@@ -39,4 +40,38 @@ export function checkAmountControlButtonShow(amount: string) {
   } else {
     return true;
   }
+}
+
+export function numberDigits(showItem: string | number) {
+  if (Number.isNaN(Number(showItem)) || !Number.isFinite(Number(showItem)))
+    return "";
+  else {
+    const formattedNum = millify(Number(showItem), {
+      precision: 4,
+      locales: "en-US",
+    });
+    return formattedNum;
+  }
+}
+
+export function number5Digits(showItem: string | number) {
+  if (Number.isNaN(Number(showItem)) || !Number.isFinite(Number(showItem)))
+    return "";
+  else {
+    const formattedNum = millify(Number(showItem), {
+      precision: 5,
+      locales: "en-US",
+    });
+
+    return formattedNum;
+  }
+}
+
+export function numberDigitsNoMillify(showItem: string | number) {
+  const formattedNum = Number(showItem).toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4,
+    useGrouping: true,
+  });
+  return formattedNum;
 }

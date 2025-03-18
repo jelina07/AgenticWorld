@@ -14,6 +14,7 @@ import {
   useHubList,
 } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import useGetLearningHubId from "@/store/useGetLearningHubId";
 
 export default function HubList({
   // subnetInfor,
@@ -32,9 +33,10 @@ export default function HubList({
   const { openConnectModal } = useConnectModal();
   const { isConnected, address } = useAccount();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { data: learningId, refresh: refreshLearningId } = useHubGetCurrent({
+  const { data, refresh: refreshLearningId } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
+  const learningId = useGetLearningHubId((state) => state.learningHubId);
   const { data: currentExp } = useHubGetCurrentExp({
     tokenId: agentTokenId,
     hubId: learningId,
@@ -47,7 +49,6 @@ export default function HubList({
   console.log("useHubAgentCount", subnetList, hubAgentCount);
 
   const subnetInforAll = subnetList?.map((item: any, index: number) => {
-    // const currentAgentCount = hubAgentCount
     return {
       subnetId: item.id,
       type: item.type,
