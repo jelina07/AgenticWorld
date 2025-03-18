@@ -22,5 +22,6 @@ export default function useValidateChainWalletLink(targetChain: number) {
 
   return {
     validateAsync,
+    address,
   };
 }
