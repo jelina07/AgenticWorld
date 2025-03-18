@@ -4,6 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { useAccount } from "wagmi";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -15,35 +17,22 @@ const MindMenu: React.FC = () => {
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data: learningId } = useHubGetCurrent({
+  const { data } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
+  const learningId = useGetLearningHubId((state) => state.learningHubId);
   const isLearnBasicHub =
-    learningId &&
+    Boolean(learningId) &&
     subnetList &&
     subnetList
       .filter((item: any) => item.type === 0)
       .map((obj: any) => obj.id)
       .includes(learningId);
-  console.log("isLearnBasicHub", isLearnBasicHub);
+  console.log("isLearnBasicHub", learningId, isLearnBasicHub);
 
   const items: MenuItem[] =
-    isLearnBasicHub === undefined || isLearnBasicHub
+    learningId === undefined || isLearnBasicHub === false
       ? [
-          {
-            label: <Link href="/airdrop">Airdrop</Link>,
-            key: "/airdrop",
-          },
-          {
-            label: <Link href="/">Dashboard</Link>,
-            key: "/",
-          },
-          {
-            label: <Link href="/agenticworld">Agentic World</Link>,
-            key: "/agenticworld",
-          },
-        ]
-      : [
           {
             label: <Link href="/airdrop">Airdrop</Link>,
             key: "/airdrop",
@@ -59,6 +48,20 @@ const MindMenu: React.FC = () => {
           {
             label: <Link href="/agentlaunch">Agent Launch</Link>,
             key: "/agentlaunch",
+          },
+        ]
+      : [
+          {
+            label: <Link href="/airdrop">Airdrop</Link>,
+            key: "/airdrop",
+          },
+          {
+            label: <Link href="/">Dashboard</Link>,
+            key: "/",
+          },
+          {
+            label: <Link href="/agenticworld">Agentic World</Link>,
+            key: "/agenticworld",
           },
         ];
 

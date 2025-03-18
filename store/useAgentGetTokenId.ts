@@ -1,16 +1,15 @@
 import { create } from "zustand";
 
-type MindPass = {
+type Agent = {
   agentTokenId: number;
   setAgentTokenId: (tokenId: number) => Promise<void>;
 };
 
-const useAgentGetTokenIdStore = create<MindPass>((set, get) => ({
+const useAgentGetTokenId = create<Agent>((set, get) => ({
   agentTokenId: 0,
-
-  setAgentTokenId: async (agentTokenId) => {
+  setAgentTokenId: async (agentTokenId: number) => {
     set({ agentTokenId: agentTokenId });
   },
 }));
 
-export default useAgentGetTokenIdStore;
+export default useAgentGetTokenId;

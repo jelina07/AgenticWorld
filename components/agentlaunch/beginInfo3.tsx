@@ -6,6 +6,7 @@ import RequiredHub from "./RequiredHub";
 import { useRouter } from "next/navigation";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useHubGetCurrent, useHubList } from "@/sdk";
+import useGetLearningHubId from "@/store/useGetLearningHubId";
 const string1 = `  
     <div>
       <div>
@@ -81,9 +82,10 @@ const BeginInfo3 = () => {
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data: learningId } = useHubGetCurrent({
+  const { data } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
+  const learningId = useGetLearningHubId((state) => state.learningHubId);
   const isLearnBasicHub =
     learningId &&
     subnetList &&
@@ -100,7 +102,6 @@ const BeginInfo3 = () => {
   }, []);
 
   useEffect(() => {
-    let timer: any;
     //have selectd learnedHub and type out
     if (isLearnBasicHub && stringtypedout3) {
       router.push("/");

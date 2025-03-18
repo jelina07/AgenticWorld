@@ -6,7 +6,9 @@ import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAOKEN_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useHubAgentCount(options?: Options<undefined | number[], []> & { hubIds?: number[] }) {
+export default function useHubAgentCount(
+  options?: Options<undefined | any[], []> & { hubIds?: any[] }
+) {
   const { hubIds, ...rest } = options || {};
 
   const result = useRequest(
@@ -14,11 +16,12 @@ export default function useHubAgentCount(options?: Options<undefined | number[],
       if (!hubIds || !hubIds.length) {
         return [];
       }
+      const justHubIds = hubIds.map((obj: any) => obj.id);
       const agentsCount = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
         address: DAOKEN_ADDRESS.address,
         functionName: "getAgentCount",
-        args: [hubIds],
+        args: [justHubIds],
       })) as bigint[];
 
       return agentsCount.map((count) => Number(count));

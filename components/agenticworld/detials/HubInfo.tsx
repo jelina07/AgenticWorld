@@ -12,7 +12,7 @@ export default function HubInfo() {
         <div className="text-[38px] text-light-shadow mt-[20px]">10%</div>
       </div>
       <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[var(--bg-deep-grey)]">
-        <div className="text-[15px]">Total Stak</div>
+        <div className="text-[15px]">Total Stake</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">30,000</div>
       </div>
       <div className="p-[30px] flex-1 rounded-[10px] bg-[var(--bg-deep-grey)]">

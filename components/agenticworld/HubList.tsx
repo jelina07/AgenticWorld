@@ -9,6 +9,7 @@ import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useHubGetCurrent, useHubGetCurrentExp, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import useHubAgentCount from "@/sdk/hooks/useHubAgentCount";
 
 export default function HubList({
   // subnetInfor,
@@ -38,6 +39,9 @@ export default function HubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
+  const { data } = useHubAgentCount({ hubIds: subnetList });
+  console.log("useHubAgentCount", data);
+
   const subnetInforAll = subnetList?.map((item: any) => {
     return {
       subnetId: item.id,

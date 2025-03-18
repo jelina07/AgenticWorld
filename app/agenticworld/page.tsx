@@ -1,9 +1,12 @@
+"use client";
 import HubPage from "@/components/agenticworld/HubPage";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import Link from "next/link";
 import React from "react";
 
 export default function Page() {
-  const isAgent = true;
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const isAgent = agentTokenId !== 0;
   return (
     <div
       className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] bg-[url('/icons/agentic-world-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]
