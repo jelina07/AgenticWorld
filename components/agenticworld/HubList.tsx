@@ -5,6 +5,8 @@ import Link from "next/link";
 import Arraw from "@/public/icons/arraw.svg";
 import Lock from "@/components/utils/Lock";
 import StartConfirmModal from "./detials/StartConfirmModal";
+import { useAccount } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function HubList({
   subnetInfor,
@@ -16,11 +18,17 @@ export default function HubList({
   isLaunch?: boolean;
 }) {
   const startModalRef: any = useRef(null);
+  const { openConnectModal } = useConnectModal();
+  const { isConnected } = useAccount();
   const learningId = 1;
   const lockTimeReach = true;
   const showModal = (event: any) => {
     event.preventDefault();
-    startModalRef.current?.clickStartConfirmModal();
+    if (isConnected) {
+      startModalRef.current?.clickStartConfirmModal();
+    } else {
+      openConnectModal?.();
+    }
   };
   return (
     <div>

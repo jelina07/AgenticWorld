@@ -1,6 +1,8 @@
+"use client";
 import { Collapse, CollapseProps } from "antd";
 import React from "react";
 import HubList from "./HubList";
+import { useHubList } from "@/sdk";
 
 const subnetInfor: any = [
   {
@@ -93,6 +95,10 @@ const basicSubnet = subnetInfor.filter((item: any) => item.isBasic);
 const advanceSubnet = subnetInfor.filter((item: any) => !item.isBasic);
 
 export default function HubPage() {
+  const { data: subnetList, loading } = useHubList({
+    cacheKey: "useSubnetList",
+    staleTime: 5 * 60 * 1000,
+  });
   const items: CollapseProps["items"] = [
     {
       key: "1",
@@ -113,6 +119,17 @@ export default function HubPage() {
       children: <HubList subnetInfor={advanceSubnet} isBasic={false}></HubList>,
     },
   ];
+
+  const subnetInfor = subnetList?.map((item: any) => {
+    return {
+      subnetId: item.id,
+      subnetName: item.name,
+      subnetInfo: item.desc,
+      lockup: item.lockUp,
+    };
+  });
+  console.log("subnetList", subnetList);
+
   return (
     <div className="mt-[40px]">
       <Collapse

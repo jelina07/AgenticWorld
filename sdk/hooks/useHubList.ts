@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { Options } from "../types";
 import request from "../request";
 
-export default function useHubList(options?: Options<unknown, []>) {
+export default function useHubList(options?: Options<any, []>) {
   const result = useRequest(
     async () => {
       const res = await request.get("/hub/list", {});

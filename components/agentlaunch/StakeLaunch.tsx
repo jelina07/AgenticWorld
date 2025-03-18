@@ -11,8 +11,7 @@ export default function StakeLaunch() {
     waitForReceipt: true,
   });
 
-  const { loading: agentTokenIdLoading, refresh: agentGetTokenIdRefresh } =
-    useAgentGetTokenId();
+  const { refresh: agentGetTokenIdRefresh } = useAgentGetTokenId();
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;

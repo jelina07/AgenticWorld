@@ -20,8 +20,12 @@ type DelegatePayload = {
   needSign: boolean;
 };
 
-export default function useHubDelegate(options?: Options<unknown, [DelegatePayload]> & { waitForReceipt?: boolean }) {
-  const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
+export default function useHubDelegate(
+  options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }
+) {
+  const { validateAsync } = useValidateChainWalletLink(
+    isDev() ? mindtestnet.id : mindnet.id
+  );
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
@@ -33,7 +37,11 @@ export default function useHubDelegate(options?: Options<unknown, [DelegatePaylo
       const sigTs = dayjs().utc().unix();
       let signature = "0x";
       if (payload.needSign) {
-        signature = await request.post("/hub/verify", { ...payload, sigTs, address: AGENT1_ADDRESS.address });
+        signature = await request.post("/hub/verify", {
+          ...payload,
+          sigTs,
+          address: AGENT1_ADDRESS.address,
+        });
       }
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,

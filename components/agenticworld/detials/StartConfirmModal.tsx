@@ -1,15 +1,13 @@
 "use client";
+import { useHubDelegate } from "@/sdk";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, Modal } from "antd";
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 
 const StartConfirmModal = forwardRef(
   ({ learningId }: { learningId: number }, ref) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { data, runAsync } = useHubDelegate();
 
     useImperativeHandle(ref, () => ({
       clickStartConfirmModal: () => {
@@ -19,6 +17,13 @@ const StartConfirmModal = forwardRef(
 
     const handleCancel = () => {
       setIsModalOpen(false);
+    };
+    const delegate = async () => {
+      runAsync({
+        tokenId: 1,
+        hubId: 1,
+        needSign: true,
+      });
     };
     return (
       <Modal
@@ -45,7 +50,11 @@ const StartConfirmModal = forwardRef(
           <Button type="primary" className="button-white-border-white-font">
             Confirm
           </Button>
-          <Button type="primary" className="button-brand-border-white-font">
+          <Button
+            type="primary"
+            className="button-brand-border-white-font"
+            onClick={handleCancel}
+          >
             Cancel
           </Button>
         </div>

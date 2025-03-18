@@ -76,7 +76,7 @@ const BeginInfo3 = () => {
   const [isLearnBasicHub, setIsLearnBasicHub] = useState(false);
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
-  // const isAgent = true;
+
   // 判断是否学习了basicHub
   // const isLearnBasicHub = true;
   useEffect(() => {
@@ -123,7 +123,6 @@ const BeginInfo3 = () => {
       >
         <StakeLaunch />
       </div>
-      {/* <div onClick={() => setIsAgent(true)}>Stake test</div> */}
 
       {isAgent && stringtypedout1 ? (
         <Typewriter
