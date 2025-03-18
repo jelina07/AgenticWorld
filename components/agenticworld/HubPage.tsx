@@ -97,8 +97,8 @@ export default function HubPage() {
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data } = useHubAgentCount({ hubId: 1 });
-  console.log("data", data);
+  // const { data } = useHubAgentCount({ hubId: 1 });
+  // console.log("data", data);
 
   const subnetInfor = subnetList?.map((item: any) => {
     return {
