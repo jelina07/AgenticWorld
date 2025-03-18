@@ -2,11 +2,17 @@
 import HubInfo from "@/components/agenticworld/detials/HubInfo";
 import StartConfirmModal from "@/components/agenticworld/detials/StartConfirmModal";
 import UseCase from "@/components/agenticworld/detials/UseCase";
+import { useHubAgentCount, useHubList } from "@/sdk";
 import { Button } from "antd";
 import React, { useRef } from "react";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
+  const { data: subnetList, loading } = useHubList({
+    cacheKey: "useSubnetList",
+    staleTime: 5 * 60 * 1000,
+  });
+  const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
   const learningId = 1;
   const lockTimeReach = true;
   const showModal = () => {

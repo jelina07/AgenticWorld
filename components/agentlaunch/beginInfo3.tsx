@@ -185,6 +185,3 @@ const BeginInfo3 = () => {
 };
 
 export default BeginInfo3;
-function ref(arg0: null) {
-  throw new Error("Function not implemented.");
-}

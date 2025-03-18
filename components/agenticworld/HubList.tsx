@@ -7,9 +7,13 @@ import Lock from "@/components/utils/Lock";
 import StartConfirmModal from "./detials/StartConfirmModal";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useHubGetCurrent, useHubGetCurrentExp, useHubList } from "@/sdk";
+import {
+  useHubAgentCount,
+  useHubGetCurrent,
+  useHubGetCurrentExp,
+  useHubList,
+} from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import useHubAgentCount from "@/sdk/hooks/useHubAgentCount";
 
 export default function HubList({
   // subnetInfor,
@@ -39,15 +43,18 @@ export default function HubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data } = useHubAgentCount({ hubIds: subnetList });
-  console.log("useHubAgentCount", data);
+  const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
+  console.log("useHubAgentCount", subnetList, hubAgentCount);
 
-  const subnetInforAll = subnetList?.map((item: any) => {
+  const subnetInforAll = subnetList?.map((item: any, index: number) => {
+    // const currentAgentCount = hubAgentCount
     return {
       subnetId: item.id,
       type: item.type,
       subnetName: item.name,
       subnetInfo: item.desc,
+      agent: hubAgentCount ? hubAgentCount[index] : "loading...",
+      payoutRatio: "",
       lockup: item.lockUp,
       subnetLevel: item.note,
       subnetRequire: item.requireName,

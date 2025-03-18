@@ -3,7 +3,7 @@ import { Options } from "../types";
 import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
-import { DAOKEN_ADDRESS } from "../blockChain/address";
+import { DAO_INSPECTOR_ADDRESS, DAOKEN_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 
 export default function useHubAgentCount(
@@ -17,9 +17,11 @@ export default function useHubAgentCount(
         return [];
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);
+      console.log("justHubIds", justHubIds);
+
       const agentsCount = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
-        address: DAOKEN_ADDRESS.address,
+        address: DAO_INSPECTOR_ADDRESS.address,
         functionName: "getAgentCount",
         args: [justHubIds],
       })) as bigint[];
@@ -27,7 +29,6 @@ export default function useHubAgentCount(
       return agentsCount.map((count) => Number(count));
     },
     {
-      manual: true,
       refreshDeps: [hubIds],
       onError: (err) => exceptionHandler(err),
       ...rest,

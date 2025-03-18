@@ -3,6 +3,8 @@ type SubnetInfoType = {
   type: number;
   subnetName: string;
   subnetInfo: string;
+  agent: number | string;
+  payoutRatio: string;
   lockup: number | string;
   subnetLevel: string;
   subnetRequire: string;

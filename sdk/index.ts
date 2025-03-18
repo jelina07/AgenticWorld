@@ -10,6 +10,7 @@ import useHubExitCurrent from "./hooks/useHubExitCurrent";
 import useHubGetCurrent from "./hooks/useHubGetCurrent";
 import useHubGetCurrentExp from "./hooks/useHubGetCurrentExp";
 import useAgentUnStake from "./hooks/useAgentUnStake";
+import useHubAgentCount from "./hooks/useHubAgentCount";
 
 export {
   useAirdropCheck,
@@ -24,4 +25,5 @@ export {
   useHubGetCurrent,
   useHubGetCurrentExp,
   useAgentUnStake,
+  useHubAgentCount,
 };
