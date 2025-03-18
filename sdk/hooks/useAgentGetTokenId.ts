@@ -9,7 +9,7 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
 export default function useAgentGetTokenId(
-  options?: Options<number | undefined, [string]>
+  options?: Options<number | undefined, []>
 ) {
   const { address } = useAccount();
   const setAgentTokenId = useAgentGetTokenIdStore(
