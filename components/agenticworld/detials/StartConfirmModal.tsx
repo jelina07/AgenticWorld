@@ -15,7 +15,9 @@ const StartConfirmModal = forwardRef(
   ) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentHub, setCurrentHub] = useState<SubnetInfoType>();
-    const { runAsync: hubDelegate, loading } = useHubDelegate();
+    const { runAsync: hubDelegate, loading } = useHubDelegate({
+      waitForReceipt: true,
+    });
     const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
 
     useImperativeHandle(ref, () => ({

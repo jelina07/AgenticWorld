@@ -10,9 +10,14 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { parseEther } from "viem";
+import { estimateGasUtil } from "../utils/script";
 
-export default function useAgentUnStake(options?: Options<unknown, [number, number]> & { waitForReceipt?: boolean }) {
-  const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
+export default function useAgentUnStake(
+  options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
+) {
+  const { validateAsync } = useValidateChainWalletLink(
+    isDev() ? mindtestnet.id : mindnet.id
+  );
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
@@ -21,17 +26,26 @@ export default function useAgentUnStake(options?: Options<unknown, [number, numb
       if (!isValid) {
         return;
       }
+      const gasEstimate = await estimateGasUtil(
+        AGENT1_ABI,
+        "unstake",
+        [tokenId, parseEther(amount)],
+        AGENT1_ADDRESS.address
+      );
       //unstake
       const txHash2 = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "unstake",
         address: AGENT1_ADDRESS.address,
-        args: [tokenId, parseEther(amount + "")],
+        args: [tokenId, parseEther(amount)],
+        gas: gasEstimate + gasEstimate / BigInt(3),
       });
       if (!options?.waitForReceipt) {
         return txHash2;
       }
-      const receipt = await waitForTransactionReceipt(config, { hash: txHash2 });
+      const receipt = await waitForTransactionReceipt(config, {
+        hash: txHash2,
+      });
       return receipt;
     },
     {

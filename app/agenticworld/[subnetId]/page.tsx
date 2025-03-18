@@ -14,9 +14,13 @@ import {
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { Button } from "antd";
 import React, { useRef } from "react";
+import { useAccount } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
+  const { openConnectModal } = useConnectModal();
+  const { address, isConnected } = useAccount();
   const { data: subnetList } = useHubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
@@ -58,8 +62,20 @@ export default function page({ params }: { params: any }) {
   );
 
   const showModal = () => {
-    startModalRef.current?.clickStartConfirmModal();
+    if (isConnected) {
+      startModalRef.current?.cliskSetCurrentHub(currentSubnet);
+      startModalRef.current?.clickStartConfirmModal();
+    } else {
+      openConnectModal?.();
+    }
   };
+
+  console.log(
+    "hhh",
+    !(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0) ||
+      !lockTimeReach ||
+      !address
+  );
 
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
@@ -80,8 +96,15 @@ export default function page({ params }: { params: any }) {
           <Button
             type="primary"
             className="button-brand-border-white-font"
-            disabled={learningId === Number(params.subnetId) || !lockTimeReach}
-            onClick={showModal}
+            // disabled={learningId === Number(params.subnetId) || !lockTimeReach}
+            disabled={
+              !(
+                agentTokenId !== undefined &&
+                agentTokenId !== 0 &&
+                learningId === 0
+              ) || !lockTimeReach
+            }
+            onClick={() => showModal()}
           >
             {learningId === Number(params.subnetId) ? "Learning..." : "Start"}
           </Button>

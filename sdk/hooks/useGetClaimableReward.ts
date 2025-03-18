@@ -6,9 +6,12 @@ import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { formatEther } from "viem";
+import { useAccount } from "wagmi";
 
-export default function useGetClaimableReward(options?: Options<undefined | string, []> & { address: string }) {
-  const { address, ...rest } = options || {};
+export default function useGetClaimableReward(
+  options?: Options<undefined | string, []> & { address: string }
+) {
+  const { address } = useAccount();
 
   const result = useRequest(
     async () => {
@@ -27,7 +30,7 @@ export default function useGetClaimableReward(options?: Options<undefined | stri
     {
       onError: (err) => exceptionHandler(err),
       refreshDeps: [address],
-      ...rest,
+      ...options,
     }
   );
 

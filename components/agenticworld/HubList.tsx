@@ -1,6 +1,6 @@
 "use client";
 import { Col, Row } from "antd";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Arraw from "@/public/icons/arraw.svg";
 import Lock from "@/components/utils/Lock";
@@ -16,6 +16,7 @@ import {
 } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { useAsyncEffect } from "ahooks";
 
 export default function HubList({
   // subnetInfor,
@@ -32,6 +33,7 @@ export default function HubList({
 }) {
   const startModalRef: any = useRef(null);
   const { openConnectModal } = useConnectModal();
+  const [canDelegate, setCanDelegate] = useState(false);
   const { isConnected, address } = useAccount();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { data, refresh: refreshLearningId } = useHubGetCurrent({
@@ -83,6 +85,17 @@ export default function HubList({
         ?.lockup;
 
   console.log("current", agentTokenId, learningId, currentExp, lockTimeReach);
+  console.log(
+    "bbb",
+    agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0,
+    lockTimeReach
+  );
+  console.log(
+    "aaaaaa",
+    (agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0) ||
+      lockTimeReach
+  );
+  useAsyncEffect(async () => {}, []);
 
   const showModal = (event: any, hubItem: SubnetInfoType) => {
     event.preventDefault();
@@ -201,7 +214,18 @@ export default function HubList({
                       <span className="text-[var(--mind-brand)]">Learning</span>
                       <img src="/icons/cz.svg" alt="cz" width={25} />
                     </div>
-                  ) : (learningId !== undefined && learningId === 0) ||
+                  ) : // (learningId !== undefined && learningId === 0) ||
+                  //   lockTimeReach ||
+                  //   !address ? (
+                  //   <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                  //     <span onClick={(event) => showModal(event, item)}>
+                  //       Start
+                  //     </span>
+                  //   </div>
+                  // )
+                  (agentTokenId !== undefined &&
+                      agentTokenId !== 0 &&
+                      learningId === 0) ||
                     lockTimeReach ||
                     !address ? (
                     <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">

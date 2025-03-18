@@ -38,7 +38,7 @@
   /* --btn-border: linear-gradient(180deg, #0f201d 0%, #060c0b 100%);
    */
   --btn-border: #152e29;
-  --border-width: 0.75px;
+  --border-width: 1px;
 }
 
 @font-face {

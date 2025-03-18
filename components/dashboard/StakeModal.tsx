@@ -1,19 +1,37 @@
-import { Button, Input, Modal } from "antd";
+import { Button, Input, message, Modal } from "antd";
 import React, { useState } from "react";
 import UpArraw from "@/public/icons/up-arraw.svg";
+import { checkAmountControlButtonShow } from "@/utils/utils";
+import { useAgentStake } from "@/sdk";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
-export default function DecreseModal() {
+export default function DecreseModal({
+  refreshStakeAmount,
+}: {
+  refreshStakeAmount: Function;
+}) {
+  const [amount, setAmount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
+    waitForReceipt: true,
+  });
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
+    setAmount("");
+  };
+  const stake = async () => {
+    if (checkAmountControlButtonShow(amount)) {
+      const res = await agentStake(agentTokenId!, amount);
+      if (res) {
+        refreshStakeAmount();
+        handleCancel();
+      }
+    }
   };
   return (
     <>
@@ -32,7 +50,13 @@ export default function DecreseModal() {
         footer={null}
       >
         <div className="mind-input">
-          <Input style={{ height: "46px", marginTop: "20px" }} />
+          <Input
+            style={{ height: "46px", marginTop: "20px" }}
+            value={amount}
+            onChange={(e: any) => {
+              setAmount(e.target.value);
+            }}
+          />
           <div>
             <div className="flex justify-between items-center mt-[20px]">
               <span className="text-[14px] font-[400]">+1000 FHE</span>
@@ -55,7 +79,13 @@ export default function DecreseModal() {
               </div>
             </div>
           </div>
-          <Button type="primary" className="button-brand-border mt-[30px]">
+          <Button
+            type="primary"
+            className="button-brand-border mt-[30px]"
+            disabled={amount === ""}
+            onClick={stake}
+            loading={agentStakeLoading}
+          >
             Stake
           </Button>
         </div>

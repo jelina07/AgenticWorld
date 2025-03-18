@@ -24,7 +24,7 @@ export default function Page() {
         <div className={`text-center mt-[26px] ${isAgent ? "hidden" : ""}`}>
           <Link
             href="/agentlaunch"
-            className="grent-btn-link h-[40px] w-[180px] leading-[32px]"
+            className="grent-btn-link h-[40px] w-[180px] leading-[32px] relative z-[10]"
           >
             Launch My AI Agent
           </Link>
