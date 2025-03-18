@@ -8,6 +8,7 @@ import { estimateGasUtil } from "../utils/script";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
+import { exceptionHandler } from "../utils/exception";
 
 export default function useClaimReward(options?: Options<unknown, []> & { waitForReceipt?: boolean }) {
   const { validateAsync, address } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
@@ -40,6 +41,7 @@ export default function useClaimReward(options?: Options<unknown, []> & { waitFo
       return receipt;
     },
     {
+      onError: (err) => exceptionHandler(err),
       manual: true,
       ...options,
     }
