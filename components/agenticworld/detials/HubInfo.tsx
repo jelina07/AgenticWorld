@@ -5,10 +5,12 @@ export default function HubInfo({
   lockUp,
   agentCount,
   hubStakeAmount,
+  hubApy,
 }: {
   lockUp?: number;
   agentCount?: number;
-  hubStakeAmount?: number;
+  hubStakeAmount?: string;
+  hubApy?: string;
 }) {
   return (
     <div className="flex justify-between gap-[20px] flex-wrap">
@@ -22,7 +24,9 @@ export default function HubInfo({
       </div>
       <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[url('/images/bg-heavy.png')] bg-cover bg-no-repeat">
         <div className="text-[15px]">Emission Rate</div>
-        <div className="text-[38px] text-light-shadow mt-[20px]">10%</div>
+        <div className="text-[38px] text-light-shadow mt-[20px]">
+          {hubApy !== undefined ? hubApy : "loading"}
+        </div>
       </div>
       <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[var(--bg-deep-grey)]">
         <div className="text-[15px]">Total Stake</div>

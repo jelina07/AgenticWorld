@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { useAccount } from "wagmi";
 
 type MenuItem = Required<MenuProps>["items"][number];
 

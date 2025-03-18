@@ -35,7 +35,9 @@
   --btn-bg-green: linear-gradient(270deg, #74fab7 0%, #69e9ee 100%);
   --blue-gradient: linear-gradient(180deg, #0061c3 0%, #1a1a32 100%);
   --yellow-gradient: linear-gradient(180deg, #ff8f00 0%, #1a1a32 100%);
-  --btn-border: #28a57f;
+  /* --btn-border: linear-gradient(180deg, #0f201d 0%, #060c0b 100%);
+   */
+  --btn-border: #152e29;
   --border-width: 0.75px;
 }
 

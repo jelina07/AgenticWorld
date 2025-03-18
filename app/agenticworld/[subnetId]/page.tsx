@@ -5,6 +5,7 @@ import UseCase from "@/components/agenticworld/detials/UseCase";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import {
   useHubAgentCount,
+  useHubGetApy,
   useHubGetCurrent,
   useHubGetCurrentExp,
   useHubGetStakeAmount,
@@ -21,6 +22,7 @@ export default function page({ params }: { params: any }) {
     staleTime: 5 * 60 * 1000,
   });
   const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
+  const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
   const { data: hubStake } = useHubGetStakeAmount({ hubIds: subnetList });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { refresh: refreshLearningId } = useHubGetCurrent({
@@ -51,7 +53,8 @@ export default function page({ params }: { params: any }) {
     hubAgentCount,
     currentSubnetIndex,
     hubAgentCount?.[currentSubnetIndex],
-    hubStake
+    hubStake,
+    hubStake?.[currentSubnetIndex]
   );
 
   const showModal = () => {
@@ -70,6 +73,7 @@ export default function page({ params }: { params: any }) {
             lockUp={currentSubnet?.lockUp}
             agentCount={hubAgentCount?.[currentSubnetIndex]}
             hubStakeAmount={hubStake?.[currentSubnetIndex]}
+            hubApy={hubApy?.[currentSubnetIndex]}
           />
         </div>
         <div className="mt-[50px] w-[170px]">

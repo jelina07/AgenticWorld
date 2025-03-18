@@ -4,9 +4,10 @@ import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
+import { formatEther } from "viem";
 
 export default function useHubGetStakeAmount(
-  options?: Options<undefined | number[], []> & { hubIds: number[] }
+  options?: Options<undefined | string[], []> & { hubIds: number[] }
 ) {
   const { hubIds, ...rest } = options || {};
   const result = useRequest(
@@ -22,7 +23,7 @@ export default function useHubGetStakeAmount(
         args: [justHubIds],
       })) as bigint[];
 
-      return amounts.map((amount) => Number(amount));
+      return amounts.map((amount) => formatEther(amount));
     },
     {
       refreshDeps: [hubIds],

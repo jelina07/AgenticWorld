@@ -164,7 +164,9 @@ export default function HubList({
                   <div className="mt-[30px] text-white text-[14px]">
                     <div className="flex justify-between gap-[3px]">
                       <span>Payout Ratio:</span>
-                      <span>{item.payoutRatio}</span>
+                      <span className="break-words max-w-[80%] whitespace-normal text-right">
+                        {item.payoutRatio}
+                      </span>
                     </div>
                     <div className="flex justify-between gap-[3px]">
                       <span>Enrolled Agents:</span>
