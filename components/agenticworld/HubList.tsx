@@ -7,35 +7,58 @@ import Lock from "@/components/utils/Lock";
 import StartConfirmModal from "./detials/StartConfirmModal";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useHubGetCurrent, useHubGetCurrentExp } from "@/sdk";
+import { useHubGetCurrent, useHubGetCurrentExp, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
 export default function HubList({
-  subnetInfor,
-  isBasic,
-  loading,
+  // subnetInfor,
+  // isBasic,
+  // loading,
+  filter,
   isLaunch = false,
 }: {
-  subnetInfor: SubnetInfoType[];
-  isBasic: boolean;
-  loading: boolean;
+  // subnetInfor: SubnetInfoType[];
+  // isBasic: boolean;
+  // loading: boolean;
+  filter: number;
   isLaunch?: boolean;
 }) {
   const startModalRef: any = useRef(null);
   const { openConnectModal } = useConnectModal();
   const { isConnected, address } = useAccount();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const {
-    data: learningId,
-    refresh: refreshLearningId,
-    loading: learningIdLoading,
-  } = useHubGetCurrent({
+  const { data: learningId, refresh: refreshLearningId } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
-  const { data: currentExp, loading: currentExpLoading } = useHubGetCurrentExp({
+  const { data: currentExp } = useHubGetCurrentExp({
     tokenId: agentTokenId,
     hubId: learningId,
   });
+  const { data: subnetList, loading } = useHubList({
+    cacheKey: "useSubnetList",
+    staleTime: 5 * 60 * 1000,
+  });
+  const subnetInforAll = subnetList?.map((item: any) => {
+    return {
+      subnetId: item.id,
+      type: item.type,
+      subnetName: item.name,
+      subnetInfo: item.desc,
+      lockup: item.lockUp,
+      subnetLevel: item.note,
+      subnetRequire: item.requireName,
+      needSign: item.needSign,
+    };
+  }) as SubnetInfoType[];
+
+  const subnetInfor =
+    filter === 1
+      ? subnetInforAll?.filter((item) => item.subnetLevel === "Required")
+      : filter === 2
+      ? subnetInforAll?.filter((item) => item.type === 0)
+      : filter === 3
+      ? subnetInforAll?.filter((item) => item.type === 1)
+      : subnetInforAll;
 
   const lockTimeReach =
     subnetInfor &&
@@ -74,7 +97,7 @@ export default function HubList({
               <Link href={`/agenticworld/${item.subnetId}`}>
                 <div
                   className={`hub-box p-[40px] h-full ${
-                    isBasic
+                    filter === 1 || filter === 2
                       ? "bg-[url('/icons/subnet-box1.svg')]"
                       : "bg-[url('/icons/subnet-box2.svg')]"
                   } bg-no-repeat bg-right-bottom bg-cover ${
@@ -91,7 +114,9 @@ export default function HubList({
                     <div className="flex items-center gap-[5px]">
                       <span
                         className={`inline-block w-[16px] h-[16px] rounded-[50%] ${
-                          isBasic ? "blue-gradient" : "yellow-gradient"
+                          filter === 1 || filter === 2
+                            ? "blue-gradient"
+                            : "yellow-gradient"
                         }`}
                       ></span>
                       <span className="text-[18px] text-white font-[800] leading-[1.2]">
@@ -112,7 +137,7 @@ export default function HubList({
                       <Lock />
                     </div>
                   </div>
-                  {isBasic && !isLaunch ? (
+                  {filter === 1 || (filter === 2 && !isLaunch) ? (
                     <div className="text-[var(--mind-brand)] text-[18px] mt-[20px]">
                       {item.subnetLevel}
                     </div>

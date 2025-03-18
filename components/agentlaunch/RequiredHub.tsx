@@ -1,5 +1,6 @@
 import React from "react";
 import HubList from "../agenticworld/HubList";
+import { useHubList } from "@/sdk";
 const subnetInfor: any = [
   {
     subnetId: 1,
@@ -92,6 +93,12 @@ const requiredHub = subnetInfor.filter(
 );
 export default function RequiredHub() {
   return (
-    <HubList subnetInfor={requiredHub} isBasic={true} isLaunch={true}></HubList>
+    // <HubList
+    //   subnetInfor={requiredHub}
+    //   isBasic={true}
+    //   isLaunch={true}
+    //   // loading={loading}
+    // ></HubList>
+    <HubList filter={1} isLaunch={true}></HubList>
   );
 }

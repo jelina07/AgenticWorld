@@ -2,10 +2,9 @@ import { useAgentGetTokenId, useAgentStake } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { checkAmountControlButtonShow } from "@/utils/utils";
 import { Button, Input, message } from "antd";
-import React, { useState } from "react";
-import { useAccount } from "wagmi";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 
-export default function StakeLaunch() {
+const StakeLaunch = forwardRef((_, ref) => {
   const [amount, setAmount] = useState("");
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
     waitForReceipt: true,
@@ -15,6 +14,12 @@ export default function StakeLaunch() {
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
+  useImperativeHandle(ref, () => ({
+    clearStakeAmount: () => {
+      setAmount("");
+    },
+  }));
+
   const stake = async () => {
     if (checkAmountControlButtonShow(amount)) {
       if (Number(amount) < 100) {
@@ -34,7 +39,7 @@ export default function StakeLaunch() {
   return (
     <div
       className="p-[24px] mt-[50px] mind-input max-w-[775px] mx-auto flex justify-between gap-[30px] flex-wrap
-                    bg-[url('/images/agent-launch-bg.png')] cover"
+                        bg-[url('/images/agent-launch-bg.png')] cover"
     >
       <img src="/icons/ai-agent.svg" alt="ai-agent" />
       <div>
@@ -75,4 +80,7 @@ export default function StakeLaunch() {
       </div>
     </div>
   );
-}
+});
+
+StakeLaunch.displayName = "StakeLaunch";
+export default StakeLaunch;

@@ -5,6 +5,7 @@ import StakeLaunch from "./StakeLaunch";
 import RequiredHub from "./RequiredHub";
 import { useRouter } from "next/navigation";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { useHubGetCurrent, useHubList } from "@/sdk";
 const string1 = `  
     <div>
       <div>
@@ -73,12 +74,26 @@ const BeginInfo3 = () => {
   const [stringtypedout1, setStringtypedout1] = useState(false);
   const [stringtypedout2, setStringtypedout2] = useState(false);
   const [stringtypedout3, setStringtypedout3] = useState(false);
-  const [isLearnBasicHub, setIsLearnBasicHub] = useState(false);
+  const stakeLaunchRef: any = useRef(null);
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
+  const { data: subnetList } = useHubList({
+    cacheKey: "useSubnetList",
+    staleTime: 5 * 60 * 1000,
+  });
+  const { data: learningId } = useHubGetCurrent({
+    tokenId: agentTokenId,
+  });
+  const isLearnBasicHub =
+    learningId &&
+    subnetList &&
+    subnetList
+      .filter((item: any) => item.type === 0)
+      .map((obj: any) => obj.id)
+      .includes(learningId);
 
-  // 判断是否学习了basicHub
-  // const isLearnBasicHub = true;
+  console.log("isLearnBasicHub", learningId, isLearnBasicHub);
+
   useEffect(() => {
     setStringtypedout1(false);
     setStringtypedout2(false);
@@ -88,15 +103,8 @@ const BeginInfo3 = () => {
     let timer: any;
     //have selectd learnedHub and type out
     if (isLearnBasicHub && stringtypedout3) {
-      // timer = setTimeout(() => {
       router.push("/");
-      // }, 3000);
     }
-    // return () => {
-    //   if (timer) {
-    //     clearTimeout(timer);
-    //   }
-    // };
   }, [isLearnBasicHub, stringtypedout3]);
   return (
     <div className="mt-[30px] sm:mt-[70px]">
@@ -121,7 +129,7 @@ const BeginInfo3 = () => {
           stringtypedout1 ? "visible-style" : "hidden-style"
         } mt-[50px]`}
       >
-        <StakeLaunch />
+        <StakeLaunch ref={stakeLaunchRef} />
       </div>
 
       {isAgent && stringtypedout1 ? (
@@ -132,6 +140,7 @@ const BeginInfo3 = () => {
             delay: 10,
           }}
           onInit={(typewriter) => {
+            stakeLaunchRef.current?.clearStakeAmount();
             typewriter
               .typeString(string2)
               .start()
@@ -151,7 +160,6 @@ const BeginInfo3 = () => {
       >
         <RequiredHub />
       </div>
-      <div onClick={() => setIsLearnBasicHub(true)}>Learning test</div>
       {isLearnBasicHub ? (
         <Typewriter
           options={{
@@ -176,3 +184,6 @@ const BeginInfo3 = () => {
 };
 
 export default BeginInfo3;
+function ref(arg0: null) {
+  throw new Error("Function not implemented.");
+}
