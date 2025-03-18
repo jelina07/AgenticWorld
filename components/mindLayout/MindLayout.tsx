@@ -3,13 +3,18 @@ import React from "react";
 import Header from "../header";
 import Footer from "../footer";
 import { useAgentGetTokenId } from "@/sdk";
+import { useAsyncEffect } from "ahooks";
 
 export default function MindLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { data } = useAgentGetTokenId();
+  const { data, runAsync } = useAgentGetTokenId({ manual: true });
+
+  useAsyncEffect(async () => {
+    await runAsync();
+  }, []);
 
   return (
     <div>
