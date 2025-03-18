@@ -11,6 +11,7 @@ import { useWriteContract } from "wagmi";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { exceptionHandler } from "../utils/exception";
+import { estimateGasUtil } from "../utils/script";
 
 dayjs.extend(utc);
 
@@ -43,12 +44,18 @@ export default function useHubDelegate(
           address: AGENT1_ADDRESS.address,
         });
       }
+      const gasEstimate = await estimateGasUtil(
+        AGENT1_ABI,
+        "delegate",
+        [payload.tokenId, payload.hubId, signature, sigTs],
+        AGENT1_ADDRESS.address
+      );
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "delegate",
         address: AGENT1_ADDRESS.address,
         args: [payload.tokenId, payload.hubId, signature, sigTs],
-        gas: BigInt(1000000),
+        gas: gasEstimate + gasEstimate / BigInt(3),
       });
       if (!options?.waitForReceipt) {
         return txHash;

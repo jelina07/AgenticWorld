@@ -3,102 +3,121 @@ import { Collapse, CollapseProps } from "antd";
 import React from "react";
 import HubList from "./HubList";
 import { useHubList } from "@/sdk";
+import useHubAgentCount from "@/sdk/hooks/useHubAgentCount";
 
-const subnetInfor: any = [
-  {
-    subnetId: 1,
-    isBasic: 1,
-    subnetName: "FCN - FHE Consensus",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: "Required",
-    subnetRequire: null,
-  },
-  {
-    subnetId: 2,
-    isBasic: 1,
-    subnetName: "FDN - FHE Consensus",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: "Required",
-    subnetRequire: null,
-  },
-  {
-    subnetId: 3,
-    isBasic: 1,
-    subnetName: "RandGen",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: "Required",
-    subnetRequire: null,
-  },
-  {
-    subnetId: 4,
-    isBasic: 1,
-    subnetName: "RandGen",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: "Optional",
-    subnetRequire: null,
-  },
-  {
-    subnetId: 5,
-    isBasic: 0,
-    subnetName: "RandGen",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: null,
-    subnetRequire: ["RendGen"],
-  },
-  {
-    subnetId: 6,
-    isBasic: 0,
-    subnetName: "RandGen",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: null,
-    subnetRequire: ["RendGen", "FHE Data Lake"],
-  },
-  {
-    subnetId: 7,
-    isBasic: 0,
-    subnetName: "RandGen",
-    subnetInfo:
-      "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
-    payoutRatio: "15%",
-    agent: 2000,
-    lockup: "72H",
-    subnetLevel: null,
-    subnetRequire: ["RendGen", "FHE Data Lake"],
-  },
-];
-
-const basicSubnet = subnetInfor.filter((item: any) => item.isBasic);
-const advanceSubnet = subnetInfor.filter((item: any) => !item.isBasic);
+// const subnetInfor: any = [
+//   {
+//     subnetId: 1,
+//     isBasic: 1,
+//     subnetName: "FCN - FHE Consensus",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: "Required",
+//     subnetRequire: null,
+//   },
+//   {
+//     subnetId: 2,
+//     isBasic: 1,
+//     subnetName: "FDN - FHE Consensus",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: "Required",
+//     subnetRequire: null,
+//   },
+//   {
+//     subnetId: 3,
+//     isBasic: 1,
+//     subnetName: "RandGen",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: "Required",
+//     subnetRequire: null,
+//   },
+//   {
+//     subnetId: 4,
+//     isBasic: 1,
+//     subnetName: "RandGen",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: "Optional",
+//     subnetRequire: null,
+//   },
+//   {
+//     subnetId: 5,
+//     isBasic: 0,
+//     subnetName: "RandGen",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: null,
+//     subnetRequire: ["RendGen"],
+//   },
+//   {
+//     subnetId: 6,
+//     isBasic: 0,
+//     subnetName: "RandGen",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: null,
+//     subnetRequire: ["RendGen", "FHE Data Lake"],
+//   },
+//   {
+//     subnetId: 7,
+//     isBasic: 0,
+//     subnetName: "RandGen",
+//     subnetInfo:
+//       "Data consensus agent. It is an agent leverage FHE technology during the data consensu process.....",
+//     payoutRatio: "15%",
+//     agent: 2000,
+//     lockup: "72H",
+//     subnetLevel: null,
+//     subnetRequire: ["RendGen", "FHE Data Lake"],
+//   },
+// ];
 
 export default function HubPage() {
   const { data: subnetList, loading } = useHubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
+  const { data } = useHubAgentCount({ hubId: 1 });
+  console.log("data", data);
+
+  const subnetInfor = subnetList?.map((item: any) => {
+    return {
+      subnetId: item.id,
+      type: item.type,
+      subnetName: item.name,
+      subnetInfo: item.desc,
+      lockup: item.lockUp,
+      subnetLevel: item.note,
+      subnetRequire: item.requireName,
+      needSign: item.needSign,
+    };
+  }) as SubnetInfoType[];
+  const basicSubnet = subnetInfor?.filter(
+    (item: SubnetInfoType) => item.type === 0
+  );
+  const advanceSubnet = subnetInfor?.filter(
+    (item: SubnetInfoType) => item.type === 1
+  );
   const items: CollapseProps["items"] = [
     {
       key: "1",
@@ -107,7 +126,13 @@ export default function HubPage() {
           Start with Basic Hub
         </div>
       ),
-      children: <HubList subnetInfor={basicSubnet} isBasic={true}></HubList>,
+      children: (
+        <HubList
+          subnetInfor={basicSubnet}
+          isBasic={true}
+          loading={loading}
+        ></HubList>
+      ),
     },
     {
       key: "2",
@@ -116,18 +141,16 @@ export default function HubPage() {
           Earn More with Advance Hub
         </div>
       ),
-      children: <HubList subnetInfor={advanceSubnet} isBasic={false}></HubList>,
+      children: (
+        <HubList
+          subnetInfor={advanceSubnet}
+          isBasic={false}
+          loading={loading}
+        ></HubList>
+      ),
     },
   ];
 
-  const subnetInfor = subnetList?.map((item: any) => {
-    return {
-      subnetId: item.id,
-      subnetName: item.name,
-      subnetInfo: item.desc,
-      lockup: item.lockUp,
-    };
-  });
   console.log("subnetList", subnetList);
 
   return (

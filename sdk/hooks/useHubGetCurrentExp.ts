@@ -6,7 +6,10 @@ import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 
 export default function useHubGetCurrentExp(
-  options?: Options<undefined | number, [number, number]> & { tokenId?: number; hubId?: number }
+  options?: Options<undefined | number, [number, number]> & {
+    tokenId?: number;
+    hubId?: number;
+  }
 ) {
   const { tokenId, hubId, ...rest } = options || {};
   const result = useRequest(
@@ -20,6 +23,7 @@ export default function useHubGetCurrentExp(
         functionName: "hubExpLengthSec",
         args: [tokenId, hubId],
       })) as bigint;
+      console.log("currentExp", currentExp);
 
       // 向下取整获取小时
       const learnHour = Math.floor(Number(currentExp) / 3600);
