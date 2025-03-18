@@ -27,7 +27,6 @@ export default function useAgentStake(
         return;
       }
       //approve
-
       const gasEstimate = await estimateGasUtil(
         DAOTOKEN_ABI,
         "approve",

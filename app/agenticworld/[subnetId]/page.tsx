@@ -7,6 +7,7 @@ import {
   useHubAgentCount,
   useHubGetCurrent,
   useHubGetCurrentExp,
+  useHubGetStakeAmount,
   useHubList,
 } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
@@ -20,8 +21,9 @@ export default function page({ params }: { params: any }) {
     staleTime: 5 * 60 * 1000,
   });
   const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
+  const { data: hubStake } = useHubGetStakeAmount({ hubIds: subnetList });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { data, refresh: refreshLearningId } = useHubGetCurrent({
+  const { refresh: refreshLearningId } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
@@ -48,7 +50,8 @@ export default function page({ params }: { params: any }) {
     "hubAgentCount",
     hubAgentCount,
     currentSubnetIndex,
-    hubAgentCount?.[currentSubnetIndex]
+    hubAgentCount?.[currentSubnetIndex],
+    hubStake
   );
 
   const showModal = () => {
@@ -66,6 +69,7 @@ export default function page({ params }: { params: any }) {
           <HubInfo
             lockUp={currentSubnet?.lockUp}
             agentCount={hubAgentCount?.[currentSubnetIndex]}
+            hubStakeAmount={hubStake?.[currentSubnetIndex]}
           />
         </div>
         <div className="mt-[50px] w-[170px]">
