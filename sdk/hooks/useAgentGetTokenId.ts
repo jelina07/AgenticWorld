@@ -18,6 +18,7 @@ export default function useAgentGetTokenId(
   const result = useRequest(
     async () => {
       if (!address) {
+        if (setAgentTokenId) setAgentTokenId(0);
         return;
       }
       const agentCount = (await readContract(config, {

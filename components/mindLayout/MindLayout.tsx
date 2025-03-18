@@ -10,10 +10,10 @@ export default function MindLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { data, runAsync } = useAgentGetTokenId({ manual: true });
+  const { data, runAsync } = useAgentGetTokenId();
 
   useAsyncEffect(async () => {
-    await runAsync();
+    // await runAsync();
   }, []);
 
   return (

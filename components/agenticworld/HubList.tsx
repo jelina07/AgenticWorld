@@ -23,7 +23,7 @@ export default function HubList({
 }) {
   const startModalRef: any = useRef(null);
   const { openConnectModal } = useConnectModal();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const {
     data: learningId,
@@ -45,7 +45,7 @@ export default function HubList({
       subnetInfor.find((item: SubnetInfoType) => item.subnetId === learningId)
         ?.lockup;
 
-  console.log("current", learningId, currentExp, lockTimeReach);
+  console.log("current", agentTokenId, learningId, currentExp, lockTimeReach);
 
   const showModal = (event: any, hubItem: SubnetInfoType) => {
     event.preventDefault();
@@ -160,16 +160,17 @@ export default function HubList({
                       <span className="text-[var(--mind-brand)]">Learning</span>
                       <img src="/icons/cz.svg" alt="cz" width={25} />
                     </div>
-                  ) : (currentExp !== undefined && !lockTimeReach) ||
-                    currentExpLoading ? (
-                    <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                      <span>Start</span>
-                    </div>
-                  ) : (
+                  ) : (learningId !== undefined && learningId === 0) ||
+                    lockTimeReach ||
+                    !address ? (
                     <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
                       <span onClick={(event) => showModal(event, item)}>
                         Start
                       </span>
+                    </div>
+                  ) : (
+                    <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                      <span>Start</span>
                     </div>
                   )}
                 </div>
