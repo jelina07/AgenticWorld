@@ -38,3 +38,16 @@ export const DAOKEN_ADDRESS_CONFIG: Record<string, { chainId: number; address: `
 } as const;
 
 export const DAOKEN_ADDRESS = DAOKEN_ADDRESS_CONFIG[ENV];
+
+export const MEMBER_POOL_ADDRESS_CONFIG: Record<string, { chainId: number; address: `0x${string}` }> = {
+  dev: {
+    chainId: 192940,
+    address: "0x1d9af53B092A648917980Cd378E9bee62047647A",
+  },
+  prod: {
+    chainId: 228,
+    address: "0x",
+  },
+} as const;
+
+export const MEMBER_POOL_ADDRESS = MEMBER_POOL_ADDRESS_CONFIG[ENV];
