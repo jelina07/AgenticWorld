@@ -20,6 +20,7 @@ import useAgentGetMeta from "./hooks/useAgentGetMeta";
 import useAgentPutMeta from "./hooks/useAgentPutMeta";
 import useHubGetReward from "./hooks/useHubGetReward";
 import useHubSwitchDelegate from "./hooks/useHubSwitchDelegate";
+import useUserTransaction from "./hooks/useUserGetTransaction";
 
 export {
   useAirdropCheck,
@@ -44,4 +45,5 @@ export {
   useAgentPutMeta,
   useHubGetReward,
   useHubSwitchDelegate,
+  useUserTransaction,
 };

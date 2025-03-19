@@ -1,10 +1,17 @@
+import { useUserTransaction } from "@/sdk";
 import { Table, TableColumnsType } from "antd";
 import React from "react";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { formatEther } from "viem";
+
+dayjs.extend(utc);
 
 const tableColumns: TableColumnsType = [
   {
     title: "Token",
-    dataIndex: "token",
+    dataIndex: "amount",
+    render: (amount) => amount && formatEther(BigInt(amount)),
   },
   {
     title: "type",
@@ -13,14 +20,17 @@ const tableColumns: TableColumnsType = [
   {
     title: "Agent",
     dataIndex: "agent",
+    render: () => "CitizenZ_0",
   },
   {
     title: "Status",
     dataIndex: "status",
+    render: () => "Success",
   },
   {
     title: "Time",
     dataIndex: "time",
+    render: (time) => time && dayjs().utc(time).format("HH:mm:ss DD/MM/YYYY"),
   },
 ];
 const tableData = [
@@ -42,14 +52,18 @@ const tableData = [
   },
 ];
 export default function Transaction() {
+  const { data, loading, pagination } = useUserTransaction({ address: "0x805A8ABc903A0861eb6BaA9955098D26477c215B" });
+  console.log("🚀 ~ Transaction ~ data:", data);
+
   return (
     <div className="mind-table transaction-table mt-[40px]">
       <Table
         className="mt-[20px]"
-        dataSource={tableData}
+        dataSource={data?.list}
         columns={tableColumns}
-        pagination={false}
+        pagination={pagination}
         bordered={false}
+        loading={loading}
         rowKey={"subnetId"}
         scroll={{ x: 400 }}
       />
