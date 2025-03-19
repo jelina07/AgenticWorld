@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { Options } from "../types";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { config, mindnet, mindtestnet } from "../wagimConfig";
-import { isDev } from "../utils";
+import { isDev, isProd } from "../utils";
 import { useWriteContract } from "wagmi";
 import { estimateGasUtil } from "../utils/script";
 import { AGENT1_ABI } from "../blockChain/abi";
@@ -10,8 +10,12 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useClaimReward(options?: Options<unknown, []> & { waitForReceipt?: boolean }) {
-  const { validateAsync, address } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
+export default function useClaimReward(
+  options?: Options<unknown, []> & { waitForReceipt?: boolean }
+) {
+  const { validateAsync, address } = useValidateChainWalletLink(
+    isDev() || isProd() ? mindtestnet.id : mindnet.id
+  );
 
   const { writeContractAsync } = useWriteContract();
 
@@ -22,7 +26,12 @@ export default function useClaimReward(options?: Options<unknown, []> & { waitFo
         return;
       }
 
-      const gasEstimate = await estimateGasUtil(AGENT1_ABI, "claimReward", [address], AGENT1_ADDRESS.address);
+      const gasEstimate = await estimateGasUtil(
+        AGENT1_ABI,
+        "claimReward",
+        [address],
+        AGENT1_ADDRESS.address
+      );
 
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,

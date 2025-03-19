@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { Options, WriteConractHooksReturnType } from "../types";
 import { useWriteContract } from "wagmi";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
-import { isDev } from "../utils";
+import { isDev, isProd } from "../utils";
 import { config, mindnet, mindtestnet } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
@@ -15,7 +15,7 @@ export default function useHubExitCurrent(
   }
 ) {
   const { validateAsync } = useValidateChainWalletLink(
-    isDev() ? mindtestnet.id : mindnet.id
+    isDev() || isProd() ? mindtestnet.id : mindnet.id
   );
   const { writeContractAsync } = useWriteContract();
   const result = useRequest(

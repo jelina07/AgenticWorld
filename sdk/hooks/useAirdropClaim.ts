@@ -1,7 +1,7 @@
 import { useRequest } from "ahooks";
 import { Options } from "../types";
 import { useWriteContract } from "wagmi";
-import { isDev } from "../utils";
+import { isDev, isProd } from "../utils";
 import { mindnet, mindtestnet } from "../wagimConfig";
 import { AIRDROP_ABI } from "../blockChain/abi";
 import { AIRDROP_ADDRESS } from "../blockChain/address";
@@ -15,7 +15,7 @@ export default function useAirdropClaim(
   options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }
 ) {
   const { validateAsync } = useValidateChainWalletLink(
-    isDev() ? mindtestnet.id : mindnet.id
+    isDev() || isProd() ? mindtestnet.id : mindnet.id
   );
   const { writeContractAsync } = useWriteContract();
 

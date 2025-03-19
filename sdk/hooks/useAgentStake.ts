@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { Options } from "../types";
 import { useWriteContract } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
-import { isDev } from "../utils";
+import { isDev, isProd } from "../utils";
 import { mindnet, mindtestnet } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { AGENT1_ABI, DAOTOKEN_ABI } from "../blockChain/abi";
@@ -16,7 +16,7 @@ export default function useAgentStake(
   options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
 ) {
   const { validateAsync } = useValidateChainWalletLink(
-    isDev() ? mindtestnet.id : mindnet.id
+    isDev() || isProd() ? mindtestnet.id : mindnet.id
   );
   const { writeContractAsync } = useWriteContract();
 

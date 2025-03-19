@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import { Options } from "../types";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { config, mindnet, mindtestnet } from "../wagimConfig";
-import { isDev } from "../utils";
+import { isDev, isProd } from "../utils";
 import { useWriteContract } from "wagmi";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
@@ -14,7 +14,7 @@ export default function useAgentBurn(
   options?: Options<unknown, [number]> & { waitForReceipt?: boolean }
 ) {
   const { validateAsync } = useValidateChainWalletLink(
-    isDev() ? mindtestnet.id : mindnet.id
+    isDev() || isProd() ? mindtestnet.id : mindnet.id
   );
   const { writeContractAsync } = useWriteContract();
   const result = useRequest(

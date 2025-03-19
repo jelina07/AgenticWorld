@@ -5,7 +5,7 @@ import utc from "dayjs/plugin/utc";
 import request from "../request";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
-import { isDev } from "../utils";
+import { isDev, isProd } from "../utils";
 import { config, mindnet, mindtestnet } from "../wagimConfig";
 import { useWriteContract } from "wagmi";
 import { AGENT1_ABI } from "../blockChain/abi";
@@ -25,7 +25,7 @@ export default function useHubDelegate(
   options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }
 ) {
   const { validateAsync } = useValidateChainWalletLink(
-    isDev() ? mindtestnet.id : mindnet.id
+    isDev() || isProd() ? mindtestnet.id : mindnet.id
   );
   const { writeContractAsync } = useWriteContract();
 
