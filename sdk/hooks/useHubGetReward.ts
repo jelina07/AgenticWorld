@@ -7,26 +7,31 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { formatEther } from "viem";
 
-export default function useHubGetReward(options?: Options<unknown, []> & { hubIds?: any[]; agentId: number }) {
-  const { hubIds, agentId, ...rest } = options || {};
+export default function useHubGetReward(
+  options?: Options<string[] | undefined, []> & {
+    hubIds?: any[];
+    tokenId: number;
+  }
+) {
+  const { hubIds, tokenId, ...rest } = options || {};
 
   const result = useRequest(
     async () => {
-      if (!hubIds?.length || !agentId) {
+      if (!hubIds?.length || !tokenId) {
         return;
       }
       const amounts = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
         functionName: "getAgentLifetimeRewardsBatch",
         address: DAO_INSPECTOR_ADDRESS.address,
-        args: [agentId, hubIds],
+        args: [tokenId, hubIds],
       })) as bigint[];
 
       return amounts.map((amount) => formatEther(amount));
     },
     {
       onError: (err) => exceptionHandler(err),
-      refreshDeps: [hubIds, agentId],
+      refreshDeps: [hubIds, tokenId],
       ...rest,
     }
   );

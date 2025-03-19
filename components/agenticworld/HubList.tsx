@@ -19,9 +19,6 @@ import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { useAsyncEffect } from "ahooks";
 
 export default function HubList({
-  // subnetInfor,
-  // isBasic,
-  // loading,
   filter,
   isLaunch = false,
 }: {

@@ -1,10 +1,11 @@
 "use client";
 import { Table, TableColumnsType } from "antd";
 import Lock from "@/components/utils/Lock";
-import { useHubGetCurrent, useHubGetCurrentExp, useHubList } from "@/sdk";
+import { useHubGetCurrent, useHubGetCurrentExp, useHubGetReward } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { useMemo } from "react";
+import { numberDigits } from "@/utils/utils";
 
 const tableColumns: TableColumnsType = [
   {
@@ -59,8 +60,11 @@ export default function HubRecord({
     hubIds: ids,
   });
   console.log("hubLearningExps", learnSecond);
-
   const { loading: learningIdLoading } = useHubGetCurrent({
+    tokenId: agentTokenId,
+  });
+  const { data: rewards } = useHubGetReward({
+    hubIds: ids,
     tokenId: agentTokenId,
   });
 
@@ -70,6 +74,9 @@ export default function HubRecord({
       hubList?.map((item: any, index: number) => {
         const status = item.id === learningId ? "Training" : "Exit";
         const currentLearned = learnSecond ? learnSecond[index] : "loading...";
+        const currentRewards = rewards
+          ? numberDigits(rewards[index]) + " FHE"
+          : "loading...";
         return {
           subnetId: item.id,
           subnetName: item.name,
@@ -77,7 +84,7 @@ export default function HubRecord({
           status: learningIdLoading && learningId === 0 ? "loading..." : status,
           lockupHours: item.lockUp,
           currentLearned: currentLearned,
-          rewards: "0.3 FHE",
+          rewards: currentRewards,
         };
       })) ||
     [];

@@ -38,14 +38,7 @@ export default function HubPage() {
           Start with Basic Hub
         </div>
       ),
-      children: (
-        // <HubList
-        //   subnetInfor={basicSubnet}
-        //   isBasic={true}
-        //   loading={loading}
-        // ></HubList>
-        <HubList filter={2}></HubList>
-      ),
+      children: <HubList filter={2}></HubList>,
     },
     {
       key: "2",
@@ -54,14 +47,7 @@ export default function HubPage() {
           Earn More with Advance Hub
         </div>
       ),
-      children: (
-        //   <HubList
-        //   subnetInfor={advanceSubnet}
-        //   isBasic={false}
-        //   loading={loading}
-        // ></HubList>
-        <HubList filter={3}></HubList>
-      ),
+      children: <HubList filter={3}></HubList>,
     },
   ];
 
