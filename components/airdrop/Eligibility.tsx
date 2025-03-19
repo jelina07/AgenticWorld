@@ -1,7 +1,34 @@
-import { Button, Input } from "antd";
-import React from "react";
+"use client";
+import { useAirdropCheck, useAirdropClaim } from "@/sdk";
+import { Button, Input, message } from "antd";
+import React, { useState } from "react";
+import { useAccount } from "wagmi";
 
 export default function Eligibility() {
+  const [inputAddress, setInputAddress] = useState("");
+  const {
+    data: claimAmout,
+    runAsync: checkEligibility,
+    loading,
+  } = useAirdropCheck(); // number
+  const { runAsync: claim } = useAirdropClaim({ waitForReceipt: true });
+  console.log("claimAmout", claimAmout);
+
+  const clickCheckEligibility = async () => {
+    if (inputAddress && inputAddress.startsWith("0x")) {
+      const res = await checkEligibility(inputAddress);
+    } else {
+      message.open({
+        type: "warning",
+        content: "Please enter the correct address",
+        duration: 5,
+      });
+    }
+  };
+
+  const clickClaim = async () => {
+    // await claim()
+  };
   return (
     <div>
       <div>
@@ -25,48 +52,65 @@ export default function Eligibility() {
             <Input
               prefix={<img src="/icons/wallet-logo.svg"></img>}
               style={{ height: "38px" }}
+              onChange={(e: any) => {
+                setInputAddress(e.target.value);
+              }}
             />
             <Button
               type="primary"
               className="button-brand-border"
               style={{ height: "38px", width: "130px" }}
+              disabled={inputAddress === ""}
+              onClick={clickCheckEligibility}
+              loading={loading}
             >
               Check Eligibility
             </Button>
           </div>
-          <div className="text-[12px] text-[var(--mind-grey)] font-[600] mt-[10px]">
-            Checking Eligibility...
-          </div>
-          <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
-            Sorry, this wallet is not eligible for the airdrop.
-          </div>
+          {loading ? (
+            <div className="text-[12px] text-[var(--mind-grey)] font-[600] mt-[10px]">
+              Checking Eligibility...
+            </div>
+          ) : claimAmout !== undefined && !claimAmout ? (
+            <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
+              Sorry, this wallet is not eligible for the airdrop.
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
-      <div className="p-[24px] mt-[20px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
-        <div className="text-[18px] font-[900]">
-          Congratulations! You&apos;re Eligible
-        </div>
-        <div className="flex justify-between gap-[10px] items-end">
-          <div>
-            <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
-              You can claim the following amount:
-            </div>
-            <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
-              2400$FHE
-            </div>
-            <div className="text-[var(--mind-grey)] text-[12px] mt-[10px]">
-              Make sure you&apos;re connected to Mindchain before claiming!
-            </div>
+      {claimAmout ? (
+        <div className="p-[24px] mt-[20px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
+          <div className="text-[18px] font-[900]">
+            Congratulations! You&apos;re Eligible
           </div>
-          <Button
-            type="primary"
-            className="button-brand-border"
-            style={{ height: "38px", width: "130px" }}
-          >
-            Claim $FHE
-          </Button>
+          <div className="flex justify-between gap-[10px] items-end">
+            <div>
+              <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
+                You can claim the following amount:
+              </div>
+              <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
+                {claimAmout}$FHE
+              </div>
+              <div className="text-[var(--mind-grey)] text-[12px] mt-[10px]">
+                Make sure you&apos;re connected to Mindchain before claiming!
+              </div>
+            </div>
+            <Button
+              type="primary"
+              className="button-brand-border"
+              style={{ height: "38px", width: "130px" }}
+              loading={loading}
+              onClick={clickClaim}
+            >
+              Claim $FHE
+            </Button>
+          </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

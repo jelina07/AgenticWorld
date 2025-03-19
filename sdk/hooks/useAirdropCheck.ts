@@ -2,7 +2,7 @@ import { useRequest } from "ahooks";
 import request from "../request";
 import { Options } from "../types";
 
-export default function useAirdropCheck(options?: Options<unknown, [string]>) {
+export default function useAirdropCheck(options?: Options<any, [string]>) {
   const result = useRequest(
     async (wallet) => {
       const res = await request.get("/grant/check-eligibility", {

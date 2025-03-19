@@ -9,9 +9,14 @@ import { exceptionHandler } from "../utils/exception";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
+import { estimateGasUtil } from "../utils/script";
 
-export default function useAirdropClaim(options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }) {
-  const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
+export default function useAirdropClaim(
+  options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }
+) {
+  const { validateAsync } = useValidateChainWalletLink(
+    isDev() ? mindtestnet.id : mindnet.id
+  );
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
@@ -20,12 +25,18 @@ export default function useAirdropClaim(options?: Options<unknown, [string, stri
       if (!isValid) {
         return;
       }
+      const gasEstimate = await estimateGasUtil(
+        AIRDROP_ABI,
+        "claim",
+        [amount, proof],
+        AIRDROP_ADDRESS.address
+      );
       const txHash = await writeContractAsync({
         abi: AIRDROP_ABI,
         functionName: "claim",
         address: AIRDROP_ADDRESS.address,
         args: [amount, proof],
-        // gas: BigInt(1000000),
+        gas: gasEstimate + gasEstimate / BigInt(3),
       });
       if (!options?.waitForReceipt) {
         return txHash;

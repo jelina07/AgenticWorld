@@ -74,7 +74,6 @@ export default function page({ params }: { params: any }) {
     }
   };
 
-  useEffect(() => {}, []);
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
@@ -100,7 +99,7 @@ export default function page({ params }: { params: any }) {
                 agentTokenId !== undefined &&
                 agentTokenId !== 0 &&
                 learningId === 0
-              ) || !lockTimeReach
+              ) && !lockTimeReach
             }
             onClick={() => showModal()}
           >
