@@ -13,7 +13,7 @@ import {
 } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { Button } from "antd";
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
@@ -46,10 +46,17 @@ export default function page({ params }: { params: any }) {
     learningId &&
     learnSecond !== undefined &&
     learnSecond[0] >
-      Number(
-        subnetList.find((item: SubnetInfoType) => item.subnetId === learningId)
-          ?.lockup
-      );
+      Number(subnetList.find((item: any) => item.id === learningId)?.lockUp);
+  console.log(
+    "lockTimeReach",
+    lockTimeReach,
+    learningId,
+    agentTokenId,
+    agentTokenId !== undefined,
+    agentTokenId !== 0,
+    learningId === 0,
+    !(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0)
+  );
 
   const currentSubnet = subnetList?.find(
     (item: any) => item.id === Number(params.subnetId)
@@ -57,14 +64,6 @@ export default function page({ params }: { params: any }) {
   const currentSubnetIndex = subnetList?.findIndex((item: any) => {
     return item.id === Number(params.subnetId);
   });
-  console.log(
-    "hubAgentCount",
-    hubAgentCount,
-    currentSubnetIndex,
-    hubAgentCount?.[currentSubnetIndex],
-    hubStake,
-    hubStake?.[currentSubnetIndex]
-  );
 
   const showModal = () => {
     if (isConnected) {
@@ -75,6 +74,7 @@ export default function page({ params }: { params: any }) {
     }
   };
 
+  useEffect(() => {}, []);
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">

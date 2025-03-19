@@ -14,9 +14,11 @@ import {
   useAgentGetStakeAmount,
   useClaimReward,
   useGetClaimableReward,
+  useHubGetCurrent,
   useHubGetCurrentExp,
 } from "@/sdk";
 import { numberDigits } from "@/utils/utils";
+import useGetLearningHubId from "@/store/useGetLearningHubId";
 
 export default function MyAgent({
   ids,
@@ -72,7 +74,6 @@ export default function MyAgent({
       if (currentLearnedHub === 0) {
         return 0;
       } else {
-        // maybe use learnHour
         const judge = hubList!.every(
           (value, index) => learnSecond?.[index]! >= value
         );
@@ -84,6 +85,7 @@ export default function MyAgent({
       }
     }
   }, [hubList, currentLearnedHub, learnSecond]);
+  console.log("stateType", stateType);
 
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {

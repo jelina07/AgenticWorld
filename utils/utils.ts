@@ -75,3 +75,8 @@ export function numberDigitsNoMillify(showItem: string | number) {
   });
   return formattedNum;
 }
+
+export function secondsToHours(seconds: number | string): string {
+  if (isNaN(Number(seconds))) return seconds as string;
+  return numberDigitsNoMillify(Number(seconds) / 3600);
+}

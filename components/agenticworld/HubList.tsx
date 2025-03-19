@@ -17,6 +17,7 @@ import {
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { useAsyncEffect } from "ahooks";
+import { secondsToHours } from "@/utils/utils";
 
 export default function HubList({
   filter,
@@ -205,7 +206,7 @@ export default function HubList({
                     </div>
                     <div className="flex justify-between gap-[3px]">
                       <span>Learning Lock-up:</span>
-                      <span>{item.lockup}</span>
+                      <span>{secondsToHours(item.lockup)}</span>
                     </div>
                     <div
                       className={`flex justify-between gap-[3px] items-start ${

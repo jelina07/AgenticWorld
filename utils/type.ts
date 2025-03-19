@@ -3,9 +3,9 @@ type SubnetInfoType = {
   type: number;
   subnetName: string;
   subnetInfo: string;
-  agent: number | string;
-  payoutRatio: number | string;
-  lockup: number | string;
+  agent: number;
+  payoutRatio: string;
+  lockup: number;
   subnetLevel: string;
   subnetRequire: string;
   needSign: number;

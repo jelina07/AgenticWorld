@@ -4,8 +4,7 @@ import Lock from "@/components/utils/Lock";
 import { useHubGetCurrent, useHubGetCurrentExp, useHubGetReward } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { useMemo } from "react";
-import { numberDigits } from "@/utils/utils";
+import { numberDigits, secondsToHours } from "@/utils/utils";
 
 const tableColumns: TableColumnsType = [
   {
@@ -35,10 +34,12 @@ const tableColumns: TableColumnsType = [
   {
     title: "Lock up Learning Hours",
     dataIndex: "lockupHours",
+    render: (value: number) => <div>{secondsToHours(value)}</div>,
   },
   {
     title: "Current Learned",
     dataIndex: "currentLearned",
+    render: (value: number | string) => <div>{secondsToHours(value)}</div>,
   },
   {
     title: "Rewards",
@@ -74,6 +75,7 @@ export default function HubRecord({
       hubList?.map((item: any, index: number) => {
         const status = item.id === learningId ? "Training" : "Exit";
         const currentLearned = learnSecond ? learnSecond[index] : "loading...";
+        console.log("currentLearned", currentLearned);
         const currentRewards = rewards
           ? numberDigits(rewards[index]) + " FHE"
           : "loading...";
