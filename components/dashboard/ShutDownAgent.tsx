@@ -1,19 +1,22 @@
 "use client";
-import { useAgentUnStake } from "@/sdk";
+import { useAgentBurn, useAgentUnStake } from "@/sdk";
 import { checkAmountControlButtonShow } from "@/utils/utils";
-import { Button, Input, Modal } from "antd";
+import { Button, Modal } from "antd";
 import React, { useState } from "react";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
 export default function ShutDownAgent({
+  refreshStakeAmount,
   agentStakeAmount,
 }: {
+  refreshStakeAmount: Function;
   agentStakeAmount?: string;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { runAsync: agentUnStake, loading: agentStakeLoading } =
-    useAgentUnStake({
-      waitForReceipt: true,
-    });
+  const { runAsync: agentBurn, loading: agentBurnLoading } = useAgentBurn({
+    waitForReceipt: true,
+  });
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -24,20 +27,19 @@ export default function ShutDownAgent({
 
   const shoutDown = async () => {
     if (checkAmountControlButtonShow(agentStakeAmount!)) {
-      // const res = await agentUnStake(agentTokenId!, amount);
-      // if (res) {
-      // refreshStakeAmount();
-      // handleCancel();
-      // }
+      const res = await agentBurn(agentTokenId!);
+      if (res) {
+        refreshStakeAmount();
+        handleCancel();
+      }
     }
   };
   return (
     <>
-      <div
-        className="capitalize underline text-[12px] text-[var(--mind-brand)] text-right mt-[10px] cursor-pointer"
-        onClick={showModal}
-      >
-        Permanently Shut Down My Agent?
+      <div className="capitalize underline text-[12px] text-[var(--mind-brand)] text-right mt-[10px]">
+        <span onClick={showModal} className="cursor-pointer">
+          Permanently Shut Down My Agent?
+        </span>
       </div>
       <Modal
         title="Shut Down Your Agent"
@@ -68,6 +70,8 @@ export default function ShutDownAgent({
               type="primary"
               className="button-white-border-white-font"
               disabled={agentStakeAmount === undefined}
+              loading={agentBurnLoading}
+              onClick={shoutDown}
             >
               Confirm
             </Button>

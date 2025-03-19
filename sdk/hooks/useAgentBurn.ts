@@ -8,9 +8,14 @@ import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import { estimateGasUtil } from "../utils/script";
 import { waitForTransactionReceipt } from "wagmi/actions";
+import { exceptionHandler } from "../utils/exception";
 
-export default function useAgentBurn(options?: Options<unknown, [number]> & { waitForReceipt?: boolean }) {
-  const { validateAsync } = useValidateChainWalletLink(isDev() ? mindtestnet.id : mindnet.id);
+export default function useAgentBurn(
+  options?: Options<unknown, [number]> & { waitForReceipt?: boolean }
+) {
+  const { validateAsync } = useValidateChainWalletLink(
+    isDev() ? mindtestnet.id : mindnet.id
+  );
   const { writeContractAsync } = useWriteContract();
   const result = useRequest(
     async (tokenId) => {
@@ -20,7 +25,12 @@ export default function useAgentBurn(options?: Options<unknown, [number]> & { wa
       }
 
       // estimate
-      const gasEstimate2 = await estimateGasUtil(AGENT1_ABI, "burn", [tokenId], AGENT1_ADDRESS.address);
+      const gasEstimate2 = await estimateGasUtil(
+        AGENT1_ABI,
+        "burn",
+        [tokenId],
+        AGENT1_ADDRESS.address
+      );
 
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
@@ -38,6 +48,7 @@ export default function useAgentBurn(options?: Options<unknown, [number]> & { wa
       return receipt;
     },
     {
+      onError: (err) => exceptionHandler(err),
       manual: true,
       ...options,
     }

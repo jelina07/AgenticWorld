@@ -5,6 +5,7 @@ import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import Big from "big.js";
+import { exceptionHandler } from "../utils/exception";
 
 export default function useHubGetApy(
   options?: Options<any, []> & { hubIds: number[] }
@@ -31,6 +32,7 @@ export default function useHubGetApy(
       );
     },
     {
+      onError: (err) => exceptionHandler(err),
       refreshDeps: [hubIds],
       ...rest,
     }

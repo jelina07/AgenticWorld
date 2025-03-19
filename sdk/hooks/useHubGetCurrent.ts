@@ -5,6 +5,7 @@ import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { exceptionHandler } from "../utils/exception";
 
 export default function useHubGetCurrent(
   options?: Options<number | undefined, []> & { tokenId?: number }
@@ -26,6 +27,7 @@ export default function useHubGetCurrent(
       return Number(currentHub);
     },
     {
+      onError: (err) => exceptionHandler(err),
       refreshDeps: [options?.tokenId],
       ...options,
     }

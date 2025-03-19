@@ -5,8 +5,11 @@ import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import { formatEther } from "viem";
+import { exceptionHandler } from "../utils/exception";
 
-export default function useAgentGetStakeAmount(options?: Options<string | undefined, []> & { tokenId?: number }) {
+export default function useAgentGetStakeAmount(
+  options?: Options<string | undefined, []> & { tokenId?: number }
+) {
   const { tokenId, ...rest } = options || {};
 
   const result = useRequest(
@@ -23,6 +26,7 @@ export default function useAgentGetStakeAmount(options?: Options<string | undefi
       return formatEther(amount);
     },
     {
+      onError: (err) => exceptionHandler(err),
       refreshDeps: [tokenId],
       ...rest,
     }
