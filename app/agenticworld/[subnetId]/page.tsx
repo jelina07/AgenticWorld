@@ -45,9 +45,11 @@ export default function page({ params }: { params: any }) {
     subnetList &&
     learningId &&
     learnSecond !== undefined &&
-    learnSecond ===
-      subnetList.find((item: SubnetInfoType) => item.subnetId === learningId)
-        ?.lockup;
+    learnSecond[0] >
+      Number(
+        subnetList.find((item: SubnetInfoType) => item.subnetId === learningId)
+          ?.lockup
+      );
 
   const currentSubnet = subnetList?.find(
     (item: any) => item.id === Number(params.subnetId)

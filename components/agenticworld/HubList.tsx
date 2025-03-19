@@ -76,13 +76,31 @@ export default function HubList({
       ? subnetInforAll?.filter((item) => item.type === 1)
       : subnetInforAll;
 
-  const lockTimeReach =
-    subnetInfor &&
-    learningId &&
-    learnSecond !== undefined &&
-    learnSecond[0] ===
-      subnetInfor.find((item: SubnetInfoType) => item.subnetId === learningId)
-        ?.lockup;
+  const lockTimeReach = useMemo(() => {
+    if (
+      subnetInfor &&
+      learningId &&
+      learnSecond !== undefined &&
+      learnSecond[0] >
+        Number(
+          subnetInfor.find(
+            (item: SubnetInfoType) => item.subnetId === learningId
+          )?.lockup
+        )
+    ) {
+      return true;
+    }
+    return false;
+  }, [subnetInfor, learningId, learnSecond]);
+  // const lockTimeReach =
+  //   subnetInfor &&
+  //   learningId &&
+  //   learnSecond !== undefined &&
+  //   learnSecond[0] >
+  //     Number(
+  //       subnetInfor.find((item: SubnetInfoType) => item.subnetId === learningId)
+  //         ?.lockup
+  //     );
 
   console.log("current", agentTokenId, learningId, learnSecond, lockTimeReach);
   console.log(
