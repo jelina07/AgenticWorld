@@ -10,7 +10,8 @@ export default function MindLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { loading, data } = useAgentGetTokenId();
+  const { loading, data, refresh } = useAgentGetTokenId();
+
   console.log("🚀 ~ loading:", loading, data);
 
   return (

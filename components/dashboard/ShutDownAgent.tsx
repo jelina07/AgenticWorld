@@ -17,6 +17,9 @@ export default function ShutDownAgent({
     waitForReceipt: true,
   });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const refreshAgentTokenId = useAgentGetTokenIdStore(
+    (state) => state.refreshGetAgentTokenId
+  );
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -31,6 +34,7 @@ export default function ShutDownAgent({
       const res = await agentBurn(agentTokenId!);
       if (res) {
         refreshStakeAmount();
+        refreshAgentTokenId();
         handleCancel();
       }
     }
