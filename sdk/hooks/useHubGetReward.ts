@@ -1,0 +1,35 @@
+import { useRequest } from "ahooks";
+import { Options } from "../types";
+import { readContract } from "wagmi/actions";
+import { config } from "../wagimConfig";
+import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
+import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
+import { exceptionHandler } from "../utils/exception";
+import { formatEther } from "viem";
+
+export default function useHubGetReward(options?: Options<unknown, []> & { hubIds?: any[]; agentId: number }) {
+  const { hubIds, agentId, ...rest } = options || {};
+
+  const result = useRequest(
+    async () => {
+      if (!hubIds?.length || !agentId) {
+        return;
+      }
+      const amounts = (await readContract(config, {
+        abi: DAO_INSPECTOR_ABI,
+        functionName: "getAgentLifetimeRewardsBatch",
+        address: DAO_INSPECTOR_ADDRESS.address,
+        args: [agentId, hubIds],
+      })) as bigint[];
+
+      return amounts.map((amount) => formatEther(amount));
+    },
+    {
+      onError: (err) => exceptionHandler(err),
+      refreshDeps: [hubIds, agentId],
+      ...rest,
+    }
+  );
+
+  return result;
+}
