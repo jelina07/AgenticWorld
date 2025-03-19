@@ -266,7 +266,12 @@ export default function MyAgent({
                     </span>
                   </div>
                   <div className="mt-[40px] flex justify-between gap-[7px] mind-madal">
-                    <StakeModal refreshStakeAmount={refreshStakeAmount} />
+                    <StakeModal
+                      refreshStakeAmount={refreshStakeAmount}
+                      agentStakeAmount={agentStakeAmount}
+                      hubList={hubList}
+                      learningId={learningId}
+                    />
                     <DecreseModal
                       refreshStakeAmount={refreshStakeAmount}
                       agentStakeAmount={agentStakeAmount}

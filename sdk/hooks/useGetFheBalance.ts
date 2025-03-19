@@ -6,8 +6,8 @@ import { exceptionHandler } from "../utils/exception";
 import { getBalance } from "@wagmi/core";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
-import useGetFheBalanceStore from "@/store/useGetFheBalance";
 import { isDev, isProd } from "../utils";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 
 export default function useGetFheBalance(options?: Options<any, []>) {
   const { address } = useAccount();

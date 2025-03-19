@@ -68,6 +68,7 @@ export default function HubRecord({
     hubIds: ids,
     tokenId: agentTokenId,
   });
+  console.log("rewards", rewards);
 
   const learningId = useGetLearningHubId((state) => state.learningHubId);
   const tableData =

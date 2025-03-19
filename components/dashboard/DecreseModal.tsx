@@ -2,8 +2,11 @@ import { Button, Input, message, Modal } from "antd";
 import React, { useState } from "react";
 import DownArraw from "@/public/icons/down-arraw.svg";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import { useAgentUnStake } from "@/sdk";
-import { checkAmountControlButtonShow } from "@/utils/utils";
+import { useAgentUnStake, useGetFheBalance } from "@/sdk";
+import { checkAmountControlButtonShow, numberDigits } from "@/utils/utils";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import Max from "../utils/Max";
+import Big from "big.js";
 
 export default function DecreseModal({
   refreshStakeAmount,
@@ -49,6 +52,9 @@ export default function DecreseModal({
       }
     }
   };
+  const clickMax = () => {
+    setAmount(String(Number(agentStakeAmount) - 100));
+  };
   return (
     <>
       <Button
@@ -66,18 +72,41 @@ export default function DecreseModal({
         footer={null}
       >
         <div className="mind-input">
+          <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
+            <span>Current Stake:</span>
+            <span>{agentStakeAmount} FHE</span>
+          </div>
           <Input
             value={amount}
             style={{ height: "46px", marginTop: "20px" }}
+            suffix={
+              <div onClick={clickMax} className="cursor-pointer">
+                <Max />
+              </div>
+            }
             onChange={(e: any) => {
               setAmount(e.target.value);
             }}
           />
           <div>
-            <div className="flex items-center gap-[2px] justify-end mt-[20px]">
+            <div
+              className={`flex items-center gap-[2px] justify-end mt-[20px] ${
+                isNaN(Number(amount)) ? "hidden" : ""
+              }`}
+            >
               <span className="text-[14px] font-[500]">rewards earning</span>
               <span className="text-[20px] font-[500] text-[var(--mind-red)]">
-                ~10%
+                ~
+                {Number(amount) === 0 ||
+                isNaN(Number(amount)) ||
+                !agentStakeAmount
+                  ? "0%"
+                  : numberDigits(
+                      new Big(amount)
+                        .div(agentStakeAmount)
+                        .times(100)
+                        .toString()
+                    ) + "%"}
               </span>
               <DownArraw />
             </div>

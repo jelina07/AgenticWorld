@@ -8,7 +8,7 @@ import Big from "big.js";
 import { exceptionHandler } from "../utils/exception";
 
 export default function useHubGetApy(
-  options?: Options<any, []> & { hubIds: number[] }
+  options?: Options<any, []> & { hubIds?: any[] }
 ) {
   const { hubIds, ...rest } = options || {};
 

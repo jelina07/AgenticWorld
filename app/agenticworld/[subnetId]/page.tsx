@@ -58,6 +58,7 @@ export default function page({ params }: { params: any }) {
     learningId === 0,
     !(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0)
   );
+  console.log("hubApy", hubApy);
 
   const currentSubnet = subnetList
     ?.filter((item: any) => item.id === Number(params.subnetId))

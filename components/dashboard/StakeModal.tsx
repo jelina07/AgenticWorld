@@ -2,13 +2,21 @@ import { Button, Input, message, Modal } from "antd";
 import React, { useState } from "react";
 import UpArraw from "@/public/icons/up-arraw.svg";
 import { checkAmountControlButtonShow } from "@/utils/utils";
-import { useAgentStake } from "@/sdk";
+import { useAgentStake, useGetFheBalance, useHubGetApy } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import Max from "../utils/Max";
 
-export default function DecreseModal({
+export default function StakeModal({
   refreshStakeAmount,
+  agentStakeAmount,
+  learningId,
+  hubList,
 }: {
   refreshStakeAmount: Function;
+  agentStakeAmount?: string;
+  learningId: number;
+  hubList?: any[];
 }) {
   const [amount, setAmount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +24,12 @@ export default function DecreseModal({
     waitForReceipt: true,
   });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const { data: hubApy } = useHubGetApy({ hubIds: hubList });
+  const currentIndex = hubList?.findIndex((item) => item.id === learningId);
+  console.log("currentIndex", currentIndex, hubApy);
+  const { data, refresh, loading } = useGetFheBalance();
+  const { balance } = useGetFheBalanceStore();
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -24,14 +38,20 @@ export default function DecreseModal({
     setIsModalOpen(false);
     setAmount("");
   };
+
   const stake = async () => {
     if (checkAmountControlButtonShow(amount)) {
       const res = await agentStake(agentTokenId!, amount);
       if (res) {
         refreshStakeAmount();
+        refresh();
         handleCancel();
       }
     }
+  };
+
+  const clickMax = () => {
+    setAmount(balance);
   };
   return (
     <>
@@ -50,33 +70,40 @@ export default function DecreseModal({
         footer={null}
       >
         <div className="mind-input">
+          <div className="mt-[30px]">
+            <div className="text-[14px] flex justify-between flex-wrap gap-[5px]">
+              <span>Payout Ratio:</span>
+              <span>
+                {currentIndex && hubApy ? hubApy[currentIndex] : "0%"}
+              </span>
+            </div>
+            <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
+              <span>Current Stake:</span>
+              <span>{agentStakeAmount} FHE</span>
+            </div>
+          </div>
           <Input
             style={{ height: "46px", marginTop: "20px" }}
             value={amount}
+            suffix={
+              <div onClick={clickMax} className="cursor-pointer">
+                <Max />
+              </div>
+            }
             onChange={(e: any) => {
               setAmount(e.target.value);
             }}
           />
-          <div>
-            <div className="flex justify-between items-center mt-[20px]">
-              <span className="text-[14px] font-[400]">+1000 FHE</span>
-              <div className="flex items-center gap-[2px]">
-                <span className="text-[14px] font-[500]">rewards earning</span>
-                <span className="text-[20px] font-[500] text-[var(--mind-brand)]">
-                  ~10%
-                </span>
-                <UpArraw />
-              </div>
-            </div>
-            <div className="flex justify-between items-center mt-[5px]">
-              <span className="text-[14px] font-[400]">+10000 FHE</span>
-              <div className="flex items-center gap-[2px]">
-                <span className="text-[14px] font-[500]">rewards earning</span>
-                <span className="text-[20px] font-[500] text-[var(--mind-brand)]">
-                  ~100%
-                </span>
-                <UpArraw />
-              </div>
+          <div className="text-[12px] flex justify-between gap-[5px] flex-wrap mt-[10px]">
+            <span>Balance:</span>
+            <div className="flex gap-[2px] items-center">
+              <span>{loading ? "loading..." : balance + " FHE"}</span>
+              <img
+                src="/icons/refresh.svg"
+                alt="refresh"
+                onClick={refresh}
+                className="cursor-pointer"
+              />
             </div>
           </div>
           <Button

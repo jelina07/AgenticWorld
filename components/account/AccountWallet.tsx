@@ -3,12 +3,14 @@ import React from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import Copy from "@/public/icons/copy.svg";
 import Mindscan from "@/public/icons/mindscan.svg";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 
 export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
   const { address } = useAccount();
   const copyAddress = (address: `0x${string}`) => {
     handleCopy(address);
   };
+  const { balance } = useGetFheBalanceStore();
   return (
     <div>
       <div className="text-[14px] font-[600] text-white mt-[20px]">
@@ -26,7 +28,7 @@ export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
       </div>
       <div className="flex justify-between text-white mt-[10px]">
         <span>FHE Balance</span>
-        <span>100</span>
+        <span>{balance} FHE</span>
       </div>
       <div className="text-right mt-[40px]">
         <a

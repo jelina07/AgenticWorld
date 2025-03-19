@@ -7,7 +7,7 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { formatEther } from "viem";
 
 export default function useHubGetStakeAmount(
-  options?: Options<undefined | string[], []> & { hubIds: number[] }
+  options?: Options<undefined | string[], []> & { hubIds?: any[] }
 ) {
   const { hubIds, ...rest } = options || {};
   const result = useRequest(
