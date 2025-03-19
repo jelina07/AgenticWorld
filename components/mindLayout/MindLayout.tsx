@@ -5,21 +5,14 @@ import Footer from "../footer";
 import { useAgentGetTokenId } from "@/sdk";
 import { useAsyncEffect } from "ahooks";
 
-export default function MindLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { loading } = useAgentGetTokenId();
-
-  if (loading) {
-    return <div>loading</div>;
-  }
+export default function MindLayout({ children }: { children: React.ReactNode }) {
+  const { loading, data } = useAgentGetTokenId();
+  console.log("🚀 ~ loading:", loading, data);
 
   return (
     <div>
       <Header />
-      <div>{children}</div>
+      <div>{loading ? "loading" : children}</div>
       <Footer />
     </div>
   );

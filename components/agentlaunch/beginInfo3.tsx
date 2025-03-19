@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Typewriter from "typewriter-effect";
 import StakeLaunch from "./StakeLaunch";
 import RequiredHub from "./RequiredHub";
@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { usePrevious } from "ahooks";
 const string1 = `  
     <div>
       <div>
@@ -72,41 +73,39 @@ const string3 = `
       </div>`;
 const BeginInfo3 = () => {
   const router = useRouter();
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const preTokenId = useRef<number>(agentTokenId);
+  console.log("🚀 ~ BeginInfo3 ~ agentTokenId:", agentTokenId, preTokenId);
+  if (!preTokenId.current) {
+    router.replace("/");
+  }
+
   const [stringtypedout1, setStringtypedout1] = useState(false);
   const [stringtypedout2, setStringtypedout2] = useState(false);
   const [stringtypedout3, setStringtypedout3] = useState(false);
   const stakeLaunchRef: any = useRef(null);
-  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+
   const isAgent = agentTokenId !== 0;
+
   const { data: subnetList } = useHubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data } = useHubGetCurrent({
-    tokenId: agentTokenId,
-  });
+
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const isLearnBasicHub =
-    learningId &&
-    subnetList &&
-    subnetList
-      .filter((item: any) => item.type === 0)
-      .map((obj: any) => obj.id)
-      .includes(learningId);
+
+  const isLearnBasicHub = useMemo(() => {
+    if (learningId && Array.isArray(subnetList)) {
+      return subnetList
+        .filter((item: any) => item.type === 0)
+        .map((obj: any) => obj.id)
+        .includes(learningId);
+    }
+    return false;
+  }, [learningId, subnetList]);
 
   console.log("isLearnBasicHub", learningId, isLearnBasicHub);
 
-  useEffect(() => {
-    setStringtypedout1(false);
-    setStringtypedout2(false);
-  }, []);
-
-  useEffect(() => {
-    //have selectd learnedHub and type out
-    if (isLearnBasicHub && stringtypedout3) {
-      router.push("/");
-    }
-  }, [isLearnBasicHub, stringtypedout3]);
   return (
     <div className="mt-[30px] sm:mt-[70px]">
       <div id="launchTitle">Buillding Agentic World</div>
@@ -125,11 +124,7 @@ const BeginInfo3 = () => {
             });
         }}
       />
-      <div
-        className={`${
-          stringtypedout1 ? "visible-style" : "hidden-style"
-        } mt-[50px]`}
-      >
+      <div className={`${stringtypedout1 ? "visible-style" : "hidden-style"} mt-[50px]`}>
         <StakeLaunch ref={stakeLaunchRef} />
       </div>
 
@@ -154,11 +149,7 @@ const BeginInfo3 = () => {
         <></>
       )}
 
-      <div
-        className={`${
-          stringtypedout2 ? "visible-style" : "hidden-style"
-        } mt-[40px]`}
-      >
+      <div className={`${stringtypedout2 ? "visible-style" : "hidden-style"} mt-[40px]`}>
         <RequiredHub />
       </div>
       {isLearnBasicHub ? (
