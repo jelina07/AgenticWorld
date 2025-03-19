@@ -10,11 +10,11 @@ export default function MindLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { data, runAsync } = useAgentGetTokenId();
+  const { loading } = useAgentGetTokenId();
 
-  useAsyncEffect(async () => {
-    // await runAsync();
-  }, []);
+  if (loading) {
+    return <div>loading</div>;
+  }
 
   return (
     <div>
