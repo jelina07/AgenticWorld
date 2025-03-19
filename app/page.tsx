@@ -1,14 +1,21 @@
+"use client";
 import HubRecord from "@/components/dashboard/HubRecord";
 import MyAgent from "@/components/dashboard/MyAgent";
 import RewardRule from "@/components/dashboard/RewardRule";
 import ShutDownAgent from "@/components/dashboard/ShutDownAgent";
+import { useHubList } from "@/sdk";
+import { useMemo } from "react";
 
 export default function Home() {
+  const { data: hubList, loading } = useHubList();
+  const ids = useMemo(() => {
+    return hubList?.map((item: any) => item.id) || [];
+  }, [hubList]);
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)]">
-      <MyAgent />
+      <MyAgent ids={ids} hubList={hubList} />
       <div className="pb-[200px]">
-        <HubRecord />
+        <HubRecord ids={ids} loading={loading} hubList={hubList} />
         <RewardRule />
       </div>
     </div>

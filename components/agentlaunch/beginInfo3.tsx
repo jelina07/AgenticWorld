@@ -62,13 +62,22 @@ const string3 = `
             <br />
             <span id="yellow-circle"></span>
             Advanced Hubs - Partnering with top AI projects to build innovative
-            solutions. Your agent will need to meet some basic
-            skill-requirements before joining.
+            solutions. Your agent will need to meet some basic skill-requirements
+            before joining.
             <br />
             <br />
             <br />
             Keep exploring and leveling up your AI Agent! Enjoy your journey :)
           </div>
+        </div>
+        <img src="/icons/launch-circle.svg" alt="circle" id="launchContent8"/>
+        <div id="launchContent9">
+          <a id="launch-link" href="/" rel="noopener noreferrer">
+            dashboard
+          </a>
+          <a id="launch-link" href="/agenticworld" rel="noopener noreferrer">
+            Agentic World
+          </a>
         </div>
       </div>`;
 const BeginInfo3 = () => {

@@ -5,7 +5,7 @@ import UnLock from "@/components/utils/UnLock";
 import Edit from "@/public/icons/edit.svg";
 import Link from "next/link";
 import LaunchAgent from "./LaunchAgent";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import StakeModal from "./StakeModal";
 import DecreseModal from "./DecreseModal";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
@@ -14,10 +14,17 @@ import {
   useAgentGetStakeAmount,
   useClaimReward,
   useGetClaimableReward,
+  useHubGetCurrentExp,
 } from "@/sdk";
 import { numberDigits } from "@/utils/utils";
 
-export default function MyAgent() {
+export default function MyAgent({
+  ids,
+  hubList,
+}: {
+  ids: any[];
+  hubList?: any[];
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("CitizenZ_0");
 
@@ -29,12 +36,13 @@ export default function MyAgent() {
     setText(event.target.value);
     setIsEditing(false);
   };
+
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
   console.log("agentTokenId", agentTokenId);
   const {
     data: agentStakeAmount,
-    loading,
+    loading: agentStakeAmountLoading,
     refresh: refreshStakeAmount,
   } = useAgentGetStakeAmount({
     tokenId: agentTokenId,
@@ -45,11 +53,20 @@ export default function MyAgent() {
     loading: claimableRewardLoading,
     refresh: claimableRewardRefresh,
   } = useGetClaimableReward();
-  console.log("claimableReward", claimableReward);
-  console.log("claimableRewardLoading", loading, claimableRewardLoading);
+
   const { runAsync: claim, loading: claimLoading } = useClaimReward({
     waitForReceipt: true,
   });
+  const { learnSecond } = useHubGetCurrentExp({
+    tokenId: agentTokenId,
+    hubIds: ids,
+  });
+  const currentLearnedHub = useMemo(() => {
+    return learnSecond?.filter((second: number) => second > 0).length;
+  }, [learnSecond]);
+  const isLocked = useMemo(() => {
+    return hubList?.length;
+  }, []);
 
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
@@ -132,7 +149,9 @@ export default function MyAgent() {
                     <span className="text-[var(--mind-grey)] text-[14px]">
                       Hub Learned
                     </span>
-                    <span className="text-[30px] text-light-shadow">2</span>
+                    <span className="text-[30px] text-light-shadow">
+                      {currentLearnedHub ? currentLearnedHub : "loading..."}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -157,7 +176,7 @@ export default function MyAgent() {
                   </div>
                   <div className="mt-[20px] align-bottom h-[45px]">
                     <span className="text-[30px] text-light-shadow">
-                      {loading
+                      {agentStakeAmountLoading
                         ? "loading..."
                         : agentStakeAmount && numberDigits(agentStakeAmount)}
                     </span>

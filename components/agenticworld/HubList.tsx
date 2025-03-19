@@ -40,9 +40,12 @@ export default function HubList({
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const { data: currentExp } = useHubGetCurrentExp({
+  const hubIds = useMemo(() => {
+    return learningId !== undefined ? [learningId] : [];
+  }, [learningId]);
+  const { learnSecond } = useHubGetCurrentExp({
     tokenId: agentTokenId,
-    hubId: learningId,
+    hubIds: hubIds,
   });
   const { data: subnetList, loading } = useHubList({
     cacheKey: "useSubnetList",
@@ -79,12 +82,12 @@ export default function HubList({
   const lockTimeReach =
     subnetInfor &&
     learningId &&
-    currentExp !== undefined &&
-    currentExp ===
+    learnSecond !== undefined &&
+    learnSecond[0] ===
       subnetInfor.find((item: SubnetInfoType) => item.subnetId === learningId)
         ?.lockup;
 
-  console.log("current", agentTokenId, learningId, currentExp, lockTimeReach);
+  console.log("current", agentTokenId, learningId, learnSecond, lockTimeReach);
   console.log(
     "bbb",
     agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0,
@@ -131,7 +134,7 @@ export default function HubList({
                     isLaunch &&
                     learningId &&
                     item.subnetId !== learningId &&
-                    currentExp !== undefined &&
+                    learnSecond !== undefined &&
                     !lockTimeReach
                       ? "opacity-[0.5]"
                       : ""
@@ -155,7 +158,7 @@ export default function HubList({
                       className={`text-white ${
                         learningId &&
                         item.subnetId === learningId &&
-                        currentExp !== undefined &&
+                        learnSecond !== undefined &&
                         !lockTimeReach
                           ? ""
                           : "hidden"

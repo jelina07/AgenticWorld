@@ -156,9 +156,9 @@ export default function DemoPage() {
 function Hub({ hub, agentTokenId, currentHub }: any) {
   const { runAsync: hubDelegate } = useHubDelegate();
 
-  const { data: currentExp } = useHubGetCurrentExp({
+  const { learnSecond } = useHubGetCurrentExp({
     tokenId: Number(agentTokenId as number),
-    hubId: hub.id,
+    hubIds: [hub.id],
   });
 
   const onHubDelegate = async (hub: any) => {
@@ -177,7 +177,7 @@ function Hub({ hub, agentTokenId, currentHub }: any) {
           Start
         </Button>
       </div>
-      <div>Current Exp: {currentExp}</div>
+      <div>Current Exp: {learnSecond}</div>
     </div>
   );
 }

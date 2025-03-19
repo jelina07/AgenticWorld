@@ -1,9 +1,10 @@
 "use client";
 import { Table, TableColumnsType } from "antd";
 import Lock from "@/components/utils/Lock";
-import { useHubGetCurrent, useHubList } from "@/sdk";
+import { useHubGetCurrent, useHubGetCurrentExp, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { useMemo } from "react";
 
 const tableColumns: TableColumnsType = [
   {
@@ -16,7 +17,7 @@ const tableColumns: TableColumnsType = [
         <div
           className={`${
             record.status === "Training" &&
-            Number(record.currentLearned) !== Number(record.lockupHours)
+            Number(record.currentLearned) < Number(record.lockupHours)
               ? ""
               : "hidden"
           }`}
@@ -43,28 +44,43 @@ const tableColumns: TableColumnsType = [
     dataIndex: "rewards",
   },
 ];
-export default function HubRecord() {
-  const { data: hubList, loading } = useHubList();
-  console.log("hubList", hubList);
+export default function HubRecord({
+  ids,
+  loading,
+  hubList,
+}: {
+  ids: any[];
+  loading: boolean;
+  hubList?: any[];
+}) {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const { learnSecond } = useHubGetCurrentExp({
+    tokenId: agentTokenId,
+    hubIds: ids,
+  });
+  console.log("hubLearningExps", learnSecond);
+
   const { loading: learningIdLoading } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
 
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const tableData = hubList?.map((item: any) => {
-    const status = item.id === learningId ? "Training" : "Exit";
-    return {
-      subnetId: item.id,
-      subnetName: item.name,
-      subnetLogo: "/icons/fcn.svg",
-      status: learningIdLoading && learningId === 0 ? "loading..." : status,
-      lockupHours: item.lockUp,
-      currentLearned: "2",
-      rewards: "0.3 FHE",
-    };
-  });
-
+  const tableData =
+    (agentTokenId &&
+      hubList?.map((item: any, index: number) => {
+        const status = item.id === learningId ? "Training" : "Exit";
+        const currentLearned = learnSecond ? learnSecond[index] : "loading...";
+        return {
+          subnetId: item.id,
+          subnetName: item.name,
+          subnetLogo: item.logo,
+          status: learningIdLoading && learningId === 0 ? "loading..." : status,
+          lockupHours: item.lockUp,
+          currentLearned: currentLearned,
+          rewards: "0.3 FHE",
+        };
+      })) ||
+    [];
   return (
     <div className="mind-table mt-[50px]">
       <div className="text-[18px] font-[800] mb-[30px]">

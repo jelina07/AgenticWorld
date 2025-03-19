@@ -35,8 +35,7 @@
   --btn-bg-green: linear-gradient(270deg, #74fab7 0%, #69e9ee 100%);
   --blue-gradient: linear-gradient(180deg, #0061c3 0%, #1a1a32 100%);
   --yellow-gradient: linear-gradient(180deg, #ff8f00 0%, #1a1a32 100%);
-  /* --btn-border: linear-gradient(180deg, #0f201d 0%, #060c0b 100%);
-   */
+  --brand-color-gradient: linear-gradient(270deg, #74fab7 0%, #69e9ee 100%);
   --btn-border: #152e29;
   --border-width: 1px;
 }
@@ -364,6 +363,15 @@ input:focus {
   font-size: 14px;
   line-height: 140%;
 }
+#launchContent8 {
+  margin: 15px 0px;
+}
+#launchContent9 {
+  margin-top: 30px;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
 #yellow-circle,
 #blue-circle {
   display: inline-block;
@@ -375,6 +383,25 @@ input:focus {
 }
 #yellow-circle {
   background: var(--yellow-gradient);
+}
+
+#launch-link {
+  color: black;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 100%;
+  text-transform: capitalize;
+  width: 150px;
+  height: 30px;
+  padding: 7px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  border: 0.75px solid rgba(0, 255, 177, 0.84);
+  background: var(--brand-color-gradient);
 }
 
 @media screen and (min-width: 640px) {
@@ -401,6 +428,9 @@ input:focus {
   }
   #launchContent7 {
     font-size: 16px;
+  }
+  #launchContent8 {
+    margin: 30px 0px;
   }
 }
 

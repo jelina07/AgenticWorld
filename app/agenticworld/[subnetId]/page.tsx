@@ -13,7 +13,7 @@ import {
 } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { Button } from "antd";
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
@@ -33,16 +33,19 @@ export default function page({ params }: { params: any }) {
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const { data: currentExp } = useHubGetCurrentExp({
+  const hubIds = useMemo(() => {
+    return learningId !== undefined ? [learningId] : [];
+  }, [learningId]);
+  const { learnSecond } = useHubGetCurrentExp({
     tokenId: agentTokenId,
-    hubId: learningId,
+    hubIds: hubIds,
   });
 
   const lockTimeReach =
     subnetList &&
     learningId &&
-    currentExp !== undefined &&
-    currentExp ===
+    learnSecond !== undefined &&
+    learnSecond ===
       subnetList.find((item: SubnetInfoType) => item.subnetId === learningId)
         ?.lockup;
 
@@ -69,13 +72,6 @@ export default function page({ params }: { params: any }) {
       openConnectModal?.();
     }
   };
-
-  console.log(
-    "hhh",
-    !(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0) ||
-      !lockTimeReach ||
-      !address
-  );
 
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
