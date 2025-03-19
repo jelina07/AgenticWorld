@@ -15,6 +15,7 @@ import useHubGetStakeAmount from "./hooks/useHubGetStakeAmount";
 import useClaimReward from "./hooks/useClaimReward";
 import useGetClaimableReward from "./hooks/useGetClaimableReward";
 import useHubGetApy from "./hooks/useHubGetApy";
+import useAgentBurn from "./hooks/useAgentBurn";
 
 export {
   useAirdropCheck,
@@ -34,4 +35,5 @@ export {
   useClaimReward,
   useGetClaimableReward,
   useHubGetApy,
+  useAgentBurn,
 };
