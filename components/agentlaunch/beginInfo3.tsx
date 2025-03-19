@@ -76,7 +76,7 @@ const BeginInfo3 = () => {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const preTokenId = useRef<number>(agentTokenId);
   console.log("🚀 ~ BeginInfo3 ~ agentTokenId:", agentTokenId, preTokenId);
-  if (!preTokenId.current) {
+  if (preTokenId.current) {
     router.replace("/");
   }
 
@@ -124,7 +124,11 @@ const BeginInfo3 = () => {
             });
         }}
       />
-      <div className={`${stringtypedout1 ? "visible-style" : "hidden-style"} mt-[50px]`}>
+      <div
+        className={`${
+          stringtypedout1 ? "visible-style" : "hidden-style"
+        } mt-[50px]`}
+      >
         <StakeLaunch ref={stakeLaunchRef} />
       </div>
 
@@ -149,7 +153,11 @@ const BeginInfo3 = () => {
         <></>
       )}
 
-      <div className={`${stringtypedout2 ? "visible-style" : "hidden-style"} mt-[40px]`}>
+      <div
+        className={`${
+          stringtypedout2 ? "visible-style" : "hidden-style"
+        } mt-[40px]`}
+      >
         <RequiredHub />
       </div>
       {isLearnBasicHub ? (

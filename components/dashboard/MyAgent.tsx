@@ -31,6 +31,7 @@ export default function MyAgent() {
   };
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
+  console.log("agentTokenId", agentTokenId);
   const {
     data: agentStakeAmount,
     loading,

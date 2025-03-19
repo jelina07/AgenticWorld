@@ -17,6 +17,7 @@ export default function ShutDownAgent({
     waitForReceipt: true,
   });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
