@@ -61,12 +61,29 @@ export default function MyAgent({
     tokenId: agentTokenId,
     hubIds: ids,
   });
+  // use learnSecond
   const currentLearnedHub = useMemo(() => {
     return learnSecond?.filter((second: number) => second > 0).length;
   }, [learnSecond]);
-  const isLocked = useMemo(() => {
-    return hubList?.length;
-  }, []);
+
+  // type 0: no learned; type 1: locked ; type 2:unlocked
+  const stateType = useMemo(() => {
+    if (currentLearnedHub !== undefined) {
+      if (currentLearnedHub === 0) {
+        return 0;
+      } else {
+        // maybe use learnHour
+        const judge = hubList!.every(
+          (value, index) => learnSecond?.[index]! >= value
+        );
+        if (judge) {
+          return 2;
+        } else {
+          return 1;
+        }
+      }
+    }
+  }, [hubList, currentLearnedHub, learnSecond]);
 
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
@@ -150,7 +167,9 @@ export default function MyAgent({
                       Hub Learned
                     </span>
                     <span className="text-[30px] text-light-shadow">
-                      {currentLearnedHub ? currentLearnedHub : "loading..."}
+                      {currentLearnedHub !== undefined
+                        ? currentLearnedHub
+                        : "loading..."}
                     </span>
                   </div>
                 </div>
@@ -161,8 +180,15 @@ export default function MyAgent({
                     State
                   </div>
                   <div className="flex gap-[10px] mt-[20px] h-[45px] items-center">
-                    <Lock />
-                    <UnLock />
+                    {currentLearnedHub === undefined ? (
+                      "loading..."
+                    ) : stateType === 0 ? (
+                      "/"
+                    ) : stateType === 1 ? (
+                      <Lock />
+                    ) : (
+                      <UnLock />
+                    )}
                   </div>
                   <div className="mt-[40px]">
                     <Link href="/agenticworld" className="btn-Link-white-font">

@@ -85,9 +85,6 @@ const BeginInfo3 = () => {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const preTokenId = useRef<number>(agentTokenId);
   console.log("🚀 ~ BeginInfo3 ~ agentTokenId:", agentTokenId, preTokenId);
-  if (preTokenId.current) {
-    router.replace("/");
-  }
 
   const [stringtypedout1, setStringtypedout1] = useState(false);
   const [stringtypedout2, setStringtypedout2] = useState(false);
@@ -103,17 +100,20 @@ const BeginInfo3 = () => {
 
   const learningId = useGetLearningHubId((state) => state.learningHubId);
 
-  const isLearnBasicHub = useMemo(() => {
+  const isLearnRequiredHub = useMemo(() => {
     if (learningId && Array.isArray(subnetList)) {
       return subnetList
-        .filter((item: any) => item.type === 0)
+        .filter((item: any) => item.note === "Required")
         .map((obj: any) => obj.id)
         .includes(learningId);
     }
     return false;
   }, [learningId, subnetList]);
 
-  console.log("isLearnBasicHub", learningId, isLearnBasicHub);
+  if (preTokenId.current) {
+    router.replace("/");
+  }
+  console.log("isLearnRequiredHub", learningId, isLearnRequiredHub);
 
   return (
     <div className="mt-[30px] sm:mt-[70px]">
@@ -169,7 +169,7 @@ const BeginInfo3 = () => {
       >
         <RequiredHub />
       </div>
-      {isLearnBasicHub ? (
+      {isLearnRequiredHub ? (
         <Typewriter
           options={{
             loop: false,

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { useMemo } from "react";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -20,17 +21,18 @@ const MindMenu: React.FC = () => {
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const isLearnBasicHub =
-    Boolean(learningId) &&
-    subnetList &&
-    subnetList
-      .filter((item: any) => item.type === 0)
-      .map((obj: any) => obj.id)
-      .includes(learningId);
-  console.log("isLearnBasicHub", learningId, isLearnBasicHub);
+  const isLearnRequiredHub = useMemo(() => {
+    if (learningId && Array.isArray(subnetList)) {
+      return subnetList
+        .filter((item: any) => item.note === "Required")
+        .map((obj: any) => obj.id)
+        .includes(learningId);
+    }
+    return false;
+  }, [learningId, subnetList]);
 
   const items: MenuItem[] =
-    learningId === undefined || isLearnBasicHub === false
+    learningId === undefined || isLearnRequiredHub === false
       ? [
           {
             label: <Link href="/airdrop">Airdrop</Link>,
