@@ -59,9 +59,14 @@ export default function MyAgent({
   const { runAsync: claim, loading: claimLoading } = useClaimReward({
     waitForReceipt: true,
   });
+  const { data } = useHubGetCurrent({
+    tokenId: agentTokenId,
+  });
+  const learningId = useGetLearningHubId((state) => state.learningHubId);
   const { learnSecond } = useHubGetCurrentExp({
     tokenId: agentTokenId,
     hubIds: ids,
+    learningId,
   });
   // use learnSecond
   const currentLearnedHub = useMemo(() => {
@@ -69,35 +74,69 @@ export default function MyAgent({
   }, [learnSecond]);
 
   // type 0: no learned; type 1: locked ; type 2:unlocked
+  // const stateType = useMemo(() => {
+  //   if (currentLearnedHub !== undefined) {
+  //     if (currentLearnedHub === 0) {
+  //       return 0;
+  //     } else {
+  //       // const judge = hubList!.every(
+  //       //   (value, index) => learnSecond?.[index]! >= value
+  //       // );
+  //       const judgeArray: boolean[] = [];
+  //       learnSecond?.forEach((item, index) => {
+  //         if (item > 0) {
+  //           hubList![index] > item
+  //             ? judgeArray.push(false)
+  //             : judgeArray.push(true);
+  //         } else {
+  //           judgeArray.push(true);
+  //         }
+  //       });
+  //       console.log("judgeArray", judgeArray);
+
+  //       const judge = judgeArray.find((item) => !item);
+  //       if (judge) {
+  //         return 1;
+  //       } else {
+  //         return 2;
+  //       }
+  //     }
+  //   }
+  // }, [hubList, currentLearnedHub, learnSecond]);
+  // console.log("stateType", stateType);
+
+  // type 0: no learned; type 1: locked ; type 2:unlocked
   const stateType = useMemo(() => {
     if (currentLearnedHub !== undefined) {
-      if (currentLearnedHub === 0) {
+      if (!learningId) {
         return 0;
       } else {
-        // const judge = hubList!.every(
-        //   (value, index) => learnSecond?.[index]! >= value
-        // );
-        const judgeArray: boolean[] = [];
-        learnSecond?.forEach((item, index) => {
-          if (item > 0) {
-            hubList![index] > item
-              ? judgeArray.push(false)
-              : judgeArray.push(true);
-          } else {
-            judgeArray.push(true);
-          }
-        });
-        console.log("judgeArray", judgeArray);
+        const currentlearningIdIndex = hubList!.findIndex(
+          (item) => item.id === learningId
+        );
+        const lockTimeReach =
+          hubList![currentlearningIdIndex].lockUp <=
+          learnSecond![currentlearningIdIndex];
 
-        const judge = judgeArray.find((item) => !item);
-        if (judge) {
-          return 1;
-        } else {
+        console.log(
+          "myagent",
+          lockTimeReach,
+          learningId,
+          currentlearningIdIndex,
+          hubList![currentlearningIdIndex].lockUp,
+          learnSecond
+        ),
+          learnSecond![currentlearningIdIndex];
+
+        if (lockTimeReach) {
           return 2;
+        } else {
+          return 1;
         }
       }
     }
-  }, [hubList, currentLearnedHub, learnSecond]);
+  }, [currentLearnedHub, hubList, learningId, learnSecond]);
+
   console.log("stateType", stateType);
 
   const clickClaim = async () => {

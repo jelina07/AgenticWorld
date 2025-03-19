@@ -49,7 +49,8 @@ export default function HubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
+  const { data: hubAgentCount, refresh: refreshHubAgentCount } =
+    useHubAgentCount({ hubIds: subnetList });
   const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
   console.log("useHubAgentCount", subnetList, hubAgentCount);
   console.log("hubApy", subnetList, hubApy);
@@ -82,7 +83,7 @@ export default function HubList({
       subnetInfor &&
       learningId &&
       learnSecond !== undefined &&
-      learnSecond[0] >
+      learnSecond[0] >=
         Number(
           subnetInfor.find(
             (item: SubnetInfoType) => item.subnetId === learningId
@@ -97,7 +98,7 @@ export default function HubList({
   //   subnetInfor &&
   //   learningId &&
   //   learnSecond !== undefined &&
-  //   learnSecond[0] >
+  //   learnSecond[0] >=
   //     Number(
   //       subnetInfor.find((item: SubnetInfoType) => item.subnetId === learningId)
   //         ?.lockup
@@ -267,6 +268,8 @@ export default function HubList({
         ref={startModalRef}
         learningId={learningId}
         refreshLearningId={refreshLearningId}
+        subnetList={subnetList}
+        refreshHubAgentCount={refreshHubAgentCount}
       />
     </div>
   );

@@ -11,9 +11,10 @@ export default function useHubGetCurrentExp(
   options?: Options<bigint[] | undefined, []> & {
     tokenId?: number;
     hubIds?: number[];
+    learningId?: number;
   }
 ) {
-  const { tokenId, hubIds, ...rest } = options || {};
+  const { tokenId, hubIds, learningId, ...rest } = options || {};
   const result = useRequest(
     async () => {
       if (!tokenId || hubIds?.length === 0) {
@@ -35,7 +36,7 @@ export default function useHubGetCurrentExp(
       return currentExp;
     },
     {
-      refreshDeps: [tokenId, hubIds],
+      refreshDeps: [tokenId, hubIds, learningId],
       onError: (err) => exceptionHandler(err),
       ...rest,
     }

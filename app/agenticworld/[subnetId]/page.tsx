@@ -25,7 +25,8 @@ export default function page({ params }: { params: any }) {
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data: hubAgentCount } = useHubAgentCount({ hubIds: subnetList });
+  const { data: hubAgentCount, refresh: refreshHubAgentCount } =
+    useHubAgentCount({ hubIds: subnetList });
   const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
   const { data: hubStake } = useHubGetStakeAmount({ hubIds: subnetList });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
@@ -130,6 +131,8 @@ export default function page({ params }: { params: any }) {
         ref={startModalRef}
         learningId={learningId}
         refreshLearningId={refreshLearningId}
+        subnetList={subnetList}
+        refreshHubAgentCount={refreshHubAgentCount}
       />
     </div>
   );
