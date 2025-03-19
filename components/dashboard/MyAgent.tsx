@@ -74,13 +74,26 @@ export default function MyAgent({
       if (currentLearnedHub === 0) {
         return 0;
       } else {
-        const judge = hubList!.every(
-          (value, index) => learnSecond?.[index]! >= value
-        );
+        // const judge = hubList!.every(
+        //   (value, index) => learnSecond?.[index]! >= value
+        // );
+        const judgeArray: boolean[] = [];
+        learnSecond?.forEach((item, index) => {
+          if (item > 0) {
+            hubList![index] > item
+              ? judgeArray.push(false)
+              : judgeArray.push(true);
+          } else {
+            judgeArray.push(true);
+          }
+        });
+        console.log("judgeArray", judgeArray);
+
+        const judge = judgeArray.find((item) => !item);
         if (judge) {
-          return 2;
-        } else {
           return 1;
+        } else {
+          return 2;
         }
       }
     }

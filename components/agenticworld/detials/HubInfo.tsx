@@ -1,4 +1,8 @@
-import { numberDigits, numberDigitsNoMillify } from "@/utils/utils";
+import {
+  numberDigits,
+  numberDigitsNoMillify,
+  secondsToHours,
+} from "@/utils/utils";
 import React from "react";
 
 export default function HubInfo({
@@ -22,9 +26,9 @@ export default function HubInfo({
             : "loading..."}
         </div>
       </div>
-      <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[url('/images/bg-heavy.png')] bg-cover bg-no-repeat">
+      <div className="p-[30px] flex-[1.3] min-w-[250px] rounded-[10px] bg-[url('/images/bg-heavy.png')] bg-cover bg-no-repeat">
         <div className="text-[15px]">Emission Rate</div>
-        <div className="text-[38px] text-light-shadow mt-[20px]">
+        <div className="text-[38px] text-light-shadow mt-[20px] break-all">
           {hubApy !== undefined ? hubApy : "loading"}
         </div>
       </div>
@@ -40,7 +44,7 @@ export default function HubInfo({
         <div className="text-[15px]">Learning Lock-up</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">
           {lockUp !== undefined && lockUp !== null
-            ? lockUp + "H"
+            ? secondsToHours(lockUp) + "H"
             : "loading..."}
         </div>
       </div>

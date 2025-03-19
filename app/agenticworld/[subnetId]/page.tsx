@@ -58,12 +58,25 @@ export default function page({ params }: { params: any }) {
     !(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0)
   );
 
-  const currentSubnet = subnetList?.find(
-    (item: any) => item.id === Number(params.subnetId)
-  );
+  const currentSubnet = subnetList
+    ?.filter((item: any) => item.id === Number(params.subnetId))
+    ?.map((obj: any) => ({
+      subnetId: obj.id,
+      type: obj.type,
+      subnetName: obj.name,
+      subnetInfo: obj.desc,
+      lockup: obj.lockUp,
+      subnetLevel: obj.Note,
+      subnetRequire: obj.requireName,
+      needSign: obj.needSign,
+    }))[0];
+  // const currentSubnet = subnetList?.find(
+  //   (item: any) => item.id === Number(params.subnetId)
+  // );
   const currentSubnetIndex = subnetList?.findIndex((item: any) => {
     return item.id === Number(params.subnetId);
   });
+  console.log("currentSubnet", currentSubnet);
 
   const showModal = () => {
     if (isConnected) {
@@ -77,13 +90,15 @@ export default function page({ params }: { params: any }) {
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
-        <div className="text-[26px] font-[900]">{currentSubnet?.name}</div>
+        <div className="text-[26px] font-[900]">
+          {currentSubnet?.subnetName}
+        </div>
         <div className="mt-[20px] text-[12px] leading-3">
-          {currentSubnet?.desc}
+          {currentSubnet?.subnetInfo}
         </div>
         <div className="mt-[80px]">
           <HubInfo
-            lockUp={currentSubnet?.lockUp}
+            lockUp={currentSubnet?.lockup}
             agentCount={hubAgentCount?.[currentSubnetIndex]}
             hubStakeAmount={hubStake?.[currentSubnetIndex]}
             hubApy={hubApy?.[currentSubnetIndex]}
@@ -93,13 +108,14 @@ export default function page({ params }: { params: any }) {
           <Button
             type="primary"
             className="button-brand-border-white-font"
-            // disabled={learningId === Number(params.subnetId) || !lockTimeReach}
             disabled={
-              !(
+              learningId === Number(params.subnetId) ||
+              (!(
                 agentTokenId !== undefined &&
                 agentTokenId !== 0 &&
                 learningId === 0
-              ) && !lockTimeReach
+              ) &&
+                !lockTimeReach)
             }
             onClick={() => showModal()}
           >
@@ -112,8 +128,8 @@ export default function page({ params }: { params: any }) {
       </div>
       <StartConfirmModal
         ref={startModalRef}
-        refreshLearningId={refreshLearningId}
         learningId={learningId}
+        refreshLearningId={refreshLearningId}
       />
     </div>
   );

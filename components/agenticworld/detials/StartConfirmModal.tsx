@@ -1,6 +1,7 @@
 "use client";
 import { useHubDelegate } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { secondsToHours } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, Modal } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
@@ -19,6 +20,7 @@ const StartConfirmModal = forwardRef(
       waitForReceipt: true,
     });
     const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+    console.log("learningId", learningId);
 
     useImperativeHandle(ref, () => ({
       clickStartConfirmModal: () => {
@@ -33,11 +35,14 @@ const StartConfirmModal = forwardRef(
       setIsModalOpen(false);
     };
     const delegate = async () => {
-      await hubDelegate({
-        tokenId: agentTokenId,
-        hubId: currentHub?.subnetId!,
-        needSign: Boolean(currentHub?.needSign!),
-      });
+      if (learningId) {
+      } else {
+        await hubDelegate({
+          tokenId: agentTokenId,
+          hubId: currentHub?.subnetId!,
+          needSign: Boolean(currentHub?.needSign!),
+        });
+      }
       handleCancel();
       refreshLearningId();
     };
@@ -51,7 +56,8 @@ const StartConfirmModal = forwardRef(
       >
         <div>
           <div className="text-[12px] font-[600] mt-[10px]">
-            Hub learning Lock-up* : {currentHub?.lockup} H
+            Hub learning Lock-up* :{" "}
+            {currentHub?.lockup && secondsToHours(currentHub?.lockup)} H
           </div>
           <div className="text-[12px] font-[400] leading-[180%] mt-[20px]">
             {learningId
