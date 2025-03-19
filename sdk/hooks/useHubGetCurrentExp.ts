@@ -2,35 +2,35 @@ import { useRequest } from "ahooks";
 import { Options } from "../types";
 import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
-import { AGENT1_ABI } from "../blockChain/abi";
-import { AGENT1_ADDRESS } from "../blockChain/address";
+import { AGENT1_ABI, DAO_INSPECTOR_ABI } from "../blockChain/abi";
+import { AGENT1_ADDRESS, DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 
 export default function useHubGetCurrentExp(
-  options?: Options<undefined | number, [number, number]> & {
+  options?: Options<undefined | number[], []> & {
     tokenId?: number;
-    hubId?: number;
+    hubIds?: number[];
   }
 ) {
-  const { tokenId, hubId, ...rest } = options || {};
+  const { tokenId, hubIds, ...rest } = options || {};
   const result = useRequest(
     async () => {
-      if (!tokenId || !hubId) {
+      if (!tokenId || hubIds?.length === 0) {
         return;
       }
       const currentExp = (await readContract(config, {
-        abi: AGENT1_ABI,
-        address: AGENT1_ADDRESS.address,
-        functionName: "hubXpLengthSec",
-        args: [tokenId, hubId],
-      })) as bigint;
+        abi: DAO_INSPECTOR_ABI,
+        address: DAO_INSPECTOR_ADDRESS.address,
+        functionName: "getAgentXpLengthSecBatch",
+        args: [tokenId, hubIds],
+      })) as bigint[];
       console.log("currentExp", currentExp);
 
       // 向下取整获取小时
-      const learnHour = Math.floor(Number(currentExp) / 3600);
+      const learnHour = currentExp.map((item) => Math.floor(Number(item) / 3600));
       return learnHour;
     },
     {
-      refreshDeps: [tokenId, hubId],
+      refreshDeps: [tokenId, hubIds],
       ...rest,
     }
   );
