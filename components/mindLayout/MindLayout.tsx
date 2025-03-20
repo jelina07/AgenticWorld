@@ -4,6 +4,7 @@ import Header from "../header";
 import Footer from "../footer";
 import { useAgentGetTokenId } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { Spin } from "antd";
 
 export default function MindLayout({
   children,
@@ -22,7 +23,16 @@ export default function MindLayout({
   return (
     <div>
       <Header />
-      <div>{loading ? "loading" : children}</div>
+      {loading ? (
+        <div
+          className="w-full flex justify-center items-center"
+          style={{ height: `calc(100vh - 80px)` }}
+        >
+          <Spin />
+        </div>
+      ) : (
+        <div>{children}</div>
+      )}
       <Footer />
     </div>
   );

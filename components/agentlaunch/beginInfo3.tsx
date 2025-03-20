@@ -15,7 +15,6 @@ const string1 = `
     <div>
       <div>
         <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
-        <br />
         <div id="launchContent2">
           I&apos;m here to shape the Agentic World with you together. Ready to begin
           the journey?
@@ -90,7 +89,9 @@ const BeginInfo3 = () => {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const [canRender, setCanRender] = useState(false);
 
-  const { data: learningIdPre, loading: learningIdLoading } = useHubGetCurrent({ tokenId: agentTokenId });
+  const { data: learningIdPre, loading: learningIdLoading } = useHubGetCurrent({
+    tokenId: agentTokenId,
+  });
 
   const preTokenId = useRef<number>(agentTokenId);
 
@@ -176,7 +177,11 @@ const BeginInfo3 = () => {
                 });
             }}
           />
-          <div className={`${stringtypedout1 ? "visible-style" : "hidden-style"} mt-[50px]`}>
+          <div
+            className={`${
+              stringtypedout1 ? "visible-style" : "hidden-style"
+            } mt-[50px]`}
+          >
             <StakeLaunch ref={stakeLaunchRef} />
           </div>
 
@@ -201,7 +206,11 @@ const BeginInfo3 = () => {
             <></>
           )}
 
-          <div className={`${stringtypedout2 ? "visible-style" : "hidden-style"} mt-[40px]`}>
+          <div
+            className={`${
+              stringtypedout2 ? "visible-style" : "hidden-style"
+            } mt-[40px]`}
+          >
             <RequiredHub />
           </div>
           {isLearnRequiredHub ? (
@@ -225,9 +234,22 @@ const BeginInfo3 = () => {
           )}
         </>
       ) : (
-        <a href="" id="#launch-link" onClick={clickConnect}>
-          Connect Wallet
-        </a>
+        <div>
+          <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
+          <div id="launchContent2">
+            I&apos;m here to shape the Agentic World with you together. Ready to
+            begin the journey?
+          </div>
+          <div className="mt-[30px]">
+            <a
+              id="launch-link"
+              rel="noopener noreferrer"
+              onClick={clickConnect}
+            >
+              Connect Wallet
+            </a>
+          </div>
+        </div>
       )}
     </div>
   );

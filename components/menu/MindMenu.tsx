@@ -11,68 +11,59 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const MindMenu: React.FC = () => {
   const pathName = usePathname();
-
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { data: subnetList } = useHubList({
-    cacheKey: "useSubnetList",
-    staleTime: 5 * 60 * 1000,
-  });
   const { data } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const isLearnRequiredHub = useMemo(() => {
-    if (learningId && Array.isArray(subnetList)) {
-      return subnetList
-        .filter((item: any) => item.note === "Required")
-        .map((obj: any) => obj.id)
-        .includes(learningId);
+  const menu1 = [
+    {
+      label: <Link href="/airdrop">Airdrop</Link>,
+      key: "/airdrop",
+    },
+    {
+      label: <Link href="/">Dashboard</Link>,
+      key: "/",
+    },
+    {
+      label: <Link href="/agenticworld">Agentic World</Link>,
+      key: "/agenticworld",
+    },
+  ];
+  const menu2 = [
+    {
+      label: <Link href="/airdrop">Airdrop</Link>,
+      key: "/airdrop",
+    },
+    {
+      label: <Link href="/">Dashboard</Link>,
+      key: "/",
+    },
+    {
+      label: <Link href="/agenticworld">Agentic World</Link>,
+      key: "/agenticworld",
+    },
+    {
+      label: <Link href="/agentlaunch">Agent Launch</Link>,
+      key: "/agentlaunch",
+    },
+  ];
+  const items = useMemo(() => {
+    if (!learningId) {
+      return menu2;
     }
-    return false;
-  }, [learningId, subnetList]);
-
-  const items: MenuItem[] =
-    learningId === undefined || isLearnRequiredHub === false
-      ? [
-          {
-            label: <Link href="/airdrop">Airdrop</Link>,
-            key: "/airdrop",
-          },
-          {
-            label: <Link href="/">Dashboard</Link>,
-            key: "/",
-          },
-          {
-            label: <Link href="/agenticworld">Agentic World</Link>,
-            key: "/agenticworld",
-          },
-          {
-            label: <Link href="/agentlaunch">Agent Launch</Link>,
-            key: "/agentlaunch",
-          },
-        ]
-      : [
-          {
-            label: <Link href="/airdrop">Airdrop</Link>,
-            key: "/airdrop",
-          },
-          {
-            label: <Link href="/">Dashboard</Link>,
-            key: "/",
-          },
-          {
-            label: <Link href="/agenticworld">Agentic World</Link>,
-            key: "/agenticworld",
-          },
-        ];
+    return menu1;
+  }, [learningId]);
+  console.log("learningId", learningId);
 
   return (
     <Menu
       selectedKeys={[pathName]}
       mode="horizontal"
       items={items}
-      // style={{ minWidth: 500 }}
-      className={`flex min-w-0 min-[1201px]:min-w-[500px]`}
+      className={`flex min-w-0 ${
+        learningId ? "min-[1201px]:min-w-[350px]" : "min-[1201px]:min-w-[500px]"
+      }`}
       theme="dark"
     />
   );
