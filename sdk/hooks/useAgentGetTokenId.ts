@@ -8,22 +8,18 @@ import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
-export default function useAgentGetTokenId(
-  options?: Options<number | undefined, []>
-) {
-  const { address } = useAccount();
-  const setAgentTokenId = useAgentGetTokenIdStore(
-    (state) => state.setAgentTokenId
-  );
+export default function useAgentGetTokenId(options?: Options<number | undefined, []>) {
+  const { address, chainId } = useAccount();
+  const setAgentTokenId = useAgentGetTokenIdStore((state) => state.setAgentTokenId);
   const result = useRequest(
     async () => {
-      if (!address) {
+      if (!address || !chainId) {
         if (setAgentTokenId) setAgentTokenId(0);
         return;
       }
       const agentCount = (await readContract(config, {
         abi: AGENT1_ABI,
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         functionName: "balanceOf",
         args: [address],
       })) as BigInt;
@@ -34,7 +30,7 @@ export default function useAgentGetTokenId(
       }
       const agentId = (await readContract(config, {
         abi: AGENT1_ABI,
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         functionName: "tokenOfOwnerByIndex",
         args: [address, 0],
       })) as bigint;
@@ -42,7 +38,7 @@ export default function useAgentGetTokenId(
       return Number(agentId);
     },
     {
-      refreshDeps: [address],
+      refreshDeps: [address, chainId],
       onError: (err) => exceptionHandler(err),
       ...options,
     }

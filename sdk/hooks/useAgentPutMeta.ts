@@ -8,7 +8,7 @@ type PostData = {
   agentId: number;
   agentName: string;
   avatar: string;
-  signature: string;
+  signature?: string;
 };
 
 export default function useAgentPutMeta(options?: Options<unknown, [PostData]>) {

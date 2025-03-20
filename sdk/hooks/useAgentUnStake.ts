@@ -2,8 +2,6 @@ import { useRequest } from "ahooks";
 import { Options } from "../types";
 import { useWriteContract } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
-import { isDev, isProd } from "../utils";
-import { mindnet, mindtestnet } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
@@ -12,31 +10,27 @@ import { config } from "../wagimConfig";
 import { parseEther } from "viem";
 import { estimateGasUtil } from "../utils/script";
 
-export default function useAgentUnStake(
-  options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
-) {
-  const { validateAsync } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+export default function useAgentUnStake(options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }) {
+  const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
     async (tokenId, amount) => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !chainId) {
         return;
       }
       const gasEstimate = await estimateGasUtil(
         AGENT1_ABI,
         "unstake",
         [tokenId, parseEther(amount)],
-        AGENT1_ADDRESS.address
+        AGENT1_ADDRESS[chainId]
       );
       //unstake
       const txHash2 = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "unstake",
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         args: [tokenId, parseEther(amount)],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });

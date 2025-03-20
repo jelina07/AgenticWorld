@@ -21,18 +21,14 @@ type DelegatePayload = {
   needSign: boolean;
 };
 
-export default function useHubDelegate(
-  options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }
-) {
-  const { validateAsync } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+export default function useHubDelegate(options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }) {
+  const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
     async (payload) => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !chainId) {
         return;
       }
       const sigTs = dayjs().utc().unix();
@@ -41,19 +37,19 @@ export default function useHubDelegate(
         signature = await request.post("/hub/verify", {
           ...payload,
           sigTs,
-          address: AGENT1_ADDRESS.address,
+          address: AGENT1_ADDRESS[chainId],
         });
       }
       const gasEstimate = await estimateGasUtil(
         AGENT1_ABI,
         "delegate",
         [payload.tokenId, payload.hubId, signature, sigTs],
-        AGENT1_ADDRESS.address
+        AGENT1_ADDRESS[chainId!]
       );
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "delegate",
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         args: [payload.tokenId, payload.hubId, signature, sigTs],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });

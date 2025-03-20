@@ -11,30 +11,21 @@ import { config } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { estimateGasUtil } from "../utils/script";
 
-export default function useAirdropClaim(
-  options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }
-) {
-  const { validateAsync } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+export default function useAirdropClaim(options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }) {
+  const { validateAsync, chainId } = useValidateChainWalletLink(isDev() || isProd() ? mindtestnet.id : mindnet.id);
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
     async (amount: string, proof: string[]) => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !chainId) {
         return;
       }
-      const gasEstimate = await estimateGasUtil(
-        AIRDROP_ABI,
-        "claim",
-        [amount, proof],
-        AIRDROP_ADDRESS.address
-      );
+      const gasEstimate = await estimateGasUtil(AIRDROP_ABI, "claim", [amount, proof], AIRDROP_ADDRESS[chainId]);
       const txHash = await writeContractAsync({
         abi: AIRDROP_ABI,
         functionName: "claim",
-        address: AIRDROP_ADDRESS.address,
+        address: AIRDROP_ADDRESS[chainId!],
         args: [amount, proof],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });

@@ -1,36 +1,32 @@
 import { useRequest } from "ahooks";
 import { Options } from "../types";
 import { config } from "../wagimConfig";
-import { DAOKEN_ADDRESS_CONFIG } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { getBalance } from "@wagmi/core";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
-import { isDev, isProd } from "../utils";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import { DAOKEN_ADDRESS } from "../blockChain/address";
 
 export default function useGetFheBalance(options?: Options<any, []>) {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const { setBalance } = useGetFheBalanceStore();
   const result = useRequest(
     async () => {
-      if (!address) {
+      if (!address || !chainId) {
         setBalance("");
         return;
       }
       const balance = await getBalance(config, {
         address,
-        token:
-          isDev() || isProd()
-            ? DAOKEN_ADDRESS_CONFIG.dev.address
-            : DAOKEN_ADDRESS_CONFIG.prod.address,
+        token: DAOKEN_ADDRESS[chainId],
       });
       setBalance(formatEther(balance.value));
       return formatEther(balance.value);
     },
     {
       onError: (err) => exceptionHandler(err),
-      refreshDeps: [address],
+      refreshDeps: [address, chainId],
       ...options,
     }
   );

@@ -8,19 +8,17 @@ import { exceptionHandler } from "../utils/exception";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 
-export default function useGetClaimableReward(
-  options?: Options<undefined | string, []> & { address: string }
-) {
-  const { address } = useAccount();
+export default function useGetClaimableReward(options?: Options<undefined | string, []> & { address: string }) {
+  const { address, chainId } = useAccount();
 
   const result = useRequest(
     async () => {
-      if (!address) {
+      if (!address || !chainId) {
         return;
       }
       const amount = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
-        address: DAO_INSPECTOR_ADDRESS.address,
+        address: DAO_INSPECTOR_ADDRESS[chainId],
         functionName: "getUserClaimableRewards",
         args: [address],
       })) as bigint;
@@ -29,7 +27,7 @@ export default function useGetClaimableReward(
     },
     {
       onError: (err) => exceptionHandler(err),
-      refreshDeps: [address],
+      refreshDeps: [address, chainId],
       ...options,
     }
   );

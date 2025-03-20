@@ -14,20 +14,18 @@ export default function useHubExitCurrent(
     waitForReceipt?: boolean;
   }
 ) {
-  const { validateAsync } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+  const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
   const result = useRequest(
     async (tokenId) => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !chainId) {
         return;
       }
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "exitCurrentHub",
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         args: [tokenId],
       });
       if (!options?.waitForReceipt) {

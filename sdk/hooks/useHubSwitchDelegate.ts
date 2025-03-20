@@ -5,8 +5,7 @@ import utc from "dayjs/plugin/utc";
 import request from "../request";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
-import { isDev, isProd } from "../utils";
-import { config, mindnet, mindtestnet } from "../wagimConfig";
+import { config } from "../wagimConfig";
 import { useWriteContract } from "wagmi";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { waitForTransactionReceipt } from "wagmi/actions";
@@ -21,18 +20,14 @@ type DelegatePayload = {
   needSign: boolean;
 };
 
-export default function useHubSwitchDelegate(
-  options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }
-) {
-  const { validateAsync } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+export default function useHubSwitchDelegate(options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }) {
+  const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
     async (payload) => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !chainId) {
         return;
       }
       const sigTs = dayjs().utc().unix();
@@ -41,19 +36,19 @@ export default function useHubSwitchDelegate(
         signature = await request.post("/hub/verify", {
           ...payload,
           sigTs,
-          address: AGENT1_ADDRESS.address,
+          address: AGENT1_ADDRESS[chainId],
         });
       }
       const gasEstimate = await estimateGasUtil(
         AGENT1_ABI,
         "switchHub",
         [payload.tokenId, payload.hubId, signature, sigTs],
-        AGENT1_ADDRESS.address
+        AGENT1_ADDRESS[chainId!]
       );
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "switchHub",
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         args: [payload.tokenId, payload.hubId, signature, sigTs],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });

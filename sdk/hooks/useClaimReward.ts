@@ -10,33 +10,24 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useClaimReward(
-  options?: Options<unknown, []> & { waitForReceipt?: boolean }
-) {
-  const { validateAsync, address } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+export default function useClaimReward(options?: Options<unknown, []> & { waitForReceipt?: boolean }) {
+  const { validateAsync, address, chainId } = useValidateChainWalletLink();
 
   const { writeContractAsync } = useWriteContract();
 
   const request = useRequest(
     async () => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !address || !chainId) {
         return;
       }
 
-      const gasEstimate = await estimateGasUtil(
-        AGENT1_ABI,
-        "claimReward",
-        [address],
-        AGENT1_ADDRESS.address
-      );
+      const gasEstimate = await estimateGasUtil(AGENT1_ABI, "claimReward", [address], AGENT1_ADDRESS[chainId]);
 
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "claimReward",
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         args: [address],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });

@@ -1,7 +1,7 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useSwitchChain } from "wagmi";
 
-export default function useValidateChainWalletLink(targetChain: number) {
+export default function useValidateChainWalletLink(targetChain?: number) {
   const { address, chainId } = useAccount();
   const { switchChain } = useSwitchChain();
   const { openConnectModal } = useConnectModal();
@@ -11,7 +11,7 @@ export default function useValidateChainWalletLink(targetChain: number) {
       openConnectModal?.();
       return false;
     }
-    if (chainId !== targetChain) {
+    if (targetChain && chainId !== targetChain) {
       switchChain({
         chainId: targetChain,
       });
@@ -23,5 +23,6 @@ export default function useValidateChainWalletLink(targetChain: number) {
   return {
     validateAsync,
     address,
+    chainId,
   };
 }

@@ -12,33 +12,29 @@ import { config } from "../wagimConfig";
 import { encodeFunctionData, parseEther } from "viem";
 import { estimateGasUtil } from "../utils/script";
 
-export default function useAgentStake(
-  options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
-) {
-  const { validateAsync } = useValidateChainWalletLink(
-    isDev() || isProd() ? mindtestnet.id : mindnet.id
-  );
+export default function useAgentStake(options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }) {
+  const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(
     async (tokenId, amount) => {
       const isValid = await validateAsync?.();
-      if (!isValid) {
+      if (!isValid || !chainId) {
         return;
       }
       //approve
       const gasEstimate = await estimateGasUtil(
         DAOTOKEN_ABI,
         "approve",
-        [AGENT1_ADDRESS.address, parseEther(amount)],
-        DAOKEN_ADDRESS.address
+        [AGENT1_ADDRESS[chainId], parseEther(amount)],
+        DAOKEN_ADDRESS[chainId]
       );
 
       const txHash = await writeContractAsync({
         abi: DAOTOKEN_ABI,
         functionName: "approve",
-        address: DAOKEN_ADDRESS.address,
-        args: [AGENT1_ADDRESS.address, parseEther(amount)],
+        address: DAOKEN_ADDRESS[chainId],
+        args: [AGENT1_ADDRESS[chainId], parseEther(amount)],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });
       //等待出块
@@ -48,13 +44,13 @@ export default function useAgentStake(
         AGENT1_ABI,
         "stake",
         [tokenId, parseEther(amount)],
-        AGENT1_ADDRESS.address
+        AGENT1_ADDRESS[chainId]
       );
       console.log("gasEstimate2", gasEstimate2);
       const txHash2 = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "stake",
-        address: AGENT1_ADDRESS.address,
+        address: AGENT1_ADDRESS[chainId],
         args: [tokenId, parseEther(amount)],
         gas: gasEstimate2 + gasEstimate2 / BigInt(3),
       });

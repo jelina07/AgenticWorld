@@ -5,21 +5,21 @@ import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { formatEther } from "viem";
+import { useAccount } from "wagmi";
 
-export default function useHubGetStakeAmount(
-  options?: Options<undefined | string[], []> & { hubIds?: any[] }
-) {
+export default function useHubGetStakeAmount(options?: Options<undefined | string[], []> & { hubIds?: any[] }) {
   const { hubIds, ...rest } = options || {};
+  const { chainId } = useAccount();
   const result = useRequest(
     async () => {
-      if (!hubIds?.length) {
+      if (!hubIds?.length || !chainId) {
         return;
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);
       const amounts = (await readContract(config, {
         abi: DAO_INSPECTOR_ABI,
         functionName: "getHubAssetAmountBatch",
-        address: DAO_INSPECTOR_ADDRESS.address,
+        address: DAO_INSPECTOR_ADDRESS[chainId],
         args: [justHubIds],
       })) as bigint[];
 
