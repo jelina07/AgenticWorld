@@ -88,8 +88,11 @@ const BeginInfo3 = () => {
   const router = useRouter();
   const { openConnectModal } = useConnectModal();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const [canRender, setCanRender] = useState(false);
+
+  const { data: learningIdPre, loading: learningIdLoading } = useHubGetCurrent({ tokenId: agentTokenId });
+
   const preTokenId = useRef<number>(agentTokenId);
-  console.log("🚀 ~ BeginInfo3 ~ agentTokenId:", agentTokenId, preTokenId);
 
   const [stringtypedout1, setStringtypedout1] = useState(false);
   const [stringtypedout2, setStringtypedout2] = useState(false);
@@ -115,16 +118,45 @@ const BeginInfo3 = () => {
     return false;
   }, [learningId, subnetList]);
 
-  if (preTokenId.current) {
-    router.replace("/");
-  }
-  console.log("isLearnRequiredHub", learningId, isLearnRequiredHub);
+  // if (learningIdLoading) {
+  //   return <div></div>;
+  // } else {
+  //   if (preTokenId.current && learningIdPre) {
+  //     router.replace("/");
+  //   }
+  // }
+
+  // const canRender = useMemo(() => {
+  //   if (learningIdLoading) {
+  //     return false;
+  //   }
+  //   if (preTokenId.current && learningIdPre) {
+  //     router.replace("/");
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }, [learningIdLoading]);
+  console.log("🚀 ~ canRender ~ canRender:", canRender);
+
   const clickConnect = (event: any) => {
     event.preventDefault();
     openConnectModal?.();
   };
 
-  return (
+  useEffect(() => {
+    if (!learningIdLoading) {
+      if (preTokenId.current && learningIdPre) {
+        router.replace("/");
+      } else {
+        setCanRender(true);
+      }
+    }
+  }, [learningIdLoading]);
+
+  return !canRender ? (
+    <div></div>
+  ) : (
     <div className="mt-[30px] sm:mt-[70px]">
       <div id="launchTitle">Buillding Agentic World</div>
       {address ? (
@@ -144,11 +176,7 @@ const BeginInfo3 = () => {
                 });
             }}
           />
-          <div
-            className={`${
-              stringtypedout1 ? "visible-style" : "hidden-style"
-            } mt-[50px]`}
-          >
+          <div className={`${stringtypedout1 ? "visible-style" : "hidden-style"} mt-[50px]`}>
             <StakeLaunch ref={stakeLaunchRef} />
           </div>
 
@@ -173,11 +201,7 @@ const BeginInfo3 = () => {
             <></>
           )}
 
-          <div
-            className={`${
-              stringtypedout2 ? "visible-style" : "hidden-style"
-            } mt-[40px]`}
-          >
+          <div className={`${stringtypedout2 ? "visible-style" : "hidden-style"} mt-[40px]`}>
             <RequiredHub />
           </div>
           {isLearnRequiredHub ? (
