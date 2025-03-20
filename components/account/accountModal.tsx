@@ -42,7 +42,7 @@ export default function AccountModal({ gasBalance }: { gasBalance?: string }) {
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       <Button
         type="primary"
-        className="button-brand-border-white-font mt-[50px]"
+        className="button-brand-border-white-font mt-[20px]"
         onClick={() => disconnectWallet()}
       >
         Disconnect Wallet

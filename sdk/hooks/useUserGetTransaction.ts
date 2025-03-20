@@ -2,12 +2,13 @@ import { usePagination } from "ahooks";
 import { Options } from "../types";
 import { useRef } from "react";
 import request from "../request";
+import { useAccount } from "wagmi";
 
-export default function useUserTransaction(options?: Options<unknown, []> & { address: string }) {
+export default function useUserTransaction(options?: Options<unknown, []>) {
   const total = useRef<number>(0);
   const totalFetched = useRef<boolean>(false);
 
-  const { address } = options || {};
+  const { address } = useAccount();
 
   const result = usePagination(
     async ({ current, pageSize }) => {
@@ -15,7 +16,9 @@ export default function useUserTransaction(options?: Options<unknown, []> & { ad
         return { list: [], total: 0 };
       }
       if (!totalFetched.current) {
-        const totalCount = (await request.get("/user-transaction/total", { params: { user: address } })) as number;
+        const totalCount = (await request.get("/user-transaction/total", {
+          params: { user: address },
+        })) as number;
         total.current = totalCount || 0;
         totalFetched.current = true;
       }

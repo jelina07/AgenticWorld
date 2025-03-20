@@ -4,6 +4,7 @@ import React from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { formatEther } from "viem";
+import { numberDigits } from "@/utils/utils";
 
 dayjs.extend(utc);
 
@@ -11,7 +12,7 @@ const tableColumns: TableColumnsType = [
   {
     title: "Token",
     dataIndex: "amount",
-    render: (amount) => amount && formatEther(BigInt(amount)),
+    render: (amount) => amount && numberDigits(formatEther(BigInt(amount))),
   },
   {
     title: "type",
@@ -33,26 +34,26 @@ const tableColumns: TableColumnsType = [
     render: (time) => time && dayjs().utc(time).format("HH:mm:ss DD/MM/YYYY"),
   },
 ];
-const tableData = [
-  {
-    subnetId: "1",
-    token: "FDN",
-    type: "Unstake",
-    agent: "CitizenZ_0",
-    status: "Success",
-    time: "5:00:00 3/12/2025",
-  },
-  {
-    subnetId: "2",
-    token: "FDN",
-    type: "Unstake",
-    agent: "CitizenZ_0",
-    status: "Success",
-    time: "5:00:00 3/12/2025",
-  },
-];
+// const tableData = [
+//   {
+//     subnetId: "1",
+//     token: "FDN",
+//     type: "Unstake",
+//     agent: "CitizenZ_0",
+//     status: "Success",
+//     time: "5:00:00 3/12/2025",
+//   },
+//   {
+//     subnetId: "2",
+//     token: "FDN",
+//     type: "Unstake",
+//     agent: "CitizenZ_0",
+//     status: "Success",
+//     time: "5:00:00 3/12/2025",
+//   },
+// ];
 export default function Transaction() {
-  const { data, loading, pagination } = useUserTransaction({ address: "0x805A8ABc903A0861eb6BaA9955098D26477c215B" });
+  const { data, loading, pagination } = useUserTransaction();
   console.log("🚀 ~ Transaction ~ data:", data);
 
   return (

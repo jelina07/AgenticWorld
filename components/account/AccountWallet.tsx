@@ -1,4 +1,4 @@
-import { handleCopy, mindscan } from "@/utils/utils";
+import { handleCopy, mindscan, numberDigits } from "@/utils/utils";
 import React from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import Copy from "@/public/icons/copy.svg";
@@ -28,7 +28,7 @@ export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
       </div>
       <div className="flex justify-between text-white mt-[10px]">
         <span>FHE Balance</span>
-        <span>{balance} FHE</span>
+        <span>{numberDigits(balance)} FHE</span>
       </div>
       <div className="text-right mt-[40px]">
         <a

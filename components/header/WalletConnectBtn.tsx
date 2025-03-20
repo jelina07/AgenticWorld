@@ -4,6 +4,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import AccountModal from "../account/accountModal";
 import { useGetFheBalance } from "@/sdk";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import { numberDigits } from "@/utils/utils";
 export const WalletConnectBtn = () => {
   const { openAccountModal } = useControlModal();
   const { data, refresh, loading } = useGetFheBalance();
@@ -99,7 +100,7 @@ export const WalletConnectBtn = () => {
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance}, ${
-                          !loading ? balance + " FHE" : ""
+                          !loading ? numberDigits(balance) + " FHE" : ""
                         })`
                       : ""}
                   </button>
