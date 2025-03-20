@@ -5,13 +5,15 @@ import UnLock from "@/components/utils/UnLock";
 import Edit from "@/public/icons/edit.svg";
 import Link from "next/link";
 import LaunchAgent from "./LaunchAgent";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StakeModal from "./StakeModal";
 import DecreseModal from "./DecreseModal";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import ShutDownAgent from "./ShutDownAgent";
 import {
+  useAgentGetMeta,
   useAgentGetStakeAmount,
+  useAgentPutMeta,
   useClaimReward,
   useGetClaimableReward,
   useHubGetCurrent,
@@ -34,11 +36,16 @@ export default function MyAgent({
     setIsEditing(true);
   };
 
-  const handleInputBlur = (event: any) => {
+  const handleInputBlur = async (event: any) => {
     setText(event.target.value);
     setIsEditing(false);
+    await putAgetMeta({
+      agentId: agentTokenId,
+      agentName: event.target.value,
+      avatar: "/icons/cz.svg",
+    });
+    console.log("event.target.value", event.target.value);
   };
-
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
   console.log("agentTokenId", agentTokenId);
@@ -55,7 +62,6 @@ export default function MyAgent({
     loading: claimableRewardLoading,
     refresh: claimableRewardRefresh,
   } = useGetClaimableReward();
-
   const { runAsync: claim, loading: claimLoading } = useClaimReward({
     waitForReceipt: true,
   });
@@ -138,7 +144,16 @@ export default function MyAgent({
   }, [currentLearnedHub, hubList, learningId, learnSecond]);
 
   console.log("stateType", stateType);
-
+  const { data: agentMeta, loading: agentMetaLoading } = useAgentGetMeta({
+    agentId: agentTokenId,
+  });
+  const { runAsync: putAgetMeta } = useAgentPutMeta();
+  console.log("agentMeta111", agentMeta);
+  useEffect(() => {
+    if (agentMeta) {
+      setText(agentMeta.agentName);
+    }
+  }, [agentMeta]);
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
       const res = await claim();
@@ -162,19 +177,19 @@ export default function MyAgent({
       >
         <div className="bg-[url('/icons/portrait.svg')] w-[180px] h-[180px] bg-contain bg-no-repeat mb-[50px] lg:mb-[0px] ">
           <img
-            src="/icons/cz.svg"
+            src={`${!agentMeta ? "/icons/cz.svg" : agentMeta.avatar}`}
             alt="cz"
             width="150"
             className="mx-auto pt-[30px]"
           />
-          <div className={`${!isAgent ? "hidden" : ""}`}>
+          {/* <div className={`${!isAgent ? "hidden" : ""}`}>
             <Button
               type="primary"
               className={`button-white-border-white-font mt-[10px]`}
             >
               Update
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className={`mind-input flex-1`}>
           {isAgent ? (
@@ -204,9 +219,16 @@ export default function MyAgent({
                           }}
                         />
                       ) : (
-                        <span className="text-[14px]">{text}</span>
+                        <span className="text-[14px]">
+                          {agentMetaLoading ? "loading..." : text}
+                        </span>
                       )}
-                      <div className="cursor-pointer" onClick={editName}>
+                      <div
+                        className={`cursor-pointer ${
+                          agentMetaLoading ? "hidden" : ""
+                        }`}
+                        onClick={editName}
+                      >
                         <Edit />
                       </div>
                     </div>

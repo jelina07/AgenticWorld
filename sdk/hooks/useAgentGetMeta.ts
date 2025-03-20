@@ -1,20 +1,26 @@
 import { useRequest } from "ahooks";
 import { Options } from "../types";
 import request from "../request";
+import { useAccount } from "wagmi";
 
-export default function useAgentGetMeta(options?: Options<unknown, [string]> & { wallet: string; agentId: number }) {
-  const { wallet, agentId, ...rest } = options || {};
+export default function useAgentGetMeta(
+  options?: Options<any, [string]> & { agentId: number }
+) {
+  const { address } = useAccount();
+  const { agentId, ...rest } = options || {};
 
   const result = useRequest(
     async () => {
-      if (!wallet) {
+      if (!address) {
         return;
       }
-      const res = await request.get(`/user-agent`, { params: { wallet, agentId } });
+      const res = await request.get(`/user-agent`, {
+        params: { wallet: address, agentId },
+      });
       return res;
     },
     {
-      refreshDeps: [wallet],
+      refreshDeps: [address],
       ...rest,
     }
   );

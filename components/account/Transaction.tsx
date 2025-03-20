@@ -34,24 +34,6 @@ const tableColumns: TableColumnsType = [
     render: (time) => time && dayjs().utc(time).format("HH:mm:ss DD/MM/YYYY"),
   },
 ];
-// const tableData = [
-//   {
-//     subnetId: "1",
-//     token: "FDN",
-//     type: "Unstake",
-//     agent: "CitizenZ_0",
-//     status: "Success",
-//     time: "5:00:00 3/12/2025",
-//   },
-//   {
-//     subnetId: "2",
-//     token: "FDN",
-//     type: "Unstake",
-//     agent: "CitizenZ_0",
-//     status: "Success",
-//     time: "5:00:00 3/12/2025",
-//   },
-// ];
 export default function Transaction() {
   const { data, loading, pagination } = useUserTransaction();
   console.log("🚀 ~ Transaction ~ data:", data);
