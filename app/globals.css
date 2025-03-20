@@ -314,6 +314,9 @@ input:focus {
 .mind-table .ant-table-wrapper .ant-table-filter-trigger {
   color: white;
 }
+.ant-spin-nested-loading > div > .ant-spin {
+  background: #080c0b !important;
+}
 
 .mind-collapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0;
