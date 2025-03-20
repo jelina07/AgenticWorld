@@ -20,7 +20,9 @@ export default function useAgentPutMeta(options?: Options<unknown, [PostData]>) 
         return;
       }
       // 签名
-      const signature = await signMessageAsync({ message: `You are modifying your agent information.` });
+      const signature = await signMessageAsync({
+        message: `You are modifying your agent information on the chain:${chainId}`,
+      });
       const res = await request.put("/user-agent", {
         ...postData,
         walletAddress: address,
