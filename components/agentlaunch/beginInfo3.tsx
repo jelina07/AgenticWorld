@@ -8,6 +8,8 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { usePrevious } from "ahooks";
+import { useAccount } from "wagmi";
+import { Button } from "antd";
 const string1 = `  
     <div>
       <div>
@@ -81,6 +83,7 @@ const string3 = `
         </div>
       </div>`;
 const BeginInfo3 = () => {
+  const { address } = useAccount();
   const router = useRouter();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const preTokenId = useRef<number>(agentTokenId);
@@ -116,79 +119,87 @@ const BeginInfo3 = () => {
   console.log("isLearnRequiredHub", learningId, isLearnRequiredHub);
 
   return (
-    <div className="mt-[30px] sm:mt-[70px]">
-      <div id="launchTitle">Buillding Agentic World</div>
-      <Typewriter
-        options={{
-          loop: false,
-          cursor: "",
-          delay: 10,
-        }}
-        onInit={(typewriter) => {
-          typewriter
-            .typeString(string1)
-            .start()
-            .callFunction(() => {
-              setStringtypedout1(true);
-            });
-        }}
-      />
-      <div
-        className={`${
-          stringtypedout1 ? "visible-style" : "hidden-style"
-        } mt-[50px]`}
-      >
-        <StakeLaunch ref={stakeLaunchRef} />
-      </div>
+    <>
+      {address ? (
+        <div className="mt-[30px] sm:mt-[70px]">
+          <div id="launchTitle">Buillding Agentic World</div>
+          <Typewriter
+            options={{
+              loop: false,
+              cursor: "",
+              delay: 10,
+            }}
+            onInit={(typewriter) => {
+              typewriter
+                .typeString(string1)
+                .start()
+                .callFunction(() => {
+                  setStringtypedout1(true);
+                });
+            }}
+          />
+          <div
+            className={`${
+              stringtypedout1 ? "visible-style" : "hidden-style"
+            } mt-[50px]`}
+          >
+            <StakeLaunch ref={stakeLaunchRef} />
+          </div>
 
-      {isAgent && stringtypedout1 ? (
-        <Typewriter
-          options={{
-            loop: false,
-            cursor: "",
-            delay: 10,
-          }}
-          onInit={(typewriter) => {
-            stakeLaunchRef.current?.clearStakeAmount();
-            typewriter
-              .typeString(string2)
-              .start()
-              .callFunction(() => {
-                setStringtypedout2(true);
-              });
-          }}
-        />
-      ) : (
-        <></>
-      )}
+          {isAgent && stringtypedout1 ? (
+            <Typewriter
+              options={{
+                loop: false,
+                cursor: "",
+                delay: 10,
+              }}
+              onInit={(typewriter) => {
+                stakeLaunchRef.current?.clearStakeAmount();
+                typewriter
+                  .typeString(string2)
+                  .start()
+                  .callFunction(() => {
+                    setStringtypedout2(true);
+                  });
+              }}
+            />
+          ) : (
+            <></>
+          )}
 
-      <div
-        className={`${
-          stringtypedout2 ? "visible-style" : "hidden-style"
-        } mt-[40px]`}
-      >
-        <RequiredHub />
-      </div>
-      {isLearnRequiredHub ? (
-        <Typewriter
-          options={{
-            loop: false,
-            cursor: "",
-            delay: 30,
-          }}
-          onInit={(typewriter) => {
-            typewriter
-              .typeString(string3)
-              .start()
-              .callFunction(() => {
-                setStringtypedout3(true);
-              });
-          }}
-        />
+          <div
+            className={`${
+              stringtypedout2 ? "visible-style" : "hidden-style"
+            } mt-[40px]`}
+          >
+            <RequiredHub />
+          </div>
+          {isLearnRequiredHub ? (
+            <Typewriter
+              options={{
+                loop: false,
+                cursor: "",
+                delay: 30,
+              }}
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString(string3)
+                  .start()
+                  .callFunction(() => {
+                    setStringtypedout3(true);
+                  });
+              }}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
       ) : (
-        <></>
+        <div>
+          <Button></Button>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -18,7 +18,7 @@ export default function Page() {
         className="absolute top-0 right-[20px] hidden sm:block"
       />
       <div className="mt-[30px] sm:mt-[70px] px-[20px]">
-        <div className="text-[30px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
+        <div className="text-[24px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
           Agentic World
         </div>
         <div className={`text-center mt-[26px] ${isAgent ? "hidden" : ""}`}>
