@@ -10,6 +10,7 @@ import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { usePrevious } from "ahooks";
 import { useAccount } from "wagmi";
 import { Button } from "antd";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 const string1 = `  
     <div>
       <div>
@@ -85,6 +86,7 @@ const string3 = `
 const BeginInfo3 = () => {
   const { address } = useAccount();
   const router = useRouter();
+  const { openConnectModal } = useConnectModal();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const preTokenId = useRef<number>(agentTokenId);
   console.log("🚀 ~ BeginInfo3 ~ agentTokenId:", agentTokenId, preTokenId);
@@ -117,12 +119,16 @@ const BeginInfo3 = () => {
     router.replace("/");
   }
   console.log("isLearnRequiredHub", learningId, isLearnRequiredHub);
+  const clickConnect = (event: any) => {
+    event.preventDefault();
+    openConnectModal?.();
+  };
 
   return (
-    <>
+    <div className="mt-[30px] sm:mt-[70px]">
+      <div id="launchTitle">Buillding Agentic World</div>
       {address ? (
-        <div className="mt-[30px] sm:mt-[70px]">
-          <div id="launchTitle">Buillding Agentic World</div>
+        <>
           <Typewriter
             options={{
               loop: false,
@@ -193,13 +199,13 @@ const BeginInfo3 = () => {
           ) : (
             <></>
           )}
-        </div>
+        </>
       ) : (
-        <div>
-          <Button></Button>
-        </div>
+        <a href="" id="#launch-link" onClick={clickConnect}>
+          Connect Wallet
+        </a>
       )}
-    </>
+    </div>
   );
 };
 
