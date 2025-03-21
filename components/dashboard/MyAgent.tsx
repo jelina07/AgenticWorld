@@ -51,18 +51,9 @@ export default function MyAgent({
       });
     }
   };
-  const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const relatedTarget = event.relatedTarget as HTMLElement | null;
-    const isConfirmButton = relatedTarget?.id === "confirmEdit";
-    if (!isConfirmButton) {
-      setText("CitizenZ_0");
-      setIsEditing(false);
-      message.warning("Canceled!");
-    }
-  };
+
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
-  console.log("agentTokenId", agentTokenId);
   const {
     data: agentStakeAmount,
     loading: agentStakeAmountLoading,
@@ -70,7 +61,6 @@ export default function MyAgent({
   } = useAgentGetStakeAmount({
     tokenId: agentTokenId,
   });
-  console.log("agentStakeAmount", agentStakeAmount);
   const {
     data: claimableReward,
     loading: claimableRewardLoading,
@@ -186,6 +176,19 @@ export default function MyAgent({
     }
   };
 
+  const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const relatedTarget = event.relatedTarget as HTMLElement | null;
+    const isConfirmButton = relatedTarget?.id === "confirmEdit";
+    if (!isConfirmButton) {
+      if (agentMeta) {
+        setText(agentMeta.agentName);
+      } else {
+        setText("CitizenZ_0");
+      }
+      setIsEditing(false);
+      message.warning("Canceled!");
+    }
+  };
   return (
     <>
       <div
