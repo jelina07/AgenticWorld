@@ -12,7 +12,12 @@ const tableColumns: TableColumnsType = [
     dataIndex: "subnetName",
     render: (value: string, record: any) => (
       <div className="flex items-center gap-[5px]">
-        <img src={record.subnetLogo} alt="logo" />
+        <img
+          src={record.subnetLogo}
+          alt="logo"
+          width={30}
+          className="rounded-[50%]"
+        />
         <span className="text-[14px] text-white mr-[10px]">{value}</span>
         <div
           className={`${

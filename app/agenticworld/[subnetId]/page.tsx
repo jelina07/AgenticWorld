@@ -48,17 +48,6 @@ export default function page({ params }: { params: any }) {
     learnSecond !== undefined &&
     learnSecond[0] >
       Number(subnetList.find((item: any) => item.id === learningId)?.lockUp);
-  console.log(
-    "lockTimeReach",
-    lockTimeReach,
-    learningId,
-    agentTokenId,
-    agentTokenId !== undefined,
-    agentTokenId !== 0,
-    learningId === 0,
-    !(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0)
-  );
-  console.log("hubApy", hubApy);
 
   const currentSubnet = subnetList
     ?.filter((item: any) => item.id === Number(params.subnetId))
@@ -71,10 +60,8 @@ export default function page({ params }: { params: any }) {
       subnetLevel: obj.Note,
       subnetRequire: obj.requireName,
       needSign: obj.needSign,
+      isAccess: obj.isAccess,
     }))[0];
-  // const currentSubnet = subnetList?.find(
-  //   (item: any) => item.id === Number(params.subnetId)
-  // );
   const currentSubnetIndex = subnetList?.findIndex((item: any) => {
     return item.id === Number(params.subnetId);
   });
@@ -107,22 +94,26 @@ export default function page({ params }: { params: any }) {
           />
         </div>
         <div className="mt-[50px] w-[170px]">
-          <Button
-            type="primary"
-            className="button-brand-border-white-font"
-            disabled={
-              learningId === Number(params.subnetId) ||
-              (!(
-                agentTokenId !== undefined &&
-                agentTokenId !== 0 &&
-                learningId === 0
-              ) &&
-                !lockTimeReach)
-            }
-            onClick={() => showModal()}
-          >
-            {learningId === Number(params.subnetId) ? "Learning..." : "Start"}
-          </Button>
+          {currentSubnet?.isAccess ? (
+            <Button
+              type="primary"
+              className="button-brand-border-white-font"
+              disabled={
+                learningId === Number(params.subnetId) ||
+                (!(
+                  agentTokenId !== undefined &&
+                  agentTokenId !== 0 &&
+                  learningId === 0
+                ) &&
+                  !lockTimeReach)
+              }
+              onClick={() => showModal()}
+            >
+              {learningId === Number(params.subnetId) ? "Learning..." : "Start"}
+            </Button>
+          ) : (
+            <></>
+          )}
         </div>
         <div className="mt-[50px]">
           <UseCase />

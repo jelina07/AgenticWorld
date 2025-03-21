@@ -472,7 +472,28 @@ input:focus {
 
 .hub-box {
   position: relative;
-  clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
+  /* clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%); */
+  border: 2px solid transparent;
+  border-image: linear-gradient(
+    180deg,
+    #33ceff 0%,
+    rgba(51, 255, 252, 0.15) 56%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  border-image-slice: 1;
+}
+
+.hub-box2 {
+  position: relative;
+  /* clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%); */
+  border: 2px solid transparent;
+  border-image: linear-gradient(
+    180deg,
+    #ffc876 0%,
+    rgba(214, 51, 255, 0.15) 56%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  border-image-slice: 1;
 }
 
 /* .hub-box::before {

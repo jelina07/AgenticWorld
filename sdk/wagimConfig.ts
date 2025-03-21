@@ -1,14 +1,44 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { Chain, getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { isDev, isProd } from "./utils";
+import { isDev, isMainnet, isMainnetio, isProd } from "./utils";
 import {
   injectedWallet,
   metaMaskWallet,
   rainbowWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-
+import { bsc, bscTestnet } from "viem/chains";
+import { fallback, http } from "wagmi";
+const INFURA_ID = "6f7f75dedc2a46669b6373796866b12a"; //testnet
+const INFURA_ID_MAINNET = "81cc77112fc44930806b6cb99ab24caf";
+const ANKRID =
+  "25d7836da278ec26551f9b7297ffea417c87fbb26caffe92ba656ee8e0f391d4";
+const NODEREALID = "01355584a3da4d22a34f4b6008e72c08";
+export const getTransports = (chainId: number) => {
+  switch (chainId) {
+    case bsc.id:
+      return fallback([
+        http(`https://bsc-mainnet.nodereal.io/v1/${NODEREALID}`),
+        http(`https://bsc-mainnet.infura.io/v3/${INFURA_ID_MAINNET}`),
+        http(`https://rpc.ankr.com/bsc/${ANKRID}`),
+      ]);
+    case bscTestnet.id:
+      return fallback([
+        http(`https://bsc-testnet.infura.io/v3/${INFURA_ID}`),
+        http(`https://rpc.ankr.com/bsc_testnet_chapel/${ANKRID}`),
+      ]);
+    case mindtestnet.id:
+      return http("https://rpc-testnet.mindnetwork.xyz");
+    case mindnet.id:
+      return fallback([
+        http(`https://rpc.mindnetwork.xyz`),
+        http(`https://rpc-mainnet.mindnetwork.xyz`),
+      ]);
+    default:
+      throw new Error("Unsupported chain");
+  }
+};
 export const mindtestnet = {
   id: 192940,
   name: "MindTestChain",
@@ -43,6 +73,25 @@ export const mindnet = {
     },
   },
 } as const satisfies Chain;
+const userAgentBrowser = navigator.userAgent;
+
+let chains: any;
+if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
+  chains = [
+    { ...bscTestnet, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
+  ];
+} else if ((isDev() || isProd()) && !userAgentBrowser.includes("BNC")) {
+  chains = [
+    mindtestnet,
+    { ...bscTestnet, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
+  ];
+} else if (isMainnet() || isMainnetio()) {
+  chains = [
+    mindnet,
+    { ...bsc, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
+  ];
+}
+console.log("bscTestnet", bscTestnet.id);
 
 export const config = getDefaultConfig({
   appName: "mind agent dapp",
@@ -57,6 +106,12 @@ export const config = getDefaultConfig({
       wallets: [injectedWallet],
     },
   ],
-  chains: isDev() || isProd() ? [mindtestnet] : [mindnet],
+  chains: chains,
   ssr: true, // If your dApp uses server side rendering (SSR)
+  transports: {
+    [bscTestnet.id]: getTransports(bscTestnet.id),
+    [bsc.id]: getTransports(bsc.id),
+    [mindtestnet.id]: getTransports(mindtestnet.id),
+    [mindnet.id]: getTransports(mindnet.id),
+  },
 });

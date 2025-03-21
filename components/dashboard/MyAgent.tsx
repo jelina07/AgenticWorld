@@ -21,6 +21,7 @@ import {
 } from "@/sdk";
 import { numberDigits } from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
+import { CheckOutlined } from "@ant-design/icons";
 
 export default function MyAgent({
   ids,
@@ -36,8 +37,9 @@ export default function MyAgent({
     setIsEditing(true);
   };
 
-  const handleInputBlur = async (event: any) => {
-    setText(event.target.value);
+  const confirmEditName = async (event: any) => {
+    // console.log("event.target.value", event.target);
+    // setText(event.target.value);
     setIsEditing(false);
     await putAgetMeta({
       agentId: agentTokenId,
@@ -45,6 +47,16 @@ export default function MyAgent({
       avatar: "/icons/cz.svg",
     });
     console.log("event.target.value", event.target.value);
+  };
+  const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const relatedTarget = event.relatedTarget as HTMLElement | null;
+    const isConfirmButton = relatedTarget?.id === "confirmEdit";
+    console.log("isConfirmButton", relatedTarget, relatedTarget?.id);
+    if (!isConfirmButton) {
+      setText("CitizenZ_0");
+      setIsEditing(false);
+      message.warning("Canceled!");
+    }
   };
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
@@ -177,7 +189,13 @@ export default function MyAgent({
       >
         <div className="bg-[url('/icons/portrait.svg')] w-[180px] h-[180px] bg-contain bg-no-repeat mb-[50px] lg:mb-[0px] ">
           <img
-            src={`${!agentMeta ? "/icons/cz.svg" : agentMeta.avatar}`}
+            src={`${
+              !isAgent
+                ? "/icons/citizenz_grey.svg"
+                : agentMeta
+                ? agentMeta.avatar
+                : "/icons/cz.svg"
+            }`}
             alt="cz"
             width="150"
             className="mx-auto pt-[30px]"
@@ -210,6 +228,7 @@ export default function MyAgent({
                           type="text"
                           defaultValue={text}
                           onBlur={handleInputBlur}
+                          onChange={(e) => setText(e.target.value)}
                           autoFocus
                           maxLength={30}
                           style={{
@@ -223,14 +242,17 @@ export default function MyAgent({
                           {agentMetaLoading ? "loading..." : text}
                         </span>
                       )}
-                      <div
-                        className={`cursor-pointer ${
-                          agentMetaLoading ? "hidden" : ""
-                        }`}
-                        onClick={editName}
-                      >
-                        <Edit />
-                      </div>
+                      {isEditing ? (
+                        <button
+                          onClick={confirmEditName}
+                          id="confirmEdit"
+                          type="button"
+                        >
+                          <CheckOutlined style={{ color: "#00ffb1" }} />
+                        </button>
+                      ) : (
+                        <Edit onClick={editName} />
+                      )}
                     </div>
                   </div>
                 </div>

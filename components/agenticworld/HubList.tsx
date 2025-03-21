@@ -66,6 +66,7 @@ export default function HubList({
       subnetLevel: item.note,
       subnetRequire: item.requireName,
       needSign: item.needSign,
+      isAccess: item.isAccess,
     };
   }) as SubnetInfoType[];
 
@@ -94,27 +95,7 @@ export default function HubList({
     }
     return false;
   }, [subnetInfor, learningId, learnSecond]);
-  // const lockTimeReach =
-  //   subnetInfor &&
-  //   learningId &&
-  //   learnSecond !== undefined &&
-  //   learnSecond[0] >=
-  //     Number(
-  //       subnetInfor.find((item: SubnetInfoType) => item.subnetId === learningId)
-  //         ?.lockup
-  //     );
 
-  console.log("current", agentTokenId, learningId, learnSecond, lockTimeReach);
-  console.log(
-    "bbb",
-    agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0,
-    lockTimeReach
-  );
-  console.log(
-    "aaaaaa",
-    (agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0) ||
-      lockTimeReach
-  );
   useAsyncEffect(async () => {}, []);
 
   const showModal = (event: any, hubItem: SubnetInfoType) => {
@@ -143,10 +124,10 @@ export default function HubList({
             >
               <Link href={`/agenticworld/${item.subnetId}`}>
                 <div
-                  className={`hub-box p-[40px] h-full ${
+                  className={`p-[40px] h-full ${
                     filter === 1 || filter === 2
-                      ? "bg-[url('/icons/subnet-box1.svg')]"
-                      : "bg-[url('/icons/subnet-box2.svg')]"
+                      ? "bg-[url('/icons/subnet-box1.svg')] hub-box"
+                      : "bg-[url('/icons/subnet-box2.svg')] hub-box2"
                   } bg-no-repeat bg-right-bottom bg-cover ${
                     isLaunch &&
                     learningId &&
@@ -189,7 +170,7 @@ export default function HubList({
                       {item.subnetLevel}
                     </div>
                   ) : (
-                    <div className="text-[14px] text-[#C7C7C7] mt-[20px] h-[100px]">
+                    <div className="text-[14px] text-[#C7C7C7] mt-[20px]">
                       {item.subnetInfo}
                     </div>
                   )}
@@ -234,20 +215,12 @@ export default function HubList({
                       <span className="text-[var(--mind-brand)]">Learning</span>
                       <img src="/icons/cz.svg" alt="cz" width={25} />
                     </div>
-                  ) : // (learningId !== undefined && learningId === 0) ||
-                  //   lockTimeReach ||
-                  //   !address ? (
-                  //   <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                  //     <span onClick={(event) => showModal(event, item)}>
-                  //       Start
-                  //     </span>
-                  //   </div>
-                  // )
-                  (agentTokenId !== undefined &&
+                  ) : ((agentTokenId !== undefined &&
                       agentTokenId !== 0 &&
                       learningId === 0) ||
-                    lockTimeReach ||
-                    !address ? (
+                      lockTimeReach ||
+                      !address) &&
+                    item.isAccess ? (
                     <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
                       <span onClick={(event) => showModal(event, item)}>
                         Start
