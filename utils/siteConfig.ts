@@ -1,7 +1,7 @@
 const baseSiteConfig = {
   name: "Mind Network Agent Dapp",
   description: "Pioneering FHE Infrastructure for a Fully Encrypted Web3",
-  url: "https://agent.mindnetwork.io/",
+  url: "https://agent.mindnetwork.xyz/",
   keywords: [
     "Mind Network",
     "restake",
