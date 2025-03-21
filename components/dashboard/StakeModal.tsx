@@ -1,4 +1,4 @@
-import { Button, Input, message, Modal } from "antd";
+import { Button, Input, message, Modal, notification } from "antd";
 import React, { useState } from "react";
 import UpArraw from "@/public/icons/up-arraw.svg";
 import { checkAmountControlButtonShow } from "@/utils/utils";
@@ -41,11 +41,23 @@ export default function StakeModal({
 
   const stake = async () => {
     if (checkAmountControlButtonShow(amount)) {
-      const res = await agentStake(agentTokenId!, amount);
-      if (res) {
-        refreshStakeAmount();
-        refresh();
-        handleCancel();
+      if (Number(amount) > Number(balance)) {
+        message.open({
+          type: "warning",
+          content: "The amount you enter is greater than your balance",
+          duration: 5,
+        });
+      } else {
+        const res = await agentStake(agentTokenId!, amount);
+        if (res) {
+          refreshStakeAmount();
+          refresh();
+          handleCancel();
+          notification.success({
+            message: "Success",
+            description: "stake success",
+          });
+        }
       }
     }
   };

@@ -3,7 +3,7 @@ import { useHubDelegate, useHubSwitchDelegate } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { secondsToHours } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { Button, Modal } from "antd";
+import { Button, Modal, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 
 const StartConfirmModal = forwardRef(
@@ -46,22 +46,29 @@ const StartConfirmModal = forwardRef(
       setIsModalOpen(false);
     };
     const delegate = async () => {
+      let res = null;
       if (learningId) {
-        await hubDelegateSwitch({
+        res = await hubDelegateSwitch({
           tokenId: agentTokenId,
           hubId: currentHub?.subnetId!,
           needSign: Boolean(currentHub?.needSign!),
         });
       } else {
-        await hubDelegate({
+        res = await hubDelegate({
           tokenId: agentTokenId,
           hubId: currentHub?.subnetId!,
           needSign: Boolean(currentHub?.needSign!),
         });
       }
-      handleCancel();
-      refreshLearningId();
-      refreshHubAgentCount();
+      if (res) {
+        handleCancel();
+        refreshLearningId();
+        refreshHubAgentCount();
+        notification.success({
+          message: "Success",
+          description: "delegate success",
+        });
+      }
     };
     return (
       <Modal

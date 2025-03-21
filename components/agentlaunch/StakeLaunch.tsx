@@ -1,7 +1,8 @@
-import { useAgentGetTokenId, useAgentStake } from "@/sdk";
+import { useAgentGetTokenId, useAgentStake, useGetFheBalance } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import { checkAmountControlButtonShow } from "@/utils/utils";
-import { Button, Input, message } from "antd";
+import { Button, Input, message, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 
 const StakeLaunch = forwardRef((_, ref) => {
@@ -9,11 +10,13 @@ const StakeLaunch = forwardRef((_, ref) => {
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
     waitForReceipt: true,
   });
-
   const { refresh: agentGetTokenIdRefresh } = useAgentGetTokenId();
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
+  const {} = useGetFheBalance();
+  const { balance } = useGetFheBalanceStore();
+
   useImperativeHandle(ref, () => ({
     clearStakeAmount: () => {
       setAmount("");
@@ -28,14 +31,25 @@ const StakeLaunch = forwardRef((_, ref) => {
           content: "The minimum amount entered is 100",
           duration: 5,
         });
+      } else if (Number(amount) > Number(balance)) {
+        message.open({
+          type: "warning",
+          content: "The amount you enter is greater than your balance",
+          duration: 5,
+        });
       } else {
         const res = await agentStake(agentTokenId!, amount);
         if (res) {
           agentGetTokenIdRefresh();
+          notification.success({
+            message: "Success",
+            description: "stake success",
+          });
         }
       }
     }
   };
+
   return (
     <div
       className="p-[24px] mt-[50px] mind-input max-w-[775px] mx-auto flex justify-between gap-[30px] flex-wrap

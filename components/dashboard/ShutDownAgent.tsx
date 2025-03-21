@@ -1,7 +1,7 @@
 "use client";
 import { useAgentBurn, useAgentUnStake } from "@/sdk";
 import { checkAmountControlButtonShow } from "@/utils/utils";
-import { Button, Modal } from "antd";
+import { Button, Modal, notification } from "antd";
 import React, { useState } from "react";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 
@@ -36,6 +36,10 @@ export default function ShutDownAgent({
         refreshStakeAmount();
         refreshAgentTokenId();
         handleCancel();
+        notification.success({
+          message: "Success",
+          description: "shut down success",
+        });
       }
     }
   };

@@ -1,4 +1,4 @@
-import { Button, Input, message, Modal } from "antd";
+import { Button, Input, message, Modal, notification } from "antd";
 import React, { useState } from "react";
 import DownArraw from "@/public/icons/down-arraw.svg";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
@@ -41,6 +41,10 @@ export default function DecreseModal({
         if (res) {
           refreshStakeAmount();
           handleCancel();
+          notification.success({
+            message: "Success",
+            description: "unstake success",
+          });
         }
       } else {
         message.open({

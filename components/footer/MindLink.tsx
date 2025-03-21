@@ -7,7 +7,7 @@ export default function MindLink() {
         href="https://www.mindnetwork.xyz/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-white"
+        className="text-white hover:var(--mind-brand)"
       >
         Home
       </a>
@@ -15,7 +15,7 @@ export default function MindLink() {
         href="https://stats.mindnetwork.xyz/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-white"
+        className="text-white hover:var(--mind-brand)"
       >
         Stats
       </a>
@@ -23,7 +23,7 @@ export default function MindLink() {
         href="https://dapp.mindnetwork.xyz/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-white"
+        className="text-white hover:var(--mind-brand)"
       >
         MindV
       </a>

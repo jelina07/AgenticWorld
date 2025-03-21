@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, message } from "antd";
+import { Button, Input, message, notification } from "antd";
 import Lock from "@/components/utils/Lock";
 import UnLock from "@/components/utils/UnLock";
 import Edit from "@/public/icons/edit.svg";
@@ -38,8 +38,6 @@ export default function MyAgent({
   };
 
   const confirmEditName = async (event: any) => {
-    // console.log("event.target.value", event.target);
-    // setText(event.target.value);
     setIsEditing(false);
     await putAgetMeta({
       agentId: agentTokenId,
@@ -171,6 +169,10 @@ export default function MyAgent({
       const res = await claim();
       if (res) {
         claimableRewardRefresh();
+        notification.success({
+          message: "Success",
+          description: "claim success",
+        });
       }
     } else {
       message.open({
