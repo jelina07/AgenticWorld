@@ -3,9 +3,7 @@ import { Options } from "../types";
 import request from "../request";
 import { useAccount } from "wagmi";
 
-export default function useAgentGetMeta(
-  options?: Options<any, [string]> & { agentId: number }
-) {
+export default function useAgentGetMeta(options?: Options<any, [string]> & { agentId: number }) {
   const { address } = useAccount();
   const { agentId, ...rest } = options || {};
 
@@ -14,7 +12,7 @@ export default function useAgentGetMeta(
       if (!address) {
         return;
       }
-      const res = await request.get(`/user-agent`, {
+      const res = await request.get(`/user-agent/info`, {
         params: { wallet: address, agentId },
       });
       return res;
