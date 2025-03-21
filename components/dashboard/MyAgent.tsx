@@ -162,7 +162,6 @@ export default function MyAgent({
     agentId: agentTokenId,
   });
   const { runAsync: putAgetMeta } = useAgentPutMeta();
-  console.log("agentMeta111", agentMeta);
   useEffect(() => {
     if (agentMeta) {
       setText(agentMeta.agentName);

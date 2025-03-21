@@ -4,12 +4,14 @@ import { useAccount, useDisconnect } from "wagmi";
 import Copy from "@/public/icons/copy.svg";
 import Mindscan from "@/public/icons/mindscan.svg";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import { useGetFheBalance } from "@/sdk";
 
 export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
   const { address } = useAccount();
   const copyAddress = (address: `0x${string}`) => {
     handleCopy(address);
   };
+  const { refresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
   return (
     <div>
@@ -28,7 +30,15 @@ export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
       </div>
       <div className="flex justify-between text-white mt-[10px]">
         <span>FHE Balance</span>
-        <span>{numberDigits(balance)} FHE</span>
+        <div className="flex items-center gap-[3px]">
+          <span>{loading ? "loading..." : numberDigits(balance) + " FHE"}</span>
+          <img
+            src="/icons/refresh.svg"
+            alt="refresh"
+            onClick={refresh}
+            className={`cursor-pointer ${loading ? "refresh" : ""}`}
+          />
+        </div>
       </div>
       <div className="text-right mt-[40px]">
         <a

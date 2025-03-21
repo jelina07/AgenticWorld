@@ -114,7 +114,7 @@ export default function StakeModal({
                 src="/icons/refresh.svg"
                 alt="refresh"
                 onClick={refresh}
-                className="cursor-pointer"
+                className={`cursor-pointer ${loading ? "refresh" : ""}`}
               />
             </div>
           </div>
