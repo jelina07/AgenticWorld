@@ -11,7 +11,9 @@ type PostData = {
   avatar: string;
 };
 
-export default function useAgentPutMeta(options?: Options<unknown, [PostData]>) {
+export default function useAgentPutMeta(
+  options?: Options<unknown, [PostData]>
+) {
   const { address, chainId } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const result = useRequest(
@@ -23,6 +25,14 @@ export default function useAgentPutMeta(options?: Options<unknown, [PostData]>) 
       const signature = await signMessageAsync({
         message: `You are modifying your agent information on the chain:${chainId}`,
       });
+      console.log("bbbb", {
+        ...postData,
+        walletAddress: address,
+        chainId,
+        signature,
+        agentAddress: AGENT1_ADDRESS[chainId],
+      });
+
       const res = await request.put("/user-agent/info", {
         ...postData,
         walletAddress: address,

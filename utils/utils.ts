@@ -80,3 +80,8 @@ export function secondsToHours(seconds: number | string): string {
   if (isNaN(Number(seconds))) return seconds as string;
   return numberDigitsNoMillify(Number(seconds) / 3600);
 }
+
+export const getUserAgent = () => {
+  if (typeof window === "undefined") return "";
+  return window.navigator.userAgent;
+};

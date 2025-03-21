@@ -10,6 +10,8 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { bsc, bscTestnet } from "viem/chains";
 import { fallback, http } from "wagmi";
+import { getUserAgent } from "@/utils/utils";
+const userAgentBrowser = getUserAgent(); // 安全获取 User Agent
 const INFURA_ID = "6f7f75dedc2a46669b6373796866b12a"; //testnet
 const INFURA_ID_MAINNET = "81cc77112fc44930806b6cb99ab24caf";
 const ANKRID =
@@ -73,7 +75,6 @@ export const mindnet = {
     },
   },
 } as const satisfies Chain;
-const userAgentBrowser = navigator.userAgent;
 
 let chains: any;
 if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
@@ -85,13 +86,19 @@ if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
     mindtestnet,
     { ...bscTestnet, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
   ];
-} else if (isMainnet() || isMainnetio()) {
+} else if ((isMainnet() || isMainnetio()) && userAgentBrowser.includes("BNC")) {
+  chains = [{ ...bsc, iconUrl: "/images/bnb.png", iconBackground: "#fff" }];
+} else if (
+  (isMainnet() || isMainnetio()) &&
+  !userAgentBrowser.includes("BNC")
+) {
   chains = [
     mindnet,
     { ...bsc, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
   ];
+} else {
+  chains = [];
 }
-console.log("bscTestnet", bscTestnet.id);
 
 export const config = getDefaultConfig({
   appName: "mind agent dapp",

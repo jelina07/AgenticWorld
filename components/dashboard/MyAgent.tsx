@@ -37,19 +37,23 @@ export default function MyAgent({
     setIsEditing(true);
   };
 
-  const confirmEditName = async (event: any) => {
+  const confirmEditName = async () => {
     setIsEditing(false);
-    await putAgetMeta({
+    const res = await putAgetMeta({
       agentId: agentTokenId,
-      agentName: event.target.value,
+      agentName: text,
       avatar: "/icons/cz.svg",
     });
-    console.log("event.target.value", event.target.value);
+    if (res) {
+      notification.success({
+        message: "Success",
+        description: "Names have been updated!",
+      });
+    }
   };
   const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     const relatedTarget = event.relatedTarget as HTMLElement | null;
     const isConfirmButton = relatedTarget?.id === "confirmEdit";
-    console.log("isConfirmButton", relatedTarget, relatedTarget?.id);
     if (!isConfirmButton) {
       setText("CitizenZ_0");
       setIsEditing(false);
