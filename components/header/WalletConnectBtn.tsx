@@ -73,7 +73,7 @@ export const WalletConnectBtn = () => {
                     onClick={openChainModal}
                     style={{ display: "flex", alignItems: "center" }}
                     type="button"
-                    className="wallet-btn text-[10px] sm:text-[14px] px-[5px] py-[3px] sm:px-[12px]"
+                    className="wallet-btn text-[12px] sm:text-[14px] px-[5px] py-[3px] sm:px-[12px]"
                   >
                     {chain.hasIcon && (
                       <div

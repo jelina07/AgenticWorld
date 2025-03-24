@@ -3,11 +3,13 @@ import { Options } from "../types";
 import { readContract } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
-import { DAO_INSPECTOR_ADDRESS, DAOKEN_ADDRESS } from "../blockChain/address";
+import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { useAccount } from "wagmi";
 
-export default function useHubAgentCount(options?: Options<undefined | any[], []> & { hubIds?: any[] }) {
+export default function useHubAgentCount(
+  options?: Options<undefined | any[], []> & { hubIds?: any[] }
+) {
   const { hubIds, ...rest } = options || {};
   const { chainId } = useAccount();
 

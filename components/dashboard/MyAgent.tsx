@@ -159,6 +159,8 @@ export default function MyAgent({
       setText(agentMeta.agentName);
     }
   }, [agentMeta]);
+  console.log("agentMeta", agentMeta);
+
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
       const res = await claim();

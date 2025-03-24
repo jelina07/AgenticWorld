@@ -9,8 +9,11 @@ import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { parseEther } from "viem";
 import { estimateGasUtil } from "../utils/script";
+import { type EstimateGasErrorType } from "@wagmi/core";
 
-export default function useAgentUnStake(options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }) {
+export default function useAgentUnStake(
+  options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
+) {
   const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
@@ -44,7 +47,7 @@ export default function useAgentUnStake(options?: Options<unknown, [number, stri
     },
     {
       manual: true,
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, AGENT1_ABI),
       ...options,
     }
   );

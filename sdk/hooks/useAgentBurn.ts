@@ -9,7 +9,9 @@ import { estimateGasUtil } from "../utils/script";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useAgentBurn(options?: Options<unknown, [number]> & { waitForReceipt?: boolean }) {
+export default function useAgentBurn(
+  options?: Options<unknown, [number]> & { waitForReceipt?: boolean }
+) {
   const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
   const result = useRequest(
@@ -20,7 +22,12 @@ export default function useAgentBurn(options?: Options<unknown, [number]> & { wa
       }
 
       // estimate
-      const gasEstimate2 = await estimateGasUtil(AGENT1_ABI, "burn", [tokenId], AGENT1_ADDRESS[chainId]);
+      const gasEstimate2 = await estimateGasUtil(
+        AGENT1_ABI,
+        "burn",
+        [tokenId],
+        AGENT1_ADDRESS[chainId]
+      );
 
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
@@ -38,7 +45,7 @@ export default function useAgentBurn(options?: Options<unknown, [number]> & { wa
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, AGENT1_ABI),
       manual: true,
       ...options,
     }
