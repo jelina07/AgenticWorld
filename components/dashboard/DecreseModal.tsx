@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import DownArraw from "@/public/icons/down-arraw.svg";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useAgentUnStake, useGetFheBalance } from "@/sdk";
-import { checkAmountControlButtonShow, numberDigits } from "@/utils/utils";
+import {
+  checkAmountControlButtonShow,
+  firstStakeAmount,
+  numberDigits,
+} from "@/utils/utils";
 import Max from "../utils/Max";
 import Big from "big.js";
 
@@ -35,7 +39,7 @@ export default function DecreseModal({
     if (checkAmountControlButtonShow(amount)) {
       if (
         agentStakeAmount &&
-        Number(agentStakeAmount) - Number(amount) >= 100
+        Number(agentStakeAmount) - Number(amount) >= firstStakeAmount
       ) {
         const res = await agentUnStake(agentTokenId!, amount);
         if (res) {
@@ -50,8 +54,7 @@ export default function DecreseModal({
       } else {
         message.open({
           type: "warning",
-          content:
-            "The amount you've entered is too large, you need at least 100 tokens in the agent.",
+          content: `The amount you've entered is too large, you need at least ${firstStakeAmount} tokens in the agent.`,
           duration: 5,
         });
       }

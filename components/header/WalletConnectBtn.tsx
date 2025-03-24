@@ -50,7 +50,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="wallet-btn"
+                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px]"
                   >
                     Connect Wallet
                   </button>
@@ -61,7 +61,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openChainModal}
                     type="button"
-                    className="wallet-btn"
+                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px]"
                   >
                     Wrong network
                   </button>
@@ -73,7 +73,7 @@ export const WalletConnectBtn = () => {
                     onClick={openChainModal}
                     style={{ display: "flex", alignItems: "center" }}
                     type="button"
-                    className="wallet-btn"
+                    className="wallet-btn text-[10px] sm:text-[14px] px-[5px] py-[3px] sm:px-[12px]"
                   >
                     {chain.hasIcon && (
                       <div
@@ -85,6 +85,7 @@ export const WalletConnectBtn = () => {
                           overflow: "hidden",
                           marginRight: 4,
                         }}
+                        className="hidden sm:inline-block"
                       >
                         {chain.iconUrl && (
                           <img
@@ -100,7 +101,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="wallet-btn hidden md:block"
+                    className="wallet-btn hidden md:block px-[5px] py-[3px] sm:px-[12px] text-[14px]"
                   >
                     {account.displayName}
                     {account.displayBalance

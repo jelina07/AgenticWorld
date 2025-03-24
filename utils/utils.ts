@@ -2,6 +2,8 @@ import { isDev, isProd } from "@/sdk/utils";
 import { message } from "antd";
 import millify from "millify";
 
+export const firstStakeAmount = 100;
+
 export const mindscan = (address: `0x${string}`) => {
   return isDev() || isProd()
     ? `https://explorer-testnet.mindnetwork.xyz/address/${address}`

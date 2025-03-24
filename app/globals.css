@@ -73,8 +73,6 @@ body {
   border-radius: 150px;
   border: 1px solid #f5f7fa;
   background-color: var(--btn-bg);
-  padding: 3px 12px;
-  font-size: 14px;
 }
 /* font brand; border brand */
 .button-brand-border.ant-btn-variant-solid {
