@@ -1,5 +1,5 @@
 "use client";
-import { useAgentBurn, useAgentUnStake } from "@/sdk";
+import { useAgentBurn, useAgentUnStake, useGetFheBalance } from "@/sdk";
 import { checkAmountControlButtonShow } from "@/utils/utils";
 import { Button, Modal, notification } from "antd";
 import React, { useState } from "react";
@@ -20,6 +20,7 @@ export default function ShutDownAgent({
   const refreshAgentTokenId = useAgentGetTokenIdStore(
     (state) => state.refreshGetAgentTokenId
   );
+  const { refresh: fheBalanceRefresh } = useGetFheBalance();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -34,6 +35,7 @@ export default function ShutDownAgent({
       const res = await agentBurn(agentTokenId!);
       if (res) {
         refreshStakeAmount();
+        fheBalanceRefresh();
         refreshAgentTokenId();
         handleCancel();
         notification.success({

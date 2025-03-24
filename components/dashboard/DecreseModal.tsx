@@ -4,7 +4,6 @@ import DownArraw from "@/public/icons/down-arraw.svg";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useAgentUnStake, useGetFheBalance } from "@/sdk";
 import { checkAmountControlButtonShow, numberDigits } from "@/utils/utils";
-import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import Max from "../utils/Max";
 import Big from "big.js";
 
@@ -22,6 +21,7 @@ export default function DecreseModal({
       waitForReceipt: true,
     });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const { refresh: fheBalanceRefresh } = useGetFheBalance();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -40,6 +40,7 @@ export default function DecreseModal({
         const res = await agentUnStake(agentTokenId!, amount);
         if (res) {
           refreshStakeAmount();
+          fheBalanceRefresh();
           handleCancel();
           notification.success({
             message: "Success",

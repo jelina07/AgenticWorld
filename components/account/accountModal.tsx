@@ -4,14 +4,30 @@ import AccountWallet from "./AccountWallet";
 import { useDisconnect } from "wagmi";
 import Transaction from "./Transaction";
 
-export default function AccountModal({ gasBalance }: { gasBalance?: string }) {
+export default function AccountModal({
+  gasBalance,
+  balance,
+  refresh,
+  loading,
+}: {
+  refresh: Function;
+  loading: boolean;
+  gasBalance?: string;
+  balance?: string;
+}) {
   const { accountModalopen, setIsAccountModalopen } = useControlModal();
   const { disconnect } = useDisconnect();
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Wallet",
-      children: <AccountWallet gasBalance={gasBalance} />,
+      children: (
+        <AccountWallet
+          gasBalance={gasBalance}
+          refresh={refresh}
+          loading={loading}
+        />
+      ),
     },
     {
       key: "2",

@@ -65,7 +65,6 @@ export default function HubRecord({
     tokenId: agentTokenId,
     hubIds: ids,
   });
-  console.log("hubLearningExps", learnSecond);
   const { loading: learningIdLoading } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
@@ -78,24 +77,30 @@ export default function HubRecord({
   const learningId = useGetLearningHubId((state) => state.learningHubId);
   const tableData =
     (agentTokenId &&
-      hubList?.map((item: any, index: number) => {
-        const status = item.id === learningId ? "Training" : "Exit";
-        const currentLearned = learnSecond ? learnSecond[index] : "loading...";
-        console.log("currentLearned", currentLearned);
-        const currentRewards = rewards
-          ? numberDigits(rewards[index]) + " FHE"
-          : "loading...";
-        return {
-          subnetId: item.id,
-          subnetName: item.name,
-          subnetLogo: item.logo,
-          status: learningIdLoading && learningId === 0 ? "loading..." : status,
-          lockupHours: item.lockUp,
-          currentLearned: currentLearned,
-          rewards: currentRewards,
-        };
-      })) ||
+      hubList
+        ?.filter((obj) => obj.note === "Required")
+        ?.map((item: any, index: number) => {
+          const status = item.id === learningId ? "Training" : "Exit";
+          const currentLearned = learnSecond
+            ? learnSecond[index]
+            : "loading...";
+          const currentRewards = rewards
+            ? numberDigits(rewards[index]) + " FHE"
+            : "loading...";
+          return {
+            subnetId: item.id,
+            subnetName: item.name,
+            subnetLogo: item.logo,
+            status:
+              learningIdLoading && learningId === 0 ? "loading..." : status,
+            lockupHours: item.lockUp,
+            currentLearned: currentLearned,
+            rewards: currentRewards,
+          };
+        })) ||
     [];
+  console.log("tableData,hubList", tableData, hubList);
+
   return (
     <div className="mind-table mt-[50px]">
       <div className="text-[18px] font-[800] mb-[30px]">

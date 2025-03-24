@@ -6,12 +6,19 @@ import Mindscan from "@/public/icons/mindscan.svg";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import { useGetFheBalance } from "@/sdk";
 
-export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
+export default function AccountWallet({
+  gasBalance,
+  refresh,
+  loading,
+}: {
+  refresh: Function;
+  loading: boolean;
+  gasBalance?: string;
+}) {
   const { address } = useAccount();
   const copyAddress = (address: `0x${string}`) => {
     handleCopy(address);
   };
-  const { refresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
   return (
     <div>
@@ -31,11 +38,15 @@ export default function AccountWallet({ gasBalance }: { gasBalance?: string }) {
       <div className="flex justify-between text-white mt-[10px]">
         <span>FHE Balance</span>
         <div className="flex items-center gap-[3px]">
-          <span>{loading ? "loading..." : numberDigits(balance) + " FHE"}</span>
+          <span>
+            {loading
+              ? "loading..."
+              : balance === undefined || numberDigits(balance) + " FHE"}
+          </span>
           <img
             src="/icons/refresh.svg"
             alt="refresh"
-            onClick={refresh}
+            onClick={() => refresh()}
             className={`cursor-pointer ${loading ? "refresh" : ""}`}
           />
         </div>

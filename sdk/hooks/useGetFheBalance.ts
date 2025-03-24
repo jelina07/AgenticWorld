@@ -17,16 +17,14 @@ export default function useGetFheBalance(options?: Options<any, []>) {
         setBalance("");
         return;
       }
-      console.log("useGetFheBalance", useGetFheBalance);
 
       const balance = await getBalance(config, {
         address,
         token: DAOKEN_ADDRESS[chainId],
       });
-      setBalance(formatEther(balance.value));
-      console.log("balance", balance);
-
-      return formatEther(balance.value);
+      setBalance(balance.formatted);
+      console.log("useGetFheBalance", balance);
+      return balance.formatted;
     },
     {
       onError: (err) => exceptionHandler(err),

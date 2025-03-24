@@ -1,8 +1,4 @@
-import BeginInfo from "@/components/agentlaunch/beginInfo";
-import BeginInfo2 from "@/components/agentlaunch/beginInfo2";
 import BeginInfo3 from "@/components/agentlaunch/beginInfo3";
-import StakeLaunch from "@/components/agentlaunch/StakeLaunch";
-import Link from "next/link";
 import React from "react";
 
 export default function Page() {

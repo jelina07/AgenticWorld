@@ -5,10 +5,15 @@ import AccountModal from "../account/accountModal";
 import { useGetFheBalance } from "@/sdk";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import { numberDigits } from "@/utils/utils";
+import { useAsyncEffect } from "ahooks";
 export const WalletConnectBtn = () => {
-  const { openAccountModal } = useControlModal();
-  const { data, refresh, loading } = useGetFheBalance();
+  const { openAccountModal, accountModalopen } = useControlModal();
+  const { runAsync, loading, refresh } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
+
+  useAsyncEffect(async () => {
+    await runAsync();
+  }, [accountModalopen]);
   return (
     <ConnectButton.Custom>
       {({
@@ -99,12 +104,16 @@ export const WalletConnectBtn = () => {
                   >
                     {account.displayName}
                     {account.displayBalance
-                      ? ` (${account.displayBalance}, ${
-                          !loading ? numberDigits(balance) + " FHE" : ""
+                      ? ` (${account.displayBalance}${
+                          balance ? ", " + numberDigits(balance) + " FHE" : ""
                         })`
                       : ""}
                   </button>
-                  <AccountModal gasBalance={account.displayBalance} />
+                  <AccountModal
+                    gasBalance={account.displayBalance}
+                    refresh={refresh}
+                    loading={loading}
+                  />
                 </div>
               );
             })()}

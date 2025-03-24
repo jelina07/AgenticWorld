@@ -14,7 +14,7 @@ const StakeLaunch = forwardRef((_, ref) => {
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
-  const {} = useGetFheBalance();
+  const { refresh: fheBalanceRefresh } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
 
   useImperativeHandle(ref, () => ({
@@ -41,6 +41,7 @@ const StakeLaunch = forwardRef((_, ref) => {
         const res = await agentStake(agentTokenId!, amount);
         if (res) {
           agentGetTokenIdRefresh();
+          fheBalanceRefresh();
           notification.success({
             message: "Success",
             description: "stake success",

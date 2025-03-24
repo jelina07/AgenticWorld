@@ -16,6 +16,7 @@ import {
   useAgentPutMeta,
   useClaimReward,
   useGetClaimableReward,
+  useGetFheBalance,
   useHubGetCurrent,
   useHubGetCurrentExp,
 } from "@/sdk";
@@ -147,7 +148,8 @@ export default function MyAgent({
     }
   }, [currentLearnedHub, hubList, learningId, learnSecond]);
 
-  console.log("stateType", stateType);
+  const { refresh: refreshBalance } = useGetFheBalance();
+
   const { data: agentMeta, loading: agentMetaLoading } = useAgentGetMeta({
     agentId: agentTokenId,
   });
@@ -162,6 +164,7 @@ export default function MyAgent({
       const res = await claim();
       if (res) {
         claimableRewardRefresh();
+        refreshBalance();
         notification.success({
           message: "Success",
           description: "claim success",
@@ -331,8 +334,16 @@ export default function MyAgent({
                   </div>
                 </div>
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
-                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap">
-                    Total Rewards
+                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center">
+                    <span>Total Rewards</span>
+                    <img
+                      src="/icons/refresh.svg"
+                      alt="refresh"
+                      onClick={claimableRewardRefresh}
+                      className={`cursor-pointer ${
+                        claimableRewardLoading ? "refresh" : ""
+                      }`}
+                    />
                   </div>
                   <div className="mt-[20px] align-bottom h-[45px]">
                     <span className="text-[30px] text-light-shadow">

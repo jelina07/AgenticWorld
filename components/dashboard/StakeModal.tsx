@@ -6,6 +6,7 @@ import { useAgentStake, useGetFheBalance, useHubGetApy } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import Max from "../utils/Max";
+import { useAsyncEffect } from "ahooks";
 
 export default function StakeModal({
   refreshStakeAmount,
@@ -27,7 +28,7 @@ export default function StakeModal({
   const { data: hubApy } = useHubGetApy({ hubIds: hubList });
   const currentIndex = hubList?.findIndex((item) => item.id === learningId);
   console.log("currentIndex", currentIndex, hubApy);
-  const { data, refresh, loading } = useGetFheBalance();
+  const { runAsync, refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
 
   const showModal = () => {
@@ -51,7 +52,7 @@ export default function StakeModal({
         const res = await agentStake(agentTokenId!, amount);
         if (res) {
           refreshStakeAmount();
-          refresh();
+          fheBalanceRefresh();
           handleCancel();
           notification.success({
             message: "Success",
@@ -65,6 +66,9 @@ export default function StakeModal({
   const clickMax = () => {
     setAmount(balance);
   };
+  useAsyncEffect(async () => {
+    await runAsync();
+  }, [isModalOpen]);
   return (
     <>
       <Button
@@ -113,7 +117,7 @@ export default function StakeModal({
               <img
                 src="/icons/refresh.svg"
                 alt="refresh"
-                onClick={refresh}
+                onClick={fheBalanceRefresh}
                 className={`cursor-pointer ${loading ? "refresh" : ""}`}
               />
             </div>
