@@ -75,31 +75,30 @@ export default function HubRecord({
   console.log("rewards", rewards);
 
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const tableData =
+  const tableDataAll =
     (agentTokenId &&
-      hubList
-        ?.filter((obj) => obj.note === "Required")
-        ?.map((item: any, index: number) => {
-          const status = item.id === learningId ? "Training" : "Exit";
-          const currentLearned = learnSecond
-            ? learnSecond[index]
-            : "loading...";
-          const currentRewards = rewards
-            ? numberDigits(rewards[index]) + " FHE"
-            : "loading...";
-          return {
-            subnetId: item.id,
-            subnetName: item.name,
-            subnetLogo: item.logo,
-            status:
-              learningIdLoading && learningId === 0 ? "loading..." : status,
-            lockupHours: item.lockUp,
-            currentLearned: currentLearned,
-            rewards: currentRewards,
-          };
-        })) ||
+      hubList?.map((item: any, index: number) => {
+        const status = item.id === learningId ? "Training" : "Exit";
+        const currentLearned = learnSecond ? learnSecond[index] : "loading...";
+        const currentRewards = rewards
+          ? numberDigits(rewards[index]) + " FHE"
+          : "loading...";
+        return {
+          subnetId: item.id,
+          subnetName: item.name,
+          subnetLogo: item.logo,
+          status: learningIdLoading && learningId === 0 ? "loading..." : status,
+          lockupHours: item.lockUp,
+          subnetLevel: item.note,
+          currentLearned: currentLearned,
+          rewards: currentRewards,
+          type: item.type,
+        };
+      })) ||
     [];
-  console.log("tableData,hubList", tableData, hubList);
+  const tableData = tableDataAll?.filter(
+    (item: any) => item.type === 0 || item.currentLearned > 0
+  );
 
   return (
     <div className="mind-table mt-[50px]">
