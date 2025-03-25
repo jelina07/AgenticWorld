@@ -156,7 +156,7 @@ const BeginInfo3 = () => {
   }, [learningIdLoading]);
 
   return !canRender ? (
-    <div></div>
+    <div className="h-screen"></div>
   ) : (
     <div className="mt-[30px] sm:mt-[70px]">
       <div id="launchTitle">Buillding AgenticWorld</div>
