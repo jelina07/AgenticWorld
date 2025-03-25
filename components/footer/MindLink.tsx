@@ -2,7 +2,7 @@ import React from "react";
 
 export default function MindLink() {
   return (
-    <div className="flex sm:justify-between gap-[30px] justify-end">
+    <div className="flex gap-[30px] justify-between">
       <a
         href="https://www.mindnetwork.xyz/"
         target="_blank"
