@@ -42,8 +42,6 @@ export function decodeErrorData(contractABI: any, data?: `0x${string}`) {
 
 export const Agent1ContractErrorCode = (code: number) => {
   switch (code) {
-    case 40018:
-      return "Stake amount is 0";
     case 4001:
       return "Less than minimum amount";
     case 4002:

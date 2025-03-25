@@ -778,6 +778,19 @@ export const AGENT1_ABI = [
     inputs: [
       {
         indexed: false,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+    ],
+    name: "Duplicate",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint64",
         name: "version",
         type: "uint64",
@@ -1037,6 +1050,19 @@ export const AGENT1_ABI = [
   },
   {
     inputs: [],
+    name: "BATCH_MINT_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "BATCH_ROLE",
     outputs: [
       {
@@ -1109,6 +1135,19 @@ export const AGENT1_ABI = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "users",
+        type: "address[]",
+      },
+    ],
+    name: "batchMint",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1651,13 +1690,18 @@ export const AGENT1_ABI = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "__baseURI",
+        type: "string",
+      },
+      {
         internalType: "contract MemberPool",
         name: "_memberPool",
         type: "address",
       },
       {
-        internalType: "contract Agent1SigVerifier",
-        name: "_agent1SigVerifier",
+        internalType: "contract AgentSigVerifier",
+        name: "_agentSigVerifier",
         type: "address",
       },
       {
@@ -1772,7 +1816,7 @@ export const AGENT1_ABI = [
             type: "uint256",
           },
         ],
-        internalType: "struct Agent1SigVerifier.Message",
+        internalType: "struct AgentSigVerifier.Message",
         name: "message",
         type: "tuple",
       },
@@ -2701,6 +2745,19 @@ export const MEMBER_POOL_ABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "HUB_APY_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -2825,19 +2882,6 @@ export const MEMBER_POOL_ABI = [
     name: "delegate",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "emissionPerSecond",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -3158,7 +3202,7 @@ export const MEMBER_POOL_ABI = [
         type: "uint256",
       },
     ],
-    name: "rewardDistroPerHubX10000",
+    name: "rewardApyPerHubX10000",
     outputs: [
       {
         internalType: "uint256",
@@ -3213,24 +3257,6 @@ export const MEMBER_POOL_ABI = [
         type: "uint256[]",
       },
       {
-        internalType: "uint256",
-        name: "_emissionPerSecond",
-        type: "uint256",
-      },
-    ],
-    name: "setupEmissionPerSecond",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256[]",
-        name: "hubIds",
-        type: "uint256[]",
-      },
-      {
         internalType: "uint256[]",
         name: "_maxAgentPerHub",
         type: "uint256[]",
@@ -3260,7 +3286,20 @@ export const MEMBER_POOL_ABI = [
       },
       {
         internalType: "uint256[]",
-        name: "_rewardDistroPerHubX10000",
+        name: "_rewardApyPerHubX10000",
+        type: "uint256[]",
+      },
+    ],
+    name: "setupHubRewardApy",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "hubIds",
         type: "uint256[]",
       },
       {
@@ -3269,7 +3308,7 @@ export const MEMBER_POOL_ABI = [
         type: "uint256[]",
       },
     ],
-    name: "setupHubReward",
+    name: "setupHubRewardDistro",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -3288,19 +3327,6 @@ export const MEMBER_POOL_ABI = [
         internalType: "bool",
         name: "",
         type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "totalRewardDistroPerHubX10000",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -3437,8 +3463,8 @@ export const DAO_INSPECTOR_ABI = [
       },
       {
         indexed: false,
-        internalType: "contract Agent1",
-        name: "agent1",
+        internalType: "contract Agent",
+        name: "agent",
         type: "address",
       },
     ],
@@ -3677,8 +3703,8 @@ export const DAO_INSPECTOR_ABI = [
         type: "address",
       },
       {
-        internalType: "contract Agent1",
-        name: "_agent1",
+        internalType: "contract Agent",
+        name: "_agent",
         type: "address",
       },
     ],
