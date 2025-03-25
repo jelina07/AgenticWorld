@@ -194,6 +194,8 @@ export default function MyAgent({
       message.warning("Canceled!");
     }
   };
+  console.log("agentTokenIdagentTokenId", agentTokenId);
+
   return (
     <>
       <div
