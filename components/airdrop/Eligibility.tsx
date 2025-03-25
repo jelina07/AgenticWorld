@@ -1,11 +1,12 @@
 "use client";
 import { useAirdropCheck, useAirdropClaim } from "@/sdk";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, Input, message } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 export default function Eligibility() {
-  const [inputAddress, setInputAddress] = useState("");
+  const { address, isConnected } = useAccount();
   const {
     data: claimAmout,
     runAsync: checkEligibility,
@@ -13,22 +14,20 @@ export default function Eligibility() {
   } = useAirdropCheck(); // number
   const { runAsync: claim } = useAirdropClaim({ waitForReceipt: true });
   console.log("claimAmout", claimAmout);
+  const { openConnectModal } = useConnectModal();
 
   const clickCheckEligibility = async () => {
-    if (inputAddress && inputAddress.startsWith("0x")) {
-      const res = await checkEligibility(inputAddress);
+    if (isConnected && address) {
+      const res = await checkEligibility(address);
     } else {
-      message.open({
-        type: "warning",
-        content: "Please enter the correct address !",
-        duration: 5,
-      });
+      openConnectModal?.();
     }
   };
 
   const clickClaim = async () => {
     // await claim()
   };
+
   return (
     <div>
       <div>
@@ -49,18 +48,30 @@ export default function Eligibility() {
         <div className="mt-[20px]">
           <div className="text-[15px] font-[700]">Enter Wallet Address</div>
           <div className="flex justify-between gap-[10px] items-center mt-[15px] mind-input">
-            <Input
+            {/* <Input
               prefix={<img src="/icons/wallet-logo.svg"></img>}
               style={{ height: "38px" }}
               onChange={(e: any) => {
                 setInputAddress(e.target.value);
               }}
-            />
+              disabled={true}
+            /> */}
+            <div
+              className=" px-[11px] py-[4px] h-[38px] flex-1 flex items-center
+                            bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
+            >
+              <div className="flex justify-between items-center gap-[5px]">
+                <div className="flex justify-between items-center gap-[5px]">
+                  <img src="/icons/wallet-logo.svg"></img>
+                  <span className="text-[14px]">{address}</span>
+                </div>
+              </div>
+            </div>
             <Button
               type="primary"
               className="button-brand-border"
               style={{ height: "38px", width: "130px" }}
-              disabled={inputAddress === ""}
+              disabled={!address}
               onClick={clickCheckEligibility}
               loading={loading}
             >
@@ -73,7 +84,8 @@ export default function Eligibility() {
             </div>
           ) : claimAmout !== undefined && !claimAmout ? (
             <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
-              Sorry, this wallet is not eligible for the airdrop.
+              Sorry, this wallet is not eligible for the airdrop, Please switch
+              wallet
             </div>
           ) : (
             ""

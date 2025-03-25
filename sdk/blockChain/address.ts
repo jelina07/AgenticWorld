@@ -4,9 +4,9 @@ export const AIRDROP_ADDRESS: Record<number, `0x${string}`> = {
 };
 
 export const AGENT1_ADDRESS: Record<number, `0x${string}`> = {
-  192940: "0x33d0b5D1D1852404891f7801Fd469e2595ad690e",
+  192940: "0x4f627a4273312d667f96F61cB8b0631D41E72820",
   228: "0x",
-  97: "0xD1DCAE1d094734C9d35A4C3F35323747F62EdF74",
+  97: "0xA4e4619f4d7680AEfA87c87D50C75350978C7498",
 };
 
 export const DAOKEN_ADDRESS: Record<number, `0x${string}`> = {
@@ -16,13 +16,13 @@ export const DAOKEN_ADDRESS: Record<number, `0x${string}`> = {
 };
 
 export const MEMBER_POOL_ADDRESS: Record<number, `0x${string}`> = {
-  192940: "0xEa58eC65a642afC53aC4C275e79BB725737e20e1",
+  192940: "0x847266b7FcEA6e130Df9977bdCaC970809f4f812",
   228: "0x",
-  97: "0xd308AC7bDcda9Ea2F3619077E5E6D5EC1B8066C6",
+  97: "0xeb74B521793cbCaceF9536C159B11Fe68f321f05",
 };
 
 export const DAO_INSPECTOR_ADDRESS: Record<number, `0x${string}`> = {
-  192940: "0x9b2e7804dc654Af17dECBB673665876DDf349eB0",
+  192940: "0xfF2F1CD2B93B32a71D1BeFCe8Aaa6016BbF73533",
   228: "0x",
-  97: "0x4484855c81016bD79C3e4a27e7aBCdF53904BDed",
+  97: "0x55B3f741a1C16aE54aD027a16De100086de77441",
 };

@@ -30,7 +30,7 @@ const ruleList = [
 ];
 export default function AirdropRules() {
   return (
-    <div className="px-[35px] pb-[35px] pt-[12px] mt-[20px] bg-[url('/icons/rule-bg.svg')] bg-no-repeat bg-center">
+    <div className="px-[35px] pb-[35px] pt-[12px] mt-[20px] bg-[url('/icons/rule-bg.svg')] bg-no-repeat bg-center relative">
       <div className="text-[20px] font-[900]">Airdrops Rules</div>
       <div className="mt-[30px]">
         {ruleList.map((item, index) => (
@@ -50,6 +50,11 @@ export default function AirdropRules() {
           needed.
         </span>
       </div>
+      <img
+        src="/icons/rule-icons.svg"
+        alt="rule-icons"
+        className="absolute left-[-100px] bottom-[-40px]"
+      />
     </div>
   );
 }
