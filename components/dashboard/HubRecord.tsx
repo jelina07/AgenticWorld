@@ -33,6 +33,16 @@ const tableColumns: TableColumnsType = [
     ),
   },
   {
+    title: "Rewards",
+    dataIndex: "rewards",
+    render: (value: any) => (
+      <div>
+        {value}
+        <span className="text-[var(--mind-brand)]"> FHE</span>
+      </div>
+    ),
+  },
+  {
     title: "Status",
     dataIndex: "status",
   },
@@ -53,16 +63,6 @@ const tableColumns: TableColumnsType = [
       <div>
         {secondsToHours(value)}
         <span className="text-[var(--mind-brand)]"> H</span>
-      </div>
-    ),
-  },
-  {
-    title: "Rewards",
-    dataIndex: "rewards",
-    render: (value: any) => (
-      <div>
-        {value}
-        <span className="text-[var(--mind-brand)]"> FHE</span>
       </div>
     ),
   },

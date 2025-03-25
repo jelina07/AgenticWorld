@@ -1,9 +1,13 @@
 "use client";
-import { useHubDelegate, useHubSwitchDelegate } from "@/sdk";
+import {
+  useAgentGetStakeAmount,
+  useHubDelegate,
+  useHubSwitchDelegate,
+} from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { secondsToHours } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { Button, Modal, notification } from "antd";
+import { Button, message, Modal, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 
 const StartConfirmModal = forwardRef(
@@ -31,7 +35,9 @@ const StartConfirmModal = forwardRef(
         waitForReceipt: true,
       });
     const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-    console.log("learningId", learningId);
+    const { data: agentStakeAmount } = useAgentGetStakeAmount({
+      tokenId: agentTokenId,
+    });
 
     useImperativeHandle(ref, () => ({
       clickStartConfirmModal: () => {
@@ -47,26 +53,34 @@ const StartConfirmModal = forwardRef(
     };
     const delegate = async () => {
       let res = null;
-      if (learningId) {
-        res = await hubDelegateSwitch({
-          tokenId: agentTokenId,
-          hubId: currentHub?.subnetId!,
-          needSign: Boolean(currentHub?.needSign!),
-        });
+      if (agentStakeAmount !== "0") {
+        if (learningId) {
+          res = await hubDelegateSwitch({
+            tokenId: agentTokenId,
+            hubId: currentHub?.subnetId!,
+            needSign: Boolean(currentHub?.needSign!),
+          });
+        } else {
+          res = await hubDelegate({
+            tokenId: agentTokenId,
+            hubId: currentHub?.subnetId!,
+            needSign: Boolean(currentHub?.needSign!),
+          });
+        }
+        if (res) {
+          handleCancel();
+          refreshLearningId();
+          refreshHubAgentCount();
+          notification.success({
+            message: "Success",
+            description: "Agent training has successfully started !",
+          });
+        }
       } else {
-        res = await hubDelegate({
-          tokenId: agentTokenId,
-          hubId: currentHub?.subnetId!,
-          needSign: Boolean(currentHub?.needSign!),
-        });
-      }
-      if (res) {
-        handleCancel();
-        refreshLearningId();
-        refreshHubAgentCount();
-        notification.success({
-          message: "Success",
-          description: "Agent training has successfully started !",
+        message.open({
+          type: "warning",
+          content: `The amount in your agent is 0 and you can't start training`,
+          duration: 5,
         });
       }
     };
