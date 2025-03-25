@@ -53,7 +53,7 @@ const StakeLaunch = forwardRef((_, ref) => {
 
   return (
     <div
-      className="p-[24px] mt-[50px] mind-input max-w-[775px] mx-auto flex justify-between gap-[30px] flex-wrap
+      className="p-[24px] mind-input max-w-[775px] mx-auto flex justify-between gap-[30px] flex-wrap
                         bg-[url('/images/agent-launch-bg.png')] cover"
     >
       <img src="/icons/ai-agent.svg" alt="ai-agent" />

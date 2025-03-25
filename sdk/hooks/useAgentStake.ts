@@ -12,7 +12,9 @@ import { config } from "../wagimConfig";
 import { encodeFunctionData, parseEther } from "viem";
 import { estimateGasUtil } from "../utils/script";
 
-export default function useAgentStake(options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }) {
+export default function useAgentStake(
+  options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
+) {
   const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
@@ -37,7 +39,6 @@ export default function useAgentStake(options?: Options<unknown, [number, string
         args: [AGENT1_ADDRESS[chainId], parseEther(amount)],
         gas: gasEstimate + gasEstimate / BigInt(3),
       });
-      //等待出块
       await waitForTransactionReceipt(config, { hash: txHash });
       //stake
       const gasEstimate2 = await estimateGasUtil(
@@ -46,7 +47,6 @@ export default function useAgentStake(options?: Options<unknown, [number, string
         [tokenId, parseEther(amount)],
         AGENT1_ADDRESS[chainId]
       );
-      console.log("gasEstimate2", gasEstimate2);
       const txHash2 = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "stake",

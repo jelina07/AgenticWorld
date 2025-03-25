@@ -37,7 +37,7 @@ const string1 = `
 const string2 = `
       <div>
         <div id="launchContent3">
-          Well Done! You&apos;ve successfully set up your AI Agent!
+          Well Done! You have successfully set up your AI Agent
         </div>
         <div id="launchContent4">Let's help it train with Basic skills</div>
         <div id="launchContent5">
@@ -66,11 +66,8 @@ const string3 = `
             Advanced Hubs - Partnering with top AI projects to build innovative
             solutions. Your agent will need to meet some basic skill-requirements
             before joining.
-            <br />
-            <br />
-            <br />
-            Keep exploring and leveling up your AI Agent! Enjoy your journey :)
           </div>
+          <div id="launchContent10">Keep exploring and leveling up your AI Agent! Enjoy your journey :)</div>
         </div>
         <img src="/icons/launch-circle.svg" alt="circle" id="launchContent8"/>
         <div id="launchContent9">
@@ -119,27 +116,6 @@ const BeginInfo3 = () => {
     return false;
   }, [learningId, subnetList]);
 
-  // if (learningIdLoading) {
-  //   return <div></div>;
-  // } else {
-  //   if (preTokenId.current && learningIdPre) {
-  //     router.replace("/");
-  //   }
-  // }
-
-  // const canRender = useMemo(() => {
-  //   if (learningIdLoading) {
-  //     return false;
-  //   }
-  //   if (preTokenId.current && learningIdPre) {
-  //     router.replace("/");
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }, [learningIdLoading]);
-  console.log("🚀 ~ canRender ~ canRender:", canRender);
-
   const clickConnect = (event: any) => {
     event.preventDefault();
     openConnectModal?.();
@@ -155,9 +131,7 @@ const BeginInfo3 = () => {
     }
   }, [learningIdLoading]);
 
-  return !canRender ? (
-    <div className="h-screen"></div>
-  ) : (
+  return (
     <div className="mt-[30px] sm:mt-[70px]">
       <div id="launchTitle">Buillding AgenticWorld</div>
       {address ? (
@@ -180,7 +154,7 @@ const BeginInfo3 = () => {
           <div
             className={`${
               stringtypedout1 ? "visible-style" : "hidden-style"
-            } mt-[50px]`}
+            } mt-[20px]`}
           >
             <StakeLaunch ref={stakeLaunchRef} />
           </div>
@@ -207,9 +181,7 @@ const BeginInfo3 = () => {
           )}
 
           <div
-            className={`${
-              stringtypedout2 ? "visible-style" : "hidden-style"
-            } mt-[40px]`}
+            className={`${stringtypedout2 ? "visible-style" : "hidden-style"}`}
           >
             <RequiredHub />
           </div>

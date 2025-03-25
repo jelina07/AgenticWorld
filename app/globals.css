@@ -379,7 +379,7 @@ input:focus {
   margin-top: 20px;
 }
 #launchContent4 {
-  margin-top: 30px;
+  margin-top: 50px;
   font-size: 16px;
   font-weight: 800;
   text-transform: capitalize;
@@ -407,6 +407,10 @@ input:focus {
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
+}
+#launchContent10 {
+  margin-top: 50px;
+  font-size: 14px;
 }
 #yellow-circle,
 #blue-circle {
@@ -463,6 +467,9 @@ input:focus {
     font-size: 20px;
   }
   #launchContent7 {
+    font-size: 16px;
+  }
+  #launchContent10 {
     font-size: 16px;
   }
   #launchContent8 {
@@ -596,4 +603,7 @@ input:focus {
 
 .mind-tab .ant-tabs .ant-tabs-tab + .ant-tabs-tab {
   margin: 0;
+}
+.Typewriter__cursor {
+  display: none !important;
 }

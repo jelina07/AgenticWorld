@@ -151,23 +151,24 @@ export default function HubList({
                         {item.subnetName}
                       </span>
                     </div>
-
-                    <div
-                      className={`text-white ${
-                        learningId &&
-                        item.subnetId === learningId &&
-                        learnSecond !== undefined &&
-                        !lockTimeReach
-                          ? ""
-                          : "hidden"
-                      }`}
-                    >
-                      <Lock />
-                    </div>
                   </div>
                   {filter === 1 || (filter === 2 && !isLaunch) ? (
-                    <div className="text-[var(--mind-brand)] text-[18px] mt-[20px]">
-                      {item.subnetLevel}
+                    <div className="mt-[20px] flex justify-between gap-[5]">
+                      <span className="text-[var(--mind-brand)] text-[18px]">
+                        {item.subnetLevel}
+                      </span>
+                      <div
+                        className={`text-white ${
+                          learningId &&
+                          item.subnetId === learningId &&
+                          learnSecond !== undefined &&
+                          !lockTimeReach
+                            ? ""
+                            : "hidden"
+                        }`}
+                      >
+                        <Lock />
+                      </div>
                     </div>
                   ) : (
                     <div className="text-[14px] text-[#C7C7C7] mt-[20px]">
@@ -221,8 +222,11 @@ export default function HubList({
                       lockTimeReach ||
                       !address) &&
                     item.isAccess ? (
-                    <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                      <span onClick={(event) => showModal(event, item)}>
+                    <div className="text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                      <span
+                        onClick={(event) => showModal(event, item)}
+                        className="hover:text-[var(--mind-brand)]"
+                      >
                         Start Training
                       </span>
                     </div>

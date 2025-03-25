@@ -10,7 +10,9 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useClaimReward(options?: Options<unknown, []> & { waitForReceipt?: boolean }) {
+export default function useClaimReward(
+  options?: Options<unknown, []> & { waitForReceipt?: boolean }
+) {
   const { validateAsync, address, chainId } = useValidateChainWalletLink();
 
   const { writeContractAsync } = useWriteContract();
@@ -22,7 +24,12 @@ export default function useClaimReward(options?: Options<unknown, []> & { waitFo
         return;
       }
 
-      const gasEstimate = await estimateGasUtil(AGENT1_ABI, "claimReward", [address], AGENT1_ADDRESS[chainId]);
+      const gasEstimate = await estimateGasUtil(
+        AGENT1_ABI,
+        "claimReward",
+        [address],
+        AGENT1_ADDRESS[chainId]
+      );
 
       const txHash = await writeContractAsync({
         abi: AGENT1_ABI,
@@ -41,7 +48,7 @@ export default function useClaimReward(options?: Options<unknown, []> & { waitFo
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, AGENT1_ABI),
       manual: true,
       ...options,
     }

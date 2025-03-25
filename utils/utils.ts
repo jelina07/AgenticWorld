@@ -2,7 +2,7 @@ import { isDev, isProd } from "@/sdk/utils";
 import { message } from "antd";
 import millify from "millify";
 
-export const firstStakeAmount = 0;
+export const firstStakeAmount = 100;
 
 export const mindscan = (address: `0x${string}`) => {
   return isDev() || isProd()

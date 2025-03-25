@@ -20,7 +20,9 @@ type DelegatePayload = {
   needSign: boolean;
 };
 
-export default function useHubSwitchDelegate(options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }) {
+export default function useHubSwitchDelegate(
+  options?: Options<any, [DelegatePayload]> & { waitForReceipt?: boolean }
+) {
   const { validateAsync, chainId } = useValidateChainWalletLink();
   const { writeContractAsync } = useWriteContract();
 
@@ -59,7 +61,7 @@ export default function useHubSwitchDelegate(options?: Options<any, [DelegatePay
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, AGENT1_ABI),
       manual: true,
       ...options,
     }

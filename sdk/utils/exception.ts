@@ -15,7 +15,6 @@ export function exceptionHandler(error: any, abi?: any, description?: string) {
         ? Agent1ContractErrorCode(errorCode)
         : errorCode
     ) as string;
-    console.log("errorMessage", errorCode, errorMessage);
     if (
       error?.shortMessage?.toLowerCase().includes("user rejected") ||
       error?.message?.toLowerCase().includes("user rejected")

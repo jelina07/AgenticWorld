@@ -129,16 +129,6 @@ export default function MyAgent({
           hubList![currentlearningIdIndex].lockUp <=
           learnSecond![currentlearningIdIndex];
 
-        console.log(
-          "myagent",
-          lockTimeReach,
-          learningId,
-          currentlearningIdIndex,
-          hubList![currentlearningIdIndex].lockUp,
-          learnSecond
-        ),
-          learnSecond![currentlearningIdIndex];
-
         if (lockTimeReach) {
           return 2;
         } else {
@@ -366,6 +356,7 @@ export default function MyAgent({
                       className="button-brand-border-white-font"
                       onClick={clickClaim}
                       loading={claimLoading}
+                      disabled={!claimableReward || claimableReward === "0"}
                     >
                       Redeem
                     </Button>
