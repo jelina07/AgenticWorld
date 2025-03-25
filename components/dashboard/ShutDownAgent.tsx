@@ -40,7 +40,7 @@ export default function ShutDownAgent({
         handleCancel();
         notification.success({
           message: "Success",
-          description: "shut down success",
+          description: "Your agent has been successfully shut down !",
         });
       }
     }
@@ -49,7 +49,7 @@ export default function ShutDownAgent({
     <>
       <div className="capitalize underline text-[12px] text-[var(--mind-brand)] text-right mt-[10px]">
         <span onClick={showModal} className="cursor-pointer">
-          Permanently Shut Down My Agent?
+          Permanently Shut Down My Agent ?
         </span>
       </div>
       <Modal

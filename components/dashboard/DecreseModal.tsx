@@ -10,6 +10,7 @@ import {
 } from "@/utils/utils";
 import Max from "../utils/Max";
 import Big from "big.js";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 
 export default function DecreseModal({
   refreshStakeAmount,
@@ -48,14 +49,17 @@ export default function DecreseModal({
           handleCancel();
           notification.success({
             message: "Success",
-            description: "unstake success",
+            description: "Unstake Success !",
           });
         }
       } else {
+        const max = Number(agentStakeAmount!) - firstStakeAmount;
         message.open({
           type: "warning",
-          content: `The amount you've entered is too large, you need at least ${firstStakeAmount} tokens in the agent.`,
-          duration: 5,
+          content: `The agent must maintain a minimum of ${firstStakeAmount} tokens unless permanently shut down. The maximum amount you can unstake while keeping the agent alive is ${numberDigits(
+            max
+          )} = (${agentStakeAmount} - ${firstStakeAmount}) !`,
+          duration: 10,
         });
       }
     }

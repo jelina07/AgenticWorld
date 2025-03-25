@@ -109,7 +109,9 @@ export default function page({ params }: { params: any }) {
               }
               onClick={() => showModal()}
             >
-              {learningId === Number(params.subnetId) ? "Learning..." : "Start"}
+              {learningId === Number(params.subnetId)
+                ? "Training..."
+                : "Start Training"}
             </Button>
           ) : (
             <></>

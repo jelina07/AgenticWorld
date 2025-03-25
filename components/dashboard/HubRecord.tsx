@@ -37,18 +37,34 @@ const tableColumns: TableColumnsType = [
     dataIndex: "status",
   },
   {
-    title: "Lock up Learning Hours",
+    title: "Training Lock-up",
     dataIndex: "lockupHours",
-    render: (value: number) => <div>{secondsToHours(value)}</div>,
+    render: (value: number) => (
+      <div>
+        {secondsToHours(value)}
+        <span className="text-[var(--mind-brand)]"> H</span>
+      </div>
+    ),
   },
   {
-    title: "Current Learned",
+    title: "Currently Trained",
     dataIndex: "currentLearned",
-    render: (value: number | string) => <div>{secondsToHours(value)}</div>,
+    render: (value: number | string) => (
+      <div>
+        {secondsToHours(value)}
+        <span className="text-[var(--mind-brand)]"> H</span>
+      </div>
+    ),
   },
   {
     title: "Rewards",
     dataIndex: "rewards",
+    render: (value: any) => (
+      <div>
+        {value}
+        <span className="text-[var(--mind-brand)]"> FHE</span>
+      </div>
+    ),
   },
 ];
 export default function HubRecord({
@@ -81,7 +97,7 @@ export default function HubRecord({
         const status = item.id === learningId ? "Training" : "Exit";
         const currentLearned = learnSecond ? learnSecond[index] : "loading...";
         const currentRewards = rewards
-          ? numberDigits(rewards[index]) + " FHE"
+          ? numberDigits(rewards[index])
           : "loading...";
         return {
           subnetId: item.id,

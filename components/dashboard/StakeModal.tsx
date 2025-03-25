@@ -56,7 +56,7 @@ export default function StakeModal({
           handleCancel();
           notification.success({
             message: "Success",
-            description: "stake success",
+            description: "Stake Success !",
           });
         }
       }

@@ -19,7 +19,7 @@ export default function Page() {
       />
       <div className="mt-[30px] sm:mt-[70px] px-[20px]">
         <div className="text-[24px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
-          Agentic World
+          AgenticWorld
         </div>
         <div className={`text-center mt-[26px] ${isAgent ? "hidden" : ""}`}>
           <Link

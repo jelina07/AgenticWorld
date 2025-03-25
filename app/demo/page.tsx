@@ -174,7 +174,7 @@ function Hub({ hub, agentTokenId, currentHub }: any) {
       <div>
         Hub Name: {hub.name}{" "}
         <Button size="small" type="primary" onClick={() => onHubDelegate(hub)}>
-          Start
+          Start Training
         </Button>
       </div>
       <div>Current Exp: {learnSecond}</div>

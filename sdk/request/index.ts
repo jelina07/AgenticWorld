@@ -27,9 +27,9 @@ request.interceptors.response.use(
     if (error?.message === "Network Error") {
       notification.error({
         message: "Network Error",
-        description: "Please check your network connectivity!",
+        description: "Please check your network connectivity !",
       });
-      throw error("Please check your network connectivity!");
+      throw error("Please check your network connectivity !");
     } else {
       notification.error({
         message: "Server Error",

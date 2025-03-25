@@ -3,7 +3,7 @@ import React from "react";
 import { useTypewriter } from "react-typewriter-plus";
 
 const htmlContent = `<div id="title">
-          Buillding Agentic World
+          Buillding AgenticWorld
         </div>`;
 
 export default function beginInfo() {
@@ -19,7 +19,7 @@ export default function beginInfo() {
     //       id="launchTitle"
     //       className="text-[30px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]"
     //     >
-    //       Buillding Agentic World
+    //       Buillding AgenticWorld
     //     </div>
     //     {/* <div className="text-[20px] font-[600] capitalize text-center mt-[15px]">
     //       [Start exploring]
@@ -31,7 +31,7 @@ export default function beginInfo() {
     //       Hi, I'm the No.0 CitizenZ
     //     </div>
     //     <div className="text-[12px] sm:text-[16px] mt-[10px]">
-    //       I'm here to shape the Agentic World with you together. Ready to begin
+    //       I'm here to shape the AgenticWorld with you together. Ready to begin
     //       the journey?
     //     </div>
     //     <div className="text-[12px] sm:text-[16px] mt-[20px]">
@@ -49,12 +49,12 @@ export default function beginInfo() {
     //   </div>
     // </div>
     <div>
-      <div id="launchTitle">Buillding Agentic World</div>
+      <div id="launchTitle">Buillding AgenticWorld</div>
       <div>
         <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
         <br />
         <div id="launchContent2">
-          I&apos;m here to shape the Agentic World with you together. Ready to
+          I&apos;m here to shape the AgenticWorld with you together. Ready to
           begin the journey?
           <br />
           <br />

@@ -48,7 +48,7 @@ export default function MyAgent({
     if (res) {
       notification.success({
         message: "Success",
-        description: "Names have been updated!",
+        description: "Name have been updated !",
       });
     }
   };
@@ -169,13 +169,13 @@ export default function MyAgent({
         refreshBalance();
         notification.success({
           message: "Success",
-          description: "claim success",
+          description: "Claim Success !",
         });
       }
     } else {
       message.open({
         type: "warning",
-        content: "You have no reward!",
+        content: "You have no rewards to redeem !",
         duration: 5,
       });
     }
@@ -296,7 +296,7 @@ export default function MyAgent({
                     {currentLearnedHub === undefined ? (
                       "loading..."
                     ) : stateType === 0 ? (
-                      "/"
+                      "Created"
                     ) : stateType === 1 ? (
                       <Lock />
                     ) : (

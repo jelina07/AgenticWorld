@@ -16,19 +16,19 @@ const string1 = `
       <div>
         <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
         <div id="launchContent2">
-          I&apos;m here to shape the Agentic World with you together. Ready to begin
+          I&apos;m here to shape the AgenticWorld with you together. Ready to begin
           the journey?
           <br />
           <br />
           As the journey begin, we&apos; ll gonna launch your own AI Agent together!
           You&apos;ll just need some $FHE tokens to launch (minimum of 100). Don&apos;t
-          worry — you&apos;re always in control. You can withdraw your tokens anytime,
+          worry - you&apos;re always in control. You can withdraw your tokens anytime,
           no lock-ups involved.
           <br />
           <br />
           Once your agent is launch, send your agent on adventures across
           various hubs to gain new skills and increase its potential. The
-          smarter your agent becomes, the more it contributes to the network—and
+          smarter your agent becomes, the more it contributes to the network - and
           the more rewards you&apos;ll earn!
         </div>
       </div>
@@ -39,27 +39,27 @@ const string2 = `
         <div id="launchContent3">
           Well Done! You&apos;ve successfully set up your AI Agent!
         </div>
-        <div id="launchContent4">Let's help it learn with Basic skills</div>
+        <div id="launchContent4">Let's help it train with Basic skills</div>
         <div id="launchContent5">
           Now, choose the first hub below for your agent to join and start
-          learning the basics from it.
+          training the basics from it.
         </div>
       </div>`;
 const string3 = ` 
       <div>
         <div id="launchContent6">
-          Congrats! Now your agent starts learning and earning rewards for you
+          Congrats! Now your agent starts training and earning rewards for you
         </div>
         <div id="launchContent7">
           <div>
-            For agent learning progress and earnings, you can head over to the
+            For agent training progress and earnings, you can head over to the
             Dashboard to track and claim
             <br />
-            For agent growth, check out the Agentic World page for more
-            hub-learning options.
+            For agent growth, check out the AgenticWorld page for more
+            hub-training options.
             <br />
             <span id="blue-circle"></span>
-            Basic Hubs - A great starting point! No prerequisites—your agent can
+            Basic Hubs - A great starting point! No prerequisites - your agent can
             jump right in and learn basic skills.
             <br />
             <span id="yellow-circle"></span>
@@ -78,7 +78,7 @@ const string3 = `
             dashboard
           </a>
           <a id="launch-link" href="/agenticworld" rel="noopener noreferrer">
-            Agentic World
+            AgenticWorld
           </a>
         </div>
       </div>`;
@@ -159,14 +159,14 @@ const BeginInfo3 = () => {
     <div></div>
   ) : (
     <div className="mt-[30px] sm:mt-[70px]">
-      <div id="launchTitle">Buillding Agentic World</div>
+      <div id="launchTitle">Buillding AgenticWorld</div>
       {address ? (
         <>
           <Typewriter
             options={{
               loop: false,
               cursor: "",
-              delay: 10,
+              delay: 0,
             }}
             onInit={(typewriter) => {
               typewriter
@@ -190,7 +190,7 @@ const BeginInfo3 = () => {
               options={{
                 loop: false,
                 cursor: "",
-                delay: 10,
+                delay: 0,
               }}
               onInit={(typewriter) => {
                 stakeLaunchRef.current?.clearStakeAmount();
@@ -218,7 +218,7 @@ const BeginInfo3 = () => {
               options={{
                 loop: false,
                 cursor: "",
-                delay: 30,
+                delay: 0,
               }}
               onInit={(typewriter) => {
                 typewriter
@@ -237,7 +237,7 @@ const BeginInfo3 = () => {
         <div>
           <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
           <div id="launchContent2">
-            I&apos;m here to shape the Agentic World with you together. Ready to
+            I&apos;m here to shape the AgenticWorld with you together. Ready to
             begin the journey?
           </div>
           <div className="mt-[30px]">

@@ -187,8 +187,8 @@ export default function HubList({
                       <span>{item.agent}</span>
                     </div>
                     <div className="flex justify-between gap-[3px]">
-                      <span>Learning Lock-up:</span>
-                      <span>{secondsToHours(item.lockup)}</span>
+                      <span>Training Lock-up:</span>
+                      <span>{secondsToHours(item.lockup)} H</span>
                     </div>
                     <div
                       className={`flex justify-between gap-[3px] items-start ${
@@ -212,7 +212,7 @@ export default function HubList({
                   </div>
                   {learningId && item.subnetId === learningId ? (
                     <div className="flex items-center mt-[30px] justify-end">
-                      <span className="text-[var(--mind-brand)]">Learning</span>
+                      <span className="text-[var(--mind-brand)]">Training</span>
                       <img src="/icons/cz.svg" alt="cz" width={25} />
                     </div>
                   ) : ((agentTokenId !== undefined &&
@@ -223,12 +223,12 @@ export default function HubList({
                     item.isAccess ? (
                     <div className="text-white hover:text-[var(--mind-brand)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
                       <span onClick={(event) => showModal(event, item)}>
-                        Start
+                        Start Training
                       </span>
                     </div>
                   ) : (
                     <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                      <span>Start</span>
+                      <span>Start Training</span>
                     </div>
                   )}
                 </div>

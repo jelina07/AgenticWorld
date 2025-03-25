@@ -63,7 +63,7 @@ export const Agent1ContractErrorCode = (code: number) => {
     case 4009:
       return "unable to exit hub because not in any hub";
     case 40010:
-      return "unable to exit hub because not enough learning period";
+      return "unable to exit hub because not enough training period";
     case 40011:
       return "Not agent owner";
     case 40012:
@@ -71,7 +71,7 @@ export const Agent1ContractErrorCode = (code: number) => {
     case 40013:
       return "unable to unstake because remaining amount is less than minimum amount";
     case 40014:
-      return "unable to unstake because not enough learning period";
+      return "unable to unstake because not enough training period";
     case 40015:
       return "Not agent owner";
     case 40016:

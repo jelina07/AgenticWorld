@@ -1,7 +1,7 @@
 import { useAgentGetTokenId, useAgentStake, useGetFheBalance } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
-import { checkAmountControlButtonShow } from "@/utils/utils";
+import { checkAmountControlButtonShow, firstStakeAmount } from "@/utils/utils";
 import { Button, Input, message, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 
@@ -25,16 +25,16 @@ const StakeLaunch = forwardRef((_, ref) => {
 
   const stake = async () => {
     if (checkAmountControlButtonShow(amount)) {
-      if (Number(amount) < 100) {
+      if (Number(amount) < firstStakeAmount) {
         message.open({
           type: "warning",
-          content: "The minimum amount entered is 100",
+          content: `The minimum required amount is ${firstStakeAmount} !`,
           duration: 5,
         });
       } else if (Number(amount) > Number(balance)) {
         message.open({
           type: "warning",
-          content: "The amount you enter is greater than your balance",
+          content: "The amount you enter is greater than your balance !",
           duration: 5,
         });
       } else {
@@ -44,7 +44,7 @@ const StakeLaunch = forwardRef((_, ref) => {
           fheBalanceRefresh();
           notification.success({
             message: "Success",
-            description: "stake success",
+            description: "Stake Success !",
           });
         }
       }

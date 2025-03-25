@@ -20,7 +20,7 @@ export default function Eligibility() {
     } else {
       message.open({
         type: "warning",
-        content: "Please enter the correct address",
+        content: "Please enter the correct address !",
         duration: 5,
       });
     }

@@ -3,33 +3,28 @@ import RulesItem from "./RulesItem";
 
 const ruleList = [
   {
-    linkurl: "https://www.baidu.com",
     imgurl: "/icons/rule-logo1.svg",
     title: "CitizenZ Passport",
     info: "All eligible wallets receive a base allocation of 1,500 $FHE tokens.",
   },
   {
-    linkurl: "https://www.baidu.com",
     imgurl: "/icons/rule-logo2.svg",
     title: "vFHE Delegation",
     info: "Early users of Mind Network receive an additional 500 $FHE tokens.",
   },
   {
-    linkurl: "https://www.baidu.com",
     imgurl: "/icons/rule-logo3.svg",
     title: "Advocate Program",
-    info: "Users who contributed to the network growth receive anadditional 1,000 $FHE tokens.",
+    info: "Users who contributed to the network growth receive an additional 1,000 $FHE tokens.",
   },
   {
-    linkurl: "https://www.baidu.com",
     imgurl: "/icons/rule-logo4.svg",
-    title: "AgentConnect Hub engagement",
+    title: "AgentConnect Hub Engagement",
     info: "Users who stake in the Mind Network ecosystem receive a 20% bonus on their total allocation.",
   },
   {
-    linkurl: "https://www.baidu.com",
     imgurl: "/icons/rule-logo5.svg",
-    title: "Testnet and Early community contributers",
+    title: "Testnet and Early Community Contributers",
     info: "The airdrop claiming period is open for 30 days from the lauunch date. Unclaimed tokens will be returned to the community treasury.",
   },
 ];
@@ -40,7 +35,6 @@ export default function AirdropRules() {
       <div className="mt-[30px]">
         {ruleList.map((item, index) => (
           <RulesItem
-            linkurl={item.linkurl}
             imgurl={item.imgurl}
             title={item.title}
             info={item.info}
@@ -51,9 +45,9 @@ export default function AirdropRules() {
       <div className="text-[12px] px-[20px] mt-[25px]">
         <span>Note: </span>
         <span className="text-[var(--mind-grey)]">
-          To claim your tokens, you must be connected to the Miindchain network.
-          Use the &quot;Switch to Mindchain&quot; button tochange your network
-          if needed.
+          To claim your tokens, you must be connected to the MindChain. Use the
+          &quot;Switch to Mindchain&quot; button to change your network if
+          needed.
         </span>
       </div>
     </div>

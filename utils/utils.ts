@@ -2,7 +2,7 @@ import { isDev, isProd } from "@/sdk/utils";
 import { message } from "antd";
 import millify from "millify";
 
-export const firstStakeAmount = 100;
+export const firstStakeAmount = 0;
 
 export const mindscan = (address: `0x${string}`) => {
   return isDev() || isProd()
@@ -16,14 +16,14 @@ export function handleCopy(textToCopy: string) {
     .then(() => {
       message.open({
         type: "success",
-        content: "Copy success",
+        content: "Copy Success !",
         duration: 5,
       });
     })
     .catch((err) => {
       message.open({
         type: "warning",
-        content: "Copy failed, please retry",
+        content: "Copy failed, please retry !",
         duration: 5,
       });
     });
@@ -35,7 +35,7 @@ export function checkAmountControlButtonShow(amount: string) {
   if (!response) {
     message.open({
       type: "warning",
-      content: "Please enter the correct amount",
+      content: "Please enter the correct amount !",
       duration: 5,
     });
     return false;

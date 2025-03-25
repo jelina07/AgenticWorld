@@ -26,7 +26,7 @@ const MindMenu: React.FC = () => {
       key: "/",
     },
     {
-      label: <Link href="/agenticworld">Agentic World</Link>,
+      label: <Link href="/agenticworld">AgenticWorld</Link>,
       key: "/agenticworld",
     },
   ];
@@ -40,7 +40,7 @@ const MindMenu: React.FC = () => {
       key: "/",
     },
     {
-      label: <Link href="/agenticworld">Agentic World</Link>,
+      label: <Link href="/agenticworld">AgenticWorld</Link>,
       key: "/agenticworld",
     },
     {

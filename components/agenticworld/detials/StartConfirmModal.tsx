@@ -66,7 +66,7 @@ const StartConfirmModal = forwardRef(
         refreshHubAgentCount();
         notification.success({
           message: "Success",
-          description: "delegate success",
+          description: "Agent training has successfully started !",
         });
       }
     };
@@ -80,7 +80,7 @@ const StartConfirmModal = forwardRef(
       >
         <div>
           <div className="text-[12px] font-[600] mt-[10px]">
-            Hub learning Lock-up* :{" "}
+            Hub training Lock-up* :{" "}
             {currentHub?.lockup && secondsToHours(currentHub?.lockup)} H
           </div>
           <div className="text-[12px] font-[400] leading-[180%] mt-[20px]">
@@ -88,10 +88,9 @@ const StartConfirmModal = forwardRef(
               ? `This action will Pause your agent in ${
                   subnetList?.find((item) => item.id === learningId)?.name
                 } Hub and continue
-        learning with ${currentHub?.subnetName} Hub`
+        training with ${currentHub?.subnetName} Hub`
               : `
-        This action will start your agent's
-        learning with ${currentHub?.subnetName} Hub`}
+        This action will start training your agent with ${currentHub?.subnetName} Hub`}
           </div>
         </div>
         <div className="flex mt-[40px] gap-[20px]">

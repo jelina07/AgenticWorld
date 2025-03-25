@@ -35,7 +35,7 @@ export default function HubPage() {
       key: "1",
       label: (
         <div className="text-left text-[18px] sm:text-[26px] text-white font-[800] ">
-          Start with Basic Hub
+          Start Training with Basic Hub
         </div>
       ),
       children: <HubList filter={2}></HubList>,

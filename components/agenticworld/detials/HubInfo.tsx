@@ -41,10 +41,10 @@ export default function HubInfo({
         </div>
       </div>
       <div className="p-[30px] flex-1 rounded-[10px] bg-[var(--bg-deep-grey)]">
-        <div className="text-[15px]">Learning Lock-up</div>
+        <div className="text-[15px]">Training Lock-up</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">
           {lockUp !== undefined && lockUp !== null
-            ? secondsToHours(lockUp) + "H"
+            ? secondsToHours(lockUp) + " H"
             : "loading..."}
         </div>
       </div>

@@ -7,11 +7,12 @@ export default function RewardRule() {
       <div className="text-[14px] mt-[30px]">
         <span className="font-[500]">
           Your agent earns rewards through training and working, based on your
-          FHE stake and the hub payout. The more FHE you stake, the higher your
-          rewards. Detailed reward calculations and hub emissions can be found
+          FHE stake and the hub payout. The more FHE you stake, the higher
+          rewards you will earn. Detailed reward calculations and hub emissions
+          can be found
         </span>{" "}
         <a
-          href="http://"
+          href="https://docs.mindnetwork.xyz/minddocs/product/agentic-world/rewards-rule"
           target="_blank"
           rel="noopener noreferrer"
           className="text-white font-[500] underline hover:text-[var(--mind-brand)]"
