@@ -206,7 +206,7 @@ const BeginInfo3 = () => {
           )}
         </>
       ) : (
-        <div>
+        <div className="min-h-full">
           <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
           <div id="launchContent2">
             I&apos;m here to shape the AgenticWorld with you together. Ready to

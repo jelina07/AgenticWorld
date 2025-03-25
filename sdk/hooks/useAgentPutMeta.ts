@@ -21,7 +21,6 @@ export default function useAgentPutMeta(
       if (!chainId) {
         return;
       }
-      // 签名
       const signature = await signMessageAsync({
         message: `You are modifying your agent information on the chain:${chainId}`,
       });

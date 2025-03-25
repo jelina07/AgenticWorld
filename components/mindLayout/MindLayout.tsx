@@ -26,12 +26,12 @@ export default function MindLayout({
       {loading ? (
         <div
           className="w-full flex justify-center items-center"
-          style={{ height: `calc(100vh - 80px)` }}
+          style={{ height: `calc(100vh - 160px)` }}
         >
           <Spin />
         </div>
       ) : (
-        <div>{children}</div>
+        <div style={{ minHeight: `calc(100vh - 160px)` }}>{children}</div>
       )}
       <Footer />
     </div>
