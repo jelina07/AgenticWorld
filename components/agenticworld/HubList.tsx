@@ -136,8 +136,8 @@ const HubList = forwardRef(
           <Row
             className="mt-[40px]"
             gutter={[
-              { xs: 8, sm: 30, md: 50 },
-              { xs: 16, sm: 30, md: 50 },
+              { xs: 8, sm: 20, md: 30, lg: 50 },
+              { xs: 16, sm: 20, md: 30, lg: 50 },
             ]}
           >
             {subnetInfor?.map((item: any) => (
@@ -166,13 +166,13 @@ const HubList = forwardRef(
                     <div className="flex items-center gap-[5px] justify-between">
                       <div className="flex items-center gap-[5px]">
                         <span
-                          className={`inline-block w-[16px] h-[16px] rounded-[50%] ${
+                          className={`inline-block w-[16px] h-[16px] rounded-[50%] flex-shrink-0 ${
                             filter === 1 || filter === 2
                               ? "blue-gradient"
                               : "yellow-gradient"
                           }`}
                         ></span>
-                        <span className="text-[18px] text-white font-[800] leading-[1.2]">
+                        <span className="text-[18px] text-white font-[800] leading-[1.2] break-all">
                           {item.subnetName}
                         </span>
                       </div>
