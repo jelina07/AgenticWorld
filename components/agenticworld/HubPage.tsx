@@ -1,57 +1,80 @@
 "use client";
 import { Collapse, CollapseProps } from "antd";
-import React from "react";
+import React, { useRef, useState } from "react";
 import HubList from "./HubList";
 import { useHubList } from "@/sdk";
 import useHubAgentCount from "@/sdk/hooks/useHubAgentCount";
 export default function HubPage() {
-  const { data: subnetList, loading } = useHubList({
-    cacheKey: "useSubnetList",
-    staleTime: 5 * 60 * 1000,
-  });
-  // const { data } = useHubAgentCount({ hubId: 1 });
-  // console.log("data", data);
+  const [loading, setLoading] = useState(false);
+  const hublist: any = useRef(null);
+  const refreshClick = (event: any) => {
+    event.stopPropagation();
+    hublist.current?.refreshLearningTime();
+  };
+  const handleChildLoading = (value: boolean) => {
+    setLoading(value);
+    console.log("value", value);
+  };
+  console.log("loadingloading", loading);
 
-  const subnetInfor = subnetList?.map((item: any) => {
-    return {
-      subnetId: item.id,
-      type: item.type,
-      subnetName: item.name,
-      subnetInfo: item.desc,
-      lockup: item.lockUp,
-      subnetLevel: item.note,
-      subnetRequire: item.requireName,
-      needSign: item.needSign,
-    };
-  }) as SubnetInfoType[];
-  const basicSubnet = subnetInfor?.filter(
-    (item: SubnetInfoType) => item.type === 0
-  );
-  const advanceSubnet = subnetInfor?.filter(
-    (item: SubnetInfoType) => item.type === 1
-  );
   const items: CollapseProps["items"] = [
     {
       key: "1",
       label: (
-        <div className="text-left text-[18px] sm:text-[26px] text-white font-[800] ">
-          Start Training with Basic Hub
+        <div className="flex gap-[10px]">
+          <div className="text-left text-[18px] sm:text-[26px] text-white font-[800]">
+            Start Training with Basic Hub
+          </div>
+          <img
+            src="/icons/refresh.svg"
+            alt="refresh"
+            onClick={refreshClick}
+            width={20}
+            className={`cursor-pointer ${
+              loading ? "refresh" : ""
+            } relative z-[10]`}
+          />
         </div>
       ),
-      children: <HubList filter={2}></HubList>,
+      children: (
+        <div className="md:px-[20px]">
+          <HubList
+            filter={2}
+            ref={hublist}
+            onSendLoading={handleChildLoading}
+          ></HubList>
+        </div>
+      ),
     },
     {
       key: "2",
       label: (
-        <div className="text-left text-[18px] sm:text-[26px] text-white font-[800]">
-          Earn More with Advance Hub
+        <div className="flex gap-[10px]">
+          <div className="text-left text-[18px] sm:text-[26px] text-white font-[800]">
+            Earn More with Advance Hub
+          </div>
+          <img
+            src="/icons/refresh.svg"
+            alt="refresh"
+            onClick={refreshClick}
+            width={20}
+            className={`cursor-pointer ${
+              loading ? "refresh" : ""
+            } relative z-[10]`}
+          />
         </div>
       ),
-      children: <HubList filter={3}></HubList>,
+      children: (
+        <div className="md:px-[20px]">
+          <HubList
+            filter={3}
+            ref={hublist}
+            onSendLoading={handleChildLoading}
+          ></HubList>
+        </div>
+      ),
     },
   ];
-
-  console.log("subnetList", subnetList);
 
   return (
     <div className="mt-[40px]">
