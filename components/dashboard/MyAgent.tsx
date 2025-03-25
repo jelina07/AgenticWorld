@@ -23,6 +23,7 @@ import {
 import { numberDigits } from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { CheckOutlined } from "@ant-design/icons";
+import Created from "../utils/created";
 
 export default function MyAgent({
   ids,
@@ -286,7 +287,7 @@ export default function MyAgent({
                     {currentLearnedHub === undefined ? (
                       "loading..."
                     ) : stateType === 0 ? (
-                      "Created"
+                      <Created />
                     ) : stateType === 1 ? (
                       <Lock />
                     ) : (
