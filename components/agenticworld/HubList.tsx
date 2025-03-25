@@ -149,7 +149,7 @@ const HubList = forwardRef(
               >
                 <Link href={`/agenticworld/${item.subnetId}`}>
                   <div
-                    className={`p-[40px] h-full ${
+                    className={`p-[30px] h-full ${
                       filter === 1 || filter === 2
                         ? "bg-[url('/icons/subnet-box1.svg')] hub-box"
                         : "bg-[url('/icons/subnet-box2.svg')] hub-box2"
@@ -266,6 +266,20 @@ const HubList = forwardRef(
                 </Link>
               </Col>
             ))}
+            {/* <Col
+              xs={{ span: 24 }}
+              md={{ span: 12 }}
+              lg={{ span: 8 }}
+              className={`${filter === 3 ? "" : "hidden"} p-[30px] h-full`}
+            >
+              <div
+                className="text-white flex justify-between items-center 
+              bg-[url('/icons/subnet-box2.svg')]bg-no-repeat bg-right-bottom 
+              bg-cover hub-box2"
+              >
+                <div>More Hubs will come in future</div>
+              </div>
+            </Col> */}
           </Row>
         )}
         <StartConfirmModal
