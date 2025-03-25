@@ -11,6 +11,7 @@ import { usePrevious } from "ahooks";
 import { useAccount } from "wagmi";
 import { Button } from "antd";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import BeginHaveAgent from "./BeginHaveAgent";
 const string1 = `  
     <div>
       <div>
@@ -131,60 +132,71 @@ const BeginInfo3 = () => {
     }
   }, [learningIdLoading]);
 
-  return (
+  return !canRender ? (
+    <div></div>
+  ) : (
     <div className="mt-[30px] sm:mt-[70px]">
       <div id="launchTitle">Buillding AgenticWorld</div>
       {address ? (
         <>
-          <Typewriter
-            options={{
-              loop: false,
-              cursor: "",
-              delay: 0,
-            }}
-            onInit={(typewriter) => {
-              typewriter
-                .typeString(string1)
-                .start()
-                .callFunction(() => {
-                  setStringtypedout1(true);
-                });
-            }}
-          />
-          <div
-            className={`${
-              stringtypedout1 ? "visible-style" : "hidden-style"
-            } mt-[20px]`}
-          >
-            <StakeLaunch ref={stakeLaunchRef} />
-          </div>
-
-          {isAgent && stringtypedout1 ? (
-            <Typewriter
-              options={{
-                loop: false,
-                cursor: "",
-                delay: 0,
-              }}
-              onInit={(typewriter) => {
-                stakeLaunchRef.current?.clearStakeAmount();
-                typewriter
-                  .typeString(string2)
-                  .start()
-                  .callFunction(() => {
-                    setStringtypedout2(true);
-                  });
-              }}
-            />
+          {preTokenId.current ? (
+            <BeginHaveAgent />
           ) : (
-            <></>
+            <>
+              <Typewriter
+                options={{
+                  loop: false,
+                  cursor: "",
+                  delay: 0,
+                }}
+                onInit={(typewriter) => {
+                  typewriter
+                    .typeString(string1)
+                    .start()
+                    .callFunction(() => {
+                      setStringtypedout1(true);
+                    });
+                }}
+              />
+              <div
+                className={`${
+                  stringtypedout1 ? "visible-style" : "hidden-style"
+                } mt-[20px]`}
+              >
+                <StakeLaunch ref={stakeLaunchRef} />
+              </div>
+
+              {isAgent && stringtypedout1 ? (
+                <Typewriter
+                  options={{
+                    loop: false,
+                    cursor: "",
+                    delay: 0,
+                  }}
+                  onInit={(typewriter) => {
+                    stakeLaunchRef.current?.clearStakeAmount();
+                    typewriter
+                      .typeString(string2)
+                      .start()
+                      .callFunction(() => {
+                        setStringtypedout2(true);
+                      });
+                  }}
+                />
+              ) : (
+                <></>
+              )}
+
+              <div
+                className={`${
+                  stringtypedout2 ? "visible-style" : "hidden-style"
+                }`}
+              >
+                <RequiredHub />
+              </div>
+            </>
           )}
 
-          <div
-            className={`${stringtypedout2 ? "visible-style" : "hidden-style"}`}
-          >
-            <RequiredHub />
-          </div>
           {isLearnRequiredHub ? (
             <Typewriter
               options={{

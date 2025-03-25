@@ -126,6 +126,8 @@ const HubList = forwardRef(
         openConnectModal?.();
       }
     };
+    console.log("agentTokenId", agentTokenId);
+
     return (
       <div>
         {loading ? (

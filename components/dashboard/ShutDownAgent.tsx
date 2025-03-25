@@ -31,19 +31,19 @@ export default function ShutDownAgent({
   };
 
   const shoutDown = async () => {
-    // if (checkAmountControlButtonShow(agentStakeAmount!)) {
-    const res = await agentBurn(agentTokenId!);
-    if (res) {
-      refreshStakeAmount();
-      fheBalanceRefresh();
-      refreshAgentTokenId();
-      handleCancel();
-      notification.success({
-        message: "Success",
-        description: "Your agent has been successfully shut down !",
-      });
+    if (checkAmountControlButtonShow(agentStakeAmount!)) {
+      const res = await agentBurn(agentTokenId!);
+      if (res) {
+        refreshStakeAmount();
+        fheBalanceRefresh();
+        refreshAgentTokenId();
+        handleCancel();
+        notification.success({
+          message: "Success",
+          description: "Your agent has been successfully shut down !",
+        });
+      }
     }
-    // }
   };
   return (
     <>
