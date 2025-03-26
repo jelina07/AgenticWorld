@@ -151,7 +151,6 @@ export default function MyAgent({
     }
   }, [agentMeta]);
   console.log("agentMeta", agentMeta);
-
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
       const res = await claim();
@@ -203,7 +202,7 @@ export default function MyAgent({
                 : "/icons/cz.svg"
             }`}
             alt="cz"
-            width="150"
+            width="140"
             className="mx-auto pt-[30px]"
           />
           {/* <div className={`${!isAgent ? "hidden" : ""}`}>

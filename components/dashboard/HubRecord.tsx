@@ -11,7 +11,10 @@ const tableColumns: TableColumnsType = [
     title: "Basic Hub",
     dataIndex: "subnetName",
     render: (value: string, record: any) => (
-      <div className="flex items-center gap-[5px]">
+      <a
+        className="flex items-center gap-[5px] underline text-white hover:underline hover:text-white"
+        href={`/agenticworld/${record.subnetId}`}
+      >
         <img
           src={record.subnetLogo}
           alt="logo"
@@ -29,7 +32,7 @@ const tableColumns: TableColumnsType = [
         >
           <Lock />
         </div>
-      </div>
+      </a>
     ),
   },
   {

@@ -5,9 +5,13 @@ const request = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-//请求拦截器，暂时用不到
-request.interceptors.request.use((config) => config);
+//
+request.interceptors.request.use((config) => {
+  config.headers = config.headers || {};
+  config.headers["Version"] = "0.1.0";
 
+  return config;
+});
 request.interceptors.response.use(
   (response) => {
     const data = response.data || {};

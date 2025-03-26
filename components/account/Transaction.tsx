@@ -28,15 +28,16 @@ export default function Transaction() {
     {
       title: "Agent",
       dataIndex: "agent",
-      render: () => (
-        <span className="text-[12px] text-light">
-          {agentMetaLoading
-            ? "loading..."
-            : !agentMeta
-            ? "CitizenZ_0"
-            : agentMeta.agentName}
-        </span>
-      ),
+      // render: () => (
+      //   <span className="text-[12px] text-light">
+      //     {agentMetaLoading
+      //       ? "loading..."
+      //       : !agentMeta
+      //       ? "CitizenZ_0"
+      //       : agentMeta.agentName}
+      //   </span>
+      // ),
+      render: () => <span className="text-[12px] text-light">CitizenZ_0</span>,
     },
     {
       title: "Status",
