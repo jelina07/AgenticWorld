@@ -1,9 +1,15 @@
 import { useAgentGetTokenId, useAgentStake, useGetFheBalance } from "@/sdk";
+import { isDev, isProd } from "@/sdk/utils";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
-import { checkAmountControlButtonShow, firstStakeAmount } from "@/utils/utils";
+import {
+  checkAmountControlButtonShow,
+  firstStakeAmount,
+  numberDigits,
+} from "@/utils/utils";
 import { Button, Input, message, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
+import Facuet from "../facuet/Facuet";
 
 const StakeLaunch = forwardRef((_, ref) => {
   const [amount, setAmount] = useState("");
@@ -14,7 +20,7 @@ const StakeLaunch = forwardRef((_, ref) => {
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
-  const { refresh: fheBalanceRefresh } = useGetFheBalance();
+  const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
 
   useImperativeHandle(ref, () => ({
@@ -58,7 +64,6 @@ const StakeLaunch = forwardRef((_, ref) => {
     >
       <img src="/icons/ai-agent.svg" alt="ai-agent" />
       <div>
-        {/* <></> */}
         <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
         <div className="text-[14px] mt-[20px]">
           <div>Minimum staking: 100 $FHE</div>
@@ -67,13 +72,29 @@ const StakeLaunch = forwardRef((_, ref) => {
           </div>
         </div>
         <Input
-          style={{ height: "45px", margin: "26px 0" }}
+          style={{ height: "45px", margin: "26px 0 0 0" }}
           disabled={isAgent}
           value={amount}
           onChange={(e: any) => {
             setAmount(e.target.value);
           }}
         />
+        <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
+          <span>FHE Balance:</span>
+          <div className="flex items-center gap-[3px]">
+            <span>
+              {loading
+                ? "loading..."
+                : balance === undefined || numberDigits(balance) + " FHE"}
+            </span>
+            <img
+              src="/icons/refresh.svg"
+              alt="refresh"
+              onClick={fheBalanceRefresh}
+              className={`cursor-pointer ${loading ? "refresh" : ""}`}
+            />
+          </div>
+        </div>
         <div className="flex items-end gap-[10px]">
           <Button
             type="primary"
@@ -84,14 +105,7 @@ const StakeLaunch = forwardRef((_, ref) => {
           >
             Stake
           </Button>
-          <a
-            href="http://"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] whitespace-nowrap underline hover:underline"
-          >
-            Buy $FHE
-          </a>
+          <Facuet />
         </div>
       </div>
     </div>

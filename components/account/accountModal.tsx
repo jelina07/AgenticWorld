@@ -6,14 +6,12 @@ import Transaction from "./Transaction";
 
 export default function AccountModal({
   gasBalance,
-  balance,
   refresh,
   loading,
 }: {
   refresh: Function;
   loading: boolean;
   gasBalance?: string;
-  balance?: string;
 }) {
   const { accountModalopen, setIsAccountModalopen } = useControlModal();
   const { disconnect } = useDisconnect();
