@@ -89,7 +89,7 @@ export default function Transaction() {
         bordered={false}
         loading={loading}
         rowKey="txn_hash"
-        scroll={{ x: 400, y: 350 }}
+        scroll={{ x: 400, y: 250 }}
       />
     </div>
   );
