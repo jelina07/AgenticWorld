@@ -14,6 +14,7 @@ export const DAOKEN_ADDRESS: Record<number, `0x${string}`> = {
   192940: "0x33581174971727Cf00cf4c89afb9A0aacF5BE006",
   228: "0x",
   97: "0x6Be9d2F754CAF73187ffb5f526a38C6E4d135e19",
+  56: "0x786036BB4af57320EC9830c398416ef5194296a7",
 };
 
 export const MEMBER_POOL_ADDRESS: Record<number, `0x${string}`> = {
