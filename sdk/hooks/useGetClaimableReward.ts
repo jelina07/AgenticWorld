@@ -7,13 +7,16 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
-export default function useGetClaimableReward(options?: Options<undefined | string, []> & { address: string }) {
+export default function useGetClaimableReward(
+  options?: Options<undefined | string, []> & { address: string }
+) {
   const { address, chainId } = useAccount();
 
   const result = useRequest(
     async () => {
-      if (!address || !chainId) {
+      if (!address || !chainId || !isSupportChain(chainId)) {
         return;
       }
       const amount = (await readContract(config, {

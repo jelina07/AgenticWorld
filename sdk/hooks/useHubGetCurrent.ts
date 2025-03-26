@@ -7,13 +7,16 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { exceptionHandler } from "../utils/exception";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
-export default function useHubGetCurrent(options?: Options<number | undefined, []> & { tokenId?: number }) {
+export default function useHubGetCurrent(
+  options?: Options<number | undefined, []> & { tokenId?: number }
+) {
   const { setLearningHubId } = useGetLearningHubId();
   const { chainId } = useAccount();
   const result = useRequest(
     async () => {
-      if (!options?.tokenId || !chainId) {
+      if (!options?.tokenId || !chainId || !isSupportChain(chainId)) {
         setLearningHubId(0);
         return;
       }

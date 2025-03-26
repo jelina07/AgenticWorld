@@ -2,7 +2,7 @@ import { Abi, decodeErrorResult, encodeFunctionData, parseEther } from "viem";
 import { DAOTOKEN_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import { estimateGas } from "wagmi/actions";
-import { config } from "../wagimConfig";
+import { config, supportChainId } from "../wagimConfig";
 
 export const estimateGasUtil = async (
   abi: any[],
@@ -81,4 +81,7 @@ export const Agent1ContractErrorCode = (code: number) => {
     default:
       return "Unknown Error";
   }
+};
+export const isSupportChain = (chainid: number) => {
+  return supportChainId.includes(chainid);
 };

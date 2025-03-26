@@ -6,6 +6,7 @@ import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
 export default function useHubAgentCount(
   options?: Options<undefined | any[], []> & { hubIds?: any[] }
@@ -15,7 +16,7 @@ export default function useHubAgentCount(
 
   const result = useRequest(
     async () => {
-      if (!hubIds || !hubIds.length || !chainId) {
+      if (!hubIds || !hubIds.length || !chainId || !isSupportChain(chainId)) {
         return;
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);

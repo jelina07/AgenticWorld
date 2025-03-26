@@ -6,13 +6,16 @@ import { DAO_INSPECTOR_ABI } from "../blockChain/abi";
 import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
-export default function useHubGetStakeAmount(options?: Options<undefined | string[], []> & { hubIds?: any[] }) {
+export default function useHubGetStakeAmount(
+  options?: Options<undefined | string[], []> & { hubIds?: any[] }
+) {
   const { hubIds, ...rest } = options || {};
   const { chainId } = useAccount();
   const result = useRequest(
     async () => {
-      if (!hubIds?.length || !chainId) {
+      if (!hubIds?.length || !chainId || !isSupportChain(chainId)) {
         return;
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);
@@ -26,7 +29,7 @@ export default function useHubGetStakeAmount(options?: Options<undefined | strin
       return amounts.map((amount) => formatEther(amount));
     },
     {
-      refreshDeps: [hubIds],
+      refreshDeps: [hubIds, chainId],
       ...rest,
     }
   );

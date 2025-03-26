@@ -7,14 +7,17 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import Big from "big.js";
 import { exceptionHandler } from "../utils/exception";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
-export default function useHubGetApy(options?: Options<any, []> & { hubIds?: any[] }) {
+export default function useHubGetApy(
+  options?: Options<any, []> & { hubIds?: any[] }
+) {
   const { hubIds, ...rest } = options || {};
   const { chainId } = useAccount();
 
   const result = useRequest(
     async () => {
-      if (!hubIds?.length || !chainId) {
+      if (!hubIds?.length || !chainId || !isSupportChain(chainId)) {
         return;
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);
@@ -27,7 +30,9 @@ export default function useHubGetApy(options?: Options<any, []> & { hubIds?: any
 
       console.log("amounts", amounts);
 
-      return amounts.map((amount) => new Big(amount.toString()).div(100).toFixed(0) + "%");
+      return amounts.map(
+        (amount) => new Big(amount.toString()).div(100).toFixed(0) + "%"
+      );
     },
     {
       onError: (err) => exceptionHandler(err),

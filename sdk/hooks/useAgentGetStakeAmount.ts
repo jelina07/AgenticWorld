@@ -7,13 +7,16 @@ import { AGENT1_ADDRESS } from "../blockChain/address";
 import { formatEther } from "viem";
 import { exceptionHandler } from "../utils/exception";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
-export default function useAgentGetStakeAmount(options?: Options<string | undefined, []> & { tokenId?: number }) {
+export default function useAgentGetStakeAmount(
+  options?: Options<string | undefined, []> & { tokenId?: number }
+) {
   const { tokenId, ...rest } = options || {};
   const { chainId } = useAccount();
   const result = useRequest(
     async () => {
-      if (!tokenId || !chainId) {
+      if (!tokenId || !chainId || !isSupportChain(chainId)) {
         return;
       }
       const amount = (await readContract(config, {

@@ -7,13 +7,18 @@ import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { isSupportChain } from "../utils/script";
 
-export default function useAgentGetTokenId(options?: Options<number | undefined, []>) {
+export default function useAgentGetTokenId(
+  options?: Options<number | undefined, []>
+) {
   const { address, chainId } = useAccount();
-  const setAgentTokenId = useAgentGetTokenIdStore((state) => state.setAgentTokenId);
+  const setAgentTokenId = useAgentGetTokenIdStore(
+    (state) => state.setAgentTokenId
+  );
   const result = useRequest(
     async () => {
-      if (!address || !chainId) {
+      if (!address || !chainId || !isSupportChain(chainId)) {
         if (setAgentTokenId) setAgentTokenId(0);
         return;
       }

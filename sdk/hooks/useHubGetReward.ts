@@ -7,6 +7,7 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
 export default function useHubGetReward(
   options?: Options<string[] | undefined, []> & {
@@ -19,7 +20,7 @@ export default function useHubGetReward(
 
   const result = useRequest(
     async () => {
-      if (!hubIds?.length || !tokenId || !chainId) {
+      if (!hubIds?.length || !tokenId || !chainId || !isSupportChain(chainId)) {
         return;
       }
       const amounts = (await readContract(config, {

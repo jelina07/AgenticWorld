@@ -7,6 +7,7 @@ import { AGENT1_ADDRESS, DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { exceptionHandler } from "../utils/exception";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
+import { isSupportChain } from "../utils/script";
 
 export default function useHubGetCurrentExp(
   options?: Options<bigint[] | undefined, []> & {
@@ -19,7 +20,12 @@ export default function useHubGetCurrentExp(
   const { chainId } = useAccount();
   const result = useRequest(
     async () => {
-      if (!tokenId || hubIds?.length === 0 || !chainId) {
+      if (
+        !tokenId ||
+        hubIds?.length === 0 ||
+        !chainId ||
+        !isSupportChain(chainId)
+      ) {
         return;
       }
       const currentExp = (await readContract(config, {
@@ -28,7 +34,6 @@ export default function useHubGetCurrentExp(
         functionName: "getAgentXpLengthSecBatch",
         args: [tokenId, hubIds],
       })) as bigint[];
-      console.log("currentExp", currentExp);
 
       // 向下取整获取小时
       // const learnHour = currentExp.map((item) =>
@@ -44,7 +49,9 @@ export default function useHubGetCurrentExp(
     }
   );
   const currentLearnTime = useMemo(() => {
-    const learnHour = result.data?.map((item: any) => Math.floor(Number(item) / 3600));
+    const learnHour = result.data?.map((item: any) =>
+      Math.floor(Number(item) / 3600)
+    );
     const learnSecond = result.data?.map((item: any) => Number(item));
     return {
       learnHour,

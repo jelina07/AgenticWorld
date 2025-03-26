@@ -7,13 +7,14 @@ import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import { DAOKEN_ADDRESS } from "../blockChain/address";
+import { isSupportChain } from "../utils/script";
 
 export default function useGetFheBalance(options?: Options<any, []>) {
   const { address, chainId } = useAccount();
   const { setBalance } = useGetFheBalanceStore();
   const result = useRequest(
     async () => {
-      if (!address || !chainId) {
+      if (!address || !chainId || !isSupportChain(chainId)) {
         setBalance("");
         return;
       }
