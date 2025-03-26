@@ -58,6 +58,7 @@ const StakeLaunch = forwardRef((_, ref) => {
     >
       <img src="/icons/ai-agent.svg" alt="ai-agent" />
       <div>
+        {/* <></> */}
         <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
         <div className="text-[14px] mt-[20px]">
           <div>Minimum staking: 100 $FHE</div>

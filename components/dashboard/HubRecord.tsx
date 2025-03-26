@@ -11,17 +11,19 @@ const tableColumns: TableColumnsType = [
     title: "Basic Hub",
     dataIndex: "subnetName",
     render: (value: string, record: any) => (
-      <a
-        className="flex items-center gap-[5px] underline text-white hover:underline hover:text-white"
-        href={`/agenticworld/${record.subnetId}`}
-      >
+      <div className="flex items-center gap-[5px]">
         <img
           src={record.subnetLogo}
           alt="logo"
           width={30}
           className="rounded-[50%]"
         />
-        <span className="text-[14px] text-white mr-[10px]">{value}</span>
+        <a
+          href={`/agenticworld/${record.subnetId}`}
+          className="text-[14px] mr-[10px] underline text-white hover:underline hover:text-white"
+        >
+          {value}
+        </a>
         <div
           className={`${
             record.status === "Training" &&
@@ -32,7 +34,7 @@ const tableColumns: TableColumnsType = [
         >
           <Lock />
         </div>
-      </a>
+      </div>
     ),
   },
   {

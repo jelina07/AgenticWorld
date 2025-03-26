@@ -33,11 +33,11 @@ export default function Page() {
         </div>
         <HubPage />
       </div>
-      <div className="h-[200px] md:h-[300px] lg:h-[500px] relative">
+      <div className="h-[50px] sm:h-[200px] md:h-[300px] lg:h-[500px] relative">
         <img
           src="/icons/green-wave.svg"
           alt=""
-          className="absolute bottom-0 w-full"
+          className="absolute bottom-0 w-full hidden sm:block"
         />
       </div>
     </div>
