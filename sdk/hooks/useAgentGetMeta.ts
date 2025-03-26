@@ -5,10 +5,10 @@ import { useAccount } from "wagmi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 
 export default function useAgentGetMeta(
-  options?: Options<any, [string]> & { agentId: number }
+  options?: Options<any, [string]> & { agentId: number; chainId?: number }
 ) {
-  const { address, chainId } = useAccount();
-  const { agentId, ...rest } = options || {};
+  const { address } = useAccount();
+  const { agentId, chainId, ...rest } = options || {};
 
   const result = useRequest(
     async () => {
@@ -26,7 +26,7 @@ export default function useAgentGetMeta(
       return res;
     },
     {
-      refreshDeps: [address],
+      refreshDeps: [address, agentId],
       ...rest,
     }
   );

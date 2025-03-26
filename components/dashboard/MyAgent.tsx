@@ -24,6 +24,7 @@ import { numberDigits } from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { CheckOutlined } from "@ant-design/icons";
 import Created from "../utils/created";
+import { useAccount, useChainId } from "wagmi";
 
 export default function MyAgent({
   ids,
@@ -34,6 +35,7 @@ export default function MyAgent({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("CitizenZ_0");
+  const { chainId } = useAccount();
 
   const editName = () => {
     setIsEditing(true);
@@ -143,6 +145,7 @@ export default function MyAgent({
 
   const { data: agentMeta, loading: agentMetaLoading } = useAgentGetMeta({
     agentId: agentTokenId,
+    chainId,
   });
   const { runAsync: putAgetMeta } = useAgentPutMeta();
   useEffect(() => {

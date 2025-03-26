@@ -127,3 +127,6 @@ export const config = getDefaultConfig({
     [mindnet.id]: getTransports(mindnet.id),
   },
 });
+
+export const supportChainId = chains.map((item: any) => item.id);
+export { chains };
