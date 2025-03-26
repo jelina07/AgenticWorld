@@ -24,7 +24,7 @@ export default function useAgentStake(
       if (!isValid || !chainId) {
         return;
       }
-      //approve
+      //approve token
       const gasEstimate = await estimateGasUtil(
         DAOTOKEN_ABI,
         "approve",
