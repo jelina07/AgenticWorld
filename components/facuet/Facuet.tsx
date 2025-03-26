@@ -31,6 +31,12 @@ export default function Facuet() {
           duration: 8,
         });
       }
+    } else {
+      window.open(
+        `https://faucet.mindnetwork.io?wallet=${address}&token=${
+          DAOKEN_ADDRESS[chainId!]
+        }&redirectUrl=${currentUrl}`
+      );
     }
   };
 

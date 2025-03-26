@@ -4,7 +4,8 @@ import Header from "../header";
 import Footer from "../footer";
 import { useAgentGetTokenId } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import { Spin } from "antd";
+import { notification, Spin } from "antd";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function MindLayout({
   children,
@@ -14,11 +15,33 @@ export default function MindLayout({
   const { loading, data, refresh } = useAgentGetTokenId();
   const { setRefreshGetAgentTokenId } = useAgentGetTokenIdStore();
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathName = usePathname();
+  const faucetStatus = searchParams.get("faucetStatus");
+  const error = searchParams.get("error");
+  console.log("faucetStatus", faucetStatus, error);
+
   useEffect(() => {
     setRefreshGetAgentTokenId(refresh);
   }, [refresh]);
 
-  console.log("🚀 ~ loading:", loading, data);
+  useEffect(() => {
+    if (faucetStatus === "success") {
+      notification.success({
+        message: "Success",
+        description:
+          "Your water collection has entered the queue, please wait for about 5 minutes to refresh your balance ! If you don't receive FHE, please reclaim",
+      });
+      window.history.replaceState({}, "", pathName);
+    } else if (faucetStatus === "error") {
+      notification.warning({
+        message: "Warning",
+        description: JSON.parse(error!).name,
+      });
+      window.history.replaceState({}, "", pathName);
+    }
+  }, [faucetStatus]);
 
   return (
     <div>
