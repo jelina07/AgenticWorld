@@ -610,3 +610,22 @@ input:focus {
 .Typewriter__cursor {
   display: none !important;
 }
+.transaction-table
+  .ant-select-outlined:not(.ant-select-customize-input)
+  .ant-select-selector {
+  border: none;
+  background: transparent;
+  color: white;
+}
+.transaction-table .ant-select-selection-item {
+  color: white !important;
+}
+.transaction-table .ant-select-dropdown {
+  background-color: var(--bg-deep-grey) !important;
+}
+.transaction-table .ant-select-dropdown .ant-select-item {
+  color: white !important;
+}
+.transaction-table .ant-select-dropdown .ant-select-item-option-selected {
+  background-color: var(--mind-brand) !important;
+}

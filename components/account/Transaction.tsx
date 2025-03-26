@@ -80,7 +80,7 @@ export default function Transaction() {
   //   }
   // }, [accountModalopen]);
   return (
-    <div className="mind-table transaction-table mt-[40px]">
+    <div className="mind-table transaction-table mt-[20px]">
       <Table
         className="mt-[20px]"
         dataSource={data?.list}
@@ -88,8 +88,8 @@ export default function Transaction() {
         pagination={pagination}
         bordered={false}
         loading={loading}
-        rowKey={"txn_hash"}
-        scroll={{ x: 400 }}
+        rowKey="txn_hash"
+        scroll={{ x: 400, y: 350 }}
       />
     </div>
   );
