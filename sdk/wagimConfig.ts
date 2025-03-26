@@ -81,7 +81,7 @@ const bnbtestnet = {
   name: "BNB Smart Chain Testnet",
 };
 
-let chains: any;
+let chains: any = [];
 if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
   chains = [
     { ...bnbtestnet, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
@@ -128,5 +128,6 @@ export const config = getDefaultConfig({
   },
 });
 
-export const supportChainId = chains.map((item: any) => item.id);
+export const supportChainId =
+  chains.length === 0 ? [] : chains.map((item: any) => item.id);
 export { chains };
