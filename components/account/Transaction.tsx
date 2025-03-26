@@ -32,33 +32,35 @@ export default function Transaction() {
     {
       title: "Type",
       dataIndex: "type",
-    },
-    {
-      title: "Chain",
-      dataIndex: "chain_id",
-      render: (value) => (
-        <img
-          src={chains.find((item: any) => item.id === value).iconUrl}
-          alt="chian-icon"
-          width={12}
-        />
+      render: (value, record) => (
+        <div className="flex items-center gap-[5px]">
+          <img
+            src={
+              chains.find((item: any) => item.id === record.chain_id).iconUrl
+            }
+            alt="chian-icon"
+            width={12}
+          />
+          <span>{value}</span>
+        </div>
       ),
     },
-    // {
-    //   title: "Agent",
-    //   dataIndex: "agent",
-    //   render: (_, record) => (
-    //     <span className="text-[12px] text-light">
-    //       {agentMetaLoading
-    //         ? "loading..."
-    //         : !agentMetas?.find((item: any) => item.chainId === record.chain_id)
-    //             .agentMeta
-    //         ? "CitizenZ_0"
-    //         : agentMetas?.find((item: any) => item.chainId === record.chain_id)
-    //             .agentMeta.agentName}
-    //     </span>
-    //   ),
-    // },
+    {
+      title: "Agent",
+      dataIndex: "agent",
+      render: (_, record) => (
+        <span className="text-[12px] text-light">
+          {/* {agentMetaLoading
+            ? "loading..."
+            : !agentMetas?.find((item: any) => item.chainId === record.chain_id)
+                .agentMeta
+            ? "CitizenZ_0"
+            : agentMetas?.find((item: any) => item.chainId === record.chain_id)
+                .agentMeta.agentName} */}
+          CitizenZ_0
+        </span>
+      ),
+    },
     {
       title: "Status",
       dataIndex: "status",
@@ -86,7 +88,7 @@ export default function Transaction() {
         pagination={pagination}
         bordered={false}
         loading={loading}
-        rowKey={"subnetId"}
+        rowKey={"txn_hash"}
         scroll={{ x: 400 }}
       />
     </div>
