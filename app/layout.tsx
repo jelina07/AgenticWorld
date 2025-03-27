@@ -5,6 +5,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import { Providers } from "./Providers";
 import MindLayout from "@/components/mindLayout/MindLayout";
+import { Suspense } from "react";
 
 export const metadata: Metadata = siteConfig;
 
@@ -33,7 +34,9 @@ export default function RootLayout({
             }}
           >
             <Providers>
-              <MindLayout>{children}</MindLayout>
+              <Suspense>
+                <MindLayout>{children}</MindLayout>
+              </Suspense>
             </Providers>
           </ConfigProvider>
         </AntdRegistry>

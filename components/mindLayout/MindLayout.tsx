@@ -16,11 +16,9 @@ export default function MindLayout({
   const { setRefreshGetAgentTokenId } = useAgentGetTokenIdStore();
 
   const searchParams = useSearchParams();
-  const router = useRouter();
   const pathName = usePathname();
   const faucetStatus = searchParams.get("faucetStatus");
   const error = searchParams.get("error");
-  console.log("faucetStatus", faucetStatus, error);
 
   useEffect(() => {
     setRefreshGetAgentTokenId(refresh);
