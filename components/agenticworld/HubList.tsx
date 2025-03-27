@@ -21,7 +21,6 @@ import {
 } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { useAsyncEffect } from "ahooks";
 import { secondsToHours } from "@/utils/utils";
 
 const HubList = forwardRef(
@@ -41,7 +40,7 @@ const HubList = forwardRef(
     useImperativeHandle(ref, () => ({
       refreshLearningTime: () => {
         refreshLearningTime();
-        console.log("learningTimeLoading", learningTimeLoading);
+        refresh();
         onSendLoading && onSendLoading(learningTimeLoading);
       },
     }));
@@ -63,10 +62,13 @@ const HubList = forwardRef(
       tokenId: agentTokenId,
       hubIds: hubIds,
     });
-    const { data: subnetList, loading } = useHubList({
-      cacheKey: "useSubnetList",
-      staleTime: 5 * 60 * 1000,
-    });
+    console.log("learnSecondlearnSecond", learnSecond);
+    const {
+      data: subnetList,
+      loading,
+      refresh,
+    } = useHubList({ cacheKey: "useSubnetList", staleTime: 5 * 60 * 1000 });
+
     const { data: hubAgentCount, refresh: refreshHubAgentCount } =
       useHubAgentCount({ hubIds: subnetList });
     const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
@@ -98,12 +100,12 @@ const HubList = forwardRef(
 
     const lockTimeReach = useMemo(() => {
       if (
-        subnetInfor &&
+        subnetInforAll &&
         learningId &&
         learnSecond !== undefined &&
         learnSecond[0] >=
           Number(
-            subnetInfor.find(
+            subnetInforAll.find(
               (item: SubnetInfoType) => item.subnetId === learningId
             )?.lockup
           )
@@ -111,7 +113,7 @@ const HubList = forwardRef(
         return true;
       }
       return false;
-    }, [subnetInfor, learningId, learnSecond]);
+    }, [subnetInforAll, learningId, learnSecond]);
 
     useEffect(() => {
       onSendLoading && onSendLoading(learningTimeLoading);
@@ -180,7 +182,7 @@ const HubList = forwardRef(
                       </div>
                     </div>
                     {filter === 1 || (filter === 2 && !isLaunch) ? (
-                      <div className="mt-[20px] flex justify-between gap-[5]">
+                      <div className="mt-[20px] flex justify-between gap-[5] flex-wrap">
                         <span className="text-[var(--mind-brand)] text-[18px]">
                           {item.subnetLevel}
                         </span>

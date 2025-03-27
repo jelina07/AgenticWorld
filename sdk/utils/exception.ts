@@ -25,8 +25,8 @@ export function exceptionHandler(error: any, abi?: any, description?: string) {
         duration: 5,
       });
     } else {
-      notification.error({
-        message: "Error",
+      notification.warning({
+        message: "Warning",
         description:
           errorMessage || description || error?.shortMessage || error?.message,
         duration: 5,

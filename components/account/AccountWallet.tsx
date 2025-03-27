@@ -1,4 +1,4 @@
-import { handleCopy, mindscan, numberDigits } from "@/utils/utils";
+import { handleCopy, numberDigits, scan } from "@/utils/utils";
 import React from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import Copy from "@/public/icons/copy.svg";
@@ -15,7 +15,7 @@ export default function AccountWallet({
   loading: boolean;
   gasBalance?: string;
 }) {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const copyAddress = (address: `0x${string}`) => {
     handleCopy(address);
   };
@@ -53,13 +53,13 @@ export default function AccountWallet({
       </div>
       <div className="text-right mt-[40px]">
         <a
-          href={mindscan(address!)}
+          href={scan(address!, chainId!)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-[var(--mind-brand)] hover:text-[var(--mind-brand)] inline-block"
         >
           <div className="flex justify-end items-center gap-[5px]">
-            <span>MindScan</span>
+            <span>Scan</span>
             <Mindscan />
           </div>
         </a>

@@ -1,14 +1,23 @@
 import { isDev, isProd } from "@/sdk/utils";
+import { chains } from "@/sdk/wagimConfig";
 import { message } from "antd";
 import millify from "millify";
 
 export const firstStakeAmount = 100;
 
-export const mindscan = (address: `0x${string}`) => {
-  return isDev() || isProd()
-    ? `https://explorer-testnet.mindnetwork.xyz/address/${address}`
-    : `https://explorer.mindnetwork.xyz/address/${address}`;
-};
+export function scan(address: `0x${string}`, currentChainid: number) {
+  console.log(
+    "chains.find((item: any) => item.id === currentChainid)",
+    chains.find((item: any) => item.id === currentChainid)
+  );
+
+  return (
+    chains.find((item: any) => item.id === currentChainid).blockExplorers
+      .default.url +
+    "/address/" +
+    address
+  );
+}
 
 export function handleCopy(textToCopy: string) {
   navigator.clipboard
@@ -83,7 +92,7 @@ export function secondsToHours(seconds: number | string): string {
   return numberDigitsNoMillify(Number(seconds) / 3600);
 }
 
-export const getUserAgent = () => {
+export function getUserAgent() {
   if (typeof window === "undefined") return "";
   return window.navigator.userAgent;
-};
+}

@@ -20,7 +20,7 @@ import {
   useHubGetCurrent,
   useHubGetCurrentExp,
 } from "@/sdk";
-import { numberDigits } from "@/utils/utils";
+import { number5Digits, numberDigits } from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { CheckOutlined } from "@ant-design/icons";
 import Created from "../utils/created";
@@ -87,37 +87,7 @@ export default function MyAgent({
     return learnSecond?.filter((second: number) => second > 0).length;
   }, [learnSecond]);
 
-  // type 0: no learned; type 1: locked ; type 2:unlocked
-  // const stateType = useMemo(() => {
-  //   if (currentLearnedHub !== undefined) {
-  //     if (currentLearnedHub === 0) {
-  //       return 0;
-  //     } else {
-  //       // const judge = hubList!.every(
-  //       //   (value, index) => learnSecond?.[index]! >= value
-  //       // );
-  //       const judgeArray: boolean[] = [];
-  //       learnSecond?.forEach((item, index) => {
-  //         if (item > 0) {
-  //           hubList![index] > item
-  //             ? judgeArray.push(false)
-  //             : judgeArray.push(true);
-  //         } else {
-  //           judgeArray.push(true);
-  //         }
-  //       });
-  //       console.log("judgeArray", judgeArray);
-
-  //       const judge = judgeArray.find((item) => !item);
-  //       if (judge) {
-  //         return 1;
-  //       } else {
-  //         return 2;
-  //       }
-  //     }
-  //   }
-  // }, [hubList, currentLearnedHub, learnSecond]);
-  // console.log("stateType", stateType);
+  console.log("claimableReward", claimableReward);
 
   // type 0: no learned; type 1: locked ; type 2:unlocked
   const stateType = useMemo(() => {
@@ -162,7 +132,7 @@ export default function MyAgent({
         refreshBalance();
         notification.success({
           message: "Success",
-          description: "Claim Success !",
+          description: "Redeem Success !",
         });
       }
     } else {
@@ -193,9 +163,9 @@ export default function MyAgent({
     <>
       <div
         className="p-[15px] sm:p-[35px] bg-[url('/images/my-agent-bg.png')] bg-center bg-cover mt-[40px] sm:mt-[80px] 
-                    lg:flex items-center justify-between gap-[20px]"
+                    min-[1140px]:flex items-center justify-between gap-[20px]"
       >
-        <div className="bg-[url('/icons/portrait.svg')] w-[180px] h-[180px] bg-contain bg-no-repeat mb-[50px] lg:mb-[0px] ">
+        <div className="bg-[url('/icons/portrait.svg')] w-[180px] h-[180px] bg-contain bg-no-repeat mb-[50px] min-[1140px]:mb-[0px]">
           <img
             src={`${
               !isAgent
@@ -280,7 +250,7 @@ export default function MyAgent({
                   </div>
                 </div>
               </div>
-              <div className="mt-[15px] flex gap-[14px] flex-col md:flex-row">
+              <div className="mt-[15px] flex gap-[14px] flex-col min-[1140px]:flex-row">
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
                   <div className="text-[14px] text-[var(--mind-grey)] my-auto">
                     State
@@ -331,7 +301,7 @@ export default function MyAgent({
                   </div>
                 </div>
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
-                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center">
+                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center gap-[2px]">
                     <span>Total Rewards</span>
                     <img
                       src="/icons/refresh.svg"
@@ -359,7 +329,10 @@ export default function MyAgent({
                       className="button-brand-border-white-font"
                       onClick={clickClaim}
                       loading={claimLoading}
-                      disabled={!claimableReward || claimableReward === "0"}
+                      disabled={
+                        !claimableReward ||
+                        numberDigits(claimableReward) === "0"
+                      }
                     >
                       Redeem
                     </Button>

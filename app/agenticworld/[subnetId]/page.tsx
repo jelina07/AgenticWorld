@@ -16,9 +16,12 @@ import { Button } from "antd";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
+  const router = useRouter();
   const { openConnectModal } = useConnectModal();
   const { address, isConnected } = useAccount();
   const { data: subnetList } = useHubList({
@@ -65,7 +68,6 @@ export default function page({ params }: { params: any }) {
   const currentSubnetIndex = subnetList?.findIndex((item: any) => {
     return item.id === Number(params.subnetId);
   });
-  console.log("currentSubnet", currentSubnet);
 
   const showModal = () => {
     if (isConnected) {
@@ -76,11 +78,24 @@ export default function page({ params }: { params: any }) {
     }
   };
 
+  const goback = () => {
+    router.back();
+  };
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
-        <div className="text-[26px] font-[900]">
-          {currentSubnet?.subnetName}
+        <div
+          className={`text-[26px] font-[900] ${
+            currentSubnet?.subnetName ? "" : "hidden"
+          }'`}
+        >
+          <span
+            className="text-white hover:text-white cursor-pointer"
+            onClick={goback}
+          >
+            &lt;
+          </span>
+          {currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}
         </div>
         <div className="mt-[20px] text-[12px] leading-3">
           <div

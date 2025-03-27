@@ -4,12 +4,15 @@ import React, { useRef, useState } from "react";
 import HubList from "./HubList";
 import { useHubList } from "@/sdk";
 import useHubAgentCount from "@/sdk/hooks/useHubAgentCount";
+import { useRouter } from "next/navigation";
+
 export default function HubPage() {
   const [loading, setLoading] = useState(false);
   const hublist: any = useRef(null);
   const refreshClick = (event: any) => {
     event.stopPropagation();
-    hublist.current?.refreshLearningTime();
+    // hublist.current?.refreshLearningTime();
+    window.location.reload();
   };
   const handleChildLoading = (value: boolean) => {
     setLoading(value);

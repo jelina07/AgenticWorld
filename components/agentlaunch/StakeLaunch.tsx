@@ -105,7 +105,6 @@ const StakeLaunch = forwardRef((_, ref) => {
           >
             Stake
           </Button>
-
           <Facuet />
         </div>
       </div>

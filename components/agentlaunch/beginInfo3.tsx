@@ -12,6 +12,7 @@ import { useAccount } from "wagmi";
 import { Button } from "antd";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import BeginHaveAgent from "./BeginHaveAgent";
+import AlreadLearning from "./AlreadLearning";
 const string1 = `  
     <div>
       <div>
@@ -125,7 +126,7 @@ const BeginInfo3 = () => {
   useEffect(() => {
     if (!learningIdLoading) {
       if (preTokenId.current && learningIdPre) {
-        router.replace("/");
+        setCanRender(false);
       } else {
         setCanRender(true);
       }
@@ -133,7 +134,7 @@ const BeginInfo3 = () => {
   }, [learningIdLoading]);
 
   return !canRender ? (
-    <div></div>
+    <AlreadLearning />
   ) : (
     <div className="mt-[30px] sm:mt-[70px]">
       <div id="launchTitle">Buillding AgenticWorld</div>
