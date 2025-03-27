@@ -1,4 +1,9 @@
-import { useAgentGetTokenId, useAgentStake, useGetFheBalance } from "@/sdk";
+import {
+  useAgentGetTokenId,
+  useAgentStake,
+  useGetFheBalance,
+  useGetAgentCount,
+} from "@/sdk";
 import { isDev, isProd } from "@/sdk/utils";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
@@ -12,7 +17,8 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import Facuet from "../facuet/Facuet";
 
 const StakeLaunch = forwardRef((_, ref) => {
-  const [amount, setAmount] = useState("");
+  const startAmount = isDev() || isProd() ? "" : "0";
+  const [amount, setAmount] = useState(startAmount);
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
     waitForReceipt: true,
   });
@@ -22,6 +28,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   const isAgent = agentTokenId !== 0;
   const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
+  const { data: totalAgent, refresh: refreshTotalAgent } = useGetAgentCount();
 
   useImperativeHandle(ref, () => ({
     clearStakeAmount: () => {
@@ -48,6 +55,7 @@ const StakeLaunch = forwardRef((_, ref) => {
         if (res) {
           agentGetTokenIdRefresh();
           fheBalanceRefresh();
+          refreshTotalAgent();
           notification.success({
             message: "Success",
             description: "Stake Success !",
@@ -66,35 +74,48 @@ const StakeLaunch = forwardRef((_, ref) => {
       <div>
         <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
         <div className="text-[14px] mt-[20px]">
-          <div>Minimum staking: 100 $FHE</div>
+          {isDev() || isProd() ? (
+            <div>Minimum staking: 100 $FHE</div>
+          ) : (
+            <div>Total Agent: {!totalAgent ? "loading..." : totalAgent}</div>
+          )}
           <div className="mt-[10px]">
             Rewards: 15% $FHE of Mind Pool & Potential Partner tokens
           </div>
         </div>
-        <Input
-          style={{ height: "45px", margin: "26px 0 0 0" }}
-          disabled={isAgent}
-          value={amount}
-          onChange={(e: any) => {
-            setAmount(e.target.value);
-          }}
-        />
-        <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
-          <span>FHE Balance:</span>
-          <div className="flex items-center gap-[3px]">
-            <span>
-              {loading
-                ? "loading..."
-                : balance === undefined || numberDigits(balance) + " FHE"}
-            </span>
-            <img
-              src="/icons/refresh.svg"
-              alt="refresh"
-              onClick={fheBalanceRefresh}
-              className={`cursor-pointer ${loading ? "refresh" : ""}`}
-            />
+        {isDev() || isProd() ? (
+          <Input
+            style={{ height: "45px", margin: "26px 0 0 0" }}
+            disabled={isAgent}
+            value={amount}
+            onChange={(e: any) => {
+              setAmount(e.target.value);
+            }}
+          />
+        ) : (
+          <div className="my-[26px]"></div>
+        )}
+        {isDev() || isProd() ? (
+          <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
+            <span>FHE Balance:</span>
+            <div className="flex items-center gap-[3px]">
+              <span>
+                {loading
+                  ? "loading..."
+                  : balance === undefined || numberDigits(balance) + " FHE"}
+              </span>
+              <img
+                src="/icons/refresh.svg"
+                alt="refresh"
+                onClick={fheBalanceRefresh}
+                className={`cursor-pointer ${loading ? "refresh" : ""}`}
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
+
         <div className="flex items-end gap-[10px]">
           <Button
             type="primary"
@@ -105,7 +126,11 @@ const StakeLaunch = forwardRef((_, ref) => {
           >
             Stake
           </Button>
-          <Facuet refresFHE={fheBalanceRefresh} />
+          {isDev() || isProd() ? (
+            <Facuet refresFHE={fheBalanceRefresh} />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

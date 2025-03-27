@@ -24,6 +24,7 @@ import useUserTransaction from "./hooks/useUserGetTransaction";
 import useGetFheBalance from "./hooks/useGetFheBalance";
 import useAgentGetAllChainMeta from "./hooks/useAgentGetAllChainMeta";
 import useGetFaucet from "./hooks/useGetFaucet";
+import useGetAgentCount from "./hooks/useGetAgentCount";
 
 export {
   useAirdropCheck,
@@ -52,4 +53,5 @@ export {
   useGetFheBalance,
   useAgentGetAllChainMeta,
   useGetFaucet,
+  useGetAgentCount,
 };

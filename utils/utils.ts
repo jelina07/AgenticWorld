@@ -3,7 +3,7 @@ import { chains } from "@/sdk/wagimConfig";
 import { message } from "antd";
 import millify from "millify";
 
-export const firstStakeAmount = 100;
+export const firstStakeAmount = isDev() || isProd() ? 100 : 0;
 
 export function scan(address: `0x${string}`, currentChainid: number) {
   console.log(

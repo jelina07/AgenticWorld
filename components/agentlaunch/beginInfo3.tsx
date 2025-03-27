@@ -13,7 +13,10 @@ import { Button } from "antd";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import BeginHaveAgent from "./BeginHaveAgent";
 import AlreadLearning from "./AlreadLearning";
-const string1 = `  
+import { isDev, isProd } from "@/sdk/utils";
+const string1 =
+  isDev() || isProd()
+    ? `  
     <div>
       <div>
         <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
@@ -34,20 +37,26 @@ const string1 = `
           the more rewards you&apos;ll earn!
         </div>
       </div>
+    </div>`
+    : `  
+    <div>
+      <div>
+        <div id="launchContent1">Hi, I&apos;m the No.0 CitizenZ</div>
+        <div id="launchContent2">
+          I&apos;m here to shape the AgenticWorld with you together. Ready to begin the journey?
+          <br />
+          <br />
+          As the journey begin, we&apos;ll gonna launch your own AI Agent together!
+          <br />
+          <br />
+          Once your agent is launch, send your agent on adventures across various hubs to gain new skills and increase its potential. The smarter your agent becomes, the more it contributes to the network - and the more rewards you&apos;ll earn!
+        </div>
+      </div>
     </div>`;
 
-const string2 = `
-      <div>
-        <div id="launchContent3">
-          Well Done! You have successfully set up your AI Agent
-        </div>
-        <div id="launchContent4">Let's help it train with Basic skills</div>
-        <div id="launchContent5">
-          Now, choose the first hub below for your agent to join and start
-          training the basics from it.
-        </div>
-      </div>`;
-const string3 = ` 
+const string3 =
+  isDev() || isProd()
+    ? ` 
       <div>
         <div id="launchContent6">
           Congrats! Now your agent starts training and earning rewards for you
@@ -80,14 +89,61 @@ const string3 = `
             AgenticWorld
           </a>
         </div>
+      </div>`
+    : ` 
+      <div>
+        <div id="launchContent7">
+          <div>
+            For agent learning progress and earnings, you can head over to the Dashboard to track and claim
+            <br />
+            For agent growth, check out the AgenticWorld page for more hub-learning options.
+            <br />
+            <span id="blue-circle"></span>
+            Basic Hubs - A great starting point! No prerequisites - your agent can jump right in and learn foundational skills.
+            <br />
+            <span id="yellow-circle"></span>
+            Advanced Hubs - Partnering with top AI projects to build innovative solutions. Your agent will need some basic skills before joining.
+          </div>
+          <div id="launchContent10">Keep exploring and leveling up your AI Agent :)</div>
+        </div>
+        <img src="/icons/launch-circle.svg" alt="circle" id="launchContent8"/>
+        <div id="launchContent9">
+          <a id="launch-link" href="/" rel="noopener noreferrer">
+            dashboard
+          </a>
+          <a id="launch-link" href="/agenticworld" rel="noopener noreferrer">
+            AgenticWorld
+          </a>
+        </div>
       </div>`;
 const BeginInfo3 = () => {
   const { address } = useAccount();
-  const router = useRouter();
   const { openConnectModal } = useConnectModal();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const [canRender, setCanRender] = useState(false);
-
+  const string2 =
+    isDev() || isProd()
+      ? `
+  <div>
+    <div id="launchContent3">
+      Well Done! You have successfully set up your AI Agent
+    </div>
+    <div id="launchContent4">Let's help it train with Basic skills</div>
+    <div id="launchContent5">
+      Now, choose the first hub below for your agent to join and start
+      training the basics from it.
+    </div>
+  </div>`
+      : `
+      <div>
+        <div id="launchContent3">
+          Well done! You&apos;ve successfully set up the No.${agentTokenId} AI Agent!
+        </div>
+        <div id="launchContent4">After your Agent Launch, you can send your Agent to hubs for training</div>
+        <div id="launchContent5">
+          Following Hubs for training will be coming soon!
+        </div>
+      </div>`;
   const { data: learningIdPre, loading: learningIdLoading } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
