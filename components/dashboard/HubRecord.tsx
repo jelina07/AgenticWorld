@@ -82,14 +82,22 @@ export default function HubRecord({
   hubList?: any[];
 }) {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { learnSecond } = useHubGetCurrentExp({
+  const {
+    learnSecond,
+    refresh: refreshLearnTime,
+    loading: learnSecondLoading,
+  } = useHubGetCurrentExp({
     tokenId: agentTokenId,
     hubIds: ids,
   });
   const { loading: learningIdLoading } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
-  const { data: rewards } = useHubGetReward({
+  const {
+    data: rewards,
+    refresh: refreshrewards,
+    loading: rewardsLoading,
+  } = useHubGetReward({
     hubIds: ids,
     tokenId: agentTokenId,
   });
@@ -100,10 +108,12 @@ export default function HubRecord({
     (agentTokenId &&
       hubList?.map((item: any, index: number) => {
         const status = item.id === learningId ? "Training" : "Exit";
-        const currentLearned = learnSecond ? learnSecond[index] : "loading...";
-        const currentRewards = rewards
-          ? numberDigits(rewards[index])
-          : "loading...";
+        const currentLearned = learnSecondLoading
+          ? "loading..."
+          : learnSecond && learnSecond[index];
+        const currentRewards = rewardsLoading
+          ? "loading..."
+          : rewards && numberDigits(rewards[index]);
         return {
           subnetId: item.id,
           subnetName: item.name,
@@ -121,10 +131,23 @@ export default function HubRecord({
     (item: any) => item.type === 0 || item.currentLearned > 0
   );
 
+  const refresh = () => {
+    refreshLearnTime();
+    refreshrewards();
+  };
+
   return (
     <div className="mind-table mt-[50px]">
-      <div className="text-[18px] font-[800] mb-[30px]">
-        Hub Training Record
+      <div className="text-[18px] font-[800] mb-[30px] flex items-center gap-[2px]">
+        <span>Hub Training Record</span>
+        <img
+          src="/icons/refresh.svg"
+          alt="refresh"
+          onClick={refresh}
+          className={`cursor-pointer ${
+            learnSecondLoading || rewardsLoading ? "refresh" : ""
+          }`}
+        />
       </div>
       <Table
         className="mt-[20px]"

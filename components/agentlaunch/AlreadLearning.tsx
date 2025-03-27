@@ -7,7 +7,8 @@ export default function AlreadLearning() {
       <div id="launchTitle">Buillding AgenticWorld</div>
       <div>
         <div id="launchContent6">
-          Now your agent starts training and earning rewards for you already
+          You&apos;ve launched your agent! It&apos;s now actively training and
+          earning rewards for you.
         </div>
         <div id="launchContent7">
           <div>
