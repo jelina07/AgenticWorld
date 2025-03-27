@@ -105,7 +105,7 @@ const StakeLaunch = forwardRef((_, ref) => {
           >
             Stake
           </Button>
-          <Facuet />
+          <Facuet refresFHE={fheBalanceRefresh} />
         </div>
       </div>
     </div>

@@ -23,6 +23,7 @@ import useHubSwitchDelegate from "./hooks/useHubSwitchDelegate";
 import useUserTransaction from "./hooks/useUserGetTransaction";
 import useGetFheBalance from "./hooks/useGetFheBalance";
 import useAgentGetAllChainMeta from "./hooks/useAgentGetAllChainMeta";
+import useGetFaucet from "./hooks/useGetFaucet";
 
 export {
   useAirdropCheck,
@@ -50,4 +51,5 @@ export {
   useUserTransaction,
   useGetFheBalance,
   useAgentGetAllChainMeta,
+  useGetFaucet,
 };

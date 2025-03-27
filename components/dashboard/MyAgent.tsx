@@ -34,7 +34,7 @@ export default function MyAgent({
   hubList?: any[];
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [text, setText] = useState("CitizenZ_0");
+  const [text, setText] = useState("CitizenZ");
   const { chainId } = useAccount();
 
   const editName = () => {
@@ -151,7 +151,7 @@ export default function MyAgent({
       if (agentMeta) {
         setText(agentMeta.agentName);
       } else {
-        setText("CitizenZ_0");
+        setText("CitizenZ");
       }
       setIsEditing(false);
       message.warning("Canceled!");

@@ -1,9 +1,18 @@
 import { notification } from "antd";
 import { Abi, decodeErrorResult } from "viem";
-import { Agent1ContractErrorCode, decodeErrorData } from "./script";
+import {
+  Agent1ContractErrorCode,
+  decodeErrorData,
+  faucetError,
+} from "./script";
 
 //Differential Contracts ：airdrop, DAO_INSPECTOR_ADDRESS,DAOKEN_ADDRESS
-export function exceptionHandler(error: any, abi?: any, description?: string) {
+export function exceptionHandler(
+  error: any,
+  abi?: any,
+  isFacuetError?: boolean,
+  description?: string
+) {
   console.log(
     "🚀 ~ exceptionHandler ~ message:",
     error?.cause?.cause?.data || error?.data
@@ -29,6 +38,27 @@ export function exceptionHandler(error: any, abi?: any, description?: string) {
         message: "Warning",
         description:
           errorMessage || description || error?.shortMessage || error?.message,
+        duration: 5,
+      });
+    }
+  }
+  if (isFacuetError) {
+    const facuetError = faucetError(error?.cause?.cause?.data);
+    console.log("facuetError", facuetError);
+    if (
+      error?.shortMessage?.toLowerCase().includes("user rejected") ||
+      error?.message?.toLowerCase().includes("user rejected")
+    ) {
+      notification.error({
+        message: "Error",
+        description: description || error?.shortMessage || error?.message,
+        duration: 5,
+      });
+    } else {
+      notification.warning({
+        message: "Warning",
+        description:
+          facuetError || description || error?.shortMessage || error?.message,
         duration: 5,
       });
     }

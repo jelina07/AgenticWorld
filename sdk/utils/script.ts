@@ -85,3 +85,20 @@ export const Agent1ContractErrorCode = (code: number) => {
 export const isSupportChain = (chainid: number) => {
   return supportChainId.includes(chainid);
 };
+
+export const faucetError = (data?: string) => {
+  switch (data) {
+    case "0x82b42900":
+      return "Unauthorized";
+    case "0x9667e17a":
+      return "ArrayLengthMismatch";
+    case "0x4991b1e5":
+      return "ZeroValueCheck";
+    case "0x3d2bfe2c":
+      return "ExceededMax";
+    case "0x9d70e64a":
+      return "RateLimit";
+    default:
+      return "Unknown Error";
+  }
+};

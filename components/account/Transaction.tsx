@@ -54,10 +54,10 @@ export default function Transaction() {
             ? "loading..."
             : !agentMetas?.find((item: any) => item.chainId === record.chain_id)
                 .agentMeta
-            ? "CitizenZ_0"
+            ? "CitizenZ"
             : agentMetas?.find((item: any) => item.chainId === record.chain_id)
                 .agentMeta.agentName} */}
-          CitizenZ_0
+          CitizenZ
         </span>
       ),
     },
