@@ -17,6 +17,8 @@ export default function MindLayout({
 
   const searchParams = useSearchParams();
   const pathName = usePathname();
+  console.log("pathName", pathName);
+
   const faucetStatus = searchParams.get("faucetStatus");
   const error = searchParams.get("error");
 
@@ -37,7 +39,7 @@ export default function MindLayout({
         message: "Warning",
         description: JSON.parse(error!).name,
       });
-      window.history.replaceState({}, "", pathName);
+      window.history.replaceState({}, "", "/agentlaunch");
     }
   }, [faucetStatus]);
 

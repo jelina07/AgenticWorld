@@ -6,7 +6,8 @@ import { useChainModal } from "@rainbow-me/rainbowkit";
 import { message, notification } from "antd";
 import React from "react";
 import { useAccount, useBalance } from "wagmi";
-const currentUrl = window.location.origin + window.location.pathname;
+const currentUrl = window.location.origin + "/agentlaunch";
+console.log("currentUrl", currentUrl);
 
 export default function Facuet({ refresFHE }: { refresFHE: Function }) {
   const { address, chainId } = useAccount();
