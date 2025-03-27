@@ -13,15 +13,8 @@ import { useAsyncEffect } from "ahooks";
 dayjs.extend(utc);
 
 export default function Transaction() {
-  const { accountModalopen, setIsAccountModalopen } = useControlModal();
-  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { data, loading, pagination } = useUserTransaction();
-  // const {
-  //   data: agentMetas,
-  //   loading: agentMetaLoading,
-  //   refreshAsync,
-  // } = useAgentGetAllChainMeta(agentTokenId, supportChainId);
-  // console.log("agentMetas", agentMetas, supportChainId);
+  const { accountModalopen } = useControlModal();
+  const { data, loading, pagination, refreshAsync } = useUserTransaction();
 
   const tableColumns: TableColumnsType = [
     {
@@ -47,24 +40,16 @@ export default function Transaction() {
     },
     {
       title: "Agent",
-      dataIndex: "agent",
-      render: (_, record) => (
-        <span className="text-[12px] text-light">
-          {/* {agentMetaLoading
-            ? "loading..."
-            : !agentMetas?.find((item: any) => item.chainId === record.chain_id)
-                .agentMeta
-            ? "CitizenZ"
-            : agentMetas?.find((item: any) => item.chainId === record.chain_id)
-                .agentMeta.agentName} */}
-          CitizenZ
-        </span>
-      ),
+      dataIndex: "agent_name",
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: () => "Success",
+      render: (value) => (
+        <span className="text-[12px] text-light">
+          {value === "0" ? "Pending" : "Success"}
+        </span>
+      ),
     },
     {
       title: "Time",
@@ -74,11 +59,11 @@ export default function Transaction() {
     },
   ];
   console.log("Transactiondata", data);
-  // useAsyncEffect(async () => {
-  //   if (accountModalopen) {
-  //     await refreshAsync();
-  //   }
-  // }, [accountModalopen]);
+  useAsyncEffect(async () => {
+    if (accountModalopen) {
+      await refreshAsync();
+    }
+  }, [accountModalopen]);
   return (
     <div className="mind-table transaction-table mt-[20px]">
       <Table
@@ -88,7 +73,7 @@ export default function Transaction() {
         pagination={pagination}
         bordered={false}
         loading={loading}
-        rowKey="txn_hash"
+        rowKey={(record, index) => record.txn_hash + index}
         scroll={{ x: 400, y: 250 }}
       />
     </div>

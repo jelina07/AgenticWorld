@@ -43,16 +43,18 @@ export default function MyAgent({
 
   const confirmEditName = async () => {
     setIsEditing(false);
-    const res = await putAgetMeta({
-      agentId: agentTokenId,
-      agentName: text,
-      avatar: "/icons/cz.svg",
-    });
-    if (res) {
-      notification.success({
-        message: "Success",
-        description: "Name have been updated !",
+    if (text !== agentMeta?.agentName) {
+      const res = await putAgetMeta({
+        agentId: agentTokenId,
+        agentName: text,
+        avatar: "/icons/cz.svg",
       });
+      if (res) {
+        notification.success({
+          message: "Success",
+          description: "Name have been updated !",
+        });
+      }
     }
   };
 
