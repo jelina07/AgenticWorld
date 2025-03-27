@@ -22,7 +22,7 @@ export default function LaunchAgent() {
           onClick={openChainModal}
         >
           <img src="/icons/switch.svg" alt="switch" />
-          Switch Chain
+          Switch Network
         </Button>
       </div>
     </div>
