@@ -20,7 +20,7 @@ const NODEREALID = "01355584a3da4d22a34f4b6008e72c08";
 
 export const getTransports = (chainId: number) => {
   switch (chainId) {
-    case bsc.id:
+    case bnb.id:
       return fallback([
         http(`https://bsc-mainnet.infura.io/v3/${INFURA_ID_MAINNET}`),
         http(`https://rpc.ankr.com/bsc/${ANKRID}`),
@@ -79,28 +79,30 @@ export const mindnet = {
 const bnbtestnet = {
   ...bscTestnet,
   name: "BNB Smart Chain Testnet",
+  iconUrl: "/images/bnb.png",
+  iconBackground: "#fff",
+};
+const bnb = {
+  ...bsc,
+  rpcUrls: {
+    default: { http: ["https://bsc-dataseed.bnbchain.org"] },
+  },
+  iconUrl: "/images/bnb.png",
+  iconBackground: "#fff",
 };
 
 let chains: any = [];
 if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
-  chains = [
-    { ...bnbtestnet, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
-  ];
+  chains = [{ ...bnbtestnet }];
 } else if ((isDev() || isProd()) && !userAgentBrowser.includes("BNC")) {
-  chains = [
-    mindtestnet,
-    { ...bnbtestnet, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
-  ];
+  chains = [mindtestnet, { ...bnbtestnet }];
 } else if ((isMainnet() || isMainnetio()) && userAgentBrowser.includes("BNC")) {
-  chains = [{ ...bsc, iconUrl: "/images/bnb.png", iconBackground: "#fff" }];
+  chains = [{ ...bnb }];
 } else if (
   (isMainnet() || isMainnetio()) &&
   !userAgentBrowser.includes("BNC")
 ) {
-  chains = [
-    mindnet,
-    { ...bsc, iconUrl: "/images/bnb.png", iconBackground: "#fff" },
-  ];
+  chains = [mindnet, { ...bnb }];
 } else {
   chains = [];
 }
@@ -122,7 +124,7 @@ export const config = getDefaultConfig({
   ssr: true, // If your dApp uses server side rendering (SSR)
   transports: {
     [bnbtestnet.id]: getTransports(bnbtestnet.id),
-    [bsc.id]: getTransports(bsc.id),
+    [bnb.id]: getTransports(bnb.id),
     [mindtestnet.id]: getTransports(mindtestnet.id),
     [mindnet.id]: getTransports(mindnet.id),
   },
