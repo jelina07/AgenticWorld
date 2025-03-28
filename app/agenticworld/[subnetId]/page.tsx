@@ -82,7 +82,7 @@ export default function page({ params }: { params: any }) {
     router.back();
   };
   return (
-    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
         <div
           className={`text-[26px] font-[900] ${

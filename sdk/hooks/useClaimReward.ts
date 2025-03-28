@@ -48,7 +48,7 @@ export default function useClaimReward(
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err, AGENT1_ABI),
+      onError: (err) => exceptionHandler(err, AGENT1_ABI, true),
       manual: true,
       ...options,
     }

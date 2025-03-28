@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <div>
       <div
-        className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] bg-[url('/icons/agentic-world-bg.svg')] bg-top bg-cover bg-no-repeat
+        className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] bg-[url('/icons/agentic-world-bg.svg')] bg-top bg-cover bg-no-repeat
                     relative overflow-hidden"
       >
         <img

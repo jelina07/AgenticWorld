@@ -183,7 +183,7 @@ const HubList = forwardRef(
                           width={100}
                           className="rounded-[50%]"
                         />
-                        <span className="text-[18px] text-white font-[800] leading-[1.2] text-wrap">
+                        <span className="text-[18px] text-white font-[800] leading-[1.2] text-wrap break-word">
                           {item.subnetName}
                         </span>
                       </div>
@@ -225,7 +225,11 @@ const HubList = forwardRef(
                       </div>
                       <div className="flex justify-between gap-[3px]">
                         <span>Training Lock-up:</span>
-                        <span>{secondsToHours(item.lockup)} H</span>
+                        <span>
+                          {filter === 3
+                            ? "/"
+                            : secondsToHours(item.lockup) + " H"}
+                        </span>
                       </div>
                       <div
                         className={`flex justify-between gap-[3px] items-start ${

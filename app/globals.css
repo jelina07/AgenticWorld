@@ -362,6 +362,10 @@ input:focus {
   background: var(--yellow-gradient);
 }
 
+#jiange {
+  margin-top: 10px;
+}
+
 #launchTitle {
   font-size: 24px;
   font-weight: 900;
@@ -369,11 +373,12 @@ input:focus {
   text-align: center;
   position: relative;
   z-index: 10;
+  padding-bottom: 20px;
 }
 #launchContent1 {
   font-size: 20px;
   font-weight: 700;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 #launchContent2 {
   font-size: 12px;
@@ -530,9 +535,6 @@ input:focus {
   clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
   background-image: linear-gradient(90deg, #24ea7f, #ffa08c);
 } */
-.airdrop-box {
-  clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
-}
 .ant-modal-root .ant-modal-mask {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }

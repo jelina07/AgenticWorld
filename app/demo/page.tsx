@@ -94,7 +94,7 @@ export default function DemoPage() {
   };
 
   return (
-    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] text-white">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] text-white">
       <Card title="airdrop">
         <Flex gap={10}>
           <Input

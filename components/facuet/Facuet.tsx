@@ -9,7 +9,7 @@ import { useAccount, useBalance } from "wagmi";
 const currentUrl = window.location.origin + "/agentlaunch";
 console.log("currentUrl", currentUrl);
 
-export default function Facuet({ refresFHE }: { refresFHE: Function }) {
+export default function Facuet({ refreshFHE }: { refreshFHE: Function }) {
   const { address, chainId } = useAccount();
   const { openChainModal } = useChainModal();
 
@@ -19,7 +19,7 @@ export default function Facuet({ refresFHE }: { refresFHE: Function }) {
     if (chainId !== 192940) {
       const res = await getFaucet();
       if (res) {
-        refresFHE();
+        await refreshFHE();
         notification.success({
           message: "Success",
           description: "Pilot Water Success",

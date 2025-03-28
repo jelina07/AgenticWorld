@@ -78,10 +78,12 @@ const StakeLaunch = forwardRef((_, ref) => {
           {isDev() || isProd() ? (
             <div>Minimum staking: {firstStakeAmount} $FHE</div>
           ) : (
-            <div>Total Agent: {!totalAgent ? "loading..." : totalAgent}</div>
+            <div>
+              Total Agents Launched: {!totalAgent ? "loading..." : totalAgent}
+            </div>
           )}
           <div className="mt-[10px]">
-            Rewards: 15% $FHE of Mind Pool & Potential Partner tokens
+            $FHE from Mind Network Treasury & Potential Partner tokens
           </div>
         </div>
         {isDev() || isProd() ? (
@@ -128,7 +130,7 @@ const StakeLaunch = forwardRef((_, ref) => {
             {isDev() || isProd() ? "Stake" : "Launch"}
           </Button>
           {isDev() || isProd() ? (
-            <Facuet refresFHE={fheBalanceRefresh} />
+            <Facuet refreshFHE={fheBalanceRefresh} />
           ) : (
             <></>
           )}

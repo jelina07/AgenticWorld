@@ -3,8 +3,8 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 export default function AlreadLearning() {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   return (
-    <div className="relative z-10">
-      <div id="launchTitle">Buillding AgenticWorld</div>
+    <div className="relative z-10 mt-[30px] sm:mt-[70px]">
+      <div id="launchTitle">Building AgenticWorld</div>
       <div>
         <div id="launchContent6">
           You&apos;ve launched your agent! It&apos;s now actively training and
@@ -17,7 +17,7 @@ export default function AlreadLearning() {
             <br />
             For agent growth, check out the AgenticWorld page for more
             hub-training options.
-            <br />
+            <div className="mt-[10px]"></div>
             <span id="blue-circle"></span>
             Basic Hubs - A great starting point! No prerequisites - your agent
             can jump right in and learn basic skills.

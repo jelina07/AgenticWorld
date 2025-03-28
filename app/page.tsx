@@ -12,7 +12,7 @@ export default function Home() {
     return hubList?.map((item: any) => item.id) || [];
   }, [hubList]);
   return (
-    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)]">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)]">
       <MyAgent ids={ids} hubList={hubList} />
       <div className="pb-[200px]">
         <HubRecord ids={ids} loading={loading} hubList={hubList} />

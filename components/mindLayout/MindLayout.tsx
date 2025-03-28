@@ -37,7 +37,14 @@ export default function MindLayout({
     } else if (faucetStatus === "error") {
       notification.warning({
         message: "Warning",
-        description: JSON.parse(error!).name,
+        description: (() => {
+          try {
+            const parsedError = JSON.parse(error!);
+            return parsedError.name || "Unknown error";
+          } catch {
+            return error!.toString();
+          }
+        })(),
       });
       window.history.replaceState({}, "", "/agentlaunch");
     }

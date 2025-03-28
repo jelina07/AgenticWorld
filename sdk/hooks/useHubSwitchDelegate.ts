@@ -61,7 +61,7 @@ export default function useHubSwitchDelegate(
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err, AGENT1_ABI),
+      onError: (err) => exceptionHandler(err, AGENT1_ABI, true),
       manual: true,
       ...options,
     }
