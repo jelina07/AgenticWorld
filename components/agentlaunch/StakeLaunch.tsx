@@ -15,8 +15,11 @@ import {
 import { Button, Input, message, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import Facuet from "../facuet/Facuet";
+import { useAccount } from "wagmi";
+import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
 
 const StakeLaunch = forwardRef((_, ref) => {
+  const { chainId } = useAccount();
   const startAmount = isDev() || isProd() ? "" : "0";
   const [amount, setAmount] = useState(startAmount);
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -123,7 +126,12 @@ const StakeLaunch = forwardRef((_, ref) => {
           <Button
             type="primary"
             className="button-brand-border"
-            disabled={isAgent || amount === ""}
+            disabled={
+              isAgent ||
+              amount === "" ||
+              chainId === mindnet.id ||
+              chainId === mindtestnet.id
+            }
             onClick={stake}
             loading={agentStakeLoading}
           >

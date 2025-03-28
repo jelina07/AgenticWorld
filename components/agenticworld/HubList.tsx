@@ -22,6 +22,7 @@ import {
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { secondsToHours } from "@/utils/utils";
+import Image from "next/image";
 
 const HubList = forwardRef(
   (
@@ -141,8 +142,8 @@ const HubList = forwardRef(
           <Row
             className="mt-[40px]"
             gutter={[
-              { xs: 8, sm: 20, md: 30, lg: 50 },
-              { xs: 16, sm: 20, md: 30, lg: 50 },
+              { xs: 8, sm: 16, md: 20, lg: 30, xl: 50 },
+              { xs: 10, sm: 16, md: 20, lg: 30, xl: 50 },
             ]}
           >
             {subnetInfor?.map((item: any) => (
@@ -169,7 +170,7 @@ const HubList = forwardRef(
                     }`}
                   >
                     <div className="flex items-center gap-[5px] justify-between">
-                      <div className="flex items-center gap-[5px]">
+                      <div className="flex items-center gap-[5px] w-full flex-wrap">
                         {/* <span
                           className={`inline-block w-[16px] h-[16px] rounded-[50%] flex-shrink-0 ${
                             filter === 1 || filter === 2
@@ -180,10 +181,9 @@ const HubList = forwardRef(
                         <img
                           src={item.logo}
                           alt="logo"
-                          width={100}
-                          className="rounded-[50%]"
+                          className="rounded-[50%] w-[30%]"
                         />
-                        <span className="text-[18px] text-white font-[800] leading-[1.2] text-wrap break-word">
+                        <span className="text-[18px] text-white font-[800] leading-[1.2] break-word">
                           {item.subnetName}
                         </span>
                       </div>

@@ -64,6 +64,7 @@ export default function page({ params }: { params: any }) {
       subnetRequire: obj.requireName,
       needSign: obj.needSign,
       isAccess: obj.isAccess,
+      usecase: obj.usecase,
     }))[0];
   const currentSubnetIndex = subnetList?.findIndex((item: any) => {
     return item.id === Number(params.subnetId);
@@ -90,7 +91,7 @@ export default function page({ params }: { params: any }) {
           }'`}
         >
           <span
-            className="text-white hover:text-white cursor-pointer"
+            className="text-white hover:text-white cursor-pointer mr-[10px] font-[500]"
             onClick={goback}
           >
             &lt;
@@ -98,11 +99,7 @@ export default function page({ params }: { params: any }) {
           {currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}
         </div>
         <div className="mt-[20px] text-[12px] leading-3">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentSubnet?.subnetInfo || "",
-            }}
-          />
+          {currentSubnet?.subnetInfo}
         </div>
         <div className="mt-[80px]">
           <HubInfo
@@ -137,7 +134,7 @@ export default function page({ params }: { params: any }) {
           )}
         </div>
         <div className="mt-[50px]">
-          <UseCase />
+          <UseCase content={currentSubnet?.usecase} />
         </div>
       </div>
       <StartConfirmModal
