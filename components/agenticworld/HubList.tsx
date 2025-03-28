@@ -86,6 +86,7 @@ const HubList = forwardRef(
         subnetRequire: item.requireName,
         needSign: item.needSign,
         isAccess: item.isAccess,
+        logo: item.logo,
       };
     }) as SubnetInfoType[];
 
@@ -169,14 +170,20 @@ const HubList = forwardRef(
                   >
                     <div className="flex items-center gap-[5px] justify-between">
                       <div className="flex items-center gap-[5px]">
-                        <span
+                        {/* <span
                           className={`inline-block w-[16px] h-[16px] rounded-[50%] flex-shrink-0 ${
                             filter === 1 || filter === 2
                               ? "blue-gradient"
                               : "yellow-gradient"
                           }`}
-                        ></span>
-                        <span className="text-[18px] text-white font-[800] leading-[1.2] break-all">
+                        ></span> */}
+                        <img
+                          src={item.logo}
+                          alt="logo"
+                          width={100}
+                          className="rounded-[50%]"
+                        />
+                        <span className="text-[18px] text-white font-[800] leading-[1.2] text-wrap">
                           {item.subnetName}
                         </span>
                       </div>

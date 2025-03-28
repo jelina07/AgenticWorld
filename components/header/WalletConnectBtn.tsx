@@ -101,14 +101,16 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="wallet-btn hidden md:block px-[5px] py-[3px] sm:px-[12px] text-[14px]"
+                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px] text-[14px]"
                   >
                     {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance}${
-                          balance ? ", " + numberDigits(balance) + " FHE" : ""
-                        })`
-                      : ""}
+                    <span className="hidden sm:inline-block">
+                      {account.displayBalance
+                        ? ` (${account.displayBalance}${
+                            balance ? ", " + numberDigits(balance) + " FHE" : ""
+                          })`
+                        : ""}
+                    </span>
                   </button>
                   <AccountModal
                     gasBalance={account.displayBalance}

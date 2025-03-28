@@ -28,7 +28,9 @@
   --mind-grey: #878c8b;
   --mind-red: #ff7853;
   --header-layout-lg: 50px;
-  --layout-lg: 150px;
+  --layout-2xl: 150px;
+  --layout-xl: 100px;
+  --layout-lg: 80px;
   --layout-md: 50px;
   --layout-sm: 15px;
   --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);

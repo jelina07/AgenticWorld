@@ -17,6 +17,7 @@ const INFURA_ID_MAINNET = "81cc77112fc44930806b6cb99ab24caf";
 const ANKRID =
   "25d7836da278ec26551f9b7297ffea417c87fbb26caffe92ba656ee8e0f391d4";
 const NODEREALID = "01355584a3da4d22a34f4b6008e72c08";
+import binanceWallet from "@binance/w3w-rainbow-connector-v2";
 
 export const getTransports = (chainId: number) => {
   switch (chainId) {
@@ -113,7 +114,12 @@ export const config = getDefaultConfig({
   wallets: [
     {
       groupName: "Recommended",
-      wallets: [walletConnectWallet, rainbowWallet, metaMaskWallet],
+      wallets: [
+        binanceWallet,
+        walletConnectWallet,
+        rainbowWallet,
+        metaMaskWallet,
+      ],
     },
     {
       groupName: "Others",
