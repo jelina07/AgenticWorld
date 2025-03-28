@@ -41,6 +41,7 @@ export default function Transaction() {
     {
       title: "Agent",
       dataIndex: "agent_name",
+      render: (value) => <span>{value === "All" ? "/" : ""}</span>,
     },
     {
       title: "Status",

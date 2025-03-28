@@ -49,7 +49,13 @@ export default function DecreseModal({
           handleCancel();
           notification.success({
             message: "Success",
-            description: "Unstake Success !",
+            description:
+              "Unstake Success ! Unstaking may take up to 2 minutes to process and arrive in your wallet !",
+          });
+          notification.success({
+            message: "Success",
+            description:
+              "Unstake Success ! Unstaking may take up to 48 hours to process and arrive in your wallet !",
           });
         }
       } else {
@@ -65,7 +71,7 @@ export default function DecreseModal({
     }
   };
   const clickMax = () => {
-    setAmount(String(Number(agentStakeAmount) - 100));
+    setAmount(String(Number(agentStakeAmount) - firstStakeAmount));
   };
   return (
     <>
@@ -111,7 +117,8 @@ export default function DecreseModal({
                 ~
                 {Number(amount) === 0 ||
                 isNaN(Number(amount)) ||
-                !agentStakeAmount
+                !agentStakeAmount ||
+                agentStakeAmount === "0"
                   ? "0%"
                   : numberDigits(
                       new Big(amount)

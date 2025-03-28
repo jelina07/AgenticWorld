@@ -14,6 +14,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import BeginHaveAgent from "./BeginHaveAgent";
 import AlreadLearning from "./AlreadLearning";
 import { isDev, isProd } from "@/sdk/utils";
+import { firstStakeAmount } from "@/utils/utils";
 const string1 =
   isDev() || isProd()
     ? `  
@@ -26,7 +27,7 @@ const string1 =
           <br />
           <br />
           As the journey begin, we&apos; ll gonna launch your own AI Agent together!
-          You&apos;ll just need some $FHE tokens to launch (minimum of 100). Don&apos;t
+          You&apos;ll just need some $FHE tokens to launch (minimum of ${firstStakeAmount}). Don&apos;t
           worry - you&apos;re always in control. You can withdraw your tokens anytime,
           no lock-ups involved.
           <br />

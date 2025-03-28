@@ -4,6 +4,7 @@ import { checkAmountControlButtonShow } from "@/utils/utils";
 import { Button, Modal, notification } from "antd";
 import React, { useState } from "react";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { isDev, isProd } from "@/sdk/utils";
 
 export default function ShutDownAgent({
   refreshStakeAmount,
@@ -38,10 +39,17 @@ export default function ShutDownAgent({
         fheBalanceRefresh();
         refreshAgentTokenId();
         handleCancel();
-        notification.success({
-          message: "Success",
-          description: "Your agent has been successfully shut down !",
-        });
+        isDev() || isProd()
+          ? notification.success({
+              message: "Success",
+              description:
+                "Your agent has been successfully shut down ! Withdraw may take up to 2 minutes to process and arrive in your wallet !",
+            })
+          : notification.success({
+              message: "Success",
+              description:
+                "Your agent has been successfully shut down ! Withdraw may take up to 48 hours to process and arrive in your wallet !",
+            });
       }
     }
   };

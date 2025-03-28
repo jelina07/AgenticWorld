@@ -58,7 +58,8 @@ const StakeLaunch = forwardRef((_, ref) => {
           refreshTotalAgent();
           notification.success({
             message: "Success",
-            description: "Stake Success !",
+            description:
+              isDev() || isProd() ? "Stake Success !" : "Launch Success !",
           });
         }
       }
@@ -75,7 +76,7 @@ const StakeLaunch = forwardRef((_, ref) => {
         <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
         <div className="text-[14px] mt-[20px]">
           {isDev() || isProd() ? (
-            <div>Minimum staking: 100 $FHE</div>
+            <div>Minimum staking: {firstStakeAmount} $FHE</div>
           ) : (
             <div>Total Agent: {!totalAgent ? "loading..." : totalAgent}</div>
           )}
@@ -124,7 +125,7 @@ const StakeLaunch = forwardRef((_, ref) => {
             onClick={stake}
             loading={agentStakeLoading}
           >
-            Stake
+            {isDev() || isProd() ? "Stake" : "Launch"}
           </Button>
           {isDev() || isProd() ? (
             <Facuet refresFHE={fheBalanceRefresh} />

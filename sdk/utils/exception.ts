@@ -41,8 +41,7 @@ export function exceptionHandler(
         duration: 5,
       });
     }
-  }
-  if (isFacuetError) {
+  } else if (isFacuetError) {
     const facuetError = faucetError(error?.cause?.cause?.data);
     console.log("facuetError", facuetError);
     if (
