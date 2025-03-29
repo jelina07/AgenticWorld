@@ -36,7 +36,6 @@ export default function MyAgent({
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("CitizenZ");
   const { chainId } = useAccount();
-  const [isConfirming, setIsConfirming] = useState(false);
 
   const editName = () => {
     setIsEditing(true);
@@ -247,8 +246,6 @@ export default function MyAgent({
                       )}
                       {isEditing ? (
                         <button
-                          // onMouseDown={() => setIsConfirming(true)}
-                          // onTouchStart={() => setIsConfirming(true)}
                           onTouchStart={confirmEditName}
                           onClick={confirmEditName}
                           id="confirmEdit"
