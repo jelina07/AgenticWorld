@@ -17,40 +17,39 @@ const MindMenu: React.FC = () => {
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const items =
-    isDev() || isProd()
-      ? [
-          {
-            label: <Link href="/airdrop">Airdrop</Link>,
-            key: "/airdrop",
-          },
-          {
-            label: <Link href="/">Dashboard</Link>,
-            key: "/",
-          },
-          {
-            label: <Link href="/agenticworld">AgenticWorld</Link>,
-            key: "/agenticworld",
-          },
-          {
-            label: <Link href="/agentlaunch">Agent Launch</Link>,
-            key: "/agentlaunch",
-          },
-        ]
-      : [
-          {
-            label: <Link href="/">Dashboard</Link>,
-            key: "/",
-          },
-          {
-            label: <Link href="/agenticworld">AgenticWorld</Link>,
-            key: "/agenticworld",
-          },
-          {
-            label: <Link href="/agentlaunch">Agent Launch</Link>,
-            key: "/agentlaunch",
-          },
-        ];
+  const items = isDev()
+    ? [
+        {
+          label: <Link href="/airdrop">Airdrop</Link>,
+          key: "/airdrop",
+        },
+        {
+          label: <Link href="/">Dashboard</Link>,
+          key: "/",
+        },
+        {
+          label: <Link href="/agenticworld">AgenticWorld</Link>,
+          key: "/agenticworld",
+        },
+        {
+          label: <Link href="/agentlaunch">Agent Launch</Link>,
+          key: "/agentlaunch",
+        },
+      ]
+    : [
+        {
+          label: <Link href="/">Dashboard</Link>,
+          key: "/",
+        },
+        {
+          label: <Link href="/agenticworld">AgenticWorld</Link>,
+          key: "/agenticworld",
+        },
+        {
+          label: <Link href="/agentlaunch">Agent Launch</Link>,
+          key: "/agentlaunch",
+        },
+      ];
 
   return (
     <Menu

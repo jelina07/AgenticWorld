@@ -39,10 +39,22 @@ export function handleCopy(textToCopy: string) {
 }
 
 export function checkAmountControlButtonShow(amount: string) {
-  const amountRegex =
-    isDev() || isProd()
-      ? /^(?=.*[1-9])(?!0\d)\d+(\.\d{1,50})?$/
-      : /^(0(\.\d{1,50})?|([1-9]\d*)(\.\d{1,50})?)$/;
+  const amountRegex = /^(?=.*[1-9])(?!0\d)\d+(\.\d{1,50})?$/;
+  const response = amountRegex.test(amount);
+  if (!response) {
+    message.open({
+      type: "warning",
+      content: "Please enter the correct amount !",
+      duration: 5,
+    });
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function checkAmountControlButtonShowCan0(amount: string) {
+  const amountRegex = /^(0(\.\d{1,50})?|([1-9]\d*)(\.\d{1,50})?)$/;
   const response = amountRegex.test(amount);
   if (!response) {
     message.open({

@@ -103,7 +103,7 @@ if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
   (isMainnet() || isMainnetio()) &&
   !userAgentBrowser.includes("BNC")
 ) {
-  chains = [{ ...bnb }];
+  chains = [mindnet, { ...bnb }];
 } else {
   chains = [];
 }

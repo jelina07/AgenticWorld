@@ -36,6 +36,7 @@ export default function MyAgent({
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("CitizenZ");
   const { chainId } = useAccount();
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const editName = () => {
     setIsEditing(true);
@@ -43,18 +44,33 @@ export default function MyAgent({
 
   const confirmEditName = async () => {
     setIsEditing(false);
-    if (text !== agentMeta?.agentName) {
-      const res = await putAgetMeta({
-        agentId: agentTokenId,
-        agentName: text,
-        avatar: "/icons/cz.svg",
-      });
-      if (res) {
-        notification.success({
-          message: "Success",
-          description: "Name have been updated !",
+    if (text !== "CitizenZ" && text !== agentMeta?.agentName) {
+      try {
+        const res = await putAgetMeta({
+          agentId: agentTokenId,
+          agentName: text,
+          avatar: "/icons/cz.svg",
         });
+        if (res) {
+          notification.success({
+            message: "Success",
+            description: "Name have been updated !",
+          });
+          agentMetaRefresh();
+        }
+      } catch (error) {
+        if (agentMeta) {
+          setText(agentMeta.agentName);
+        } else {
+          setText("CitizenZ");
+        }
       }
+    } else {
+      message.open({
+        type: "warning",
+        content: `Your name hasn't changed !`,
+        duration: 5,
+      });
     }
   };
 
@@ -115,7 +131,11 @@ export default function MyAgent({
 
   const { refresh: refreshBalance } = useGetFheBalance();
 
-  const { data: agentMeta, loading: agentMetaLoading } = useAgentGetMeta({
+  const {
+    data: agentMeta,
+    loading: agentMetaLoading,
+    refresh: agentMetaRefresh,
+  } = useAgentGetMeta({
     agentId: agentTokenId,
     chainId,
   });
@@ -156,10 +176,13 @@ export default function MyAgent({
         setText("CitizenZ");
       }
       setIsEditing(false);
-      message.warning("Canceled!");
+      message.open({
+        type: "warning",
+        content: `Canceled!`,
+        duration: 5,
+      });
     }
   };
-  console.log("agentTokenIdagentTokenId", agentTokenId);
 
   return (
     <>
@@ -224,6 +247,9 @@ export default function MyAgent({
                       )}
                       {isEditing ? (
                         <button
+                          // onMouseDown={() => setIsConfirming(true)}
+                          // onTouchStart={() => setIsConfirming(true)}
+                          onTouchStart={confirmEditName}
                           onClick={confirmEditName}
                           id="confirmEdit"
                           type="button"

@@ -43,12 +43,12 @@ export default function ShutDownAgent({
           ? notification.success({
               message: "Success",
               description:
-                "Your agent has been successfully shut down ! Withdraw may take up to 2 minutes to process and arrive in your wallet !",
+                "Your agent has been successfully shut down ! Withdraw may take up to 2 minutes to process and arrive in your wallet (if you still have unextracted tokens) !",
             })
           : notification.success({
               message: "Success",
               description:
-                "Your agent has been successfully shut down ! Withdraw may take up to 48 hours to process and arrive in your wallet !",
+                "Your agent has been successfully shut down ! Withdraw may take up to 48 hours to process and arrive in your wallet (if you still have unextracted tokens) !",
             });
       }
     }

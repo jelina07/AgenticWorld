@@ -9,6 +9,7 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import {
   checkAmountControlButtonShow,
+  checkAmountControlButtonShowCan0,
   firstStakeAmount,
   numberDigits,
 } from "@/utils/utils";
@@ -40,7 +41,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   }));
 
   const stake = async () => {
-    if (checkAmountControlButtonShow(amount)) {
+    if (checkAmountControlButtonShowCan0(amount)) {
       if (Number(amount) < firstStakeAmount) {
         message.open({
           type: "warning",
