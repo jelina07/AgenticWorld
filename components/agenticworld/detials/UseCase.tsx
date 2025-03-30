@@ -46,11 +46,23 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
         <div className="text-[14px] font-[600]">Framework:</div>
         <Image className="w-full mt-[10px]" src={currentSubnet?.frameworkUrl} />
       </div>
-      <div className={`mt-[15px]`}>
+      <div
+        className={`mt-[15px] ${
+          currentSubnet?.subnetId === 27 || currentSubnet?.subnetId === 28
+            ? ""
+            : "hidden"
+        }`}
+      >
         <div className="text-[14px] font-[600]">Preview:</div>
         <Image
           className="w-full mt-[10px]"
-          src="/images/deepseek-preview.png"
+          src={`${
+            currentSubnet?.subnetId === 27
+              ? "/images/deepseek-preview.png"
+              : currentSubnet?.subnetId === 28
+              ? "/images/hack-ai-preview.png"
+              : ""
+          }`}
         />
       </div>
     </div>
