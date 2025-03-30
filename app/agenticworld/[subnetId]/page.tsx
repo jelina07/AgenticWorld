@@ -66,7 +66,7 @@ export default function page({ params }: { params: any }) {
       needSign: obj.needSign,
       isAccess: obj.isAccess,
       usecase: obj.usecase,
-      canLinkDetial: obj.can_link_detial,
+      canLinkDetial: obj.canLinkDetail,
       moreInfo: obj.moreInfo,
       frameworkUrl: obj.frameworkUrl,
     }))[0];
