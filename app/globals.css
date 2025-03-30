@@ -124,15 +124,15 @@ body {
 .btn-Link-brand-font,
 .btn-Link-white-font {
   display: block;
-  width: 100%;
   background: var(--btn-bg);
   border: 1px var(--mind-brand) solid;
   color: #fff;
   border-radius: 100px;
   text-align: center;
-  padding: 4px 15px;
+  padding: 0px 15px;
   font-size: 12px;
   min-height: 30px;
+  line-height: 30px;
 }
 
 .btn-Link-brand-font:hover,
@@ -632,4 +632,8 @@ input:focus {
 }
 .transaction-table .ant-select-dropdown .ant-select-item-option-selected {
   background-color: var(--mind-brand) !important;
+}
+
+.ant-image-preview-mask {
+  background-color: black !important;
 }

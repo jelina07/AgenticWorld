@@ -22,7 +22,7 @@ import {
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { secondsToHours } from "@/utils/utils";
-import Image from "next/image";
+import CommingSoon from "../utils/CommingSoon";
 
 const HubList = forwardRef(
   (
@@ -87,6 +87,9 @@ const HubList = forwardRef(
         subnetRequire: item.requireName,
         needSign: item.needSign,
         isAccess: item.isAccess,
+        canLinkDetial: item.canLinkDetail,
+        moreInfo: item.moreInfo,
+        frameworkUrl: item.frameworkUrl,
         logo: item.logo,
       };
     }) as SubnetInfoType[];
@@ -153,12 +156,16 @@ const HubList = forwardRef(
                 md={{ span: 12 }}
                 lg={{ span: 8 }}
               >
-                <Link href={`/agenticworld/${item.subnetId}`}>
+                <Link
+                  href={`${
+                    item.canLinkDetial ? `/agenticworld/${item.subnetId}` : ""
+                  } `}
+                >
                   <div
-                    className={`p-[30px] h-full ${
+                    className={`px-[20px] pt-[15px] pb-[20px] h-full ${
                       filter === 1 || filter === 2
-                        ? "bg-[url('/icons/subnet-box1.svg')] hub-box"
-                        : "bg-[url('/icons/subnet-box2.svg')] hub-box2"
+                        ? "bg-[#0d1313] hub-box"
+                        : "bg-[#0c0e14] hub-box2"
                     } bg-no-repeat bg-right-bottom bg-cover ${
                       isLaunch &&
                       learningId &&
@@ -169,19 +176,19 @@ const HubList = forwardRef(
                         : ""
                     }`}
                   >
+                    <div
+                      className={`flex items-center mb-[20px] justify-end ${
+                        item?.isAccess ? "hidden" : ""
+                      }`}
+                    >
+                      <CommingSoon />
+                    </div>
                     <div className="flex items-center gap-[5px] justify-between">
                       <div className="flex items-center gap-[5px] w-full flex-wrap">
-                        {/* <span
-                          className={`inline-block w-[16px] h-[16px] rounded-[50%] flex-shrink-0 ${
-                            filter === 1 || filter === 2
-                              ? "blue-gradient"
-                              : "yellow-gradient"
-                          }`}
-                        ></span> */}
                         <img
                           src={item.logo}
                           alt="logo"
-                          className="rounded-[50%] w-[30%]"
+                          className="rounded-[50%] w-[25%]"
                         />
                         <span className="text-[18px] text-white font-[800] leading-[1.2] break-word">
                           {item.subnetName}
@@ -281,20 +288,6 @@ const HubList = forwardRef(
                 </Link>
               </Col>
             ))}
-            {/* <Col
-              xs={{ span: 24 }}
-              md={{ span: 12 }}
-              lg={{ span: 8 }}
-              className={`${filter === 3 ? "" : "hidden"} p-[30px] h-full`}
-            >
-              <div
-                className="text-white flex justify-between items-center 
-              bg-[url('/icons/subnet-box2.svg')]bg-no-repeat bg-right-bottom 
-              bg-cover hub-box2"
-              >
-                <div>More Hubs will come in future</div>
-              </div>
-            </Col> */}
           </Row>
         )}
         <StartConfirmModal
