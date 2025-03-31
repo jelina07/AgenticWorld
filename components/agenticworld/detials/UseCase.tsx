@@ -16,7 +16,7 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
   return (
     <div className="px-[28px] py-[40px] rounded-[20px] bg-[var(--bg-deep-grey)]">
       <div className="text-[18px] font-[700] capitalize">Use Case</div>
-      <div className="mt-[15px] text-[12px] leading-[1.1]">
+      <div className="mt-[15px] text-[12px] leading-[1.1] usecase">
         <div
           dangerouslySetInnerHTML={{
             __html: currentSubnet?.usecase || "",

@@ -637,3 +637,10 @@ input:focus {
 .ant-image-preview-mask {
   background-color: black !important;
 }
+
+.usecase ul {
+  list-style: disc;
+}
+.usecase li {
+  margin-left: 12px;
+}
