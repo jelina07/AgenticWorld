@@ -63,7 +63,7 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
               ? "/images/deepseek-preview.png"
               : currentSubnet?.subnetId === 28
               ? "/images/hack-ai-preview.png"
-              : currentSubnet?.subnetId === 28
+              : currentSubnet?.subnetId === 29
               ? "/images/mindx-preview.png"
               : ""
           }`}
