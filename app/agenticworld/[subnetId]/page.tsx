@@ -161,7 +161,11 @@ export default function page({ params }: { params: any }) {
             Explore New Skills
           </Link>
         </div>
-        <div className="mt-[50px]">
+        <div
+          className={`mt-[50px] ${
+            currentSubnet?.canLinkDetial ? "" : "hidden"
+          }`}
+        >
           <UseCase currentSubnet={currentSubnet} />
         </div>
       </div>

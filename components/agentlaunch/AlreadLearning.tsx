@@ -12,8 +12,8 @@ export default function AlreadLearning() {
         </div>
         <div id="launchContent7">
           <div>
-            For agent training progress and earnings, you can head over to the
-            Dashboard to track and claim
+            To manage your agent's Hub records and earnings, head over to the
+            Dashboard to track progress and claim rewards.
             <br />
             For agent growth, check out the AgenticWorld page for more
             hub-training options.

@@ -87,7 +87,8 @@ const StakeLaunch = forwardRef((_, ref) => {
             </div>
           )}
           <div className="mt-[10px]">
-            $FHE from Mind Network Treasury & Potential Partner tokens
+            $FHE from Mind Network Ecosystem Incentive & Potential Partner
+            tokens
           </div>
         </div>
         {isDev() || isProd() ? (

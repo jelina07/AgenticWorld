@@ -16,14 +16,14 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
   return (
     <div className="px-[28px] py-[40px] rounded-[20px] bg-[var(--bg-deep-grey)]">
       <div className="text-[18px] font-[700] capitalize">Use Case</div>
-      <div className="mt-[15px] text-[12px] leading-[1.1] usecase">
+      <div className="mt-[25px] text-[12px] leading-[1.2] usecase">
         <div
           dangerouslySetInnerHTML={{
             __html: currentSubnet?.usecase || "",
           }}
         />
       </div>
-      <div className={`mt-[15px] ${currentSubnet?.moreInfo ? "" : "hidden"}`}>
+      <div className={`mt-[25px] ${currentSubnet?.moreInfo ? "" : "hidden"}`}>
         <div className="text-[14px] font-[600]">More Information:</div>
         <div className="flex gap-[5px]">
           {morInfoArray?.map((item: any) => (
@@ -41,13 +41,13 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
         </div>
       </div>
       <div
-        className={`mt-[15px] ${currentSubnet?.frameworkUrl ? "" : "hidden"}`}
+        className={`mt-[25px] ${currentSubnet?.frameworkUrl ? "" : "hidden"}`}
       >
         <div className="text-[14px] font-[600]">Framework:</div>
         <Image className="w-full mt-[10px]" src={currentSubnet?.frameworkUrl} />
       </div>
       <div
-        className={`mt-[15px] ${
+        className={`mt-[25px] ${
           currentSubnet?.subnetId === 27 || currentSubnet?.subnetId === 28
             ? ""
             : "hidden"

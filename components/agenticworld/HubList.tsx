@@ -162,7 +162,7 @@ const HubList = forwardRef(
                   } `}
                 >
                   <div
-                    className={`px-[20px] pt-[15px] pb-[20px] h-full ${
+                    className={`relative px-[20px] pt-[15px] pb-[20px] h-full ${
                       filter === 1 || filter === 2
                         ? "bg-[#0d1313] hub-box"
                         : "bg-[#0c0e14] hub-box2"
@@ -284,6 +284,15 @@ const HubList = forwardRef(
                         <span>Start Training</span>
                       </div>
                     )}
+                    <img
+                      src={
+                        filter === 1 || filter === 2
+                          ? "icons/hub-icons-1.svg"
+                          : "icons/hub-icons-2.svg"
+                      }
+                      className="absolute right-0 bottom-0"
+                      alt="hub-icons"
+                    />
                   </div>
                 </Link>
               </Col>
