@@ -80,8 +80,12 @@ const HubList = forwardRef(
         type: item.type,
         subnetName: item.name,
         subnetInfo: item.desc,
-        agent: hubAgentCount ? hubAgentCount[index] : "loading...",
-        payoutRatio: hubApy ? hubApy[index] : "loading...",
+        agent: !isConnected
+          ? "/"
+          : hubAgentCount
+          ? hubAgentCount[index]
+          : "loading...",
+        payoutRatio: !isConnected ? "/" : hubApy ? hubApy[index] : "loading...",
         lockup: item.lockUp,
         subnetLevel: item.note,
         subnetRequire: item.requireName,
@@ -93,7 +97,9 @@ const HubList = forwardRef(
         logo: item.logo,
       };
     }) as SubnetInfoType[];
-
+    const linkToDetial = (event: any, canDetial: boolean) => {
+      !canDetial ? event.preventDefault() : "";
+    };
     const subnetInfor =
       filter === 1
         ? subnetInforAll?.filter((item) => item.subnetLevel === "Required")
@@ -157,9 +163,8 @@ const HubList = forwardRef(
                 lg={{ span: 8 }}
               >
                 <Link
-                  href={`${
-                    item.canLinkDetial ? `/agenticworld/${item.subnetId}` : ""
-                  } `}
+                  href={`/agenticworld/${item.subnetId}`}
+                  onClick={(event) => linkToDetial(event, item.canLinkDetial)}
                 >
                   <div
                     className={`relative px-[20px] pt-[15px] pb-[20px] h-full ${
@@ -218,72 +223,74 @@ const HubList = forwardRef(
                         {item.subnetInfo}
                       </div>
                     )}
-
-                    <div className="mt-[30px] text-white text-[14px]">
-                      <div className="flex justify-between gap-[3px]">
-                        <span>Payout Ratio:</span>
-                        <span className="break-words max-w-[80%] whitespace-normal text-right">
-                          {item.payoutRatio}
-                        </span>
-                      </div>
-                      <div className="flex justify-between gap-[3px]">
-                        <span>Enrolled Agents:</span>
-                        <span>{item.agent}</span>
-                      </div>
-                      <div className="flex justify-between gap-[3px]">
-                        <span>Training Lock-up:</span>
-                        <span>
-                          {filter === 3
-                            ? "/"
-                            : secondsToHours(item.lockup) + " H"}
-                        </span>
-                      </div>
-                      <div
-                        className={`flex justify-between gap-[3px] items-start ${
-                          item.subnetRequire ? "" : "hidden"
-                        }`}
-                      >
-                        <span>Require:</span>
-                        <div className="text-right">
-                          {item.subnetRequire
-                            ?.split(",")
-                            .map((obj: any, index: number) => (
-                              <div
-                                className="text-[var(--mind-brand)]"
-                                key={index}
-                              >
-                                [{obj}]
-                              </div>
-                            ))}
+                    <div className="relative z-10">
+                      <div className="mt-[30px] text-white text-[14px]">
+                        <div className="flex justify-between gap-[3px]">
+                          <span>APY:</span>
+                          <span className="break-words max-w-[80%] whitespace-normal text-right">
+                            {filter === 3 ? "/" : item.payoutRatio}
+                          </span>
+                        </div>
+                        <div className="flex justify-between gap-[3px]">
+                          <span>Enrolled Agents:</span>
+                          <span>{item.agent}</span>
+                        </div>
+                        <div className="flex justify-between gap-[3px]">
+                          <span>Training Lock-up:</span>
+                          <span>
+                            {filter === 3
+                              ? "/"
+                              : secondsToHours(item.lockup) + " H"}
+                          </span>
+                        </div>
+                        <div
+                          className={`flex justify-between gap-[3px] items-start ${
+                            item.subnetRequire ? "" : "hidden"
+                          }`}
+                        >
+                          <span>Require:</span>
+                          <div className="text-right">
+                            {item.subnetRequire
+                              ?.split(",")
+                              .map((obj: any, index: number) => (
+                                <div
+                                  className="text-[var(--mind-brand)]"
+                                  key={index}
+                                >
+                                  [{obj}]
+                                </div>
+                              ))}
+                          </div>
                         </div>
                       </div>
+                      {learningId && item.subnetId === learningId ? (
+                        <div className="flex items-center mt-[30px] justify-end">
+                          <span className="text-[var(--mind-brand)]">
+                            Training
+                          </span>
+                          <img src="/icons/cz.svg" alt="cz" width={25} />
+                        </div>
+                      ) : ((agentTokenId !== undefined &&
+                          agentTokenId !== 0 &&
+                          learningId === 0) ||
+                          lockTimeReach ||
+                          !address) &&
+                        item.isAccess ? (
+                        <div className="text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                          <span
+                            onClick={(event) => showModal(event, item)}
+                            className="hover:text-[var(--mind-brand)]"
+                          >
+                            Start Training
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                          <span>Start Training</span>
+                        </div>
+                      )}
                     </div>
-                    {learningId && item.subnetId === learningId ? (
-                      <div className="flex items-center mt-[30px] justify-end">
-                        <span className="text-[var(--mind-brand)]">
-                          Training
-                        </span>
-                        <img src="/icons/cz.svg" alt="cz" width={25} />
-                      </div>
-                    ) : ((agentTokenId !== undefined &&
-                        agentTokenId !== 0 &&
-                        learningId === 0) ||
-                        lockTimeReach ||
-                        !address) &&
-                      item.isAccess ? (
-                      <div className="text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                        <span
-                          onClick={(event) => showModal(event, item)}
-                          className="hover:text-[var(--mind-brand)]"
-                        >
-                          Start Training
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                        <span>Start Training</span>
-                      </div>
-                    )}
+
                     <img
                       src={
                         filter === 1 || filter === 2

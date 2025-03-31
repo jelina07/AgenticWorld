@@ -6,10 +6,13 @@ import { useGetFheBalance } from "@/sdk";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import { numberDigits } from "@/utils/utils";
 import { useAsyncEffect } from "ahooks";
+import { useAccount } from "wagmi";
 export const WalletConnectBtn = () => {
   const { openAccountModal, accountModalopen } = useControlModal();
   const { runAsync, loading, refresh } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
+  const { chain: myChain } = useAccount();
+  console.log("chainchain", myChain);
 
   useAsyncEffect(async () => {
     await runAsync();
@@ -106,9 +109,23 @@ export const WalletConnectBtn = () => {
                     {account.displayName}
                     <span className="hidden sm:inline-block">
                       {account.displayBalance
-                        ? ` (${account.displayBalance}${
-                            balance ? ", " + numberDigits(balance) + " FHE" : ""
-                          })`
+                        ? account.displayBalance.includes("e")
+                          ? myChain?.nativeCurrency.symbol
+                            ? ` (${0 + " " + myChain?.nativeCurrency.symbol}${
+                                balance
+                                  ? ", " + numberDigits(balance) + " FHE"
+                                  : ""
+                              })`
+                            : ` (${0}${
+                                balance
+                                  ? ", " + numberDigits(balance) + " FHE"
+                                  : ""
+                              })`
+                          : ` (${account.displayBalance}${
+                              balance
+                                ? ", " + numberDigits(balance) + " FHE"
+                                : ""
+                            })`
                         : ""}
                     </span>
                   </button>

@@ -1,15 +1,26 @@
+import { isDev, isMainnetio, isProd } from "@/sdk/utils";
+
 const baseSiteConfig = {
-  name: "Mind Network Agent Dapp",
-  description: "Pioneering FHE Infrastructure for a Fully Encrypted Web3",
-  url: "https://agent.mindnetwork.xyz/",
+  name: "Mind Network AgenticWorld",
+  description:
+    "Pioneering FHE Infrastructure for a Fully Encrypted AgenticWorld and Web3",
+  url: isDev()
+    ? "https://agenttest.mindnetwork.io/"
+    : isProd()
+    ? "https://agenttest.mindnetwork.xyz/"
+    : isMainnetio()
+    ? "https://agent.mindnetwork.io/"
+    : "https://agent.mindnetwork.xyz/",
   keywords: [
     "Mind Network",
-    "restake",
+    "agent",
+    "agenticworld",
+    "agentic world",
     "fhe",
     "FHE",
     "AI",
     "layer",
-    "pos",
+    "restake",
     "network",
     "dapp",
   ],
@@ -23,7 +34,13 @@ const baseSiteConfig = {
   icons: {
     icon: "/favicon.ico",
   },
-  ogImage: "<https://dapp.mindnetwork.xyz/og.jpeg>",
+  ogImage: isDev()
+    ? "https://agenttest.mindnetwork.io/og.jpeg"
+    : isProd()
+    ? "https://agenttest.mindnetwork.xyz/og.jpeg"
+    : isMainnetio()
+    ? "https://agent.mindnetwork.io/og.jpeg"
+    : "https://agent.mindnetwork.xyz/og.jpeg",
   links: {
     twitter: "<https://twitter.com/mindnetwork_xyz>",
     github: "<https://github.com/mind-network",
