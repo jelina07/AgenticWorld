@@ -97,14 +97,14 @@ let chains: any = [];
 if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnbtestnet }];
 } else if ((isDev() || isProd()) && !userAgentBrowser.includes("BNC")) {
-  chains = [mindtestnet, { ...bnbtestnet }];
+  chains = [{ ...bnbtestnet }];
 } else if ((isMainnet() || isMainnetio()) && userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnb }];
 } else if (
   (isMainnet() || isMainnetio()) &&
   !userAgentBrowser.includes("BNC")
 ) {
-  chains = [mindnet, { ...bnb }];
+  chains = [{ ...bnb }];
 } else {
   chains = [];
 }
