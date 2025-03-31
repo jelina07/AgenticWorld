@@ -85,6 +85,7 @@ const bnbtestnet = {
 };
 const bnb = {
   ...bsc,
+  name: "BNB Smart Chain",
   rpcUrls: {
     default: { http: ["https://bsc-dataseed.bnbchain.org"] },
   },

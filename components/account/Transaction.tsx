@@ -13,8 +13,10 @@ import { useAsyncEffect } from "ahooks";
 dayjs.extend(utc);
 
 export default function Transaction() {
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { accountModalopen } = useControlModal();
-  const { data, loading, pagination, refreshAsync } = useUserTransaction();
+  const { data, loading, pagination, refreshAsync } =
+    useUserTransaction(agentTokenId);
 
   const tableColumns: TableColumnsType = [
     {
@@ -41,7 +43,7 @@ export default function Transaction() {
     {
       title: "Agent",
       dataIndex: "agent_name",
-      render: (value) => <span>{value === "All" ? "/" : ""}</span>,
+      render: (value) => <span>{value === "All" ? "/" : value}</span>,
     },
     {
       title: "Status",
