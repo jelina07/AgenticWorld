@@ -20,7 +20,7 @@ import { useAccount } from "wagmi";
 import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
 
 const StakeLaunch = forwardRef((_, ref) => {
-  const { chainId } = useAccount();
+  const { chainId, isConnected } = useAccount();
   const startAmount = isDev() || isProd() ? "" : "0";
   const [amount, setAmount] = useState(startAmount);
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -33,6 +33,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
   const { data: totalAgent, refresh: refreshTotalAgent } = useGetAgentCount();
+  console.log("chainchain1", chainId);
 
   useImperativeHandle(ref, () => ({
     clearStakeAmount: () => {
@@ -83,7 +84,8 @@ const StakeLaunch = forwardRef((_, ref) => {
             <div>Minimum staking: {firstStakeAmount} $FHE</div>
           ) : (
             <div>
-              Total Agents Launched: {!totalAgent ? "loading..." : totalAgent}
+              Total Agents Launched:{" "}
+              {!isConnected ? "/" : !totalAgent ? "loading..." : totalAgent}
             </div>
           )}
           <div className="mt-[10px]">
@@ -128,12 +130,7 @@ const StakeLaunch = forwardRef((_, ref) => {
           <Button
             type="primary"
             className="button-brand-border"
-            disabled={
-              isAgent ||
-              amount === "" ||
-              chainId === mindnet.id ||
-              chainId === mindtestnet.id
-            }
+            disabled={isAgent || amount === ""}
             onClick={stake}
             loading={agentStakeLoading}
           >
