@@ -137,7 +137,7 @@ const StakeLaunch = forwardRef((_, ref) => {
             onClick={stake}
             loading={agentStakeLoading}
           >
-            {isDev() || isProd() ? "Stake" : "Stake & Launch"}
+            {isDev() || isProd() ? "Stake & Launch" : "Launch"}
           </Button>
           {isDev() || isProd() ? (
             <Facuet refreshFHE={fheBalanceRefresh} />
