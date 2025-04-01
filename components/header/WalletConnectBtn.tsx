@@ -53,7 +53,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px]"
+                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px] text-[12px] sm:text-[14px]"
                   >
                     Connect Wallet
                   </button>
@@ -64,7 +64,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openChainModal}
                     type="button"
-                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px]"
+                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px] text-[12px] sm:text-[14px]"
                   >
                     Wrong network
                   </button>
@@ -104,7 +104,7 @@ export const WalletConnectBtn = () => {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px] text-[14px]"
+                    className="wallet-btn px-[5px] py-[3px] sm:px-[12px] text-[12px] sm:text-[14px]"
                   >
                     {account.displayName}
                     <span className="hidden sm:inline-block">

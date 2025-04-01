@@ -4,6 +4,7 @@ import {
   secondsToHours,
 } from "@/utils/utils";
 import React from "react";
+import { useAccount } from "wagmi";
 
 export default function HubInfo({
   lockUp,
@@ -16,12 +17,15 @@ export default function HubInfo({
   hubStakeAmount?: string;
   hubApy?: string;
 }) {
+  const { isConnected } = useAccount();
   return (
     <div className="flex justify-between gap-[20px] flex-wrap">
       <div className="p-[30px] flex-1 rounded-[10px] bg-[var(--bg-deep-grey)]">
         <div className="text-[15px]">Enrolled Agents</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">
-          {agentCount !== undefined
+          {!isConnected
+            ? "/"
+            : agentCount !== undefined
             ? numberDigitsNoMillify(agentCount)
             : "loading..."}
         </div>
@@ -29,13 +33,15 @@ export default function HubInfo({
       <div className="p-[30px] flex-[1.3] min-w-[250px] rounded-[10px] bg-[url('/images/bg-heavy.png')] bg-cover bg-no-repeat">
         <div className="text-[15px]">Emission Rate</div>
         <div className="text-[38px] text-light-shadow mt-[20px] break-all">
-          {hubApy !== undefined ? hubApy : "loading"}
+          {!isConnected ? "/" : hubApy !== undefined ? hubApy : "loading..."}
         </div>
       </div>
       <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[var(--bg-deep-grey)]">
         <div className="text-[15px]">Total Stake</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">
-          {hubStakeAmount !== undefined
+          {!isConnected
+            ? "/"
+            : hubStakeAmount !== undefined
             ? numberDigits(hubStakeAmount)
             : "loading..."}
         </div>

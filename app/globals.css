@@ -334,6 +334,12 @@ input:focus {
   background: #080c0b !important;
 }
 
+@media screen and (max-width: 480px) {
+  .mind-table .ant-table-tbody .ant-table-row .ant-table-cell {
+    width: 50px !important;
+  }
+}
+
 .mind-collapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0;
   align-items: center;

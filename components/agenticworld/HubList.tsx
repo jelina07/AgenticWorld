@@ -233,7 +233,7 @@ const HubList = forwardRef(
                         </div>
                         <div className="flex justify-between gap-[3px]">
                           <span>Enrolled Agents:</span>
-                          <span>{item.agent}</span>
+                          <span>{filter === 3 ? "/" : item.agent}</span>
                         </div>
                         <div className="flex justify-between gap-[3px]">
                           <span>Training Lock-up:</span>
