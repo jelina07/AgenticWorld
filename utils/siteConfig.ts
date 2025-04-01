@@ -33,6 +33,12 @@ const baseSiteConfig = {
   creator: "@mindnetwork_xyz",
   icons: {
     icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+    other: {
+      rel: "apple-touch-icon-precomposed",
+      url: "/favicon.ico",
+    },
   },
   ogImage: isDev()
     ? "https://agenttest.mindnetwork.io/og.jpeg"
