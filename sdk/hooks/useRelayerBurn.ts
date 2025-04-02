@@ -27,7 +27,7 @@ export default function useRelayerBurn(options?: Options<any, [number]>) {
 
       const { signature, timestamp, nonce } = await signRelayerAsync?.(postData);
 
-      const res = await request.post(`/relayer/agent/${chainId}/burn`, {
+      const res = (await request.post(`/relayer/agent/${chainId}/burn`, {
         user: postData.user,
         agentId: postData.agentID,
         hubId: postData.hubID,
@@ -36,8 +36,8 @@ export default function useRelayerBurn(options?: Options<any, [number]>) {
         timestamp,
         nonce,
         amount: postData.amount.toString(),
-      });
-      return res;
+      })) as { id: number };
+      return res.id;
     },
     {
       manual: true,

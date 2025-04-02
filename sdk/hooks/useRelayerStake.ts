@@ -40,7 +40,7 @@ export default function useRelayerStake(options?: Options<any, [number, string]>
 
       const { signature, timestamp, nonce } = await signRelayerAsync?.(postData);
 
-      const res = await request.post(`/relayer/agent/${chainId}/stake`, {
+      const res = (await request.post(`/relayer/agent/${chainId}/stake`, {
         user: postData.user,
         agentId: postData.agentID,
         hubId: postData.hubID,
@@ -52,7 +52,8 @@ export default function useRelayerStake(options?: Options<any, [number, string]>
         permitSignature,
         permitSpender,
         permitDeadline,
-      });
+      })) as { id: number };
+      return res.id;
     },
     {
       manual: true,

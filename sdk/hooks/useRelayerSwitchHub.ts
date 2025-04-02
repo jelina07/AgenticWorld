@@ -27,7 +27,7 @@ export default function useRelayerSwitchHub(options?: Options<any, [number, numb
 
       const { signature, timestamp, nonce } = await signRelayerAsync?.(postData);
 
-      const res = await request.post(`/relayer/agent/${chainId}/switch`, {
+      const res = (await request.post(`/relayer/agent/${chainId}/switch`, {
         user: postData.user,
         agentId: postData.agentID,
         hubId: postData.hubID,
@@ -36,8 +36,8 @@ export default function useRelayerSwitchHub(options?: Options<any, [number, numb
         timestamp,
         nonce,
         amount: postData.amount.toString(),
-      });
-      return res;
+      })) as { id: number };
+      return res.id;
     },
     {
       manual: true,
