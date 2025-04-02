@@ -1,14 +1,23 @@
 "use client";
+import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import {
   useAgentGetStakeAmount,
   useHubDelegate,
   useHubSwitchDelegate,
+  useRelayerDelegate,
+  useRelayerGetStatus,
+  useRelayerSwitchHub,
 } from "@/sdk";
+import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import { secondsToHours } from "@/utils/utils";
+import { judgeUseGasless, secondsToHours } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, message, Modal, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
+import { useAccount } from "wagmi";
+
+const successTip = "Agent training has successfully started !";
 
 const StartConfirmModal = forwardRef(
   (
@@ -25,6 +34,7 @@ const StartConfirmModal = forwardRef(
     },
     ref
   ) => {
+    const { chainId } = useAccount();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentHub, setCurrentHub] = useState<SubnetInfoType>();
     const { runAsync: hubDelegate, loading } = useHubDelegate({
@@ -38,6 +48,41 @@ const StartConfirmModal = forwardRef(
     const { data: agentStakeAmount } = useAgentGetStakeAmount({
       tokenId: agentTokenId,
     });
+    const { runAsync: relayerDelegate } = useRelayerDelegate();
+    const { runAsync: relayerSwitchHub } = useRelayerSwitchHub();
+    const {
+      data: status,
+      run: statusRun,
+      cancel: statusCancel,
+    } = useRelayerGetStatus("delegate");
+    const {
+      data: statusSwitch,
+      run: statusRunSwitch,
+      cancel: statusCancelSwitch,
+    } = useRelayerGetStatus("switch");
+    const [actionLoop, setActionLoop] = useState(false);
+
+    const afterSuccessHandler = () => {
+      handleCancel();
+      refreshLearningId();
+      refreshHubAgentCount();
+    };
+    useRelayerStatusHandler(
+      status,
+      statusCancel,
+      afterSuccessHandler,
+      setActionLoop,
+      successTip,
+      Agent1ContractErrorCode
+    );
+    useRelayerStatusHandler(
+      statusSwitch,
+      statusCancelSwitch,
+      afterSuccessHandler,
+      setActionLoop,
+      successTip,
+      Agent1ContractErrorCode
+    );
 
     useImperativeHandle(ref, () => ({
       clickStartConfirmModal: () => {
@@ -54,26 +99,55 @@ const StartConfirmModal = forwardRef(
     const delegate = async () => {
       let res = null;
       if (agentStakeAmount !== "0") {
+        //switch
         if (learningId) {
-          res = await hubDelegateSwitch({
-            tokenId: agentTokenId,
-            hubId: currentHub?.subnetId!,
-            needSign: Boolean(currentHub?.needSign!),
-          });
+          if (judgeUseGasless(chainId)) {
+            try {
+              setActionLoop(true);
+              const resId = await relayerSwitchHub(
+                agentTokenId,
+                currentHub?.subnetId!
+              );
+              if (resId) {
+                statusRunSwitch(chainId, resId);
+              }
+            } catch (error) {
+              setActionLoop(false);
+            }
+          } else {
+            res = await hubDelegateSwitch({
+              tokenId: agentTokenId,
+              hubId: currentHub?.subnetId!,
+              needSign: Boolean(currentHub?.needSign!),
+            });
+          }
         } else {
-          res = await hubDelegate({
-            tokenId: agentTokenId,
-            hubId: currentHub?.subnetId!,
-            needSign: Boolean(currentHub?.needSign!),
-          });
+          if (judgeUseGasless(chainId)) {
+            try {
+              setActionLoop(true);
+              const resId = await relayerDelegate(
+                agentTokenId,
+                currentHub?.subnetId!
+              );
+              if (resId) {
+                statusRun(chainId, resId);
+              }
+            } catch (error) {
+              setActionLoop(false);
+            }
+          } else {
+            res = await hubDelegate({
+              tokenId: agentTokenId,
+              hubId: currentHub?.subnetId!,
+              needSign: Boolean(currentHub?.needSign!),
+            });
+          }
         }
         if (res) {
-          handleCancel();
-          refreshLearningId();
-          refreshHubAgentCount();
+          afterSuccessHandler();
           notification.success({
             message: "Success",
-            description: "Agent training has successfully started !",
+            description: successTip,
           });
         }
       } else {
@@ -84,6 +158,7 @@ const StartConfirmModal = forwardRef(
         });
       }
     };
+
     return (
       <Modal
         title="Confirm Your Action"
@@ -112,7 +187,9 @@ const StartConfirmModal = forwardRef(
             type="primary"
             className="button-white-border-white-font"
             onClick={delegate}
-            loading={learningId ? delegateLoading : loading}
+            loading={
+              learningId ? delegateLoading || actionLoop : loading || actionLoop
+            }
           >
             Confirm
           </Button>

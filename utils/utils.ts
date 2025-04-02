@@ -1,5 +1,5 @@
 import { isDev, isProd } from "@/sdk/utils";
-import { chains } from "@/sdk/wagimConfig";
+import { chains, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { message } from "antd";
 import millify from "millify";
 
@@ -110,4 +110,8 @@ export function secondsToHours(seconds: number | string): string {
 export function getUserAgent() {
   if (typeof window === "undefined") return "";
   return window.navigator.userAgent;
+}
+
+export function judgeUseGasless(chainId?: number) {
+  return chainId === mindnet.id || chainId === mindtestnet.id;
 }

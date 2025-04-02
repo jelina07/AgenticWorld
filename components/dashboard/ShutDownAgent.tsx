@@ -1,10 +1,24 @@
 "use client";
-import { useAgentBurn, useAgentUnStake, useGetFheBalance } from "@/sdk";
-import { checkAmountControlButtonShow } from "@/utils/utils";
+import {
+  useAgentBurn,
+  useAgentUnStake,
+  useGetFheBalance,
+  useRelayerBurn,
+  useRelayerGetStatus,
+} from "@/sdk";
+import { checkAmountControlButtonShow, judgeUseGasless } from "@/utils/utils";
 import { Button, Modal, notification } from "antd";
 import React, { useState } from "react";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { isDev, isProd } from "@/sdk/utils";
+import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
+import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+import { useAccount } from "wagmi";
+
+const successTip =
+  isDev() || isProd()
+    ? "Your agent has been successfully shut down ! Withdraw may take up to 2 minutes to process and arrive in your wallet (if you still have unextracted tokens) !"
+    : "Your agent has been successfully shut down ! Withdraw may take up to 48 hours to process and arrive in your wallet (if you still have unextracted tokens) !";
 
 export default function ShutDownAgent({
   refreshStakeAmount,
@@ -13,6 +27,7 @@ export default function ShutDownAgent({
   refreshStakeAmount: Function;
   agentStakeAmount?: string;
 }) {
+  const { chainId } = useAccount();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { runAsync: agentBurn, loading: agentBurnLoading } = useAgentBurn({
     waitForReceipt: true,
@@ -22,6 +37,29 @@ export default function ShutDownAgent({
     (state) => state.refreshGetAgentTokenId
   );
   const { refresh: fheBalanceRefresh } = useGetFheBalance();
+  const { runAsync: relayerBurn } = useRelayerBurn();
+  const {
+    data: status,
+    run: statusRun,
+    cancel: statusCancel,
+  } = useRelayerGetStatus("burn");
+  const [actionLoop, setActionLoop] = useState(false);
+
+  const afterSuccessHandler = () => {
+    refreshStakeAmount();
+    fheBalanceRefresh();
+    refreshAgentTokenId();
+    handleCancel();
+  };
+
+  useRelayerStatusHandler(
+    status,
+    statusCancel,
+    afterSuccessHandler,
+    setActionLoop,
+    successTip,
+    Agent1ContractErrorCode
+  );
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -33,23 +71,25 @@ export default function ShutDownAgent({
 
   const shoutDown = async () => {
     if (checkAmountControlButtonShow(agentStakeAmount!)) {
-      const res = await agentBurn(agentTokenId!);
-      if (res) {
-        refreshStakeAmount();
-        fheBalanceRefresh();
-        refreshAgentTokenId();
-        handleCancel();
-        isDev() || isProd()
-          ? notification.success({
-              message: "Success",
-              description:
-                "Your agent has been successfully shut down ! Withdraw may take up to 2 minutes to process and arrive in your wallet (if you still have unextracted tokens) !",
-            })
-          : notification.success({
-              message: "Success",
-              description:
-                "Your agent has been successfully shut down ! Withdraw may take up to 48 hours to process and arrive in your wallet (if you still have unextracted tokens) !",
-            });
+      if (judgeUseGasless(chainId)) {
+        try {
+          setActionLoop(true);
+          const resId = await relayerBurn(agentTokenId!);
+          if (resId) {
+            statusRun(chainId, resId);
+          }
+        } catch (error) {
+          setActionLoop(false);
+        }
+      } else {
+        const res = await agentBurn(agentTokenId!);
+        if (res) {
+          afterSuccessHandler();
+          notification.success({
+            message: "Success",
+            description: successTip,
+          });
+        }
       }
     }
   };
@@ -89,7 +129,7 @@ export default function ShutDownAgent({
               type="primary"
               className="button-white-border-white-font"
               disabled={agentStakeAmount === undefined}
-              loading={agentBurnLoading}
+              loading={agentBurnLoading || actionLoop}
               onClick={shoutDown}
             >
               Confirm

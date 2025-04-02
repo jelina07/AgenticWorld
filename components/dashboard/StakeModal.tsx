@@ -1,12 +1,23 @@
 import { Button, Input, message, Modal, notification } from "antd";
 import React, { useState } from "react";
 import UpArraw from "@/public/icons/up-arraw.svg";
-import { checkAmountControlButtonShow } from "@/utils/utils";
-import { useAgentStake, useGetFheBalance, useHubGetApy } from "@/sdk";
+import { checkAmountControlButtonShow, judgeUseGasless } from "@/utils/utils";
+import {
+  useAgentStake,
+  useGetFheBalance,
+  useHubGetApy,
+  useRelayerGetStatus,
+  useRelayerStake,
+} from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import Max from "../utils/Max";
 import { useAsyncEffect } from "ahooks";
+import { useAccount } from "wagmi";
+import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
+import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+
+const successTip = "Stake Success !";
 
 export default function StakeModal({
   refreshStakeAmount,
@@ -19,6 +30,7 @@ export default function StakeModal({
   learningId: number;
   hubList?: any[];
 }) {
+  const { chainId } = useAccount();
   const [amount, setAmount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -27,9 +39,30 @@ export default function StakeModal({
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { data: hubApy } = useHubGetApy({ hubIds: hubList });
   const currentIndex = hubList?.findIndex((item) => item.id === learningId);
-  console.log("currentIndex", currentIndex, hubApy);
   const { runAsync, refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
+  const { runAsync: relayerAgentStake } = useRelayerStake();
+  const {
+    data: status,
+    run: statusRun,
+    cancel: statusCancel,
+  } = useRelayerGetStatus("stake");
+  const [actionLoop, setActionLoop] = useState(false);
+
+  const afterSuccessHandler = () => {
+    refreshStakeAmount();
+    fheBalanceRefresh();
+    handleCancel();
+  };
+
+  useRelayerStatusHandler(
+    status,
+    statusCancel,
+    afterSuccessHandler,
+    setActionLoop,
+    successTip,
+    Agent1ContractErrorCode
+  );
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -49,15 +82,25 @@ export default function StakeModal({
           duration: 5,
         });
       } else {
-        const res = await agentStake(agentTokenId!, amount);
-        if (res) {
-          refreshStakeAmount();
-          fheBalanceRefresh();
-          handleCancel();
-          notification.success({
-            message: "Success",
-            description: "Stake Success !",
-          });
+        if (judgeUseGasless(chainId)) {
+          try {
+            setActionLoop(true);
+            const resId = await relayerAgentStake(agentTokenId!, amount);
+            if (resId) {
+              statusRun(chainId, resId);
+            }
+          } catch (error) {
+            setActionLoop(false);
+          }
+        } else {
+          const res = await agentStake(agentTokenId!, amount);
+          if (res) {
+            afterSuccessHandler();
+            notification.success({
+              message: "Success",
+              description: successTip,
+            });
+          }
         }
       }
     }
@@ -127,7 +170,7 @@ export default function StakeModal({
             className="button-brand-border mt-[30px]"
             disabled={amount === ""}
             onClick={stake}
-            loading={agentStakeLoading}
+            loading={agentStakeLoading || actionLoop}
           >
             Stake
           </Button>

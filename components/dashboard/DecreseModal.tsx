@@ -2,15 +2,30 @@ import { Button, Input, message, Modal, notification } from "antd";
 import React, { useState } from "react";
 import DownArraw from "@/public/icons/down-arraw.svg";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import { useAgentUnStake, useGetFheBalance } from "@/sdk";
+import {
+  useAgentUnStake,
+  useGetFheBalance,
+  useRelayerGetStatus,
+  useRelayerUnstake,
+} from "@/sdk";
 import {
   checkAmountControlButtonShow,
   firstStakeAmount,
+  judgeUseGasless,
   numberDigits,
 } from "@/utils/utils";
 import Max from "../utils/Max";
 import Big from "big.js";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import { isDev, isProd } from "@/sdk/utils";
+import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
+import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+import { useAccount } from "wagmi";
+
+const successTip =
+  isDev() || isProd()
+    ? "Unstake Success ! Unstaking may take up to 2 minutes to process and arrive in your wallet !"
+    : "Unstake Success ! Unstaking may take up to 48 hours to process and arrive in your wallet !";
 
 export default function DecreseModal({
   refreshStakeAmount,
@@ -19,6 +34,7 @@ export default function DecreseModal({
   refreshStakeAmount: Function;
   agentStakeAmount?: string;
 }) {
+  const { chainId } = useAccount();
   const [amount, setAmount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { runAsync: agentUnStake, loading: agentStakeLoading } =
@@ -27,6 +43,28 @@ export default function DecreseModal({
     });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { refresh: fheBalanceRefresh } = useGetFheBalance();
+  const { runAsync: relayerAgentUnStake } = useRelayerUnstake();
+  const {
+    data: status,
+    run: statusRun,
+    cancel: statusCancel,
+  } = useRelayerGetStatus("unstake");
+  const [actionLoop, setActionLoop] = useState(false);
+
+  const afterSuccessHandler = () => {
+    refreshStakeAmount();
+    fheBalanceRefresh();
+    handleCancel();
+  };
+
+  useRelayerStatusHandler(
+    status,
+    statusCancel,
+    afterSuccessHandler,
+    setActionLoop,
+    successTip,
+    Agent1ContractErrorCode
+  );
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -36,35 +74,38 @@ export default function DecreseModal({
     setIsModalOpen(false);
     setAmount("");
   };
+
   const unstake = async () => {
     if (checkAmountControlButtonShow(amount)) {
       if (
         agentStakeAmount &&
         Number(agentStakeAmount) - Number(amount) >= firstStakeAmount
       ) {
-        const res = await agentUnStake(agentTokenId!, amount);
-        if (res) {
-          refreshStakeAmount();
-          fheBalanceRefresh();
-          handleCancel();
-          notification.success({
-            message: "Success",
-            description:
-              "Unstake Success ! Unstaking may take up to 2 minutes to process and arrive in your wallet !",
-          });
-          notification.success({
-            message: "Success",
-            description:
-              "Unstake Success ! Unstaking may take up to 48 hours to process and arrive in your wallet !",
-          });
+        if (judgeUseGasless(chainId)) {
+          try {
+            setActionLoop(true);
+            const resId = await relayerAgentUnStake(agentTokenId!, amount);
+            if (resId) {
+              statusRun(chainId, resId);
+            }
+          } catch (error) {
+            setActionLoop(false);
+          }
+        } else {
+          const res = await agentUnStake(agentTokenId!, amount);
+          if (res) {
+            afterSuccessHandler();
+            notification.success({
+              message: "Success",
+              description: successTip,
+            });
+          }
         }
       } else {
         const max = Number(agentStakeAmount!) - firstStakeAmount;
         message.open({
           type: "warning",
-          content: `The agent must maintain a minimum of ${firstStakeAmount} tokens unless permanently shut down. The maximum amount you can unstake while keeping the agent alive is ${numberDigits(
-            max
-          )} = (${agentStakeAmount} - ${firstStakeAmount}) !`,
+          content: `The agent must maintain a minimum of ${firstStakeAmount} tokens unless permanently shut down. The maximum amount you can unstake while keeping the agent alive is ${max} = (${agentStakeAmount} - ${firstStakeAmount}) !`,
           duration: 10,
         });
       }
@@ -135,7 +176,7 @@ export default function DecreseModal({
             className="button-brand-border mt-[30px]"
             disabled={amount === ""}
             onClick={unstake}
-            loading={agentStakeLoading}
+            loading={agentStakeLoading || actionLoop}
           >
             Unstake
           </Button>

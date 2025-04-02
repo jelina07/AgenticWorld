@@ -96,7 +96,9 @@ const bnb = {
 let chains: any = [];
 if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnbtestnet }];
-} else if ((isDev() || isProd()) && !userAgentBrowser.includes("BNC")) {
+} else if (isDev() && !userAgentBrowser.includes("BNC")) {
+  chains = [mindtestnet, { ...bnbtestnet }];
+} else if (isProd() && !userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnbtestnet }];
 } else if ((isMainnet() || isMainnetio()) && userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnb }];

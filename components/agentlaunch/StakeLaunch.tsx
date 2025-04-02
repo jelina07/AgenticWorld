@@ -3,6 +3,8 @@ import {
   useAgentStake,
   useGetFheBalance,
   useGetAgentCount,
+  useRelayerStake,
+  useRelayerGetStatus,
 } from "@/sdk";
 import { isDev, isProd } from "@/sdk/utils";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
@@ -11,6 +13,7 @@ import {
   checkAmountControlButtonShow,
   checkAmountControlButtonShowCan0,
   firstStakeAmount,
+  judgeUseGasless,
   numberDigits,
 } from "@/utils/utils";
 import { Button, Input, message, notification } from "antd";
@@ -18,9 +21,14 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import Facuet from "../facuet/Facuet";
 import { useAccount } from "wagmi";
 import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
+import { useAsyncEffect } from "ahooks";
+import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
+
+const successTip = "Launch Success !";
 
 const StakeLaunch = forwardRef((_, ref) => {
-  const { chainId, isConnected } = useAccount();
+  const { chainId, isConnected, address } = useAccount();
   const startAmount = isDev() || isProd() ? "" : "0";
   const [amount, setAmount] = useState(startAmount);
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -33,7 +41,28 @@ const StakeLaunch = forwardRef((_, ref) => {
   const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
   const { data: totalAgent, refresh: refreshTotalAgent } = useGetAgentCount();
-  console.log("chainchain1", chainId);
+  const { runAsync: relayerAgentStake } = useRelayerStake();
+  const {
+    data: status,
+    run: statusRun,
+    cancel: statusCancel,
+  } = useRelayerGetStatus("stake");
+  const [actionLoop, setActionLoop] = useState(false);
+
+  const afterSuccessHandler = () => {
+    agentGetTokenIdRefresh();
+    fheBalanceRefresh();
+    refreshTotalAgent();
+  };
+
+  useRelayerStatusHandler(
+    status,
+    statusCancel,
+    afterSuccessHandler,
+    setActionLoop,
+    successTip,
+    Agent1ContractErrorCode
+  );
 
   useImperativeHandle(ref, () => ({
     clearStakeAmount: () => {
@@ -56,20 +85,66 @@ const StakeLaunch = forwardRef((_, ref) => {
           duration: 5,
         });
       } else {
-        const res = await agentStake(agentTokenId!, amount);
-        if (res) {
-          agentGetTokenIdRefresh();
-          fheBalanceRefresh();
-          refreshTotalAgent();
-          notification.success({
-            message: "Success",
-            description:
-              isDev() || isProd() ? "Stake Success !" : "Launch Success !",
-          });
+        if (judgeUseGasless(chainId)) {
+          try {
+            setActionLoop(true);
+            const resId = await relayerAgentStake(agentTokenId!, amount);
+            if (resId) {
+              statusRun(chainId, resId);
+            }
+          } catch (error) {
+            setActionLoop(false);
+          }
+        } else {
+          const res = await agentStake(agentTokenId!, amount);
+          if (res) {
+            afterSuccessHandler();
+            notification.success({
+              message: "Success",
+              description: successTip,
+            });
+          }
         }
       }
     }
   };
+
+  // useAsyncEffect(async () => {
+  //   if (address) {
+  //     // have stake
+  //     if (stakeStatus !== undefined) {
+  //       if (stakeStatus.status === "1") {
+  //         stakeStatusCancel();
+  //         await new Promise((resolve) => setTimeout(resolve, 5000));
+  //         agentGetTokenIdRefresh();
+  //         fheBalanceRefresh();
+  //         refreshTotalAgent();
+  //         setStakeLoop(false);
+  //         notification.success({
+  //           message: "Success",
+  //           description: "Launch Success !",
+  //         });
+  //       } else if (stakeStatus.status === "-1") {
+  //         stakeStatusCancel();
+  //         if (stakeStatus.message) {
+  //           notification.error({
+  //             message: "Error",
+  //             description: stakeStatus.message,
+  //           });
+  //         } else if (stakeStatus.errorCode) {
+  //           const errorMess = Agent1ContractErrorCode(stakeStatus.errorCode);
+  //           notification.error({
+  //             message: "Error",
+  //             description: errorMess,
+  //           });
+  //         }
+  //         setStakeLoop(false);
+  //       } else {
+  //         setStakeLoop(true);
+  //       }
+  //     }
+  //   }
+  // }, [stakeStatus]);
 
   return (
     <div
@@ -132,7 +207,7 @@ const StakeLaunch = forwardRef((_, ref) => {
             className="button-brand-border"
             disabled={isAgent || amount === ""}
             onClick={stake}
-            loading={agentStakeLoading}
+            loading={agentStakeLoading || actionLoop}
           >
             {isDev() || isProd() ? "Stake & Launch" : "Launch"}
           </Button>

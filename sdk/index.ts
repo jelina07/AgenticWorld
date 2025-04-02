@@ -29,6 +29,9 @@ import useRelayerStake from "./hooks/useRelayerStake";
 import useRelayerUnstake from "./hooks/useRelayerUnstake";
 import useRelayerSwitchHub from "./hooks/useRelayerSwitchHub";
 import useRelayerClaimReward from "./hooks/useRelayerClaimReward";
+import useRelayerDelegate from "./hooks/useRelayerDelegate";
+import useRelayerGetStatus from "./hooks/useRelayerGetStatus";
+import useRelayerBurn from "./hooks/useRelayerBurn";
 
 export {
   useAirdropCheck,
@@ -62,4 +65,7 @@ export {
   useRelayerUnstake,
   useRelayerSwitchHub,
   useRelayerClaimReward,
+  useRelayerDelegate,
+  useRelayerGetStatus,
+  useRelayerBurn,
 };

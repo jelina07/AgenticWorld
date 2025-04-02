@@ -19,12 +19,18 @@ import {
   useGetFheBalance,
   useHubGetCurrent,
   useHubGetCurrentExp,
+  useRelayerClaimReward,
+  useRelayerGetStatus,
 } from "@/sdk";
-import { number5Digits, numberDigits } from "@/utils/utils";
+import { judgeUseGasless, number5Digits, numberDigits } from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { CheckOutlined } from "@ant-design/icons";
 import Created from "../utils/created";
 import { useAccount, useChainId } from "wagmi";
+import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
+import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+
+const successTip = "Redeem Success !";
 
 export default function MyAgent({
   ids,
@@ -104,8 +110,6 @@ export default function MyAgent({
     return learnSecond?.filter((second: number) => second > 0).length;
   }, [learnSecond]);
 
-  console.log("claimableReward", claimableReward);
-
   // type 0: no learned; type 1: locked ; type 2:unlocked
   const stateType = useMemo(() => {
     if (currentLearnedHub !== undefined) {
@@ -144,17 +148,49 @@ export default function MyAgent({
       setText(agentMeta.agentName);
     }
   }, [agentMeta]);
-  console.log("agentMeta", agentMeta);
+
+  const { runAsync: relayerClaimReward } = useRelayerClaimReward();
+  const {
+    data: status,
+    run: statusRun,
+    cancel: statusCancel,
+  } = useRelayerGetStatus("claim");
+  const [actionLoop, setActionLoop] = useState(false);
+
+  const afterSuccessHandler = () => {
+    claimableRewardRefresh();
+    refreshBalance();
+  };
+
+  useRelayerStatusHandler(
+    status,
+    statusCancel,
+    afterSuccessHandler,
+    setActionLoop,
+    successTip,
+    Agent1ContractErrorCode
+  );
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
-      const res = await claim();
-      if (res) {
-        claimableRewardRefresh();
-        refreshBalance();
-        notification.success({
-          message: "Success",
-          description: "Redeem Success !",
-        });
+      if (judgeUseGasless(chainId)) {
+        try {
+          setActionLoop(true);
+          const resId = await relayerClaimReward();
+          if (resId) {
+            statusRun(chainId, resId);
+          }
+        } catch (error) {
+          setActionLoop(false);
+        }
+      } else {
+        const res = await claim();
+        if (res) {
+          afterSuccessHandler();
+          notification.success({
+            message: "Success",
+            description: successTip,
+          });
+        }
       }
     } else {
       message.open({
@@ -353,7 +389,7 @@ export default function MyAgent({
                       type="primary"
                       className="button-brand-border-white-font"
                       onClick={clickClaim}
-                      loading={claimLoading}
+                      loading={claimLoading || actionLoop}
                       disabled={
                         !claimableReward ||
                         numberDigits(claimableReward) === "0"
