@@ -26,13 +26,13 @@ const string1 =
           the journey?
           <br />
           <br />
-          As the journey begin, we&apos; ll gonna launch your own AI Agent together!
+          As the journey begins, we&apos; ll gonna launch your own AI Agent together!
           You&apos;ll just need some $FHE tokens to launch (minimum of ${firstStakeAmount}). Don&apos;t
           worry - you&apos;re always in control. You can withdraw your tokens anytime,
           no lock-ups involved.
           <br />
           <br />
-          Once your agent is launch, send your agent on adventures across
+          Once your agent is launched, send your agent on adventures across
           various hubs to gain new skills and increase its potential. The
           smarter your agent becomes, the more it contributes to the network - and
           the more rewards you&apos;ll earn!
@@ -47,10 +47,10 @@ const string1 =
           I&apos;m here to shape the AgenticWorld with you together. Ready to begin the journey?
           <br />
           <br />
-          As the journey begin, we&apos;ll gonna launch your own AI Agent together!
+          As the journey begins, we&apos;ll gonna launch your own AI Agent together!
           <br />
           <br />
-          Once your agent is launch, send your agent on adventures across various hubs to gain new skills and increase its potential. The smarter your agent becomes, the more it contributes to the network - and the more rewards you&apos;ll earn!
+          Once your agent is launched, send your agent on adventures across various hubs to gain new skills and increase its potential. The smarter your agent becomes, the more it contributes to the network - and the more rewards you&apos;ll earn!
         </div>
       </div>
     </div>`;
@@ -64,12 +64,11 @@ const string3 =
         </div>
         <div id="launchContent7">
           <div>
-            For agent training progress and earnings, you can head over to the
-            Dashboard to track and claim
+            To manage your agent's Hub records and earnings, head over to the Dashboard to track progress and claim rewards.
             <br />
             For agent growth, check out the AgenticWorld page for more
             hub-training options.
-            <br />
+            <div id="jiange"></div>
             <span id="blue-circle"></span>
             Basic Hubs - A great starting point! No prerequisites - your agent can
             jump right in and learn basic skills.
@@ -98,7 +97,7 @@ const string3 =
             For agent learning progress and earnings, you can head over to the Dashboard to track and claim
             <br />
             For agent growth, check out the AgenticWorld page for more hub-learning options.
-            <br />
+            <div id="jiange"></div>
             <span id="blue-circle"></span>
             Basic Hubs - A great starting point! No prerequisites - your agent can jump right in and learn foundational skills.
             <br />
@@ -194,7 +193,7 @@ const BeginInfo3 = () => {
     <AlreadLearning />
   ) : (
     <div className="mt-[30px] sm:mt-[70px]">
-      <div id="launchTitle">Buillding AgenticWorld</div>
+      <div id="launchTitle">Building AgenticWorld</div>
       {address ? (
         <>
           {preTokenId.current ? (

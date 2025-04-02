@@ -9,14 +9,18 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import {
   checkAmountControlButtonShow,
+  checkAmountControlButtonShowCan0,
   firstStakeAmount,
   numberDigits,
 } from "@/utils/utils";
 import { Button, Input, message, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import Facuet from "../facuet/Facuet";
+import { useAccount } from "wagmi";
+import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
 
 const StakeLaunch = forwardRef((_, ref) => {
+  const { chainId, isConnected } = useAccount();
   const startAmount = isDev() || isProd() ? "" : "0";
   const [amount, setAmount] = useState(startAmount);
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -29,6 +33,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
   const { data: totalAgent, refresh: refreshTotalAgent } = useGetAgentCount();
+  console.log("chainchain1", chainId);
 
   useImperativeHandle(ref, () => ({
     clearStakeAmount: () => {
@@ -37,7 +42,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   }));
 
   const stake = async () => {
-    if (checkAmountControlButtonShow(amount)) {
+    if (checkAmountControlButtonShowCan0(amount)) {
       if (Number(amount) < firstStakeAmount) {
         message.open({
           type: "warning",
@@ -68,8 +73,8 @@ const StakeLaunch = forwardRef((_, ref) => {
 
   return (
     <div
-      className="p-[24px] mind-input max-w-[775px] mx-auto flex justify-between gap-[30px] flex-wrap
-                        bg-[url('/images/agent-launch-bg.png')] cover"
+      className="p-[24px] mind-input max-w-[850px] mx-auto flex justify-between gap-[30px] flex-wrap
+                        bg-[url('/images/agent-launch-bg.png')] bg-cover bg-no-repeat"
     >
       <img src="/icons/ai-agent.svg" alt="ai-agent" />
       <div>
@@ -78,10 +83,14 @@ const StakeLaunch = forwardRef((_, ref) => {
           {isDev() || isProd() ? (
             <div>Minimum staking: {firstStakeAmount} $FHE</div>
           ) : (
-            <div>Total Agent: {!totalAgent ? "loading..." : totalAgent}</div>
+            <div>
+              Total Agents Launched:{" "}
+              {!isConnected ? "/" : !totalAgent ? "loading..." : totalAgent}
+            </div>
           )}
           <div className="mt-[10px]">
-            Rewards: 15% $FHE of Mind Pool & Potential Partner tokens
+            $FHE from Mind Network Ecosystem Incentive & Potential Partner
+            tokens
           </div>
         </div>
         {isDev() || isProd() ? (
@@ -125,10 +134,10 @@ const StakeLaunch = forwardRef((_, ref) => {
             onClick={stake}
             loading={agentStakeLoading}
           >
-            {isDev() || isProd() ? "Stake" : "Launch"}
+            {isDev() || isProd() ? "Stake & Launch" : "Launch"}
           </Button>
           {isDev() || isProd() ? (
-            <Facuet refresFHE={fheBalanceRefresh} />
+            <Facuet refreshFHE={fheBalanceRefresh} />
           ) : (
             <></>
           )}

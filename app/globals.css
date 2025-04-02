@@ -28,7 +28,9 @@
   --mind-grey: #878c8b;
   --mind-red: #ff7853;
   --header-layout-lg: 50px;
-  --layout-lg: 150px;
+  --layout-2xl: 150px;
+  --layout-xl: 100px;
+  --layout-lg: 80px;
   --layout-md: 50px;
   --layout-sm: 15px;
   --btn-bg: linear-gradient(237deg, #0f201d 0%, #060c0b 100.23%);
@@ -122,15 +124,15 @@ body {
 .btn-Link-brand-font,
 .btn-Link-white-font {
   display: block;
-  width: 100%;
   background: var(--btn-bg);
   border: 1px var(--mind-brand) solid;
   color: #fff;
   border-radius: 100px;
   text-align: center;
-  padding: 4px 15px;
+  padding: 0px 15px;
   font-size: 12px;
   min-height: 30px;
+  line-height: 30px;
 }
 
 .btn-Link-brand-font:hover,
@@ -332,6 +334,12 @@ input:focus {
   background: #080c0b !important;
 }
 
+@media screen and (max-width: 480px) {
+  .mind-table .ant-table-tbody .ant-table-row .ant-table-cell {
+    width: 50px !important;
+  }
+}
+
 .mind-collapse.ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0;
   align-items: center;
@@ -360,6 +368,10 @@ input:focus {
   background: var(--yellow-gradient);
 }
 
+#jiange {
+  margin-top: 10px;
+}
+
 #launchTitle {
   font-size: 24px;
   font-weight: 900;
@@ -367,11 +379,12 @@ input:focus {
   text-align: center;
   position: relative;
   z-index: 10;
+  padding-bottom: 20px;
 }
 #launchContent1 {
   font-size: 20px;
   font-weight: 700;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 #launchContent2 {
   font-size: 12px;
@@ -528,9 +541,6 @@ input:focus {
   clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
   background-image: linear-gradient(90deg, #24ea7f, #ffa08c);
 } */
-.airdrop-box {
-  clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
-}
 .ant-modal-root .ant-modal-mask {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
@@ -628,4 +638,15 @@ input:focus {
 }
 .transaction-table .ant-select-dropdown .ant-select-item-option-selected {
   background-color: var(--mind-brand) !important;
+}
+
+.ant-image-preview-mask {
+  background-color: black !important;
+}
+
+.usecase ul {
+  list-style: disc;
+}
+.usecase li {
+  margin-left: 12px;
 }

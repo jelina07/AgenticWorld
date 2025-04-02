@@ -10,6 +10,7 @@ import {
 export function exceptionHandler(
   error: any,
   abi?: any,
+  isAgent?: boolean,
   isFacuetError?: boolean,
   description?: string
 ) {
@@ -17,7 +18,7 @@ export function exceptionHandler(
     "🚀 ~ exceptionHandler ~ message:",
     error?.cause?.cause?.data || error?.data
   );
-  if (abi) {
+  if (abi && isAgent) {
     const errorCode = decodeErrorData(abi, error?.cause?.cause?.data);
     const errorMessage = (
       typeof errorCode === "number"
@@ -41,9 +42,15 @@ export function exceptionHandler(
         duration: 5,
       });
     }
-  } else if (isFacuetError) {
-    const facuetError = faucetError(error?.cause?.cause?.data);
-    console.log("facuetError", facuetError);
+  } else if (abi && isFacuetError) {
+    const errorData = error?.cause?.cause?.data;
+    console.log("errorData", errorData);
+
+    const decoded = decodeErrorResult({
+      abi: abi,
+      data: errorData,
+    });
+    console.log("facuetError", decoded);
     if (
       error?.shortMessage?.toLowerCase().includes("user rejected") ||
       error?.message?.toLowerCase().includes("user rejected")
@@ -57,7 +64,10 @@ export function exceptionHandler(
       notification.warning({
         message: "Warning",
         description:
-          facuetError || description || error?.shortMessage || error?.message,
+          decoded.errorName ||
+          description ||
+          error?.shortMessage ||
+          error?.message,
         duration: 5,
       });
     }

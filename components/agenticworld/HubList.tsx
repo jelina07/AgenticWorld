@@ -22,6 +22,7 @@ import {
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { secondsToHours } from "@/utils/utils";
+import CommingSoon from "../utils/CommingSoon";
 
 const HubList = forwardRef(
   (
@@ -79,16 +80,26 @@ const HubList = forwardRef(
         type: item.type,
         subnetName: item.name,
         subnetInfo: item.desc,
-        agent: hubAgentCount ? hubAgentCount[index] : "loading...",
-        payoutRatio: hubApy ? hubApy[index] : "loading...",
+        agent: !isConnected
+          ? "/"
+          : hubAgentCount
+          ? hubAgentCount[index]
+          : "loading...",
+        payoutRatio: !isConnected ? "/" : hubApy ? hubApy[index] : "loading...",
         lockup: item.lockUp,
         subnetLevel: item.note,
         subnetRequire: item.requireName,
         needSign: item.needSign,
         isAccess: item.isAccess,
+        canLinkDetial: item.canLinkDetail,
+        moreInfo: item.moreInfo,
+        frameworkUrl: item.frameworkUrl,
+        logo: item.logo,
       };
     }) as SubnetInfoType[];
-
+    const linkToDetial = (event: any, canDetial: boolean) => {
+      !canDetial ? event.preventDefault() : "";
+    };
     const subnetInfor =
       filter === 1
         ? subnetInforAll?.filter((item) => item.subnetLevel === "Required")
@@ -140,8 +151,8 @@ const HubList = forwardRef(
           <Row
             className="mt-[40px]"
             gutter={[
-              { xs: 8, sm: 20, md: 30, lg: 50 },
-              { xs: 16, sm: 20, md: 30, lg: 50 },
+              { xs: 8, sm: 16, md: 20, lg: 30, xl: 50 },
+              { xs: 10, sm: 16, md: 20, lg: 30, xl: 50 },
             ]}
           >
             {subnetInfor?.map((item: any) => (
@@ -151,12 +162,15 @@ const HubList = forwardRef(
                 md={{ span: 12 }}
                 lg={{ span: 8 }}
               >
-                <Link href={`/agenticworld/${item.subnetId}`}>
+                <Link
+                  href={`/agenticworld/${item.subnetId}`}
+                  onClick={(event) => linkToDetial(event, item.canLinkDetial)}
+                >
                   <div
-                    className={`p-[30px] h-full ${
+                    className={`relative px-[20px] pt-[15px] pb-[20px] h-full ${
                       filter === 1 || filter === 2
-                        ? "bg-[url('/icons/subnet-box1.svg')] hub-box"
-                        : "bg-[url('/icons/subnet-box2.svg')] hub-box2"
+                        ? "bg-[#0d1313] hub-box"
+                        : "bg-[#0c0e14] hub-box2"
                     } bg-no-repeat bg-right-bottom bg-cover ${
                       isLaunch &&
                       learningId &&
@@ -167,16 +181,21 @@ const HubList = forwardRef(
                         : ""
                     }`}
                   >
+                    <div
+                      className={`flex items-center mb-[20px] justify-end ${
+                        item?.isAccess ? "hidden" : ""
+                      }`}
+                    >
+                      <CommingSoon />
+                    </div>
                     <div className="flex items-center gap-[5px] justify-between">
-                      <div className="flex items-center gap-[5px]">
-                        <span
-                          className={`inline-block w-[16px] h-[16px] rounded-[50%] flex-shrink-0 ${
-                            filter === 1 || filter === 2
-                              ? "blue-gradient"
-                              : "yellow-gradient"
-                          }`}
-                        ></span>
-                        <span className="text-[18px] text-white font-[800] leading-[1.2] break-all">
+                      <div className="flex items-center gap-[5px] w-full flex-wrap">
+                        <img
+                          src={item.logo}
+                          alt="logo"
+                          className="rounded-[50%] w-[25%]"
+                        />
+                        <span className="text-[18px] text-white font-[800] leading-[1.2] break-word">
                           {item.subnetName}
                         </span>
                       </div>
@@ -204,86 +223,87 @@ const HubList = forwardRef(
                         {item.subnetInfo}
                       </div>
                     )}
-
-                    <div className="mt-[30px] text-white text-[14px]">
-                      <div className="flex justify-between gap-[3px]">
-                        <span>Payout Ratio:</span>
-                        <span className="break-words max-w-[80%] whitespace-normal text-right">
-                          {item.payoutRatio}
-                        </span>
-                      </div>
-                      <div className="flex justify-between gap-[3px]">
-                        <span>Enrolled Agents:</span>
-                        <span>{item.agent}</span>
-                      </div>
-                      <div className="flex justify-between gap-[3px]">
-                        <span>Training Lock-up:</span>
-                        <span>{secondsToHours(item.lockup)} H</span>
-                      </div>
-                      <div
-                        className={`flex justify-between gap-[3px] items-start ${
-                          item.subnetRequire ? "" : "hidden"
-                        }`}
-                      >
-                        <span>Require:</span>
-                        <div className="text-right">
-                          {item.subnetRequire
-                            ?.split(",")
-                            .map((obj: any, index: number) => (
-                              <div
-                                className="text-[var(--mind-brand)]"
-                                key={index}
-                              >
-                                [{obj}]
-                              </div>
-                            ))}
+                    <div className="relative z-10">
+                      <div className="mt-[30px] text-white text-[14px]">
+                        <div className="flex justify-between gap-[3px]">
+                          <span>APY:</span>
+                          <span className="break-words max-w-[80%] whitespace-normal text-right">
+                            {filter === 3 ? "/" : item.payoutRatio}
+                          </span>
+                        </div>
+                        <div className="flex justify-between gap-[3px]">
+                          <span>Enrolled Agents:</span>
+                          <span>{filter === 3 ? "/" : item.agent}</span>
+                        </div>
+                        <div className="flex justify-between gap-[3px]">
+                          <span>Training Lock-up:</span>
+                          <span>
+                            {filter === 3
+                              ? "/"
+                              : secondsToHours(item.lockup) + " H"}
+                          </span>
+                        </div>
+                        <div
+                          className={`flex justify-between gap-[3px] items-start ${
+                            item.subnetRequire ? "" : "hidden"
+                          }`}
+                        >
+                          <span>Require:</span>
+                          <div className="text-right">
+                            {item.subnetRequire
+                              ?.split(",")
+                              .map((obj: any, index: number) => (
+                                <div
+                                  className="text-[var(--mind-brand)]"
+                                  key={index}
+                                >
+                                  [{obj}]
+                                </div>
+                              ))}
+                          </div>
                         </div>
                       </div>
+                      {learningId && item.subnetId === learningId ? (
+                        <div className="flex items-center mt-[30px] justify-end">
+                          <span className="text-[var(--mind-brand)]">
+                            Training
+                          </span>
+                          <img src="/icons/cz.svg" alt="cz" width={25} />
+                        </div>
+                      ) : ((agentTokenId !== undefined &&
+                          agentTokenId !== 0 &&
+                          learningId === 0) ||
+                          lockTimeReach ||
+                          !address) &&
+                        item.isAccess ? (
+                        <div className="text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                          <span
+                            onClick={(event) => showModal(event, item)}
+                            className="hover:text-[var(--mind-brand)]"
+                          >
+                            Start Training
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                          <span>Start Training</span>
+                        </div>
+                      )}
                     </div>
-                    {learningId && item.subnetId === learningId ? (
-                      <div className="flex items-center mt-[30px] justify-end">
-                        <span className="text-[var(--mind-brand)]">
-                          Training
-                        </span>
-                        <img src="/icons/cz.svg" alt="cz" width={25} />
-                      </div>
-                    ) : ((agentTokenId !== undefined &&
-                        agentTokenId !== 0 &&
-                        learningId === 0) ||
-                        lockTimeReach ||
-                        !address) &&
-                      item.isAccess ? (
-                      <div className="text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                        <span
-                          onClick={(event) => showModal(event, item)}
-                          className="hover:text-[var(--mind-brand)]"
-                        >
-                          Start Training
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
-                        <span>Start Training</span>
-                      </div>
-                    )}
+
+                    <img
+                      src={
+                        filter === 1 || filter === 2
+                          ? "icons/hub-icons-1.svg"
+                          : "icons/hub-icons-2.svg"
+                      }
+                      className="absolute right-0 bottom-0"
+                      alt="hub-icons"
+                    />
                   </div>
                 </Link>
               </Col>
             ))}
-            {/* <Col
-              xs={{ span: 24 }}
-              md={{ span: 12 }}
-              lg={{ span: 8 }}
-              className={`${filter === 3 ? "" : "hidden"} p-[30px] h-full`}
-            >
-              <div
-                className="text-white flex justify-between items-center 
-              bg-[url('/icons/subnet-box2.svg')]bg-no-repeat bg-right-bottom 
-              bg-cover hub-box2"
-              >
-                <div>More Hubs will come in future</div>
-              </div>
-            </Col> */}
           </Row>
         )}
         <StartConfirmModal

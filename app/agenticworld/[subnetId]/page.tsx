@@ -18,6 +18,7 @@ import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import CommingSoon from "@/components/utils/CommingSoon";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
@@ -64,6 +65,10 @@ export default function page({ params }: { params: any }) {
       subnetRequire: obj.requireName,
       needSign: obj.needSign,
       isAccess: obj.isAccess,
+      usecase: obj.usecase,
+      canLinkDetial: obj.canLinkDetail,
+      moreInfo: obj.moreInfo,
+      frameworkUrl: obj.frameworkUrl,
     }))[0];
   const currentSubnetIndex = subnetList?.findIndex((item: any) => {
     return item.id === Number(params.subnetId);
@@ -82,27 +87,32 @@ export default function page({ params }: { params: any }) {
     router.back();
   };
   return (
-    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] overflow-hidden pb-[100px]">
+    <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
         <div
-          className={`text-[26px] font-[900] ${
+          className={`text-[26px] font-[900] flex items-center ${
             currentSubnet?.subnetName ? "" : "hidden"
           }'`}
         >
           <span
-            className="text-white hover:text-white cursor-pointer"
+            className="text-white hover:text-white cursor-pointer mr-[10px] font-[500]"
             onClick={goback}
           >
             &lt;
           </span>
-          {currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}
+          <span>
+            {currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}
+          </span>
+          <div
+            className={`flex items-center ml-[20px] ${
+              currentSubnet?.isAccess ? "hidden" : ""
+            }`}
+          >
+            <CommingSoon />
+          </div>
         </div>
         <div className="mt-[20px] text-[12px] leading-3">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentSubnet?.subnetInfo || "",
-            }}
-          />
+          {currentSubnet?.subnetInfo}
         </div>
         <div className="mt-[80px]">
           <HubInfo
@@ -112,32 +122,51 @@ export default function page({ params }: { params: any }) {
             hubApy={hubApy?.[currentSubnetIndex]}
           />
         </div>
-        <div className="mt-[50px] w-[170px]">
-          {currentSubnet?.isAccess ? (
-            <Button
-              type="primary"
-              className="button-brand-border-white-font"
-              disabled={
-                learningId === Number(params.subnetId) ||
-                (!(
-                  agentTokenId !== undefined &&
-                  agentTokenId !== 0 &&
-                  learningId === 0
-                ) &&
-                  !lockTimeReach)
-              }
-              onClick={() => showModal()}
-            >
-              {learningId === Number(params.subnetId)
-                ? "Training..."
-                : "Start Training"}
-            </Button>
-          ) : (
-            <></>
-          )}
+        <div className="mt-[50px] flex gap-[20px]">
+          <div>
+            {currentSubnet?.isAccess ? (
+              <Button
+                type="primary"
+                className="button-brand-border-white-font"
+                disabled={
+                  learningId === Number(params.subnetId) ||
+                  (!(
+                    agentTokenId !== undefined &&
+                    agentTokenId !== 0 &&
+                    learningId === 0
+                  ) &&
+                    !lockTimeReach)
+                }
+                onClick={() => showModal()}
+              >
+                {learningId === Number(params.subnetId)
+                  ? "Training..."
+                  : "Start Training"}
+              </Button>
+            ) : (
+              <Button
+                type="primary"
+                className="button-brand-border-white-font"
+                disabled={true}
+                onClick={() => showModal()}
+              >
+                Start Training
+              </Button>
+            )}
+          </div>
+          <Link
+            href="/agenticworld"
+            className="btn-Link-white-font inline-block flex-grow-0"
+          >
+            Explore New Skills
+          </Link>
         </div>
-        <div className="mt-[50px]">
-          <UseCase />
+        <div
+          className={`mt-[50px] ${
+            currentSubnet?.canLinkDetial ? "" : "hidden"
+          }`}
+        >
+          <UseCase currentSubnet={currentSubnet} />
         </div>
       </div>
       <StartConfirmModal

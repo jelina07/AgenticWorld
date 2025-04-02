@@ -20,6 +20,7 @@ export default function AccountWallet({
     handleCopy(address);
   };
   const { balance } = useGetFheBalanceStore();
+  const { chain } = useAccount();
   return (
     <div>
       <div className="text-[14px] font-[600] text-white mt-[20px]">
@@ -32,8 +33,14 @@ export default function AccountWallet({
         </span>
       </div>
       <div className="flex justify-between text-white mt-[20px]">
-        <span>ETH Balance</span>
-        <span>{gasBalance ? gasBalance : 0}</span>
+        <span>
+          {chain?.nativeCurrency.symbol
+            ? chain?.nativeCurrency.symbol + " Balance"
+            : "Balance"}
+        </span>
+        <span>
+          {gasBalance ? (gasBalance.includes("e") ? 0 : gasBalance) : 0}
+        </span>
       </div>
       <div className="flex justify-between text-white mt-[10px]">
         <span>FHE Balance</span>

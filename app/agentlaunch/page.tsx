@@ -4,7 +4,7 @@ import React from "react";
 export default function Page() {
   return (
     <div
-      className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] bg-[url('/icons/agentic-launch-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]
+      className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] bg-[url('/icons/agentic-launch-bg.svg')] bg-top bg-cover bg-no-repeat pb-[200px]
                     relative overflow-hidden"
     >
       <img

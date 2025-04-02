@@ -88,7 +88,7 @@ export default function StakeModal({
         <div className="mind-input">
           <div className="mt-[30px]">
             <div className="text-[14px] flex justify-between flex-wrap gap-[5px]">
-              <span>Payout Ratio:</span>
+              <span>APY:</span>
               <span>
                 {currentIndex && hubApy ? hubApy[currentIndex] : "0%"}
               </span>

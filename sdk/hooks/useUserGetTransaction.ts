@@ -4,7 +4,10 @@ import { useRef } from "react";
 import request from "../request";
 import { useAccount } from "wagmi";
 
-export default function useUserTransaction(options?: Options<unknown, []>) {
+export default function useUserTransaction(
+  agentId: number,
+  options?: Options<unknown, []>
+) {
   const total = useRef<number>(0);
   const totalFetched = useRef<boolean>(false);
 
@@ -17,13 +20,18 @@ export default function useUserTransaction(options?: Options<unknown, []>) {
       }
       if (!totalFetched.current) {
         const totalCount = (await request.get("/user-transaction/total", {
-          params: { user: address },
+          params: { user: address, agentId: agentId },
         })) as number;
         total.current = totalCount || 0;
         totalFetched.current = true;
       }
       const list = (await request.get("/user-transaction/list", {
-        params: { user: address, page: current, limit: pageSize },
+        params: {
+          user: address,
+          page: current,
+          limit: pageSize,
+          agentId: agentId,
+        },
       })) as any[];
       return { list, total: total.current };
     },
