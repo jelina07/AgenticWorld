@@ -34,3 +34,9 @@ export const DAO_INSPECTOR_ADDRESS: Record<number, `0x${string}`> = {
 export const FAUCET_ADDRESS: Record<number, `0x${string}`> = {
   97: "0xE26A3a0Ff34C8fad368B9F01Fce9209b2076A2B2",
 };
+
+export const AGENT_SIGVERIFY_ADDRESS: Record<number, `0x${string}`> = {
+  192940: "0x5447aCAF5b14a47F6327081DcEF5EA1E56329978",
+  97: "0x",
+  56: "0x",
+};

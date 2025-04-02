@@ -11,173 +11,124 @@ import {
   useHubGetCurrent,
   useHubGetCurrentExp,
   useHubList,
+  useRelayerClaimReward,
+  useRelayerStake,
+  useRelayerSwitchHub,
+  useRelayerUnstake,
 } from "@/sdk";
 import useHubExitCurrent from "@/sdk/hooks/useHubExitCurrent";
+import useRelayerBurn from "@/sdk/hooks/useRelayerBurn";
+import useRelayerDelegate from "@/sdk/hooks/useRelayerDelegate";
+import useRelayerExitCurrentHub from "@/sdk/hooks/useRelayerExitCurrentHub";
 import { Button, Card, Flex, Input } from "antd";
 import { useState } from "react";
 
 export default function DemoPage() {
-  const [checkWallet, setCheckWallet] = useState("");
-  const { runAsync } = useAirdropCheck();
-  const [checkRes, setCheckRes] = useState<unknown>();
-
-  const { runAsync: relayerClaim } = useAirdropRelayerClaim();
-  const { runAsync: claim } = useAirdropClaim({ waitForReceipt: true });
-  const [relayerClaimRes, setRelayerClaimRes] = useState<unknown>();
-
-  const {
-    data: agentTokenId,
-    loading: agentTokenIdLoading,
-    refresh,
-  } = useAgentGetTokenId();
+  const { data: agentTokenId, loading: agentTokenIdLoading, refresh } = useAgentGetTokenId();
 
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
     waitForReceipt: true,
   });
 
-  const { data: agentStakeAmount, refresh: agentStakeAmountRefresh } =
-    useAgentGetStakeAmount({
-      tokenId: agentTokenId,
-    });
-
-  const { data: hubList } = useHubList();
-
-  const { data: currentHub } = useHubGetCurrent({
-    tokenId: Number(agentTokenId as number),
+  const { data: agentStakeAmount, refresh: agentStakeAmountRefresh } = useAgentGetStakeAmount({
+    tokenId: agentTokenId,
   });
 
-  const { runAsync: hubExitCurrent } = useHubExitCurrent();
+  const { runAsync: relayerStake } = useRelayerStake();
 
-  const onCheckEligibility = async () => {
-    const res = await runAsync(checkWallet);
-    setCheckRes(res);
-  };
+  const { runAsync: relayerUnstake, loading: relayerUnstakeLoading } = useRelayerUnstake();
 
-  const onRelayerClaim = async () => {
-    const res = await relayerClaim(checkWallet);
-    setRelayerClaimRes(res);
-  };
+  const { runAsync: relayerBurn, loading: relayerBurnLoading } = useRelayerBurn();
 
-  const onClaim = async () => {
-    const res = await claim(checkWallet, [
-      "0x2e14f1d18456355969b58236e84c6d2468695cc29ce5423378071835fd3a7f92",
-    ]);
-    setRelayerClaimRes(res);
-  };
+  const { runAsync: relayerDelegate, loading: relayerDelegateLoading } = useRelayerDelegate();
+
+  const { runAsync: relayerExitCurrentHub, loading: relayerExitCurrentHubLoading } = useRelayerExitCurrentHub();
+
+  const { runAsync: relayerSwitchHub, loading: relayerSwitchHubLoading } = useRelayerSwitchHub();
+
+  const { runAsync: relayerClaimReward, loading: relayerClaimRewardLoading } = useRelayerClaimReward({});
 
   const onAgentStake = async () => {
-    const res = await agentStake(agentTokenId!, "100");
+    const res = await relayerStake(agentTokenId!, "100");
     if (res) {
-      refresh();
-      agentStakeAmountRefresh();
     }
   };
 
-  const onHubExitCurrent = async () => {
-    const res = await hubExitCurrent(agentTokenId!);
-    console.log("🚀 ~ onHubExitCurrent ~ res:", res);
+  const onAgentUnstake = async () => {
+    const res = await relayerUnstake(agentTokenId!, "100");
+    if (res) {
+    }
   };
 
-  const renderHubTitle = () => {
-    return (
-      <div>
-        Hub {currentHub ? `current hub: ${currentHub}` : ""}
-        {currentHub ? (
-          <Button type="primary" size="small" onClick={onHubExitCurrent}>
-            Exit
-          </Button>
-        ) : (
-          ""
-        )}
-      </div>
-    );
+  const onAgentBurn = async () => {
+    const res = await relayerBurn(agentTokenId!);
+    if (res) {
+    }
+  };
+
+  const onAgentDelegate = async () => {
+    const res = await relayerDelegate(agentTokenId!, 1);
+    if (res) {
+    }
+  };
+
+  const onAgentExitCurrentHub = async () => {
+    const res = await relayerExitCurrentHub(agentTokenId!);
+    if (res) {
+    }
+  };
+
+  const onAgentSwitchHub = async () => {
+    const res = await relayerSwitchHub(agentTokenId!, 3);
+    if (res) {
+    }
+  };
+
+  const onAgentClaimReward = async () => {
+    const res = await relayerClaimReward();
+    console.log("🚀 ~ onAgentClaimReward ~ res:", res);
+    if (res) {
+    }
   };
 
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] text-white">
-      <Card title="airdrop">
-        <Flex gap={10}>
-          <Input
-            value={checkWallet}
-            onChange={(e) => setCheckWallet(e.target.value)}
-          />
-          <Button type="primary" onClick={onCheckEligibility}>
-            Check Eligibility
-          </Button>
-        </Flex>
-        {(checkRes as string) && (
-          <div>
-            {JSON.stringify(checkRes)}
-            <Button type="primary" onClick={onRelayerClaim}>
-              Relayer Claim
-            </Button>
-            <Button type="primary" onClick={onClaim}>
-              Claim
-            </Button>
-          </div>
-        )}
-        {(relayerClaimRes as string) && (
-          <div>{JSON.stringify(relayerClaimRes)}</div>
-        )}
-      </Card>
-
       <Card title="Agent Lanuch" className="!mt-6">
         <div>
           Agent Token Id: {agentTokenId}{" "}
           {!agentTokenIdLoading && (
-            <Button
-              onClick={onAgentStake}
-              type="primary"
-              loading={agentStakeLoading}
-            >
-              Stake
-            </Button>
+            <>
+              <Button onClick={onAgentStake} type="primary" loading={agentStakeLoading}>
+                Stake
+              </Button>
+              <Button onClick={onAgentUnstake} type="primary" loading={relayerUnstakeLoading}>
+                unStake
+              </Button>
+
+              <Button onClick={onAgentBurn} type="primary" loading={relayerBurnLoading}>
+                burn
+              </Button>
+
+              <Button onClick={onAgentDelegate} type="primary" loading={relayerDelegateLoading}>
+                delegate
+              </Button>
+
+              <Button onClick={onAgentExitCurrentHub} type="primary" loading={relayerExitCurrentHubLoading}>
+                exit current hub
+              </Button>
+
+              <Button onClick={onAgentSwitchHub} type="primary" loading={relayerSwitchHubLoading}>
+                switch hub
+              </Button>
+
+              <Button onClick={onAgentClaimReward} type="primary" loading={relayerClaimRewardLoading || fetchLoading}>
+                claim reward
+              </Button>
+            </>
           )}
         </div>
         <div>Agent Stake Amount: {agentStakeAmount}</div>
       </Card>
-
-      <Card title={renderHubTitle()} className="!mt-6">
-        {Array.isArray(hubList) &&
-          agentTokenId &&
-          hubList.map((hub) => (
-            <Hub
-              key={hub.id}
-              hub={hub}
-              currentHub={currentHub}
-              agentTokenId={agentTokenId}
-            />
-          ))}
-      </Card>
-    </div>
-  );
-}
-
-function Hub({ hub, agentTokenId, currentHub }: any) {
-  const { runAsync: hubDelegate } = useHubDelegate();
-
-  const { learnSecond } = useHubGetCurrentExp({
-    tokenId: Number(agentTokenId as number),
-    hubIds: [hub.id],
-  });
-
-  const onHubDelegate = async (hub: any) => {
-    const res = await hubDelegate({
-      tokenId: Number(agentTokenId as number),
-      hubId: hub.id,
-      needSign: hub.needSign,
-    });
-  };
-
-  return (
-    <div key={hub.id}>
-      <div>
-        Hub Name: {hub.name}{" "}
-        <Button size="small" type="primary" onClick={() => onHubDelegate(hub)}>
-          Start Training
-        </Button>
-      </div>
-      <div>Current Exp: {learnSecond}</div>
     </div>
   );
 }

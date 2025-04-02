@@ -25,6 +25,10 @@ import useGetFheBalance from "./hooks/useGetFheBalance";
 import useAgentGetAllChainMeta from "./hooks/useAgentGetAllChainMeta";
 import useGetFaucet from "./hooks/useGetFaucet";
 import useGetAgentCount from "./hooks/useGetAgentCount";
+import useRelayerStake from "./hooks/useRelayerStake";
+import useRelayerUnstake from "./hooks/useRelayerUnstake";
+import useRelayerSwitchHub from "./hooks/useRelayerSwitchHub";
+import useRelayerClaimReward from "./hooks/useRelayerClaimReward";
 
 export {
   useAirdropCheck,
@@ -54,4 +58,8 @@ export {
   useAgentGetAllChainMeta,
   useGetFaucet,
   useGetAgentCount,
+  useRelayerStake,
+  useRelayerUnstake,
+  useRelayerSwitchHub,
+  useRelayerClaimReward,
 };
