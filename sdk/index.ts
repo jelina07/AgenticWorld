@@ -32,6 +32,7 @@ import useRelayerClaimReward from "./hooks/useRelayerClaimReward";
 import useRelayerDelegate from "./hooks/useRelayerDelegate";
 import useRelayerGetStatus from "./hooks/useRelayerGetStatus";
 import useRelayerBurn from "./hooks/useRelayerBurn";
+import useAirdropCexRegister from "./hooks/useAirdropCexRegister";
 
 export {
   useAirdropCheck,
@@ -68,4 +69,5 @@ export {
   useRelayerDelegate,
   useRelayerGetStatus,
   useRelayerBurn,
+  useAirdropCexRegister,
 };
