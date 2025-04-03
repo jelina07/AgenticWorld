@@ -541,6 +541,35 @@ input:focus {
   clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%);
   background-image: linear-gradient(90deg, #24ea7f, #ffa08c);
 } */
+.airdrop-box {
+  clip-path: polygon(
+    0% 15%,
+    10% 7%,
+    40% 7%,
+    50% 0%,
+    100% 0%,
+    100% 90%,
+    90% 100%,
+    70% 100%,
+    0% 100%
+  );
+}
+@media screen and (max-width: 480px) {
+  .airdrop-box {
+    clip-path: polygon(
+      0% 10%,
+      10% 5%,
+      60% 5%,
+      80% 0%,
+      100% 0%,
+      100% 90%,
+      90% 100%,
+      70% 100%,
+      0% 100%
+    );
+  }
+}
+
 .ant-modal-root .ant-modal-mask {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
@@ -649,4 +678,59 @@ input:focus {
 }
 .usecase li {
   margin-left: 12px;
+}
+.mind-drawer .ant-drawer-content-wrapper {
+  width: 100% !important;
+}
+.mind-drawer .ant-drawer-right > .ant-drawer-content-wrapper {
+  box-shadow: unset;
+}
+.mind-drawer.ant-drawer .ant-drawer-content {
+  background: #0f1313;
+  border-radius: 8px;
+}
+.mind-drawer.ant-drawer .ant-drawer-body {
+  padding-top: 0px;
+}
+
+.mind-select.ant-select {
+  margin-top: 10px;
+}
+.mind-select.stake-select.ant-select {
+  margin-top: 0px;
+}
+
+.ant-select-dropdown
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: var(--background) !important;
+}
+
+.ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  background: transparent !important;
+  border: 1px solid rgba(245, 242, 235, 0.5) !important;
+}
+
+.mind-select .ant-select-selection-item,
+.mind-select .ant-select-single.ant-select-open .ant-select-selection-item,
+.mind-select .ant-select-single .ant-select-selector,
+.ant-select .ant-select-arrow .anticon {
+  color: #fff;
+  font-weight: 600 !important;
+}
+
+.ant-select-dropdown {
+  background-color: var(--background) !important;
+  color: #fff !important;
+  border: 1px solid rgba(245, 242, 235, 0.5);
+}
+.ant-select-item-option-content {
+  font-weight: 600 !important;
+}
+.ant-select-dropdown .ant-select-item {
+  color: #fff !important;
+  background-color: var(--background);
+}
+.ant-select-dropdown
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: var(--background) !important;
 }

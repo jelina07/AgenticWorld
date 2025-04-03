@@ -47,29 +47,21 @@ export default function Eligibility() {
         </div>
         <div className="mt-[20px]">
           <div className="text-[15px] font-[700]">Enter Wallet Address</div>
-          <div className="flex justify-between gap-[10px] items-center mt-[15px] mind-input">
-            {/* <Input
-              prefix={<img src="/icons/wallet-logo.svg"></img>}
-              style={{ height: "38px" }}
-              onChange={(e: any) => {
-                setInputAddress(e.target.value);
-              }}
-              disabled={true}
-            /> */}
+          <div className="sm:flex justify-between gap-[10px] items-center mt-[15px] mind-input">
             <div
-              className=" px-[11px] py-[4px] h-[38px] flex-1 flex items-center
+              className="px-[11px] py-[8px] flex-1 flex items-center
                             bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
             >
               <div className="flex justify-between items-center gap-[5px]">
                 <div className="flex justify-between items-center gap-[5px]">
                   <img src="/icons/wallet-logo.svg"></img>
-                  <span className="text-[14px]">{address}</span>
+                  <span className="text-[14px] break-all">{address}</span>
                 </div>
               </div>
             </div>
             <Button
               type="primary"
-              className="button-brand-border"
+              className="button-brand-border sm:mt-[0px] mt-[10px]"
               style={{ height: "38px", width: "130px" }}
               disabled={!address}
               onClick={clickCheckEligibility}
@@ -93,7 +85,7 @@ export default function Eligibility() {
         </div>
       </div>
       {claimAmout ? (
-        <div className="p-[24px] mt-[20px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
+        <div className="p-[24px] mt-[40px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
           <div className="text-[18px] font-[900]">
             Congratulations! You&apos;re Eligible
           </div>
