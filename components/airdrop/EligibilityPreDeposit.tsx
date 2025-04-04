@@ -279,7 +279,7 @@ export default function EligibilityPreDeposit() {
                 <Input
                   value={registerInfo ? registerInfo.cexUuid : uid}
                   onChange={(e: any) => {
-                    setUid(e.target.value);
+                    setUid(e.target.value.trim());
                   }}
                   disabled={registerInfo || getRegInfoLoading}
                 />
@@ -291,7 +291,7 @@ export default function EligibilityPreDeposit() {
                 <Input
                   value={registerInfo ? registerInfo.cexAddress : cexAddress}
                   onChange={(e: any) => {
-                    setCexAddress(e.target.value);
+                    setCexAddress(e.target.value.trim());
                   }}
                   disabled={registerInfo || getRegInfoLoading}
                 />
