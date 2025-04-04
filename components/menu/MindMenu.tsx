@@ -35,6 +35,10 @@ const MindMenu: React.FC = () => {
           label: <Link href="/agentlaunch">Agent Launch</Link>,
           key: "/agentlaunch",
         },
+        {
+          label: <Link href="/swap&bridge">Swap/Bridge</Link>,
+          key: "/swap&bridge",
+        },
       ]
     : [
         {
@@ -56,7 +60,7 @@ const MindMenu: React.FC = () => {
       selectedKeys={[pathName]}
       mode="horizontal"
       items={items}
-      className={`flex min-w-0 min-[1201px]:min-w-[430px]`}
+      className={`flex min-w-0 min-[1301px]:min-w-[600px]`}
       theme="dark"
     />
   );

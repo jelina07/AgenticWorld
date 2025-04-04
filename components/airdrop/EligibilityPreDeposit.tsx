@@ -13,7 +13,7 @@ const cexInfo = [
     logo: "/icons/bitget-circle-logo.svg",
     img: "/icons/bitget-logo.svg",
     learnMore: "",
-    createAccount: "",
+    createAccount: "https://bitget.onelink.me/XqvW?af_xp=custom&pid=PRELSTFHE",
   },
   {
     value: "Gate.io",
@@ -208,15 +208,14 @@ export default function EligibilityPreDeposit() {
               </span>
             </div>
           }
-          placement="right"
           closable={false}
-          onClose={onClose}
           open={isCEXOpen}
           getContainer={false}
           rootClassName="mind-drawer"
+          autoFocus={false}
         >
           <div>
-            <div className="pb-[10px] px-[10px] flex justify-between items-center">
+            <div className="pb-[10px] px-[10px] flex justify-between gap-[10px] items-center flex-wrap">
               {cexInfo.map((item) => (
                 <img src={item.img} alt="cex" height={40} />
               ))}
@@ -249,9 +248,9 @@ export default function EligibilityPreDeposit() {
             >
               How to find {currentCEX.label} UID and $FHE deposit address ?
             </a>
-            <div className="p-[10px] mind-input mt-[15px]">
-              <div className="flex items-center">
-                <span className="text-[16px] font-[600] text-white inline-block min-w-[150px]">
+            <div className="p-[10px] mind-input mt-[10px]">
+              <div className="sm:flex items-center">
+                <span className="text-[16px] font-[600] text-white inline-block min-w-[150px] sm:mb-[0px] mb-[5px]">
                   UID
                 </span>
                 <Input
@@ -261,8 +260,8 @@ export default function EligibilityPreDeposit() {
                   }}
                 />
               </div>
-              <div className="flex mt-[15px] items-center">
-                <span className="text-[16px] font-[600] text-white inline-block min-w-[150px]">
+              <div className="sm:flex mt-[10px] items-center">
+                <span className="text-[16px] font-[600] text-white inline-block min-w-[150px] sm:mb-[0px] mb-[5px]">
                   Deposit Address
                 </span>
                 <Input
@@ -273,7 +272,7 @@ export default function EligibilityPreDeposit() {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="sm:flex items-center justify-between">
               <span className="text-[var(--mind-grey)] text-[12px]">
                 Each CEX account can be linked to a maximum of 10 wallets.
               </span>
@@ -289,7 +288,7 @@ export default function EligibilityPreDeposit() {
                   rel="noopener noreferrer"
                   className="text-[12px] text-[var(--mind-grey)] hover:text-[var(--mind-grey)] hover:underline underline block mt-[10px]"
                 >
-                  Create Bitget Account
+                  Create {currentCEX.label} Account
                 </a>
               </div>
             </div>
