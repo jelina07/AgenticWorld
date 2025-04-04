@@ -146,7 +146,7 @@ export default function EligibilityPreDeposit() {
                 type="primary"
                 className="button-brand-border sm:mt-[0px] mt-[10px]"
                 style={{ height: "38px", width: "130px" }}
-                disabled={!address}
+                disabled={claimAmout}
                 onClick={clickCheckEligibility}
                 loading={loading}
               >
