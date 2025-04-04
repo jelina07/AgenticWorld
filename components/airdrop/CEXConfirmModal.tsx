@@ -1,16 +1,24 @@
-import { Button, message, Modal } from "antd";
+import { useAirdropCexRegister } from "@/sdk";
+import { Button, message, Modal, notification } from "antd";
 import React, { useState } from "react";
 
 export default function CEXConfirmModal({
   uid,
   cexAddress,
   currentCex,
+  registerInfo,
+  getRegInfoLoading,
+  getRegInfoRefreshAsync,
 }: {
   uid: string;
   cexAddress: string;
   currentCex: any;
+  registerInfo: any;
+  getRegInfoLoading: boolean;
+  getRegInfoRefreshAsync: Function;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { runAsync: cexRegister, loading } = useAirdropCexRegister();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -31,16 +39,39 @@ export default function CEXConfirmModal({
       showModal();
     }
   };
+
+  const clickSubmit = async () => {
+    const payload = {
+      cexName: currentCex.api,
+      cexAddress: cexAddress,
+      cexUid: uid,
+    };
+    const res = await cexRegister(payload);
+    if (res) {
+      await getRegInfoRefreshAsync();
+      notification.success({
+        message: "Success",
+        description: "Submit Success !",
+      });
+      handleCancel();
+    }
+  };
   return (
     <>
       <Button
         type="primary"
         className="button-brand-border mt-[15px]"
         style={{ height: "30px", width: "130px" }}
-        disabled={uid === "" || cexAddress === ""}
+        disabled={
+          uid === "" || cexAddress === "" || registerInfo || getRegInfoLoading
+        }
         onClick={confirmClick}
       >
-        Confirm
+        {getRegInfoLoading
+          ? "loading..."
+          : !registerInfo
+          ? "Submit"
+          : "Submitted"}
       </Button>
       <Modal
         title="Confirm your Information"
@@ -83,7 +114,12 @@ export default function CEXConfirmModal({
             >
               Cancel
             </Button>
-            <Button type="primary" className="button-brand-border-white-font">
+            <Button
+              type="primary"
+              className="button-brand-border-white-font"
+              onClick={clickSubmit}
+              loading={loading}
+            >
               Submit
             </Button>
           </div>

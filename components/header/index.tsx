@@ -17,7 +17,7 @@ export default function Index() {
   }, []);
 
   return (
-    <header className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--header-layout-lg)] py-[15px] flex justify-between sticky top-0 bg-[var(--background)] z-[10000]">
+    <header className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--header-layout-lg)] py-[15px] flex justify-between sticky top-0 bg-[var(--background)] z-[1001]">
       <MindLogo />
       <div className="flex gap-[10px] items-center mind-menu">
         <MindMenu />

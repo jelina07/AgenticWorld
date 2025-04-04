@@ -1,15 +1,23 @@
 "use client";
-import { useAirdropCheck, useAirdropClaim } from "@/sdk";
+import {
+  useAirdropCexCanRegister,
+  useAirdropCexRegister,
+  useAirdropCheck,
+  useAirdropClaim,
+} from "@/sdk";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, Drawer, Input, message, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import CEXConfirmModal from "./CEXConfirmModal";
+import { formatEther } from "viem";
+import { useAsyncEffect } from "ahooks";
 
 const cexInfo = [
   {
     value: "Bitget",
     label: "Bitget",
+    api: "bitget",
     logo: "/icons/bitget-circle-logo.svg",
     img: "/icons/bitget-logo.svg",
     learnMore: "",
@@ -18,6 +26,7 @@ const cexInfo = [
   {
     value: "Gate.io",
     label: "Gate.io",
+    api: "gate",
     logo: "/images/gate-circle-logo.jpeg",
     img: "/icons/gate-logo.svg",
     learnMore: "",
@@ -26,6 +35,7 @@ const cexInfo = [
   {
     value: "HASHKEY",
     label: "HASHKEY",
+    api: "hashkey",
     logo: "/icons/hashkey-circle-logo.svg",
     img: "/icons/hashkey-logo.svg",
     learnMore: "",
@@ -34,8 +44,9 @@ const cexInfo = [
   {
     value: "Ourbit",
     label: "Ourbit",
+    api: "ourbit",
     logo: "/images/ourbit-circle-logo.jpeg",
-    img: "/icons/bitget-logo.svg",
+    img: "/images/ourbit-logo.jpeg",
     learnMore: "",
     createAccount: "",
   },
@@ -48,7 +59,6 @@ export default function EligibilityPreDeposit() {
     runAsync: checkEligibility,
     loading,
   } = useAirdropCheck(); // number
-  const { runAsync: claim } = useAirdropClaim({ waitForReceipt: true });
   console.log("claimAmout", claimAmout);
   const { openConnectModal } = useConnectModal();
   const [isCEXOpen, setIsCEXOpen] = useState(false);
@@ -62,6 +72,12 @@ export default function EligibilityPreDeposit() {
   });
   const [uid, setUid] = useState("");
   const [cexAddress, setCexAddress] = useState("");
+  const {
+    data: registerInfo,
+    runAsync: getRegInfo,
+    loading: getRegInfoLoading,
+    refreshAsync: getRegInfoRefreshAsync,
+  } = useAirdropCexCanRegister();
 
   const showDrawer = () => {
     setIsCEXOpen(true);
@@ -91,6 +107,14 @@ export default function EligibilityPreDeposit() {
     const cex = cexInfo.find((item) => item.value === value)!;
     setCurrentCEX(cex);
   };
+  useAsyncEffect(async () => {
+    console.log("useAsyncEffect", isCEXOpen);
+    if (isCEXOpen) {
+      const res = await getRegInfo();
+      console.log("useAsyncEffect", res);
+      console.log("canRegister", getRegInfo);
+    }
+  }, [isCEXOpen]);
 
   return (
     <div>
@@ -151,7 +175,7 @@ export default function EligibilityPreDeposit() {
           </div>
         </div>
 
-        {true ? (
+        {claimAmout ? (
           <div className="p-[24px] mt-[40px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
             <div className="text-[18px] font-[900]">
               Congratulations! You&apos;re Eligible
@@ -162,7 +186,7 @@ export default function EligibilityPreDeposit() {
                   You can claim the following amount:
                 </div>
                 <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
-                  {claimAmout}$FHE
+                  {formatEther(BigInt(claimAmout.amount))}$FHE
                 </div>
                 <div className="text-[var(--mind-grey)] text-[12px] mt-[10px]">
                   Make sure you&apos;re connected to MindChain before claiming!
@@ -217,7 +241,7 @@ export default function EligibilityPreDeposit() {
           <div>
             <div className="pb-[10px] px-[10px] flex justify-between gap-[10px] items-center flex-wrap">
               {cexInfo.map((item) => (
-                <img src={item.img} alt="cex" height={40} />
+                <img src={item.img} alt="cex" className="h-[40px]" />
               ))}
             </div>
             <div className="flex justify-between items-center mind-select">
@@ -235,6 +259,7 @@ export default function EligibilityPreDeposit() {
                 defaultValue="Bitget"
                 onChange={handleChange}
                 options={cexInfo}
+                disabled={registerInfo}
               />
             </div>
             <div className="text-white font-[600] mb-[10px]">
@@ -254,10 +279,11 @@ export default function EligibilityPreDeposit() {
                   UID
                 </span>
                 <Input
-                  value={uid}
+                  value={registerInfo ? registerInfo.cexUid : uid}
                   onChange={(e: any) => {
                     setUid(e.target.value);
                   }}
+                  disabled={registerInfo || getRegInfoLoading}
                 />
               </div>
               <div className="sm:flex mt-[10px] items-center">
@@ -265,10 +291,11 @@ export default function EligibilityPreDeposit() {
                   Deposit Address
                 </span>
                 <Input
-                  value={cexAddress}
+                  value={registerInfo ? registerInfo.cexAddress : cexAddress}
                   onChange={(e: any) => {
                     setCexAddress(e.target.value);
                   }}
+                  disabled={registerInfo || getRegInfoLoading}
                 />
               </div>
             </div>
@@ -281,6 +308,9 @@ export default function EligibilityPreDeposit() {
                   uid={uid}
                   cexAddress={cexAddress}
                   currentCex={currentCEX}
+                  registerInfo={registerInfo}
+                  getRegInfoLoading={getRegInfoLoading}
+                  getRegInfoRefreshAsync={getRegInfoRefreshAsync}
                 />
                 <a
                   href={currentCEX.createAccount}

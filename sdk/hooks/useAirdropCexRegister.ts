@@ -7,10 +7,12 @@ import { exceptionHandler } from "../utils/exception";
 type Payload = {
   cexName: "bitget" | "gate" | "hashkey" | "ourbit";
   cexAddress: string;
-  cexUuid: string;
+  cexUid: string;
 };
 
-export default function useAirdropCexRegister(options?: Options<unknown, [Payload]>) {
+export default function useAirdropCexRegister(
+  options?: Options<unknown, [Payload]>
+) {
   const { signMessageAsync } = useSignMessage();
 
   const { address } = useAccount();
