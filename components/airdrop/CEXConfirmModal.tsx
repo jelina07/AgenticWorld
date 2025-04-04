@@ -41,11 +41,15 @@ export default function CEXConfirmModal({
   };
 
   const clickSubmit = async () => {
+    console.log("currentCex", currentCex);
+
     const payload = {
-      cexName: currentCex.api,
+      cexName: currentCex.label,
       cexAddress: cexAddress,
-      cexUid: uid,
+      cexUuid: uid,
     };
+    console.log("payload", payload);
+
     const res = await cexRegister(payload);
     if (res) {
       await getRegInfoRefreshAsync();
@@ -92,7 +96,12 @@ export default function CEXConfirmModal({
             <div className="flex gap-[15px] mt-[10px]">
               <div>Exchange: </div>
               <div className="text-white flex items-center gap-[5px]">
-                <img src={currentCex.logo} alt="cex-logo" />
+                <img
+                  src={currentCex.logo}
+                  alt="cex-logo"
+                  width={20}
+                  className="rounded-[50%]"
+                />
                 <span>{currentCex.label}</span>
               </div>
             </div>

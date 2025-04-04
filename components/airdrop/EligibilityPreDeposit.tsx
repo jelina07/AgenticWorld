@@ -1,6 +1,6 @@
 "use client";
 import {
-  useAirdropCexCanRegister,
+  useAirdropCexRegisterInfo,
   useAirdropCexRegister,
   useAirdropCheck,
   useAirdropClaim,
@@ -17,7 +17,6 @@ const cexInfo = [
   {
     value: "Bitget",
     label: "Bitget",
-    api: "bitget",
     logo: "/icons/bitget-circle-logo.svg",
     img: "/icons/bitget-logo.svg",
     learnMore: "",
@@ -26,7 +25,6 @@ const cexInfo = [
   {
     value: "Gate.io",
     label: "Gate.io",
-    api: "gate",
     logo: "/images/gate-circle-logo.jpeg",
     img: "/icons/gate-logo.svg",
     learnMore: "",
@@ -35,7 +33,6 @@ const cexInfo = [
   {
     value: "HASHKEY",
     label: "HASHKEY",
-    api: "hashkey",
     logo: "/icons/hashkey-circle-logo.svg",
     img: "/icons/hashkey-logo.svg",
     learnMore: "",
@@ -44,7 +41,6 @@ const cexInfo = [
   {
     value: "Ourbit",
     label: "Ourbit",
-    api: "ourbit",
     logo: "/images/ourbit-circle-logo.jpeg",
     img: "/images/ourbit-logo.jpeg",
     learnMore: "",
@@ -77,7 +73,7 @@ export default function EligibilityPreDeposit() {
     runAsync: getRegInfo,
     loading: getRegInfoLoading,
     refreshAsync: getRegInfoRefreshAsync,
-  } = useAirdropCexCanRegister();
+  } = useAirdropCexRegisterInfo();
 
   const showDrawer = () => {
     setIsCEXOpen(true);
@@ -108,11 +104,8 @@ export default function EligibilityPreDeposit() {
     setCurrentCEX(cex);
   };
   useAsyncEffect(async () => {
-    console.log("useAsyncEffect", isCEXOpen);
     if (isCEXOpen) {
-      const res = await getRegInfo();
-      console.log("useAsyncEffect", res);
-      console.log("canRegister", getRegInfo);
+      await getRegInfo();
     }
   }, [isCEXOpen]);
 
@@ -241,7 +234,12 @@ export default function EligibilityPreDeposit() {
           <div>
             <div className="pb-[10px] px-[10px] flex justify-between gap-[10px] items-center flex-wrap">
               {cexInfo.map((item) => (
-                <img src={item.img} alt="cex" className="h-[40px]" />
+                <img
+                  src={item.img}
+                  alt="cex"
+                  className="h-[40px]"
+                  key={item.label}
+                />
               ))}
             </div>
             <div className="flex justify-between items-center mind-select">
@@ -279,7 +277,7 @@ export default function EligibilityPreDeposit() {
                   UID
                 </span>
                 <Input
-                  value={registerInfo ? registerInfo.cexUid : uid}
+                  value={registerInfo ? registerInfo.cexUuid : uid}
                   onChange={(e: any) => {
                     setUid(e.target.value);
                   }}

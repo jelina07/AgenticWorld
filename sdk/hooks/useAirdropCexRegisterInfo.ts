@@ -4,7 +4,7 @@ import request from "../request";
 import { useAccount } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useAirdropCexCanRegister(options?: Options<any, any>) {
+export default function useAirdropCexRegisterInfo(options?: Options<any, any>) {
   const { address } = useAccount();
 
   const result = useRequest(
@@ -14,7 +14,7 @@ export default function useAirdropCexCanRegister(options?: Options<any, any>) {
       }
       console.log("useAirdropCexCanRegister");
 
-      const res = await request.get("/grant/cex/register", {
+      const res = await request.get("/grant/cex/register/info", {
         params: {
           wallet: address,
         },
