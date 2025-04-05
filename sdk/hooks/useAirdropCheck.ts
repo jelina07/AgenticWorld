@@ -13,9 +13,12 @@ export default function useAirdropCheck(options?: Options<any, [string]>) {
         message:
           "Sign to check the amount of FHE this wallet is eligible to claim.",
       });
-      const res = await request.get("/grant/check-eligibility", {
-        params: { wallet, signature },
-      });
+      const res = await request.get(
+        "https://event-api.mindnetwork.xyz/grant/check-eligibility",
+        {
+          params: { wallet, signature },
+        }
+      );
       return res;
     },
     {

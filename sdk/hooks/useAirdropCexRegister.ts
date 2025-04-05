@@ -23,11 +23,14 @@ export default function useAirdropCexRegister(
         message: `Sign to confirm claiming the airdrop to ${data.cexName}.`,
       });
 
-      const res = await request.post("/grant/cex/register", {
-        ...data,
-        walletAddress: address,
-        signature,
-      });
+      const res = await request.post(
+        "https://event-api.mindnetwork.xyz/grant/cex/register",
+        {
+          ...data,
+          walletAddress: address,
+          signature,
+        }
+      );
       return res;
     },
     {

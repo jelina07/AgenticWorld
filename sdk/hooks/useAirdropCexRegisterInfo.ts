@@ -16,12 +16,15 @@ export default function useAirdropCexRegisterInfo(options?: Options<any, any>) {
       const signature = await signMessageAsync?.({
         message: `By signing this message, you confirm that you wish to receive the airdrop through your selected method.`,
       });
-      const res = await request.get("/grant/cex/register/info", {
-        params: {
-          signature,
-          wallet: address,
-        },
-      });
+      const res = await request.get(
+        "https://event-api.mindnetwork.xyz/grant/cex/register/info",
+        {
+          params: {
+            signature,
+            wallet: address,
+          },
+        }
+      );
 
       return res;
     },
