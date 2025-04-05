@@ -30,7 +30,6 @@ export default function useAgentGetTokenId(
       })) as BigInt;
       if (agentCount === BigInt(0)) {
         if (setAgentTokenId) setAgentTokenId(0);
-        // 表示 还没有stake 过
         return 0;
       }
       const agentId = (await readContract(config, {

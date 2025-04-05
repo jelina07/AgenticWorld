@@ -7,6 +7,7 @@ import { DAO_INSPECTOR_ADDRESS } from "../blockChain/address";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { isSupportChain } from "../utils/script";
+import { exceptionHandler } from "../utils/exception";
 
 export default function useHubGetStakeAmount(
   options?: Options<undefined | string[], []> & { hubIds?: any[] }
@@ -29,6 +30,7 @@ export default function useHubGetStakeAmount(
       return amounts.map((amount) => formatEther(amount));
     },
     {
+      onError: (err) => exceptionHandler(err),
       refreshDeps: [hubIds, chainId],
       ...rest,
     }

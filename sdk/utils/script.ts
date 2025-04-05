@@ -82,6 +82,17 @@ export const Agent1ContractErrorCode = (code: number) => {
       return "Unknown Error";
   }
 };
+export const AirdropContractErrorCode = (code: number) => {
+  switch (code) {
+    case 410:
+      return "It has already been claimed.";
+    case 403:
+      return "Proof error";
+    default:
+      return "Unknown Error";
+  }
+};
+
 export const isSupportChain = (chainid: number) => {
   return supportChainId.includes(chainid);
 };

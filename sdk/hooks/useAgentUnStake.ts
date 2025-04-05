@@ -47,7 +47,7 @@ export default function useAgentUnStake(
     },
     {
       manual: true,
-      onError: (err) => exceptionHandler(err, AGENT1_ABI, true),
+      onError: (err) => exceptionHandler(err, "agent", AGENT1_ABI),
       ...options,
     }
   );

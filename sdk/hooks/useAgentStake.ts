@@ -75,7 +75,7 @@ export default function useAgentStake(
     },
     {
       manual: true,
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, "agent", AGENT1_ABI),
       ...options,
     }
   );

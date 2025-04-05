@@ -309,14 +309,23 @@ export default function EligibilityPreDeposit() {
           autoFocus={false}
         >
           <div>
-            <div className="pb-[15px] px-[10px] flex justify-between gap-[10px] items-end flex-wrap">
+            <div className="pb-[15px] px-[10px] flex justify-between gap-[10px] items-center flex-wrap">
               {cexInfo.map((item) => (
-                <img
-                  src={item.img}
-                  alt="cex"
-                  className="h-[35px]"
-                  key={item.label}
-                />
+                <div>
+                  <img
+                    src={item.img}
+                    alt="cex"
+                    className="h-[35px]"
+                    key={item.label}
+                  />
+                  {item.label === "Bitget" ? (
+                    <div className="text-[9px] text-right text-[#66ddfb] leading-[9px]">
+                      50 ~ 1000 $FHE<br></br>1.4M in total, FCFS!
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               ))}
             </div>
             <div className="flex justify-between items-center mind-select my-[10px]">

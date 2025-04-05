@@ -35,11 +35,6 @@ export default function useHubGetCurrentExp(
         args: [tokenId, hubIds],
       })) as bigint[];
 
-      // 向下取整获取小时
-      // const learnHour = currentExp.map((item) =>
-      //   Math.floor(Number(item) / 3600)
-      // );
-      // const learnSecond = currentExp.map((item) => Math.floor(Number(item)));
       return currentExp;
     },
     {

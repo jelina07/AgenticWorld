@@ -45,7 +45,7 @@ export default function useAgentBurn(
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err, AGENT1_ABI, true),
+      onError: (err) => exceptionHandler(err, "agent", AGENT1_ABI),
       manual: true,
       ...options,
     }

@@ -46,7 +46,7 @@ export default function useGetFaucet(
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err, FAUCETABI, undefined, true),
+      onError: (err) => exceptionHandler(err, "facuet", FAUCETABI),
       refreshDeps: [address],
       manual: true,
       ...options,

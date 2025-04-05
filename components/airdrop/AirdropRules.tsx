@@ -42,14 +42,14 @@ export default function AirdropRules() {
             />
           ))}
         </div>
-        <div className="text-[12px] px-[20px] mt-[25px]">
+        {/* <div className="text-[12px] px-[20px] mt-[25px]">
           <span>Note: </span>
           <span className="text-[var(--mind-grey)]">
             To claim your tokens, you must be connected to the MindChain. Use
             the &quot;Switch to MindChain&quot; button to change your network if
             needed.
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

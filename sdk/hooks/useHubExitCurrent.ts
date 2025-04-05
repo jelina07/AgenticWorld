@@ -1,3 +1,4 @@
+//not use
 import { useRequest } from "ahooks";
 import { Options, WriteConractHooksReturnType } from "../types";
 import { useWriteContract } from "wagmi";
@@ -35,7 +36,7 @@ export default function useHubExitCurrent(
       return receipt;
     },
     {
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, "agent", AGENT1_ABI),
       manual: true,
       ...options,
     }

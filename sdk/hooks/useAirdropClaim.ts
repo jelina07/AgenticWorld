@@ -47,7 +47,7 @@ export default function useAirdropClaim(
     },
     {
       manual: true,
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, "airdrop", AIRDROP_ABI),
       ...options,
     }
   );
