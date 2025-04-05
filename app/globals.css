@@ -705,11 +705,17 @@ input:focus {
 .mind-drawer .ant-drawer-content-wrapper {
   width: 100% !important;
 }
+.mind-drawer.ant-drawer .ant-drawer-mask {
+  border-radius: 8px;
+}
 .mind-drawer .ant-drawer-right > .ant-drawer-content-wrapper {
   box-shadow: unset;
 }
 .mind-drawer.ant-drawer .ant-drawer-content {
-  background: #0f1313;
+  background-image: url("/images/vhe-claim-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 8px;
 }
 .mind-drawer.ant-drawer .ant-drawer-body {

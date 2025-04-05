@@ -27,9 +27,7 @@ const string1 =
           <br />
           <br />
           As the journey begins, we&apos; ll gonna launch your own AI Agent together!
-          You&apos;ll just need some $FHE tokens to launch (minimum of ${firstStakeAmount}). Don&apos;t
-          worry - you&apos;re always in control. You can withdraw your tokens anytime,
-          no lock-ups involved.
+          You&apos;ll just need some $FHE tokens to launch (minimum of ${firstStakeAmount}).
           <br />
           <br />
           Once your agent is launched, send your agent on adventures across

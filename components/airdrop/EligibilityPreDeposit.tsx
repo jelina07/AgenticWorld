@@ -1,17 +1,16 @@
 "use client";
 import {
-  useAirdropCexRegisterInfo,
   useAirdropCexRegister,
+  useAirdropCexRegisterInfo,
   useAirdropCheck,
-  useAirdropClaim,
 } from "@/sdk";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { Button, Drawer, Input, message, Select } from "antd";
+import { Button, Drawer, Input, message, notification, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import CEXConfirmModal from "./CEXConfirmModal";
 import { formatEther } from "viem";
-import { useAsyncEffect } from "ahooks";
+import { numberDigitsNoMillify } from "@/utils/utils";
 
 const cexInfo = [
   {
@@ -42,7 +41,7 @@ const cexInfo = [
     value: "Ourbit",
     label: "Ourbit",
     logo: "/images/ourbit-circle-logo.jpeg",
-    img: "/images/ourbit-logo.jpeg",
+    img: "/icons/ourbit-logo.svg",
     learnMore: "",
     createAccount: "",
   },
@@ -54,10 +53,10 @@ export default function EligibilityPreDeposit() {
     data: claimAmout,
     runAsync: checkEligibility,
     loading,
-  } = useAirdropCheck(); // number
-  console.log("claimAmout", claimAmout);
+  } = useAirdropCheck();
   const { openConnectModal } = useConnectModal();
   const [isCEXOpen, setIsCEXOpen] = useState(false);
+  const [isMindOpen, setIsMindOpen] = useState(false);
   const [currentCEX, setCurrentCEX] = useState({
     value: "Bitget",
     label: "Bitget",
@@ -72,15 +71,42 @@ export default function EligibilityPreDeposit() {
     data: registerInfo,
     runAsync: getRegInfo,
     loading: getRegInfoLoading,
-    refreshAsync: getRegInfoRefreshAsync,
   } = useAirdropCexRegisterInfo();
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [isMindSubmit, setIsMindSubmit] = useState(false);
+  const { runAsync: cexRegister, loading: registerLoading } =
+    useAirdropCexRegister();
 
-  const showDrawer = () => {
-    setIsCEXOpen(true);
+  const showDrawer = async () => {
+    const res = await getRegInfo();
+    if (res?.cexName === "Mind") {
+      message.open({
+        type: "warning",
+        content: `You have registered claim on Mind`,
+        duration: 5,
+      });
+    } else {
+      setIsCEXOpen(true);
+    }
   };
-
   const onClose = () => {
     setIsCEXOpen(false);
+  };
+
+  const showMindDrawer = async () => {
+    const res = await getRegInfo();
+    if (res?.cexName && res.cexName !== "Mind") {
+      message.open({
+        type: "warning",
+        content: `You have registered claim on CEX`,
+        duration: 5,
+      });
+    } else {
+      setIsMindOpen(true);
+    }
+  };
+  const onMindClose = () => {
+    setIsMindOpen(false);
   };
 
   const clickCheckEligibility = async () => {
@@ -91,23 +117,30 @@ export default function EligibilityPreDeposit() {
     }
   };
 
-  const clickClaim = async () => {
-    message.open({
-      type: "warning",
-      content: ` !`,
-      duration: 5,
-    });
-  };
-
   const handleChange = (value: string) => {
     const cex = cexInfo.find((item) => item.value === value)!;
     setCurrentCEX(cex);
   };
-  useAsyncEffect(async () => {
-    if (isCEXOpen) {
-      await getRegInfo();
+
+  const confirmClick = async () => {
+    const payload = {
+      cexName: "Mind",
+      cexAddress: "MindAddress",
+      cexUuid: "MindUid",
+    } as any;
+    const res = await cexRegister(payload);
+    if (res) {
+      setIsMindSubmit(true);
+      notification.success({
+        message: "Success",
+        description: "Confirm Success !",
+      });
     }
-  }, [isCEXOpen]);
+  };
+
+  const changIsSubmit = (value: boolean) => {
+    setIsSubmit(value);
+  };
 
   return (
     <div>
@@ -169,38 +202,43 @@ export default function EligibilityPreDeposit() {
         </div>
 
         {claimAmout ? (
-          <div className="p-[24px] mt-[40px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
+          <div className="p-[24px] mt-[50px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover relative">
             <div className="text-[18px] font-[900]">
               Congratulations! You&apos;re Eligible
             </div>
-            <div className="flex justify-between flex-wrap gap-[10px] items-end">
-              <div>
+            <div className="sm:flex justify-between flex-wrap gap-[10px] items-end">
+              <div className="flex-[2]">
                 <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
                   You can claim the following amount:
                 </div>
-                <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
-                  {formatEther(BigInt(claimAmout.amount))}$FHE
-                </div>
-                <div className="text-[var(--mind-grey)] text-[12px] mt-[10px]">
-                  Make sure you&apos;re connected to MindChain before claiming!
+                <div className="bg-[rgba(255,255,255,0.05)] p-[20px] mt-[18px] text-center rounded-[10px]">
+                  <div className="text-[30px] text-[var(--mind-brand)] font-[700] break-all sm:break-normal">
+                    {numberDigitsNoMillify(
+                      formatEther(BigInt(claimAmout.amount))
+                    )}
+                    $FHE
+                  </div>
+                  <div className="text-white text-[12px] mt-[10px] font-[600]">
+                    $FHE will be eligible to claim on BSC Chain by default
+                  </div>
                 </div>
               </div>
-              <div className="w-[190px]">
-                <div className="p-[5px] bg-[#19201d] rounded-[5px] text-center">
-                  <span className="text-[12px] font-[600] leading-[1.1] inline-block">
-                    Prefer to claim on MindChain when TGE :
+
+              <div className="flex-1 p-[10px] w-full min-w-[215px]">
+                <div className="text-right">
+                  <span className="text-[12px] font-[600] leading-[1.2] inline-block">
+                    If you DON&apos;T prefer to claim on BSC Chain, other
+                    options:
                   </span>
-                  <Button
-                    type="primary"
-                    className="button-brand-border mt-[5px]"
-                    style={{ height: "38px", width: "130px" }}
-                    onClick={clickClaim}
-                    disabled={true}
-                  >
-                    Confirm
-                  </Button>
                 </div>
-                <div>
+                <div className="text-right">
+                  <span
+                    className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
+                    onClick={showMindDrawer}
+                  >
+                    Prefer to claim on MindChain →
+                  </span>
+                  <br />
                   <span
                     className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
                     onClick={showDrawer}
@@ -210,6 +248,45 @@ export default function EligibilityPreDeposit() {
                 </div>
               </div>
             </div>
+            <Drawer
+              title={
+                <div className="text-white">
+                  <span onClick={onMindClose} className="cursor-pointer">
+                    {"<"}
+                  </span>
+                  <span className="text-[20px] font-[900] ml-[10px]">
+                    Confirm to claim $FHE on MindChain - 0 gas
+                  </span>
+                </div>
+              }
+              closable={false}
+              open={isMindOpen}
+              getContainer={false}
+              rootClassName="mind-drawer"
+              autoFocus={false}
+            >
+              <div>
+                <div className="text-[14px] text-white font-[600] p-[10px] mt-[20px]">
+                  You&apos;ll be able to claim the airdrop on Mindchain at TGE
+                </div>
+                <div className="text-right">
+                  <Button
+                    type="primary"
+                    className="button-brand-border mt-[15px]"
+                    style={{ height: "38px", width: "130px" }}
+                    onClick={confirmClick}
+                    loading={registerLoading}
+                    disabled={isMindSubmit || registerInfo}
+                  >
+                    {registerLoading
+                      ? "loading..."
+                      : isMindSubmit || registerInfo
+                      ? "Confirmed"
+                      : "Confirm"}
+                  </Button>
+                </div>
+              </div>
+            </Drawer>
           </div>
         ) : (
           ""
@@ -220,7 +297,7 @@ export default function EligibilityPreDeposit() {
               <span onClick={onClose} className="cursor-pointer">
                 {"<"}
               </span>
-              <span className="text-[18px] font-[900] ml-[10px]">
+              <span className="text-[20px] font-[900] ml-[10px]">
                 Pre-Deposit $FHE to CEX ! - 0 gas fee
               </span>
             </div>
@@ -232,17 +309,17 @@ export default function EligibilityPreDeposit() {
           autoFocus={false}
         >
           <div>
-            <div className="pb-[10px] px-[10px] flex justify-between gap-[10px] items-center flex-wrap">
+            <div className="pb-[15px] px-[10px] flex justify-between gap-[10px] items-end flex-wrap">
               {cexInfo.map((item) => (
                 <img
                   src={item.img}
                   alt="cex"
-                  className="h-[40px]"
+                  className="h-[35px]"
                   key={item.label}
                 />
               ))}
             </div>
-            <div className="flex justify-between items-center mind-select">
+            <div className="flex justify-between items-center mind-select my-[10px]">
               <span className="font-[600] items-center text-white text-[16px]">
                 Select the Exchange
               </span>
@@ -257,21 +334,20 @@ export default function EligibilityPreDeposit() {
                 defaultValue="Bitget"
                 onChange={handleChange}
                 options={cexInfo}
-                disabled={registerInfo}
+                disabled={isSubmit || registerInfo}
               />
-            </div>
-            <div className="text-white font-[600] mb-[10px]">
-              Fill the relevant information to ensure successful sending
             </div>
             <a
               href={currentCEX.learnMore}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--mind-brand)] hover:text-[var(--mind-brand)] hover:underline font-[600] underline"
+              className={`text-[var(--mind-brand)] hover:text-[var(--mind-brand)] hover:underline font-[600] underline text-[12px] ${
+                currentCEX.learnMore !== "" ? "" : "hidden"
+              }`}
             >
               How to find {currentCEX.label} UID and $FHE deposit address ?
             </a>
-            <div className="p-[10px] mind-input mt-[10px]">
+            <div className="pl-[30px] pr-[10px] mind-input mt-[30px]">
               <div className="sm:flex items-center">
                 <span className="text-[16px] font-[600] text-white inline-block min-w-[150px] sm:mb-[0px] mb-[5px]">
                   UID
@@ -281,10 +357,11 @@ export default function EligibilityPreDeposit() {
                   onChange={(e: any) => {
                     setUid(e.target.value.trim());
                   }}
-                  disabled={registerInfo || getRegInfoLoading}
+                  style={{ height: "35px" }}
+                  disabled={isSubmit || getRegInfoLoading || registerInfo}
                 />
               </div>
-              <div className="sm:flex mt-[10px] items-center">
+              <div className="sm:flex mt-[30px] items-center">
                 <span className="text-[16px] font-[600] text-white inline-block min-w-[150px] sm:mb-[0px] mb-[5px]">
                   Deposit Address
                 </span>
@@ -293,31 +370,34 @@ export default function EligibilityPreDeposit() {
                   onChange={(e: any) => {
                     setCexAddress(e.target.value.trim());
                   }}
-                  disabled={registerInfo || getRegInfoLoading}
+                  style={{ height: "35px" }}
+                  disabled={isSubmit || getRegInfoLoading || registerInfo}
                 />
               </div>
             </div>
-            <div className="sm:flex items-center justify-between">
-              <span className="text-[var(--mind-grey)] text-[12px]">
+            <div className="sm:flex items-end justify-end mt-[25px]">
+              {/* <span className="text-[var(--mind-grey)] text-[12px]">
                 Each CEX account can be linked to a maximum of 10 wallets.
-              </span>
-              <div>
+              </span> */}
+              <a
+                href={currentCEX.createAccount}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-[12px] text-[var(--mind-grey)] hover:text-[var(--mind-grey)] hover:underline underline block mt-[10px] ${
+                  currentCEX.createAccount !== "" ? "" : "hidden"
+                }`}
+              >
+                Create {currentCEX.label} Account
+              </a>
+              <div className="ml-[10px]">
                 <CEXConfirmModal
                   uid={uid}
                   cexAddress={cexAddress}
                   currentCex={currentCEX}
-                  registerInfo={registerInfo}
                   getRegInfoLoading={getRegInfoLoading}
-                  getRegInfoRefreshAsync={getRegInfoRefreshAsync}
+                  changIsSubmit={changIsSubmit}
+                  registerInfo={registerInfo}
                 />
-                <a
-                  href={currentCEX.createAccount}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[12px] text-[var(--mind-grey)] hover:text-[var(--mind-grey)] hover:underline underline block mt-[10px]"
-                >
-                  Create {currentCEX.label} Account
-                </a>
               </div>
             </div>
           </div>

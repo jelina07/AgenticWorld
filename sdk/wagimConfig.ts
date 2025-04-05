@@ -141,4 +141,4 @@ export const config = getDefaultConfig({
 
 export const supportChainId =
   chains.length === 0 ? [] : chains.map((item: any) => item.id);
-export { chains };
+export { chains, bnbtestnet, bnb };

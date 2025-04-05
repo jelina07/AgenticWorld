@@ -6,19 +6,20 @@ export default function CEXConfirmModal({
   uid,
   cexAddress,
   currentCex,
-  registerInfo,
   getRegInfoLoading,
-  getRegInfoRefreshAsync,
+  changIsSubmit,
+  registerInfo,
 }: {
   uid: string;
   cexAddress: string;
   currentCex: any;
-  registerInfo: any;
   getRegInfoLoading: boolean;
-  getRegInfoRefreshAsync: Function;
+  changIsSubmit: Function;
+  registerInfo: any;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { runAsync: cexRegister, loading } = useAirdropCexRegister();
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -41,18 +42,15 @@ export default function CEXConfirmModal({
   };
 
   const clickSubmit = async () => {
-    console.log("currentCex", currentCex);
-
     const payload = {
       cexName: currentCex.label,
       cexAddress: cexAddress,
       cexUuid: uid,
     };
-    console.log("payload", payload);
-
     const res = await cexRegister(payload);
     if (res) {
-      await getRegInfoRefreshAsync();
+      setIsSubmit(true);
+      changIsSubmit(true);
       notification.success({
         message: "Success",
         description: "Submit Success !",
@@ -65,17 +63,21 @@ export default function CEXConfirmModal({
       <Button
         type="primary"
         className="button-brand-border mt-[15px]"
-        style={{ height: "30px", width: "130px" }}
+        style={{ height: "35px", width: "130px" }}
         disabled={
-          uid === "" || cexAddress === "" || registerInfo || getRegInfoLoading
+          uid === "" ||
+          cexAddress === "" ||
+          isSubmit ||
+          getRegInfoLoading ||
+          registerInfo
         }
         onClick={confirmClick}
       >
         {getRegInfoLoading
           ? "loading..."
-          : !registerInfo
-          ? "Submit"
-          : "Submitted"}
+          : isSubmit || registerInfo
+          ? "Submitted"
+          : "Submit"}
       </Button>
       <Modal
         title="Confirm your Information"

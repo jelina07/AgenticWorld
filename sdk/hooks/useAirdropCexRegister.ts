@@ -5,7 +5,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 
 type Payload = {
-  cexName: "Bitget" | "Gate.io" | "HASHKEY" | "Ourbit";
+  cexName: "Bitget" | "Gate.io" | "HASHKEY" | "Ourbit" | "Mind";
   cexAddress: string;
   cexUuid: string;
 };
@@ -19,8 +19,6 @@ export default function useAirdropCexRegister(
 
   const result = useRequest(
     async (data) => {
-      console.log("data", data);
-
       const signature = await signMessageAsync?.({
         message: `Sign to confirm claiming the airdrop to ${data.cexName}.`,
       });

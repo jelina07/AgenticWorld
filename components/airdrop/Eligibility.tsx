@@ -3,17 +3,20 @@ import { useAirdropCheck, useAirdropClaim } from "@/sdk";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, Input, message } from "antd";
 import React, { useEffect, useState } from "react";
+import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 
 export default function Eligibility() {
   const { address, isConnected } = useAccount();
+  const claimed = true;
   const {
     data: claimAmout,
     runAsync: checkEligibility,
     loading,
-  } = useAirdropCheck(); // number
-  const { runAsync: claim } = useAirdropClaim({ waitForReceipt: true });
-  console.log("claimAmout", claimAmout);
+  } = useAirdropCheck();
+  const { runAsync: claimAsync, loading: claimLoading } = useAirdropClaim({
+    waitForReceipt: true,
+  });
   const { openConnectModal } = useConnectModal();
 
   const clickCheckEligibility = async () => {
@@ -25,7 +28,10 @@ export default function Eligibility() {
   };
 
   const clickClaim = async () => {
-    // await claim()
+    if (claimed) {
+    } else {
+      // await claimAsync();
+    }
   };
 
   return (
@@ -85,7 +91,7 @@ export default function Eligibility() {
         </div>
       </div>
       {claimAmout ? (
-        <div className="p-[24px] mt-[40px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
+        <div className="p-[24px] mt-[50px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
           <div className="text-[18px] font-[900]">
             Congratulations! You&apos;re Eligible
           </div>
@@ -95,7 +101,7 @@ export default function Eligibility() {
                 You can claim the following amount:
               </div>
               <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
-                {claimAmout}$FHE
+                {formatEther(BigInt(claimAmout.amount))}$FHE
               </div>
               <div className="text-[var(--mind-grey)] text-[12px] mt-[10px]">
                 Make sure you&apos;re connected to Mindchain before claiming!
@@ -105,7 +111,7 @@ export default function Eligibility() {
               type="primary"
               className="button-brand-border"
               style={{ height: "38px", width: "130px" }}
-              loading={loading}
+              loading={claimLoading}
               onClick={clickClaim}
             >
               Claim $FHE
