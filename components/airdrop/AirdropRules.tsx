@@ -5,27 +5,27 @@ const ruleList = [
   {
     imgurl: "/icons/rule-logo1.svg",
     title: "CitizenZ Passport",
-    info: "All eligible wallets receive a base allocation of 1,500 $FHE tokens.",
+    info: "All CitizenZ Passport NFT holders before the snapshot receive equal shares of the airdrop allocation.",
   },
   {
     imgurl: "/icons/rule-logo2.svg",
-    title: "vFHE Delegation",
-    info: "Early users of Mind Network receive an additional 500 $FHE tokens.",
+    title: "Mainnet Contributors",
+    info: "Rewards are based on your vFHE delegation, TGV contributions, Hub voting, and other on-chain activities at the time of snapshot. TGV from Mind Network gets a higher multiplier than TGV from partners.",
   },
   {
     imgurl: "/icons/rule-logo3.svg",
     title: "Advocate Program",
-    info: "Users who contributed to the network growth receive an additional 1,000 $FHE tokens.",
+    info: "Rewards based on referral performance and Advocate Leaderboard ranking.",
   },
   {
     imgurl: "/icons/rule-logo4.svg",
-    title: "AgentConnect Hub Engagement",
-    info: "Users who stake in the Mind Network ecosystem receive a 20% bonus on their total allocation.",
+    title: "AgentConnect Hub",
+    info: "Equal share of 0.3% allocation for all genuine Hub registrants, with additional 0.7% reserved for future phases.",
   },
   {
     imgurl: "/icons/rule-logo5.svg",
-    title: "Testnet and Early Community Contributers",
-    info: "The airdrop claiming period is open for 30 days from the lauunch date. Unclaimed tokens will be returned to the community treasury.",
+    title: "Testnet and Community Contributors",
+    info: "Eligible with any one: Testnet active participation, having a Discord exclusive role, having at least 600 Galxe points, or holding a Mind FHEellow NFT.",
   },
 ];
 export default function AirdropRules() {
@@ -42,14 +42,9 @@ export default function AirdropRules() {
             />
           ))}
         </div>
-        {/* <div className="text-[12px] px-[20px] mt-[25px]">
-          <span>Note: </span>
-          <span className="text-[var(--mind-grey)]">
-            To claim your tokens, you must be connected to the MindChain. Use
-            the &quot;Switch to MindChain&quot; button to change your network if
-            needed.
-          </span>
-        </div> */}
+        <div className="text-[14px] px-[20px] mt-[22px] font-[700] text-center text-[var(--mind-brand)]">
+          Snapshot was taken on March 31, 2025, 23:59 UTC
+        </div>
       </div>
     </div>
   );

@@ -1,16 +1,18 @@
 "use client";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import {
-  useAirdropCexRegisterInfo,
   useAirdropCheck,
   useAirdropClaim,
+  useAirdropIsClaimed,
   useAirdropRelayerClaim,
   useRelayerGetStatus,
 } from "@/sdk";
 import { AirdropContractErrorCode } from "@/sdk/utils/script";
 import { numberDigitsNoMillify } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAsyncEffect } from "ahooks";
 import { Button, Input, message, notification } from "antd";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
@@ -26,12 +28,18 @@ export default function Eligibility() {
     runAsync: checkEligibility,
     loading,
   } = useAirdropCheck();
+  console.log("claimAmout", claimAmout);
+  const {
+    data: claimedByContract,
+    runAsync: airdropIsClaimed,
+    refresh: refreshIsClaimed,
+  } = useAirdropIsClaimed();
+
   const { runAsync: claimAsync, loading: claimLoading } = useAirdropClaim({
     waitForReceipt: true,
   });
   const { openConnectModal } = useConnectModal();
-  const { runAsync: getRegInfo, loading: getRegInfoLoading } =
-    useAirdropCexRegisterInfo();
+
   const { runAsync: mindAirdropRelay } = useAirdropRelayerClaim();
   const {
     data: status,
@@ -49,10 +57,12 @@ export default function Eligibility() {
   };
 
   const clickClaim = async () => {
-    const res = await getRegInfo();
-    if (res?.cexName && res.cexName !== "Mind") {
+    if (
+      claimAmout?.register?.cexName &&
+      claimAmout.register.cexName !== "Mind"
+    ) {
       setClaimed(true);
-    } else if (res?.cexName === "Mind") {
+    } else if (claimAmout?.register?.cexName === "Mind") {
       try {
         setActionLoop(true);
         const resId = await mindAirdropRelay();
@@ -65,9 +75,10 @@ export default function Eligibility() {
         setActionLoop(false);
       }
     } else {
-      const res = await claimAsync(formatEther(BigInt(claimAmout.amount)), [
-        "1",
-      ]);
+      const res = await claimAsync(
+        formatEther(BigInt(claimAmout.amount)),
+        claimAmout.proof
+      );
       if (res) {
         afterSuccessHandler();
         notification.success({
@@ -79,7 +90,7 @@ export default function Eligibility() {
   };
 
   const afterSuccessHandler = () => {
-    setClaimed(true);
+    refreshIsClaimed();
   };
 
   useRelayerStatusHandler(
@@ -91,9 +102,13 @@ export default function Eligibility() {
     AirdropContractErrorCode
   );
 
-  useEffect(() => {
-    //is claimed
-  }, []);
+  useAsyncEffect(async () => {
+    if (claimAmout) {
+      const claimChain =
+        claimAmout.register?.cexName === "Mind" ? "Mind" : "BSC";
+      await airdropIsClaimed(claimChain);
+    }
+  }, [claimAmout]);
 
   return (
     <div>
@@ -162,21 +177,35 @@ export default function Eligibility() {
                 You can claim the following amount:
               </div>
               <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
-                {numberDigitsNoMillify(formatEther(BigInt(claimAmout.amount)))}
+                {claimAmout?.amount &&
+                  numberDigitsNoMillify(
+                    formatEther(BigInt(claimAmout?.amount))
+                  )}
                 $FHE
               </div>
             </div>
-            <Button
-              type="primary"
-              className="button-brand-border"
-              style={{ height: "38px", width: "130px" }}
-              loading={claimLoading || actionLoop || getRegInfoLoading}
-              {...(!claimed
-                ? { onClick: clickClaim }
-                : { href: "/agenticworld" })}
-            >
-              {claimed ? "Go →" : "Claim $FHE"}
-            </Button>
+            <div className="flex gap-[10px] items-center">
+              {!claimed || !claimedByContract ? (
+                <Button
+                  type="primary"
+                  className="button-brand-border"
+                  style={{ height: "38px", width: "130px" }}
+                  loading={claimLoading || actionLoop}
+                  onClick={clickClaim}
+                >
+                  Claim $FHE
+                </Button>
+              ) : (
+                <div className="text-center">
+                  <Link
+                    href={"/agenticworld"}
+                    className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+                  >
+                    Go →
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ) : (

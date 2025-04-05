@@ -54,6 +54,8 @@ export default function EligibilityPreDeposit() {
     runAsync: checkEligibility,
     loading,
   } = useAirdropCheck();
+  console.log("claimAmout", claimAmout);
+
   const { openConnectModal } = useConnectModal();
   const [isCEXOpen, setIsCEXOpen] = useState(false);
   const [isMindOpen, setIsMindOpen] = useState(false);
@@ -67,19 +69,14 @@ export default function EligibilityPreDeposit() {
   });
   const [uid, setUid] = useState("");
   const [cexAddress, setCexAddress] = useState("");
-  const {
-    data: registerInfo,
-    runAsync: getRegInfo,
-    loading: getRegInfoLoading,
-  } = useAirdropCexRegisterInfo();
+
   const [isSubmit, setIsSubmit] = useState(false);
   const [isMindSubmit, setIsMindSubmit] = useState(false);
   const { runAsync: cexRegister, loading: registerLoading } =
     useAirdropCexRegister();
 
   const showDrawer = async () => {
-    const res = await getRegInfo();
-    if (res?.cexName === "Mind") {
+    if (claimAmout?.register?.cexName === "Mind") {
       message.open({
         type: "warning",
         content: `You have registered claim on Mind`,
@@ -94,8 +91,10 @@ export default function EligibilityPreDeposit() {
   };
 
   const showMindDrawer = async () => {
-    const res = await getRegInfo();
-    if (res?.cexName && res.cexName !== "Mind") {
+    if (
+      claimAmout?.register?.cexName &&
+      claimAmout?.register.cexName !== "Mind"
+    ) {
       message.open({
         type: "warning",
         content: `You have registered claim on CEX`,
@@ -209,17 +208,19 @@ export default function EligibilityPreDeposit() {
             <div className="sm:flex justify-between flex-wrap gap-[10px] items-end">
               <div className="flex-[2]">
                 <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
-                  You can claim the following amount:
+                  You are eligible for the following amount:
                 </div>
                 <div className="bg-[rgba(255,255,255,0.05)] p-[20px] mt-[18px] text-center rounded-[10px]">
                   <div className="text-[30px] text-[var(--mind-brand)] font-[700] break-all sm:break-normal">
-                    {numberDigitsNoMillify(
-                      formatEther(BigInt(claimAmout.amount))
-                    )}
+                    {claimAmout?.amount &&
+                      numberDigitsNoMillify(
+                        formatEther(BigInt(claimAmout?.amount))
+                      )}
                     $FHE
                   </div>
                   <div className="text-white text-[12px] mt-[10px] font-[600]">
-                    $FHE will be eligible to claim on BSC Chain by default
+                    $FHE will be claimable on BSC chain by default when the
+                    claim is open
                   </div>
                 </div>
               </div>
@@ -236,14 +237,14 @@ export default function EligibilityPreDeposit() {
                     className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
                     onClick={showMindDrawer}
                   >
-                    Prefer to claim on MindChain →
+                    Claim on MindChain (0 gas) →
                   </span>
                   <br />
                   <span
                     className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
                     onClick={showDrawer}
                   >
-                    Prefer to Pre-Deposit to CEX →
+                    Pre-Deposit to CEX →
                   </span>
                 </div>
               </div>
@@ -267,7 +268,7 @@ export default function EligibilityPreDeposit() {
             >
               <div>
                 <div className="text-[14px] text-white font-[600] p-[10px] mt-[20px]">
-                  You&apos;ll be able to claim the airdrop on Mindchain at TGE
+                  You&apos;ll be able to claim the airdrop on Mindchain
                 </div>
                 <div className="text-right">
                   <Button
@@ -276,11 +277,11 @@ export default function EligibilityPreDeposit() {
                     style={{ height: "38px", width: "130px" }}
                     onClick={confirmClick}
                     loading={registerLoading}
-                    disabled={isMindSubmit || registerInfo}
+                    disabled={isMindSubmit || claimAmout?.register}
                   >
                     {registerLoading
                       ? "loading..."
-                      : isMindSubmit || registerInfo
+                      : isMindSubmit || claimAmout?.register
                       ? "Confirmed"
                       : "Confirm"}
                   </Button>
@@ -311,13 +312,8 @@ export default function EligibilityPreDeposit() {
           <div>
             <div className="pb-[15px] px-[10px] flex justify-between gap-[10px] items-center flex-wrap">
               {cexInfo.map((item) => (
-                <div>
-                  <img
-                    src={item.img}
-                    alt="cex"
-                    className="h-[35px]"
-                    key={item.label}
-                  />
+                <div key={item.label}>
+                  <img src={item.img} alt="cex" className="h-[35px]" />
                   {item.label === "Bitget" ? (
                     <div className="text-[9px] text-right text-[#66ddfb] leading-[9px]">
                       50 ~ 1000 $FHE<br></br>1.4M in total, FCFS!
@@ -343,7 +339,7 @@ export default function EligibilityPreDeposit() {
                 defaultValue="Bitget"
                 onChange={handleChange}
                 options={cexInfo}
-                disabled={isSubmit || registerInfo}
+                disabled={isSubmit || claimAmout?.register}
               />
             </div>
             <a
@@ -362,12 +358,14 @@ export default function EligibilityPreDeposit() {
                   UID
                 </span>
                 <Input
-                  value={registerInfo ? registerInfo.cexUuid : uid}
+                  value={
+                    claimAmout?.register ? claimAmout.register.cexUuid : uid
+                  }
                   onChange={(e: any) => {
                     setUid(e.target.value.trim());
                   }}
                   style={{ height: "35px" }}
-                  disabled={isSubmit || getRegInfoLoading || registerInfo}
+                  disabled={isSubmit || claimAmout?.register}
                 />
               </div>
               <div className="sm:flex mt-[30px] items-center">
@@ -375,12 +373,16 @@ export default function EligibilityPreDeposit() {
                   Deposit Address
                 </span>
                 <Input
-                  value={registerInfo ? registerInfo.cexAddress : cexAddress}
+                  value={
+                    claimAmout?.register
+                      ? claimAmout.register.cexAddress
+                      : cexAddress
+                  }
                   onChange={(e: any) => {
                     setCexAddress(e.target.value.trim());
                   }}
                   style={{ height: "35px" }}
-                  disabled={isSubmit || getRegInfoLoading || registerInfo}
+                  disabled={isSubmit || claimAmout?.register}
                 />
               </div>
             </div>
@@ -403,9 +405,8 @@ export default function EligibilityPreDeposit() {
                   uid={uid}
                   cexAddress={cexAddress}
                   currentCex={currentCEX}
-                  getRegInfoLoading={getRegInfoLoading}
                   changIsSubmit={changIsSubmit}
-                  registerInfo={registerInfo}
+                  registerInfo={claimAmout?.register}
                 />
               </div>
             </div>

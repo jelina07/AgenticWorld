@@ -6,14 +6,12 @@ export default function CEXConfirmModal({
   uid,
   cexAddress,
   currentCex,
-  getRegInfoLoading,
   changIsSubmit,
   registerInfo,
 }: {
   uid: string;
   cexAddress: string;
   currentCex: any;
-  getRegInfoLoading: boolean;
   changIsSubmit: Function;
   registerInfo: any;
 }) {
@@ -64,20 +62,10 @@ export default function CEXConfirmModal({
         type="primary"
         className="button-brand-border mt-[15px]"
         style={{ height: "35px", width: "130px" }}
-        disabled={
-          uid === "" ||
-          cexAddress === "" ||
-          isSubmit ||
-          getRegInfoLoading ||
-          registerInfo
-        }
+        disabled={uid === "" || cexAddress === "" || isSubmit || registerInfo}
         onClick={confirmClick}
       >
-        {getRegInfoLoading
-          ? "loading..."
-          : isSubmit || registerInfo
-          ? "Submitted"
-          : "Submit"}
+        {isSubmit || registerInfo ? "Submitted" : "Submit"}
       </Button>
       <Modal
         title="Confirm your Information"

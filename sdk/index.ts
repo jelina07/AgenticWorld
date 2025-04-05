@@ -34,6 +34,7 @@ import useRelayerGetStatus from "./hooks/useRelayerGetStatus";
 import useRelayerBurn from "./hooks/useRelayerBurn";
 import useAirdropCexRegister from "./hooks/useAirdropCexRegister";
 import useAirdropCexRegisterInfo from "./hooks/useAirdropCexRegisterInfo";
+import useAirdropIsClaimed from "./hooks/useAirdropIsClaimed";
 
 export {
   useAirdropCheck,
@@ -72,4 +73,5 @@ export {
   useRelayerBurn,
   useAirdropCexRegister,
   useAirdropCexRegisterInfo,
+  useAirdropIsClaimed,
 };
