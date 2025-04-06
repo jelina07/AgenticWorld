@@ -15,7 +15,7 @@ const MindMenu: React.FC = () => {
   const { data } = useHubGetCurrent({
     tokenId: agentTokenId,
   });
-  const learningId = useGetLearningHubId((state) => state.learningHubId);
+
   const items =
     isMainnet() || isMainnetio()
       ? [
