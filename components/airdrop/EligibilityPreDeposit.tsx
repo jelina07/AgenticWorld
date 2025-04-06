@@ -35,6 +35,7 @@ const cexInfo = [
     img: "/icons/gate-logo.svg",
     learnMore: "",
     createAccount: "",
+    disabled: true,
   },
   {
     value: "HASHKEY",
