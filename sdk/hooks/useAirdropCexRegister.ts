@@ -3,12 +3,17 @@ import { Options } from "../types";
 import request from "../request";
 import { useAccount, useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
+import { isDev, isMainnet, isMainnetio } from "../utils";
 
 type Payload = {
   cexName: "Bitget" | "Gate.io" | "HASHKEY" | "Ourbit" | "MindChain";
   cexAddress: string;
   cexUuid: string;
 };
+const url =
+  isMainnet() || isMainnetio()
+    ? "https://event-api.mindnetwork.xyz/grant/cex/register"
+    : "/grant/cex/register";
 
 export default function useAirdropCexRegister(
   options?: Options<unknown, [Payload]>
@@ -23,14 +28,11 @@ export default function useAirdropCexRegister(
         message: `Sign to confirm claiming the airdrop to ${data.cexName}.`,
       });
 
-      const res = await request.post(
-        "https://event-api.mindnetwork.xyz/grant/cex/register",
-        {
-          ...data,
-          walletAddress: address,
-          signature,
-        }
-      );
+      const res = await request.post(url, {
+        ...data,
+        walletAddress: address,
+        signature,
+      });
       return res;
     },
     {

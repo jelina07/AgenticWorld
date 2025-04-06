@@ -3,6 +3,12 @@ import request from "../request";
 import { Options } from "../types";
 import { useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
+import { isMainnet, isMainnetio } from "../utils";
+
+const url =
+  isMainnet() || isMainnetio()
+    ? "https://event-api.mindnetwork.xyz/grant/check-eligibility"
+    : "/grant/check-eligibility";
 
 export default function useAirdropCheck(options?: Options<any, [string]>) {
   const { signMessageAsync } = useSignMessage();
@@ -13,12 +19,9 @@ export default function useAirdropCheck(options?: Options<any, [string]>) {
         message:
           "Sign to check the amount of FHE this wallet is eligible to claim.",
       });
-      const res = await request.get(
-        "https://event-api.mindnetwork.xyz/grant/check-eligibility",
-        {
-          params: { wallet, signature },
-        }
-      );
+      const res = await request.get(url, {
+        params: { wallet, signature },
+      });
       return res;
     },
     {

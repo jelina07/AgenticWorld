@@ -240,7 +240,7 @@ export default function EligibilityPreDeposit() {
                 </div>
               </div>
 
-              <div className="flex-1 w-full min-w-[215px] bg-[rgba(255,255,255,0.05)] text-center rounded-[10px] h-[131px] flex items-center justify-center p-[10px]">
+              <div className="flex-1 w-full min-w-[215px] bg-[rgba(255,255,255,0.05)] text-center rounded-[10px] h-[131px] flex items-center justify-center p-[10px] mt-[18px]">
                 {claimAmout?.register?.cexName === "MindChain" ||
                 isMindSubmit ? (
                   <div>
@@ -304,7 +304,7 @@ export default function EligibilityPreDeposit() {
                     {"<"}
                   </span>
                   <span className="text-[20px] font-[900] ml-[10px]">
-                    Claim $FHE on MindChain - 0 Gas
+                    Claim $FHE on MindChain with 0 Gas Fee
                   </span>
                 </div>
               }
@@ -338,7 +338,7 @@ export default function EligibilityPreDeposit() {
                 {"<"}
               </span>
               <span className="text-[20px] font-[900] ml-[10px]">
-                Pre-Deposit $FHE to CEX ! - 0 Gas Fee
+                Pre-Deposit $FHE to CEX with 0 Gas Fee
               </span>
             </div>
           }

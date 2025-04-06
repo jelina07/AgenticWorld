@@ -17,7 +17,7 @@ const MindMenu: React.FC = () => {
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
   const items =
-    isMainnet() || isMainnetio() || isDev()
+    isMainnet() || isMainnetio()
       ? [
           {
             label: <Link href="/airdrop">Airdrop</Link>,
@@ -34,6 +34,29 @@ const MindMenu: React.FC = () => {
           {
             label: <Link href="/agentlaunch">Agent Launch</Link>,
             key: "/agentlaunch",
+          },
+        ]
+      : isDev()
+      ? [
+          {
+            label: <Link href="/airdrop">Airdrop</Link>,
+            key: "/airdrop",
+          },
+          {
+            label: <Link href="/">Dashboard</Link>,
+            key: "/",
+          },
+          {
+            label: <Link href="/agenticworld">AgenticWorld</Link>,
+            key: "/agenticworld",
+          },
+          {
+            label: <Link href="/agentlaunch">Agent Launch</Link>,
+            key: "/agentlaunch",
+          },
+          {
+            label: <Link href="/swap&bridge">Agent Launch</Link>,
+            key: "/swap&bridge",
           },
         ]
       : [
@@ -56,7 +79,9 @@ const MindMenu: React.FC = () => {
       selectedKeys={[pathName]}
       mode="horizontal"
       items={items}
-      className={`flex min-w-0 min-[1301px]:min-w-[600px]`}
+      className={`flex min-w-0 ${
+        isDev() ? "min-[1301px]:min-w-[600px]" : "min-[1301px]:min-w-[510px]"
+      }`}
       theme="dark"
     />
   );
