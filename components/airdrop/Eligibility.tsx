@@ -57,12 +57,7 @@ export default function Eligibility() {
   };
 
   const clickClaim = async () => {
-    if (
-      claimAmout?.register?.cexName &&
-      claimAmout.register.cexName !== "MindChain"
-    ) {
-      setClaimed(true);
-    } else if (claimAmout?.register?.cexName === "MindChain") {
+    if (claimAmout?.register?.cexName === "MindChain") {
       try {
         setActionLoop(true);
         const resId = await mindAirdropRelay();
@@ -216,7 +211,7 @@ export default function Eligibility() {
               </Button>
               <div className="text-center">
                 <Link
-                  href={"/agenticworld"}
+                  href="/agenticworld"
                   className={`text-[14px] font-[600] text-[var(--mind-brand)] 
                             hover:text-[var(--mind-brand)] underline hover:underline 
                             border border-[var(--mind-brand)] px-[20px] py-[8px] rounded-[20px] ${
