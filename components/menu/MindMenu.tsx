@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { useMemo } from "react";
-import { isDev, isProd } from "@/sdk/utils";
+import { isDev, isMainnet, isMainnetio } from "@/sdk/utils";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -17,43 +16,40 @@ const MindMenu: React.FC = () => {
     tokenId: agentTokenId,
   });
   const learningId = useGetLearningHubId((state) => state.learningHubId);
-  const items = isDev()
-    ? [
-        {
-          label: <Link href="/airdrop">Airdrop</Link>,
-          key: "/airdrop",
-        },
-        {
-          label: <Link href="/">Dashboard</Link>,
-          key: "/",
-        },
-        {
-          label: <Link href="/agenticworld">AgenticWorld</Link>,
-          key: "/agenticworld",
-        },
-        {
-          label: <Link href="/agentlaunch">Agent Launch</Link>,
-          key: "/agentlaunch",
-        },
-        {
-          label: <Link href="/swap&bridge">Swap/Bridge</Link>,
-          key: "/swap&bridge",
-        },
-      ]
-    : [
-        {
-          label: <Link href="/">Dashboard</Link>,
-          key: "/",
-        },
-        {
-          label: <Link href="/agenticworld">AgenticWorld</Link>,
-          key: "/agenticworld",
-        },
-        {
-          label: <Link href="/agentlaunch">Agent Launch</Link>,
-          key: "/agentlaunch",
-        },
-      ];
+  const items =
+    isMainnet() || isMainnetio() || isDev()
+      ? [
+          {
+            label: <Link href="/airdrop">Airdrop</Link>,
+            key: "/airdrop",
+          },
+          {
+            label: <Link href="/">Dashboard</Link>,
+            key: "/",
+          },
+          {
+            label: <Link href="/agenticworld">AgenticWorld</Link>,
+            key: "/agenticworld",
+          },
+          {
+            label: <Link href="/agentlaunch">Agent Launch</Link>,
+            key: "/agentlaunch",
+          },
+        ]
+      : [
+          {
+            label: <Link href="/">Dashboard</Link>,
+            key: "/",
+          },
+          {
+            label: <Link href="/agenticworld">AgenticWorld</Link>,
+            key: "/agenticworld",
+          },
+          {
+            label: <Link href="/agentlaunch">Agent Launch</Link>,
+            key: "/agentlaunch",
+          },
+        ];
 
   return (
     <Menu

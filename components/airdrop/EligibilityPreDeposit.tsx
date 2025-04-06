@@ -15,7 +15,8 @@ const cexInfo = [
     label: "Bitget",
     logo: "/icons/bitget-circle-logo.svg",
     img: "/icons/bitget-logo.svg",
-    learnMore: "",
+    learnMore:
+      "https://docs.google.com/document/d/1YkTTWY3tOsnjjcve44tu-jRMyDq2K0ICCMBQsKPt7fs/mobilebasic#heading=h.8qfw0bt1eobs",
     createAccount: "https://bitget.onelink.me/XqvW?af_xp=custom&pid=PRELSTFHE",
   },
   {
@@ -32,7 +33,8 @@ const cexInfo = [
     logo: "/icons/hashkey-circle-logo.svg",
     img: "/icons/hashkey-logo.svg",
     learnMore: "",
-    createAccount: "",
+    createAccount:
+      "https://passport.hashkey.com/en-US/register?passport=global",
   },
   {
     value: "Ourbit",
@@ -60,7 +62,8 @@ export default function EligibilityPreDeposit() {
     label: "Bitget",
     logo: "/icons/bitget-circle-logo.svg",
     img: "/icons/bitget-logo.svg",
-    learnMore: "",
+    learnMore:
+      "https://docs.google.com/document/d/1YkTTWY3tOsnjjcve44tu-jRMyDq2K0ICCMBQsKPt7fs/mobilebasic#heading=h.8qfw0bt1eobs",
     createAccount: "https://bitget.onelink.me/XqvW?af_xp=custom&pid=PRELSTFHE",
   });
   const [uid, setUid] = useState("");
