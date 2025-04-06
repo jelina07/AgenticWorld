@@ -1,9 +1,5 @@
 "use client";
-import {
-  useAirdropCexRegister,
-  useAirdropCexRegisterInfo,
-  useAirdropCheck,
-} from "@/sdk";
+import { useAirdropCexRegister, useAirdropCheck } from "@/sdk";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, Drawer, Input, message, notification, Select } from "antd";
 import React, { useEffect, useState } from "react";
@@ -11,6 +7,7 @@ import { useAccount } from "wagmi";
 import CEXConfirmModal from "./CEXConfirmModal";
 import { formatEther } from "viem";
 import { numberDigitsNoMillify } from "@/utils/utils";
+import MindConfirmModal from "./MindConfirmModal";
 
 const cexInfo = [
   {
@@ -72,11 +69,9 @@ export default function EligibilityPreDeposit() {
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [isMindSubmit, setIsMindSubmit] = useState(false);
-  const { runAsync: cexRegister, loading: registerLoading } =
-    useAirdropCexRegister();
 
   const showDrawer = async () => {
-    if (claimAmout?.register?.cexName === "Mind") {
+    if (claimAmout?.register?.cexName === "Mind" || isMindSubmit) {
       message.open({
         type: "warning",
         content: `You have registered claim on Mind`,
@@ -92,8 +87,9 @@ export default function EligibilityPreDeposit() {
 
   const showMindDrawer = async () => {
     if (
-      claimAmout?.register?.cexName &&
-      claimAmout?.register.cexName !== "Mind"
+      (claimAmout?.register?.cexName &&
+        claimAmout?.register.cexName !== "Mind") ||
+      isSubmit
     ) {
       message.open({
         type: "warning",
@@ -121,24 +117,11 @@ export default function EligibilityPreDeposit() {
     setCurrentCEX(cex);
   };
 
-  const confirmClick = async () => {
-    const payload = {
-      cexName: "Mind",
-      cexAddress: "MindAddress",
-      cexUuid: "MindUid",
-    } as any;
-    const res = await cexRegister(payload);
-    if (res) {
-      setIsMindSubmit(true);
-      notification.success({
-        message: "Success",
-        description: "Confirm Success !",
-      });
-    }
-  };
-
   const changIsSubmit = (value: boolean) => {
     setIsSubmit(value);
+  };
+  const changMindIsSubmit = (value: boolean) => {
+    setIsMindSubmit(value);
   };
 
   return (
@@ -256,7 +239,7 @@ export default function EligibilityPreDeposit() {
                     {"<"}
                   </span>
                   <span className="text-[20px] font-[900] ml-[10px]">
-                    Confirm to claim $FHE on MindChain - 0 gas
+                    Claim $FHE on MindChain - 0 gas
                   </span>
                 </div>
               }
@@ -268,23 +251,14 @@ export default function EligibilityPreDeposit() {
             >
               <div>
                 <div className="text-[14px] text-white font-[600] p-[10px] mt-[20px]">
-                  You&apos;ll be able to claim the airdrop on Mindchain
+                  Once confirm, you&apos;ll be able to claim $FHE on MindChain
+                  when Airdrop. This action is irreversible.
                 </div>
                 <div className="text-right">
-                  <Button
-                    type="primary"
-                    className="button-brand-border mt-[15px]"
-                    style={{ height: "38px", width: "130px" }}
-                    onClick={confirmClick}
-                    loading={registerLoading}
-                    disabled={isMindSubmit || claimAmout?.register}
-                  >
-                    {registerLoading
-                      ? "loading..."
-                      : isMindSubmit || claimAmout?.register
-                      ? "Confirmed"
-                      : "Confirm"}
-                  </Button>
+                  <MindConfirmModal
+                    registerInfo={claimAmout?.register}
+                    changIsSubmit={changMindIsSubmit}
+                  />
                 </div>
               </div>
             </Drawer>
