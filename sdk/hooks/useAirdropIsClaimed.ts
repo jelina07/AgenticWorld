@@ -46,7 +46,7 @@ export default function useAirdropIsClaimed(options?: Options<any, any>) {
         return;
       }
       const publicClient =
-        claimChain === "Mind" ? publicClientMind : publicClientBsc;
+        claimChain === "MindChain" ? publicClientMind : publicClientBsc;
       const res = (await publicClient.readContract({
         abi: AIRDROP_ABI,
         address: AIRDROP_ADDRESS[chainId],

@@ -51,7 +51,6 @@ export default function EligibilityPreDeposit() {
     runAsync: checkEligibility,
     loading,
   } = useAirdropCheck();
-  console.log("claimAmout", claimAmout);
 
   const { openConnectModal } = useConnectModal();
   const [isCEXOpen, setIsCEXOpen] = useState(false);
@@ -62,7 +61,7 @@ export default function EligibilityPreDeposit() {
     logo: "/icons/bitget-circle-logo.svg",
     img: "/icons/bitget-logo.svg",
     learnMore: "",
-    createAccount: "",
+    createAccount: "https://bitget.onelink.me/XqvW?af_xp=custom&pid=PRELSTFHE",
   });
   const [uid, setUid] = useState("");
   const [cexAddress, setCexAddress] = useState("");
@@ -71,34 +70,36 @@ export default function EligibilityPreDeposit() {
   const [isMindSubmit, setIsMindSubmit] = useState(false);
 
   const showDrawer = async () => {
-    if (claimAmout?.register?.cexName === "Mind" || isMindSubmit) {
-      message.open({
-        type: "warning",
-        content: `You have registered claim on Mind`,
-        duration: 5,
-      });
-    } else {
-      setIsCEXOpen(true);
-    }
+    // if (claimAmout?.register?.cexName === "MindChain" || isMindSubmit) {
+    //   message.open({
+    //     type: "warning",
+    //     content: `You have registered claim on Mind`,
+    //     duration: 5,
+    //   });
+    // } else {
+    //   setIsCEXOpen(true);
+    // }
+    setIsCEXOpen(true);
   };
   const onClose = () => {
     setIsCEXOpen(false);
   };
 
   const showMindDrawer = async () => {
-    if (
-      (claimAmout?.register?.cexName &&
-        claimAmout?.register.cexName !== "Mind") ||
-      isSubmit
-    ) {
-      message.open({
-        type: "warning",
-        content: `You have registered claim on CEX`,
-        duration: 5,
-      });
-    } else {
-      setIsMindOpen(true);
-    }
+    // if (
+    //   (claimAmout?.register?.cexName &&
+    //     claimAmout?.register.cexName !== "MindChain") ||
+    //   isSubmit
+    // ) {
+    //   message.open({
+    //     type: "warning",
+    //     content: `You have registered claim on CEX`,
+    //     duration: 5,
+    //   });
+    // } else {
+    //   setIsMindOpen(true);
+    // }
+    setIsMindOpen(true);
   };
   const onMindClose = () => {
     setIsMindOpen(false);
@@ -133,6 +134,26 @@ export default function EligibilityPreDeposit() {
         <div className="text-[14px] text-center mt-[10px]">
           Check your eligibility and claim $FHE tokens
         </div>
+        <div className="text-center text-[14px] text-[var(--mind-brand)]">
+          Checkout Our{" "}
+          <a
+            href="https://docs.mindnetwork.xyz/minddocs/other/airdrop-user-guide"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+          >
+            User Guide
+          </a>{" "}
+          or Provide Your{" "}
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdnC97a2gTJZcWip1zV0MItZyDi5uYMHkrVRYqQXg4hNy8HKw/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+          >
+            Feedback
+          </a>
+        </div>
       </div>
 
       <div className="relative">
@@ -161,7 +182,7 @@ export default function EligibilityPreDeposit() {
                 type="primary"
                 className="button-brand-border sm:mt-[0px] mt-[10px]"
                 style={{ height: "38px", width: "130px" }}
-                disabled={claimAmout}
+                disabled={claimAmout?.amount}
                 onClick={clickCheckEligibility}
                 loading={loading}
               >
@@ -172,7 +193,7 @@ export default function EligibilityPreDeposit() {
               <div className="text-[12px] text-[var(--mind-grey)] font-[600] mt-[10px]">
                 Checking Eligibility...
               </div>
-            ) : claimAmout !== undefined && !claimAmout ? (
+            ) : claimAmout !== undefined && !claimAmout?.amount ? (
               <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
                 Sorry, this wallet is not eligible for the airdrop, Please
                 switch wallet
@@ -183,7 +204,7 @@ export default function EligibilityPreDeposit() {
           </div>
         </div>
 
-        {claimAmout ? (
+        {claimAmout?.amount ? (
           <div className="p-[24px] mt-[50px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover relative">
             <div className="text-[18px] font-[900]">
               Congratulations! You&apos;re Eligible
@@ -191,45 +212,86 @@ export default function EligibilityPreDeposit() {
             <div className="sm:flex justify-between flex-wrap gap-[10px] items-end">
               <div className="flex-[2]">
                 <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
-                  You are eligible for the following amount:
+                  We prepared three options for you to claim on the Airdrop day
+                  !
                 </div>
-                <div className="bg-[rgba(255,255,255,0.05)] p-[20px] mt-[18px] text-center rounded-[10px]">
-                  <div className="text-[30px] text-[var(--mind-brand)] font-[700] break-all sm:break-normal">
-                    {claimAmout?.amount &&
-                      numberDigitsNoMillify(
+                <div className="bg-[rgba(255,255,255,0.05)] p-[10px] mt-[18px] text-center rounded-[10px] h-[131px] flex items-center justify-center">
+                  <div>
+                    <div className="text-[30px] text-[var(--mind-brand)] font-[700] break-all sm:break-normal">
+                      {numberDigitsNoMillify(
                         formatEther(BigInt(claimAmout?.amount))
-                      )}
-                    $FHE
-                  </div>
-                  <div className="text-white text-[12px] mt-[10px] font-[600]">
-                    $FHE will be claimable on BSC chain by default when the
-                    claim is open
+                      ) + " "}
+                      $FHE
+                    </div>
+                    <div className="text-white text-[12px] mt-[10px] font-[600]">
+                      {claimAmout?.register?.cexName === "MindChain" ||
+                      isMindSubmit
+                        ? "You have chosen MindChain to claim $FHE for the airdrop"
+                        : (claimAmout?.register?.cexName &&
+                            claimAmout?.register.cexName !== "MindChain") ||
+                          isSubmit
+                        ? "You have chosen to pre-deposit $FHE to CEX for the airdrop"
+                        : "$FHE will be claimable on BSC chain by default when the claim is open"}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex-1 p-[10px] w-full min-w-[215px]">
-                <div className="text-right">
-                  <span className="text-[12px] font-[600] leading-[1.2] inline-block">
-                    If you DON&apos;T prefer to claim on BSC Chain, other
-                    options:
-                  </span>
-                </div>
-                <div className="text-right">
-                  <span
-                    className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
-                    onClick={showMindDrawer}
-                  >
-                    Claim on MindChain (0 gas) →
-                  </span>
-                  <br />
-                  <span
-                    className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
-                    onClick={showDrawer}
-                  >
-                    Pre-Deposit to CEX →
-                  </span>
-                </div>
+              <div className="flex-1 w-full min-w-[215px] bg-[rgba(255,255,255,0.05)] text-center rounded-[10px] h-[131px] flex items-center justify-center p-[10px]">
+                {claimAmout?.register?.cexName === "MindChain" ||
+                isMindSubmit ? (
+                  <div>
+                    <Button
+                      type="primary"
+                      className="button-brand-border"
+                      style={{ height: "38px", width: "130px" }}
+                      disabled={true}
+                    >
+                      Claim $FHE
+                    </Button>
+                    <div className="text-[12px] text-white">
+                      Open on Airdrop day
+                    </div>
+                  </div>
+                ) : (claimAmout?.register?.cexName &&
+                    claimAmout?.register.cexName !== "MindChain") ||
+                  isSubmit ? (
+                  <div>
+                    <div className="text-[12px] font-[600] leading-[1.2]">
+                      $FHE will be sent to your entered account automatically
+                      during the airdrop.
+                    </div>
+                    <div
+                      className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer mt-[10px]"
+                      onClick={showDrawer}
+                    >
+                      Check my submitted info →
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div>
+                      <span className="text-[12px] font-[600] leading-[1.2] inline-block">
+                        If you DON&apos;T prefer to claim on BSC Chain, other
+                        options:
+                      </span>
+                    </div>
+                    <div className="mt-[10px]">
+                      <div
+                        className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer"
+                        onClick={showMindDrawer}
+                      >
+                        Claim on MindChain (0 Gas) →
+                      </div>
+                      <div
+                        className="text-[12px] font-[600] text-[var(--mind-brand)] cursor-pointer "
+                        onClick={showDrawer}
+                      >
+                        Pre-Deposit to CEX →
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <Drawer
@@ -239,7 +301,7 @@ export default function EligibilityPreDeposit() {
                     {"<"}
                   </span>
                   <span className="text-[20px] font-[900] ml-[10px]">
-                    Claim $FHE on MindChain - 0 gas
+                    Claim $FHE on MindChain - 0 Gas
                   </span>
                 </div>
               }
@@ -273,7 +335,7 @@ export default function EligibilityPreDeposit() {
                 {"<"}
               </span>
               <span className="text-[20px] font-[900] ml-[10px]">
-                Pre-Deposit $FHE to CEX ! - 0 gas fee
+                Pre-Deposit $FHE to CEX ! - 0 Gas Fee
               </span>
             </div>
           }

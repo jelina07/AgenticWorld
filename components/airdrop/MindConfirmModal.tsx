@@ -23,7 +23,7 @@ export default function MindConfirmModal({
 
   const clickConfirm = async () => {
     const payload = {
-      cexName: "Mind",
+      cexName: "MindChain",
       cexAddress: "MindAddress",
       cexUuid: "MindUid",
     } as any;

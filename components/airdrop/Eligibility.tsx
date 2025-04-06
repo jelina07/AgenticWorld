@@ -59,10 +59,10 @@ export default function Eligibility() {
   const clickClaim = async () => {
     if (
       claimAmout?.register?.cexName &&
-      claimAmout.register.cexName !== "Mind"
+      claimAmout.register.cexName !== "MindChain"
     ) {
       setClaimed(true);
-    } else if (claimAmout?.register?.cexName === "Mind") {
+    } else if (claimAmout?.register?.cexName === "MindChain") {
       try {
         setActionLoop(true);
         const resId = await mindAirdropRelay();
@@ -104,9 +104,19 @@ export default function Eligibility() {
 
   useAsyncEffect(async () => {
     if (claimAmout) {
-      const claimChain =
-        claimAmout.register?.cexName === "Mind" ? "Mind" : "BSC";
-      await airdropIsClaimed(claimChain);
+      if (
+        claimAmout.register?.cexName &&
+        claimAmout.register.cexName !== "MindChain"
+      ) {
+        setClaimed(true);
+      } else if (
+        claimAmout.register?.cexName &&
+        claimAmout.register?.cexName === "MindChain"
+      ) {
+        await airdropIsClaimed("MindChain");
+      } else {
+        await airdropIsClaimed("Bsc");
+      }
     }
   }, [claimAmout]);
 
@@ -118,6 +128,16 @@ export default function Eligibility() {
         </div>
         <div className="text-[14px] text-center mt-[10px]">
           Check your eligibility and claim $FHE tokens
+        </div>
+        <div className="text-center">
+          <a
+            href="http://"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+          >
+            Checkout Our User Guide or Provide Your Feedback
+          </a>
         </div>
       </div>
       <div
@@ -145,7 +165,7 @@ export default function Eligibility() {
               type="primary"
               className="button-brand-border sm:mt-[0px] mt-[10px]"
               style={{ height: "38px", width: "130px" }}
-              disabled={claimAmout}
+              disabled={claimAmout?.amount}
               onClick={clickCheckEligibility}
               loading={loading}
             >
@@ -156,7 +176,7 @@ export default function Eligibility() {
             <div className="text-[12px] text-[var(--mind-grey)] font-[600] mt-[10px]">
               Checking Eligibility...
             </div>
-          ) : claimAmout !== undefined && !claimAmout ? (
+          ) : claimAmout !== undefined && !claimAmout?.amount ? (
             <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
               Sorry, this wallet is not eligible for the airdrop, Please switch
               wallet
@@ -166,7 +186,7 @@ export default function Eligibility() {
           )}
         </div>
       </div>
-      {claimAmout ? (
+      {claimAmout?.amount ? (
         <div className="p-[24px] mt-[50px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
           <div className="text-[18px] font-[900]">
             Congratulations! You&apos;re Eligible
@@ -174,13 +194,12 @@ export default function Eligibility() {
           <div className="flex justify-between gap-[10px] items-end flex-wrap">
             <div>
               <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
-                You can claim the following amount:
+                You are eligible for the following amount:
               </div>
               <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] ">
-                {claimAmout?.amount &&
-                  numberDigitsNoMillify(
-                    formatEther(BigInt(claimAmout?.amount))
-                  )}
+                {numberDigitsNoMillify(
+                  formatEther(BigInt(claimAmout?.amount))
+                ) + " "}
                 $FHE
               </div>
             </div>

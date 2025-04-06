@@ -25,11 +25,11 @@ export default function Facuet({ refreshFHE }: { refreshFHE: Function }) {
           description: "Pilot Water Success",
         });
       } else {
-        message.open({
-          type: "warning",
-          content: `You have 0 gas fee in your wallet, Make sure you have enough gas in your wallet.`,
-          duration: 8,
-        });
+        // message.open({
+        //   type: "warning",
+        //   content: `You have 0 gas fee in your wallet, Make sure you have enough gas in your wallet.`,
+        //   duration: 8,
+        // });
       }
     } else {
       window.open(

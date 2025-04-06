@@ -5,7 +5,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 
 type Payload = {
-  cexName: "Bitget" | "Gate.io" | "HASHKEY" | "Ourbit" | "Mind";
+  cexName: "Bitget" | "Gate.io" | "HASHKEY" | "Ourbit" | "MindChain";
   cexAddress: string;
   cexUuid: string;
 };
