@@ -49,7 +49,7 @@ const cexInfo = [
     value: "Ourbit",
     label: "Ourbit",
     logo: "/images/ourbit-circle-logo.jpeg",
-    img: "/icons/ourbit-logo.svg",
+    img: "/images/ourbit-logo.png",
     learnMore:
       "https://docs.google.com/document/d/10bGKvtXDKOV3OdAZzGOVhQUAjaU-KLps6wSB1_AmpLA/edit?tab=t.0#heading=h.6swp0s2s6ve5",
     createAccount: "",
@@ -234,7 +234,7 @@ export default function EligibilityPreDeposit() {
               </div>
             ) : claimAmout !== undefined && !claimAmout?.amount ? (
               <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
-                Sorry, this wallet is not eligible for the airdrop, Please
+                Sorry, this wallet is not eligible for the airdrop, please
                 switch wallet
               </div>
             ) : (

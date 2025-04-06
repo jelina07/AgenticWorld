@@ -173,7 +173,7 @@ export default function Eligibility() {
             </div>
           ) : claimAmout !== undefined && !claimAmout?.amount ? (
             <div className="text-[12px] text-[var(--mind-red)] font-[600] mt-[10px]">
-              Sorry, this wallet is not eligible for the airdrop, Please switch
+              Sorry, this wallet is not eligible for the airdrop, please switch
               wallet
             </div>
           ) : (
