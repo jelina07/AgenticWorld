@@ -353,7 +353,7 @@ export default function EligibilityPreDeposit() {
               <div>
                 <div className="text-[14px] text-white font-[600] p-[10px] mt-[20px]">
                   Once confirm, you&apos;ll be able to claim $FHE on MindChain
-                  when Airdrop. This action is irreversible.
+                  when Airdrop. <br></br>This action is irreversible.
                 </div>
                 <div className="text-right">
                   <MindConfirmModal
