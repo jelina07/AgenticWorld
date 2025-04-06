@@ -11,9 +11,9 @@ import { AirdropContractErrorCode } from "@/sdk/utils/script";
 import { numberDigitsNoMillify } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAsyncEffect } from "ahooks";
-import { Button, Input, message, notification } from "antd";
+import { Button, notification } from "antd";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 
@@ -171,7 +171,7 @@ export default function Eligibility() {
           <div className="text-[18px] font-[900]">
             Congratulations! You&apos;re Eligible
           </div>
-          <div className="flex justify-between gap-[10px] items-end">
+          <div className="flex justify-between gap-[10px] items-end flex-wrap">
             <div>
               <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
                 You can claim the following amount:
@@ -185,26 +185,28 @@ export default function Eligibility() {
               </div>
             </div>
             <div className="flex gap-[10px] items-center">
-              {!claimed || !claimedByContract ? (
-                <Button
-                  type="primary"
-                  className="button-brand-border"
-                  style={{ height: "38px", width: "130px" }}
-                  loading={claimLoading || actionLoop}
-                  onClick={clickClaim}
+              <Button
+                type="primary"
+                className="button-brand-border"
+                style={{ height: "38px", width: "130px" }}
+                loading={claimLoading || actionLoop}
+                onClick={clickClaim}
+                disabled={claimed || claimedByContract}
+              >
+                {claimed || claimedByContract ? "Claimed" : "Claim $FHE"}
+              </Button>
+              <div className="text-center">
+                <Link
+                  href={"/agenticworld"}
+                  className={`text-[14px] font-[600] text-[var(--mind-brand)] 
+                            hover:text-[var(--mind-brand)] underline hover:underline 
+                            border border-[var(--mind-brand)] px-[20px] py-[8px] rounded-[20px] ${
+                              claimed || claimedByContract ? "" : "hidden"
+                            }`}
                 >
-                  Claim $FHE
-                </Button>
-              ) : (
-                <div className="text-center">
-                  <Link
-                    href={"/agenticworld"}
-                    className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
-                  >
-                    Go →
-                  </Link>
-                </div>
-              )}
+                  Go →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
