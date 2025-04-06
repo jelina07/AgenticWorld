@@ -1,7 +1,16 @@
 "use client";
 import { useAirdropCexRegister, useAirdropCheck } from "@/sdk";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { Button, Drawer, Input, message, notification, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  CheckboxProps,
+  Drawer,
+  Input,
+  message,
+  notification,
+  Select,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import CEXConfirmModal from "./CEXConfirmModal";
@@ -41,7 +50,8 @@ const cexInfo = [
     label: "Ourbit",
     logo: "/images/ourbit-circle-logo.jpeg",
     img: "/icons/ourbit-logo.svg",
-    learnMore: "",
+    learnMore:
+      "https://docs.google.com/document/d/10bGKvtXDKOV3OdAZzGOVhQUAjaU-KLps6wSB1_AmpLA/edit?tab=t.0#heading=h.6swp0s2s6ve5",
     createAccount: "",
   },
 ];
@@ -71,17 +81,9 @@ export default function EligibilityPreDeposit() {
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [isMindSubmit, setIsMindSubmit] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
 
   const showDrawer = async () => {
-    // if (claimAmout?.register?.cexName === "MindChain" || isMindSubmit) {
-    //   message.open({
-    //     type: "warning",
-    //     content: `You have registered claim on Mind`,
-    //     duration: 5,
-    //   });
-    // } else {
-    //   setIsCEXOpen(true);
-    // }
     setIsCEXOpen(true);
   };
   const onClose = () => {
@@ -89,19 +91,6 @@ export default function EligibilityPreDeposit() {
   };
 
   const showMindDrawer = async () => {
-    // if (
-    //   (claimAmout?.register?.cexName &&
-    //     claimAmout?.register.cexName !== "MindChain") ||
-    //   isSubmit
-    // ) {
-    //   message.open({
-    //     type: "warning",
-    //     content: `You have registered claim on CEX`,
-    //     duration: 5,
-    //   });
-    // } else {
-    //   setIsMindOpen(true);
-    // }
     setIsMindOpen(true);
   };
   const onMindClose = () => {
@@ -110,7 +99,15 @@ export default function EligibilityPreDeposit() {
 
   const clickCheckEligibility = async () => {
     if (isConnected && address) {
-      const res = await checkEligibility(address);
+      if (privacy) {
+        const res = await checkEligibility(address);
+      } else {
+        message.open({
+          type: "warning",
+          content: `To check eligibility, please agree to the Terms & Conditions and Privacy Policy.`,
+          duration: 5,
+        });
+      }
     } else {
       openConnectModal?.();
     }
@@ -126,6 +123,11 @@ export default function EligibilityPreDeposit() {
   };
   const changMindIsSubmit = (value: boolean) => {
     setIsMindSubmit(value);
+  };
+
+  const termsChange: CheckboxProps["onChange"] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+    setPrivacy(e.target.checked);
   };
 
   return (
@@ -169,7 +171,39 @@ export default function EligibilityPreDeposit() {
           </div>
           <div className="mt-[20px]">
             <div className="text-[15px] font-[700]">Enter Wallet Address</div>
-            <div className="sm:flex justify-between gap-[10px] items-center mt-[15px] mind-input ">
+            <div
+              className={`mind-checkbox mt-[15px] ${
+                isConnected ? "" : "hidden"
+              }`}
+            >
+              <Checkbox onChange={termsChange} disabled={claimAmout?.amount}>
+                <span className="text-white text-[14px]">
+                  You agree to the{" "}
+                </span>
+                <a
+                  href="https://docs.mindnetwork.xyz/minddocs/security-and-privacy/mind-network-airdrop-terms-of-service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white text-[14px] underline hover:underline inline-block"
+                >
+                  Terms & Conditions
+                </a>
+                <span className="text-white text-[14px]">
+                  {" "}
+                  and confirm you have read and understand the{" "}
+                </span>
+                <a
+                  href="https://docs.mindnetwork.xyz/minddocs/security-and-privacy/mind-network-airdrop-privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white text-[14px] underline hover:underline"
+                >
+                  Privacy Policy
+                </a>
+              </Checkbox>
+            </div>
+
+            <div className="sm:flex justify-between gap-[10px] items-center mt-[10px] mind-input ">
               <div
                 className="px-[11px] py-[8px] flex-1 flex items-center
                             bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
@@ -181,16 +215,18 @@ export default function EligibilityPreDeposit() {
                   </div>
                 </div>
               </div>
-              <Button
-                type="primary"
-                className="button-brand-border sm:mt-[0px] mt-[10px]"
-                style={{ height: "38px", width: "130px" }}
-                disabled={claimAmout?.amount}
-                onClick={clickCheckEligibility}
-                loading={loading}
-              >
-                Check Eligibility
-              </Button>
+              <div>
+                <Button
+                  type="primary"
+                  className="button-brand-border sm:mt-[0px] mt-[10px] mr-[10px]"
+                  style={{ height: "38px", width: "130px" }}
+                  disabled={claimAmout?.amount}
+                  onClick={clickCheckEligibility}
+                  loading={loading}
+                >
+                  Check Eligibility
+                </Button>
+              </div>
             </div>
             {loading ? (
               <div className="text-[12px] text-[var(--mind-grey)] font-[600] mt-[10px]">
@@ -356,6 +392,10 @@ export default function EligibilityPreDeposit() {
                   {item.label === "Bitget" ? (
                     <div className="text-[9px] text-right text-[#66ddfb] leading-[9px]">
                       50 ~ 1000 $FHE<br></br>1.4M in total, FCFS!
+                    </div>
+                  ) : item.label === "Ourbit" ? (
+                    <div className="text-[9px] text-right text-[#5ea976] leading-[9px]">
+                      Earn 10% Extra from<br></br>200,000 $FHE Pool
                     </div>
                   ) : (
                     <></>

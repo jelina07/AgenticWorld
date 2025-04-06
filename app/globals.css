@@ -764,3 +764,7 @@ input:focus {
   .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background-color: var(--background) !important;
 }
+
+.mind-checkbox .ant-checkbox-disabled .ant-checkbox-inner {
+  background: var(--mind-brand);
+}

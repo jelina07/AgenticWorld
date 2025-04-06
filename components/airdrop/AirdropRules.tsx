@@ -10,12 +10,12 @@ const ruleList = [
   {
     imgurl: "/icons/rule-logo2.svg",
     title: "Mainnet Contributors",
-    info: "Rewards are based on your vFHE delegation, TGV contributions, Hub voting, and other on-chain activities at the time of snapshot. TGV from Mind Network gets a higher multiplier than TGV from partners.",
+    info: "Rewards are based on your vFHE delegation at the time of the snapshot, including TGV (Tokenized Governance Value), Hub voting, delegation rewards, and community campaigns. TGV from Mind Network qualifies for a higher multiplier.",
   },
   {
     imgurl: "/icons/rule-logo3.svg",
     title: "Advocate Program",
-    info: "Rewards based on referral performance and Advocate Leaderboard ranking.",
+    info: "The calculation is based on successful and valid referrals.",
   },
   {
     imgurl: "/icons/rule-logo4.svg",
@@ -24,8 +24,8 @@ const ruleList = [
   },
   {
     imgurl: "/icons/rule-logo5.svg",
-    title: "Testnet and Community Contributors",
-    info: "Eligible with any one: Testnet active participation, having a Discord exclusive role, having at least 600 Galxe points, or holding a Mind FHEellow NFT.",
+    title: "Community Contributors",
+    info: "Eligible with any one: Testnet active participation, having a Discord exclusive role, having at least 600 Galxe points, actively participating in Zealy, or holding a Mind FHEellow NFT.",
   },
 ];
 export default function AirdropRules() {
