@@ -15,47 +15,8 @@ import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import CEXConfirmModal from "./CEXConfirmModal";
 import { formatEther } from "viem";
-import { numberDigitsNoMillify } from "@/utils/utils";
+import { cexInfo, numberDigitsNoMillify } from "@/utils/utils";
 import MindConfirmModal from "./MindConfirmModal";
-
-const cexInfo = [
-  {
-    value: "Bitget",
-    label: "Bitget",
-    logo: "/icons/bitget-circle-logo.svg",
-    img: "/icons/bitget-logo.svg",
-    learnMore:
-      "https://docs.google.com/document/d/1YkTTWY3tOsnjjcve44tu-jRMyDq2K0ICCMBQsKPt7fs/mobilebasic#heading=h.8qfw0bt1eobs",
-    createAccount: "https://bitget.onelink.me/XqvW?af_xp=custom&pid=PRELSTFHE",
-  },
-  {
-    value: "Gate.io",
-    label: "Gate.io",
-    logo: "/images/gate-circle-logo.jpeg",
-    img: "/icons/gate-logo.svg",
-    learnMore: "",
-    createAccount: "",
-  },
-  {
-    value: "HASHKEY",
-    label: "HASHKEY",
-    logo: "/icons/hashkey-circle-logo.svg",
-    img: "/icons/hashkey-logo.svg",
-    learnMore:
-      "https://docs.google.com/document/d/1hq5MFbu5RdcyfsAuRyDU8CKb6b8kien0SytZX4gZeNw/edit?usp=sharing",
-    createAccount:
-      "https://global.hashkey.com/en-US/register/invite?invite_code=MIND",
-  },
-  {
-    value: "Ourbit",
-    label: "Ourbit",
-    logo: "/images/ourbit-circle-logo.jpeg",
-    img: "/images/ourbit-logo.png",
-    learnMore:
-      "https://docs.google.com/document/d/10bGKvtXDKOV3OdAZzGOVhQUAjaU-KLps6wSB1_AmpLA/edit?tab=t.0#heading=h.6swp0s2s6ve5",
-    createAccount: "",
-  },
-];
 
 export default function EligibilityPreDeposit() {
   const { address, isConnected } = useAccount();
@@ -434,6 +395,7 @@ export default function EligibilityPreDeposit() {
                 defaultValue="Bitget"
                 onChange={handleChange}
                 options={cexInfo}
+                value={currentCEX.value}
                 disabled={isSubmit || claimAmout?.register}
               />
             </div>

@@ -76,8 +76,6 @@ const config = {
   },
 } as any;
 
-const urlmap = () => {};
-
 export default function Bridge() {
   const [currentToken, setCurrentToken] = useState(config["EHT"]);
   const [currentFromChain, setCurrentFromChain] = useState(
