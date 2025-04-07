@@ -26,7 +26,7 @@ const config = {
         {
           label: "Arbitrum",
           value: "Arbitrum",
-          logo: "",
+          logo: "/icons/arbiturm.svg",
         },
       ],
     },
@@ -83,21 +83,21 @@ export default function Bridge() {
           logo: "/icons/arbiturm.svg",
         },
         {
-          label: "Mind",
+          label: "MindChain",
           value: "Mind",
           logo: "/icons/mind-chain.svg",
         },
       ],
       to: [
         {
-          label: "Mind",
+          label: "MindChain",
           value: "Mind",
           logo: "/icons/mind-chain.svg",
         },
         {
           label: "Arbitrum",
           value: "Arbitrum",
-          logo: "",
+          logo: "/icons/arbiturm.svg",
         },
       ],
     },
@@ -113,11 +113,23 @@ export default function Bridge() {
     logo: "/icons/mind-chain.svg",
   });
 
-  const handleChange = (value: string) => {
+  const changeToken = (value: string) => {
     const currentConfig = config[value];
     console.log("currentConfig", currentConfig);
     setCurrentConfig(currentConfig);
     setCurrentFromChain(currentConfig.chain.from[0]);
+    setCurrentToChain(currentConfig.chain.to[0]);
+
+    console.log("changeToken", currentConfig.chain.from[0]);
+  };
+
+  const changeFromChian = (value: string) => {
+    const currentFromChain = currentConfig.chain.from.find(
+      (item: any) => item.value === value
+    );
+    console.log("currentFromChain", currentFromChain);
+
+    setCurrentFromChain(currentFromChain!);
     setCurrentToChain(currentConfig.chain.to[0]);
   };
 
@@ -143,7 +155,7 @@ export default function Bridge() {
               />
             }
             defaultValue="ETH"
-            onChange={handleChange}
+            onChange={changeToken}
             options={supportToken}
           />
         </div>
@@ -160,6 +172,7 @@ export default function Bridge() {
               />
             }
             defaultValue={currentFromChain.value}
+            onChange={changeFromChian}
             options={currentConfig.chain.from}
           />
         </div>
