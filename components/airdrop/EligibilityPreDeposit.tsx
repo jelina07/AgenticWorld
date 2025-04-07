@@ -412,7 +412,9 @@ export default function EligibilityPreDeposit() {
                       Earn 100% $FHE bonus<br></br>100K in total,FCFS!
                     </div>
                   ) : (
-                    <></>
+                    <div className="text-[9px] text-right text-[#2d66f6] leading-[9px]">
+                      100 ~ 2000 $FHE<br></br>1.5M in total, FCFS!
+                    </div>
                   )}
                 </div>
               ))}
