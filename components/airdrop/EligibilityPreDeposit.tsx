@@ -42,9 +42,10 @@ const cexInfo = [
     label: "HASHKEY",
     logo: "/icons/hashkey-circle-logo.svg",
     img: "/icons/hashkey-logo.svg",
-    learnMore: "",
+    learnMore:
+      "https://docs.google.com/document/d/1hq5MFbu5RdcyfsAuRyDU8CKb6b8kien0SytZX4gZeNw/edit?usp=sharing",
     createAccount:
-      "https://passport.hashkey.com/en-US/register?passport=global",
+      "https://global.hashkey.com/en-US/register/invite?invite_code=MIND",
   },
   {
     value: "Ourbit",
