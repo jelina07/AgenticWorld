@@ -407,6 +407,10 @@ export default function EligibilityPreDeposit() {
                     <div className="text-[9px] text-right text-[#5ea976] leading-[9px]">
                       Earn 10% Extra from<br></br>200,000 $FHE Pool
                     </div>
+                  ) : item.label === "HASHKEY" ? (
+                    <div className="text-[9px] text-right text-[#bd5aa0] leading-[9px] mt-[2px]">
+                      Earn 100% $FHE bonus<br></br>100K in total,FCFS!
+                    </div>
                   ) : (
                     <></>
                   )}
