@@ -1,9 +1,11 @@
 import { Select } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const config = {
   EHT: {
     logo: "/icons/eth.svg",
+    label: "ETH",
+    value: "ETH",
     chain: {
       from: [
         {
@@ -33,6 +35,8 @@ const config = {
   },
   FHE: {
     logo: "/icons/mindtoken-icon.svg",
+    label: "FHE",
+    value: "FHE",
     chain: {
       from: [
         {
@@ -72,67 +76,104 @@ const config = {
   },
 } as any;
 
+const urlmap = () => {};
+
 export default function Bridge() {
-  const [currentConfig, setCurrentConfig] = useState({
-    logo: "/icons/eth.svg",
-    chain: {
-      from: [
-        {
-          label: "Arbitrum",
-          value: "Arbitrum",
-          logo: "/icons/arbiturm.svg",
-        },
-        {
-          label: "MindChain",
-          value: "Mind",
-          logo: "/icons/mind-chain.svg",
-        },
-      ],
-      to: [
-        {
-          label: "MindChain",
-          value: "Mind",
-          logo: "/icons/mind-chain.svg",
-        },
-        {
-          label: "Arbitrum",
-          value: "Arbitrum",
-          logo: "/icons/arbiturm.svg",
-        },
-      ],
-    },
-  });
-  const [currentFromChain, setCurrentFromChain] = useState({
-    label: "Arbitrum",
-    value: "Arbitrum",
-    logo: "/icons/arbiturm.svg",
-  });
-  const [currentToChain, setCurrentToChain] = useState({
-    label: "MindChain",
-    value: "Mind",
-    logo: "/icons/mind-chain.svg",
-  });
+  const [currentToken, setCurrentToken] = useState(config["EHT"]);
+  const [currentFromChain, setCurrentFromChain] = useState(
+    config["EHT"].chain.from[0]
+  );
+  const [currentToChain, setCurrentToChain] = useState(
+    config["EHT"].chain.to[0]
+  );
+
+  const fromChainOption = useMemo(() => {
+    return currentToken.chain.from;
+  }, [currentToken]);
+
+  const toChainOption = useMemo(() => {
+    return currentToken.chain.to.filter(
+      (item: any) => item.value !== currentFromChain.value
+    );
+  }, [currentToken, currentFromChain]);
+
+  const url = useMemo(() => {
+    if (
+      currentToken.value === "ETH" &&
+      currentFromChain.value === "Arbitrum" &&
+      currentToChain.value === "Mind"
+    ) {
+      return "https://bridge.arbitrum.io/?destinationChain=mind-network&sourceChain=arbitrum-one";
+    } else if (
+      currentToken.value === "ETH" &&
+      currentFromChain.value === "Mind" &&
+      currentToChain.value === "Arbitrum"
+    ) {
+      return "https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=mind-network";
+    } else if (
+      currentToken.value === "FHE" &&
+      currentFromChain.value === "Ethereum" &&
+      currentToChain.value === "Mind"
+    ) {
+      return "https://app.transporter.io/?from=mainnet&tab=token&to=mind&token=FHE";
+    } else if (
+      currentToken.value === "FHE" &&
+      currentFromChain.value === "Ethereum" &&
+      currentToChain.value === "BSC"
+    ) {
+      return "https://app.transporter.io/?from=mainnet&tab=token&to=bsc&token=FHE";
+    } else if (
+      currentToken.value === "FHE" &&
+      currentFromChain.value === "BSC" &&
+      currentToChain.value === "Mind"
+    ) {
+      return "https://app.transporter.io/?from=bsc&tab=token&to=mind&token=FHE";
+    } else if (
+      currentToken.value === "FHE" &&
+      currentFromChain.value === "BSC" &&
+      currentToChain.value === "Ethereum"
+    ) {
+      return "https://app.transporter.io/?from=bsc&tab=token&to=mainnet&token=FHE";
+    } else if (
+      currentToken.value === "FHE" &&
+      currentFromChain.value === "Mind" &&
+      currentToChain.value === "Ethereum"
+    ) {
+      return "https://app.transporter.io/?from=mind&tab=token&to=mainnet&token=FHE";
+    } else if (
+      currentToken.value === "FHE" &&
+      currentFromChain.value === "Mind" &&
+      currentToChain.value === "BSC"
+    ) {
+      return "https://app.transporter.io/?from=mind&tab=token&to=bsc&token=FHE";
+    }
+  }, [currentToChain]);
+
+  useEffect(() => {
+    setCurrentFromChain(fromChainOption[0]);
+  }, [fromChainOption]);
+
+  useEffect(() => {
+    setCurrentToChain(toChainOption[0]);
+  }, [toChainOption]);
 
   const changeToken = (value: string) => {
-    const currentConfig = config[value];
-    console.log("currentConfig", currentConfig);
-    setCurrentConfig(currentConfig);
-    setCurrentFromChain(currentConfig.chain.from[0]);
-    setCurrentToChain(currentConfig.chain.to[0]);
-
-    console.log("changeToken", currentConfig.chain.from[0]);
+    setCurrentToken(config[value]);
   };
 
   const changeFromChian = (value: string) => {
-    const currentFromChain = currentConfig.chain.from.find(
+    const currentFromChain = currentToken.chain.from.find(
       (item: any) => item.value === value
     );
-    console.log("currentFromChain", currentFromChain);
-
     setCurrentFromChain(currentFromChain!);
-    setCurrentToChain(currentConfig.chain.to[0]);
   };
 
+  const changeToChian = (value: string) => {
+    const currentToChain = currentToken.chain.to.find(
+      (item: any) => item.value === value
+    );
+    setCurrentToChain(currentToChain!);
+  };
   const supportToken = Object.keys(config).map((str: string) => ({
     value: str,
     label: str,
@@ -149,7 +190,7 @@ export default function Bridge() {
           <Select
             prefix={
               <img
-                src={currentConfig.logo}
+                src={currentToken.logo}
                 width={20}
                 className="rounded-[50%]"
               />
@@ -171,9 +212,10 @@ export default function Bridge() {
                 className="rounded-[50%]"
               />
             }
-            defaultValue={currentFromChain.value}
+            defaultValue="Arbitrum"
+            value={currentFromChain.value}
             onChange={changeFromChian}
-            options={currentConfig.chain.from}
+            options={fromChainOption}
           />
         </div>
         <div className="my-[20px]">
@@ -196,13 +238,15 @@ export default function Bridge() {
                 className="rounded-[50%]"
               />
             }
-            defaultValue={currentToChain.value}
-            options={currentConfig.chain.to}
+            defaultValue="MindChain"
+            value={currentToChain.value}
+            onChange={changeToChian}
+            options={toChainOption}
           />
         </div>
         <div className="mt-[40px]">
           <a
-            href="http://"
+            href={url}
             target="_blank"
             rel="noopener noreferrer"
             id="mind-bridge"
