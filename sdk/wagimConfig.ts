@@ -45,7 +45,7 @@ export const getTransports = (chainId: number) => {
 export const mindtestnet = {
   id: 192940,
   name: "MindTestChain",
-  iconUrl: "/icons/mindnet-icon.svg",
+  iconUrl: "/icons/mind-chain.svg",
   iconBackground: "#fff",
   nativeCurrency: { name: "mind native token", symbol: "ETH", decimals: 18 },
   rpcUrls: {
@@ -63,7 +63,7 @@ export const mindtestnet = {
 export const mindnet = {
   id: 228,
   name: "MindChain",
-  iconUrl: "/icons/mindnet-icon.svg",
+  iconUrl: "/icons/mind-chain.svg",
   iconBackground: "#fff",
   nativeCurrency: { name: "mind native token", symbol: "ETH", decimals: 18 },
   rpcUrls: {

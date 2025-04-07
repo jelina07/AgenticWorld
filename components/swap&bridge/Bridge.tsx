@@ -1,11 +1,131 @@
 import { Select } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
-const config = [{}];
-
-const handleChange = () => {};
+const config = {
+  EHT: {
+    logo: "/icons/eth.svg",
+    chain: {
+      from: [
+        {
+          label: "Arbitrum",
+          value: "Arbitrum",
+          logo: "/icons/arbiturm.svg",
+        },
+        {
+          label: "MindChain",
+          value: "Mind",
+          logo: "/icons/mind-chain.svg",
+        },
+      ],
+      to: [
+        {
+          label: "MindChain",
+          value: "Mind",
+          logo: "/icons/mind-chain.svg",
+        },
+        {
+          label: "Arbitrum",
+          value: "Arbitrum",
+          logo: "",
+        },
+      ],
+    },
+  },
+  FHE: {
+    logo: "/icons/mindtoken-icon.svg",
+    chain: {
+      from: [
+        {
+          label: "Ethereum",
+          value: "Ethereum",
+          logo: "/icons/eth.svg",
+        },
+        {
+          label: "BSC",
+          value: "BSC",
+          logo: "/images/bnb.png",
+        },
+        {
+          label: "MindChain",
+          value: "Mind",
+          logo: "/icons/mind-chain.svg",
+        },
+      ],
+      to: [
+        {
+          label: "Ethereum",
+          value: "Ethereum",
+          logo: "/icons/eth.svg",
+        },
+        {
+          label: "BSC",
+          value: "BSC",
+          logo: "/images/bnb.png",
+        },
+        {
+          label: "MindChain",
+          value: "Mind",
+          logo: "/icons/mind-chain.svg",
+        },
+      ],
+    },
+  },
+} as any;
 
 export default function Bridge() {
+  const [currentConfig, setCurrentConfig] = useState({
+    logo: "/icons/eth.svg",
+    chain: {
+      from: [
+        {
+          label: "Arbitrum",
+          value: "Arbitrum",
+          logo: "/icons/arbiturm.svg",
+        },
+        {
+          label: "Mind",
+          value: "Mind",
+          logo: "/icons/mind-chain.svg",
+        },
+      ],
+      to: [
+        {
+          label: "Mind",
+          value: "Mind",
+          logo: "/icons/mind-chain.svg",
+        },
+        {
+          label: "Arbitrum",
+          value: "Arbitrum",
+          logo: "",
+        },
+      ],
+    },
+  });
+  const [currentFromChain, setCurrentFromChain] = useState({
+    label: "Arbitrum",
+    value: "Arbitrum",
+    logo: "/icons/arbiturm.svg",
+  });
+  const [currentToChain, setCurrentToChain] = useState({
+    label: "MindChain",
+    value: "Mind",
+    logo: "/icons/mind-chain.svg",
+  });
+
+  const handleChange = (value: string) => {
+    const currentConfig = config[value];
+    console.log("currentConfig", currentConfig);
+    setCurrentConfig(currentConfig);
+    setCurrentFromChain(currentConfig.chain.from[0]);
+    setCurrentToChain(currentConfig.chain.to[0]);
+  };
+
+  const supportToken = Object.keys(config).map((str: string) => ({
+    value: str,
+    label: str,
+  }));
+
   return (
     <div>
       <div className="text-[var(--mind-grey)] text-[14px] text-right">
@@ -17,14 +137,14 @@ export default function Bridge() {
           <Select
             prefix={
               <img
-                src="/icons/bitget-circle-logo.svg"
+                src={currentConfig.logo}
                 width={20}
                 className="rounded-[50%]"
               />
             }
-            defaultValue="Bitget"
+            defaultValue="ETH"
             onChange={handleChange}
-            options={[]}
+            options={supportToken}
           />
         </div>
         <div className="p-[15px] bg-[#0f1115] mt-[27px] rounded-[5px]">
@@ -34,14 +154,13 @@ export default function Bridge() {
           <Select
             prefix={
               <img
-                src="/icons/bitget-circle-logo.svg"
+                src={currentFromChain.logo}
                 width={20}
                 className="rounded-[50%]"
               />
             }
-            defaultValue="Bitget"
-            onChange={handleChange}
-            options={[]}
+            defaultValue={currentFromChain.value}
+            options={currentConfig.chain.from}
           />
         </div>
         <div className="my-[20px]">
@@ -59,14 +178,13 @@ export default function Bridge() {
           <Select
             prefix={
               <img
-                src="/icons/bitget-circle-logo.svg"
+                src={currentToChain.logo}
                 width={20}
                 className="rounded-[50%]"
               />
             }
-            defaultValue="Bitget"
-            onChange={handleChange}
-            options={[]}
+            defaultValue={currentToChain.value}
+            options={currentConfig.chain.to}
           />
         </div>
         <div className="mt-[40px]">
