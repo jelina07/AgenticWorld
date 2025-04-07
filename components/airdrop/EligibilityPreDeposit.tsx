@@ -85,16 +85,15 @@ export default function EligibilityPreDeposit() {
   const [privacy, setPrivacy] = useState(false);
 
   const showDrawer = async () => {
-    // if (
-    //   (claimAmout?.register?.cexName &&
-    //     claimAmout?.register.cexName !== "MindChain") ||
-    //   isSubmit
-    // ) {
-    //   const currentCEX = cexInfo.find(
-    //     (item) => item.label === claimAmout.register.cexName
-    //   )!;
-    //   setCurrentCEX(currentCEX);
-    // }
+    if (
+      claimAmout?.register?.cexName &&
+      claimAmout?.register.cexName !== "MindChain"
+    ) {
+      const currentCEX = cexInfo.find(
+        (item) => item.label === claimAmout.register.cexName
+      )!;
+      setCurrentCEX(currentCEX);
+    }
     setIsCEXOpen(true);
   };
   const onClose = () => {
