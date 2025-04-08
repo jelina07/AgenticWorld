@@ -9,7 +9,9 @@ import { parseEther } from "viem";
 import useRelayerSignTypedData from "./useRelayerSignTypedData";
 import { exceptionHandler } from "../utils/exception";
 
-export default function useRelayerStake(options?: Options<any, [number, string]>) {
+export default function useRelayerStake(
+  options?: Options<any, [number, string]>
+) {
   const { validateAsync, chainId, address } = useValidateChainWalletLink();
 
   const { signRelayerAsync, signPermitAsync } = useRelayerSignTypedData();
@@ -38,7 +40,9 @@ export default function useRelayerStake(options?: Options<any, [number, string]>
         amount: parseEther(amount),
       };
 
-      const { signature, timestamp, nonce } = await signRelayerAsync?.(postData);
+      const { signature, timestamp, nonce } = await signRelayerAsync?.(
+        postData
+      );
 
       const res = (await request.post(`/relayer/agent/${chainId}/stake`, {
         user: postData.user,
@@ -57,7 +61,7 @@ export default function useRelayerStake(options?: Options<any, [number, string]>
     },
     {
       manual: true,
-      onError: (err) => exceptionHandler(err),
+      onError: (err) => exceptionHandler(err, "relayerStake"),
       ...options,
     }
   );

@@ -43,6 +43,8 @@ export const cexInfo = [
     createAccount: "",
   },
 ];
+export const getMore$FHE = "";
+export const bridgeMindgasLink = "";
 export function scan(address: `0x${string}`, currentChainid: number) {
   console.log(
     "chains.find((item: any) => item.id === currentChainid)",

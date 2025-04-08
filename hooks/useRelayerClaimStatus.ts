@@ -1,14 +1,17 @@
 import { useAsyncEffect } from "ahooks";
 import { notification } from "antd";
+import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 
-export default function useRelayerStatusHandler(
+export default function useRelayerClaimStatus(
   statusRes: any,
   cancel: Function,
   afterSuccessHandler: Function,
   setLoop: Function,
   successMess: string,
-  errorCodeMap: Function
+  errorCodeMap: Function,
+  stake: any,
+  claimAmout: any
 ) {
   const { address } = useAccount();
   useAsyncEffect(async () => {
@@ -24,9 +27,9 @@ export default function useRelayerStatusHandler(
             message: "Success",
             description: successMess,
           });
+          await stake(formatEther(BigInt(claimAmout?.amount)));
         } else if (statusRes.status === "-1") {
           cancel();
-          afterSuccessHandler();
           if (statusRes.message) {
             notification.error({
               message: "Error",

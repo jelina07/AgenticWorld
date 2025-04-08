@@ -11,12 +11,9 @@ export function exceptionHandler(
   error: any,
   errorType?: string,
   abi?: any,
+  isAgentStake?: boolean,
   description?: string
 ) {
-  console.log(
-    "🚀 ~ exceptionHandler ~ message:",
-    error?.cause?.cause?.data || error?.data
-  );
   if (abi && errorType === "agent") {
     const errorCode = decodeErrorData(abi, error?.cause?.cause?.data);
     const errorMessage = (
@@ -33,6 +30,10 @@ export function exceptionHandler(
         description: description || error?.shortMessage || error?.message,
         duration: 5,
       });
+      if (isAgentStake) {
+        console.log("error", error);
+        throw new Error(error);
+      }
     } else {
       notification.warning({
         message: "Warning",
@@ -91,6 +92,15 @@ export function exceptionHandler(
         duration: 5,
       });
     }
+  } else if (errorType === "relayerStake") {
+    notification.error({
+      message: "Error",
+      description:
+        description || error?.shortMessage || error?.message || "Unknown Error",
+      duration: 5,
+    });
+    throw new Error(error);
+    console.log("exceptionHandler", exceptionHandler);
   } else {
     notification.error({
       message: "Error",

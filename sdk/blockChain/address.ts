@@ -1,5 +1,5 @@
 export const AIRDROP_ADDRESS: Record<number, `0x${string}`> = {
-  192940: "0xBf07CC72165A0209e52e9937A7504ab23E1d051F",
+  192940: "0x858ac85ea2F4D6a54Fe85e2530852Be6bf8C2ebe",
   228: "0x",
   97: "0x985383f8624bde27D2792b01f55dBA3B5aC2dAC5",
   56: "0x",

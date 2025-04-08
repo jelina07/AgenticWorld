@@ -17,8 +17,10 @@ import {
   AirdropContractErrorCode,
 } from "@/sdk/utils/script";
 import {
+  bridgeMindgasLink,
   checkAmountControlButtonShow,
   firstStakeAmount,
+  getMore$FHE,
   judgeUseGasless,
   numberDigitsNoMillify,
 } from "@/utils/utils";
@@ -36,9 +38,10 @@ import AirDropStakeModal from "./AirDropStakeModal";
 import MindChainPayGas from "./MindChainPayGas";
 import { isDev, isProd } from "@/sdk/utils";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
+import useRelayerClaimStatus from "@/hooks/useRelayerClaimStatus";
 
 const successTip = "Claim Success !";
-const successTipStake = "Claim & Stake Success !";
+const successTipStake = "Stake Success !";
 
 export default function Eligibility() {
   const [isClaimAndStake, setIsClaimAndStake] = useState(false);
@@ -68,12 +71,18 @@ export default function Eligibility() {
     waitForReceipt: true,
   });
   const { openConnectModal } = useConnectModal();
-
   const { runAsync: mindAirdropRelay } = useAirdropRelayerClaim();
+
   const {
     data: status,
     run: statusRun,
     cancel: statusCancel,
+  } = useRelayerGetStatus("claim");
+
+  const {
+    data: statusClaim,
+    run: statusRunClaim,
+    cancel: statusCancelClaim,
   } = useRelayerGetStatus("claim");
 
   const {
@@ -105,7 +114,8 @@ export default function Eligibility() {
     }
   };
 
-  const clickClaim = async (isClaimAndStake?: boolean) => {
+  const clickClaim = async () => {
+    setIsClaimAndStake(false);
     if (claimAmout?.register?.cexName === "MindChain") {
       try {
         setActionLoop(true);
@@ -123,12 +133,10 @@ export default function Eligibility() {
       const res = await claimAsync(claimAmout.amount, proof);
       if (res) {
         afterSuccessHandler();
-        !isClaimAndStake
-          ? notification.success({
-              message: "Success",
-              description: successTip,
-            })
-          : null;
+        notification.success({
+          message: "Success",
+          description: successTip,
+        });
       }
     }
   };
@@ -145,7 +153,7 @@ export default function Eligibility() {
             <div className="text-[12px]">
               The minimum required amount is ${firstStakeAmount} !{" "}
               <a
-                href="http://"
+                href={getMore$FHE}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-(var[--mind-beand]) underline hover:text-(var[--mind-beand]) hover:underline"
@@ -156,6 +164,7 @@ export default function Eligibility() {
           ),
           duration: 10,
         });
+        setIsClaimAndStake(false);
       } else {
         if (judgeUseGasless(chainId)) {
           try {
@@ -164,40 +173,58 @@ export default function Eligibility() {
             if (resId) {
               statusRunStake(chainId, resId);
             }
-          } catch (error) {
+          } catch (error: any) {
             setActionLoopStake(false);
+            setIsClaimAndStake(false);
           }
         } else {
-          const res = await agentStake(agentTokenId!, amount);
-          if (res) {
-            afterSuccessHandlerStake();
-            notification.success({
-              message: "Success",
-              description: successTipStake,
-            });
+          try {
+            const res = await agentStake(agentTokenId!, amount);
+            if (res) {
+              afterSuccessHandlerStake();
+              notification.success({
+                message: "Success",
+                description: successTipStake,
+              });
+            }
+          } catch (error: any) {
+            setIsClaimAndStake(false);
           }
         }
       }
     }
   };
 
+  console.log("claimedByContract", claimedByContract, isAgent, isClaimAndStake);
+
   const clickClaimAndStake = async () => {
     setIsClaimAndStake(true);
-    try {
-      await clickClaim(true);
-      if (claimedByContract) {
-        await stake(formatEther(BigInt(claimAmout?.amount)));
-        setIsClaimAndStake(false);
+    if (claimAmout?.register?.cexName === "MindChain") {
+      try {
+        setActionLoop(true);
+        const res = await mindAirdropRelay();
+        if (res) {
+          statusRunClaim();
+        } else {
+          setActionLoop(false);
+        }
+      } catch (error) {
+        setActionLoop(false);
       }
-    } catch (error: any) {
-      if (
-        error?.shortMessage?.toLowerCase().includes("user rejected") ||
-        error?.message?.toLowerCase().includes("user rejected")
-      ) {
-        setIsClaimAndStake(false);
+    } else {
+      const proof = JSON.parse(claimAmout.proof);
+      const res = await claimAsync(claimAmout.amount, proof);
+      if (res) {
+        afterSuccessHandler();
+        notification.success({
+          message: "Success",
+          description: successTip,
+        });
+        await stake(formatEther(BigInt(claimAmout?.amount)));
       }
     }
   };
+
   const afterSuccessHandler = () => {
     refreshIsClaimed();
     fheBalanceRefresh();
@@ -206,6 +233,7 @@ export default function Eligibility() {
     agentGetTokenIdRefresh();
     fheBalanceRefresh();
     refreshStakeAmount();
+    setIsClaimAndStake(false);
   };
 
   useRelayerStatusHandler(
@@ -217,6 +245,7 @@ export default function Eligibility() {
     AirdropContractErrorCode
   );
 
+  //stake and claim
   useRelayerStatusHandler(
     statusStake,
     statusCancelStake,
@@ -224,6 +253,17 @@ export default function Eligibility() {
     setActionLoopStake,
     successTipStake,
     Agent1ContractErrorCode
+  );
+  //stake and claim
+  useRelayerClaimStatus(
+    statusClaim,
+    statusCancelClaim,
+    afterSuccessHandler,
+    setActionLoop,
+    successTip,
+    AirdropContractErrorCode,
+    stake,
+    claimAmout
   );
 
   useAsyncEffect(async () => {
@@ -243,7 +283,6 @@ export default function Eligibility() {
       }
     }
   }, [claimAmout]);
-  console.log("agentStakeAmount", agentStakeAmount);
 
   const termsChange: CheckboxProps["onChange"] = (e) => {
     console.log(`checked = ${e.target.checked}`);
@@ -377,13 +416,13 @@ export default function Eligibility() {
                     ) + " "}
                     $FHE
                     {claimAmout?.register?.cexName &&
-                    claimAmout?.register.cexName !== "MindChain" ? (
+                    claimAmout?.register?.cexName !== "MindChain" ? (
                       <div className="text-[12px] font-[600] text-white">
                         $FHE will be auto-credited to your submitted CEX
                         account.
                       </div>
                     ) : claimedByContract &&
-                      claimAmout?.register.cexName === "MindChain" ? (
+                      claimAmout?.register?.cexName === "MindChain" ? (
                       <div className="text-white text-[12px] font-[600]">
                         on{" "}
                         <a
@@ -422,7 +461,7 @@ export default function Eligibility() {
                 </div>
               </div>
               {claimAmout?.register?.cexName &&
-              claimAmout?.register.cexName !== "MindChain" ? (
+              claimAmout?.register?.cexName !== "MindChain" ? (
                 <div className="flex-1">
                   <div className="text-center text-[12px] leading-[12px]">
                     You can now launch your Agent with your $FHE to start
@@ -436,7 +475,7 @@ export default function Eligibility() {
                   </Link>
                   <CEXDrawer claimAmout={claimAmout} />
                 </div>
-              ) : !claimedByContract ? (
+              ) : !claimedByContract || isClaimAndStake ? (
                 <div className="flex items-end pb-[10px] flex-1 justify-around">
                   <div className="w-[135px]">
                     <div className="flex justify-between items-center">
@@ -455,7 +494,7 @@ export default function Eligibility() {
                               transaction may take longer than usual. You can
                               choose to claim instantly by paying gas yourself,{" "}
                               <a
-                                href="http://"
+                                href={bridgeMindgasLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
@@ -509,7 +548,7 @@ export default function Eligibility() {
                     </Button>
                   </div>
                 </div>
-              ) : (agentStakeAmount === "0" || !isAgent) && !isClaimAndStake ? (
+              ) : agentStakeAmount === "0" || !isAgent ? (
                 <div className="flex-1">
                   <div>
                     <div className="text-[12px] text-center leading-[12px]">

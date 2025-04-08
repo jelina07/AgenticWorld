@@ -19,9 +19,8 @@ export default function MindTip({
       arrow={false}
       color="#111d1b"
       className="ml-[5px]"
-      //   open={true}
     >
-      <div className={isShow ? "" : "hidden"}>
+      <div className={`${isShow ? "" : "hidden"}`}>
         <AddTip className="hover:fill-[var(--mind-brand)]"></AddTip>
       </div>
     </Tooltip>

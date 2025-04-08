@@ -2,6 +2,7 @@ import { useGetFaucet } from "@/sdk";
 import { DAOKEN_ADDRESS } from "@/sdk/blockChain/address";
 import { isDev, isProd } from "@/sdk/utils";
 import { isSupportChain } from "@/sdk/utils/script";
+import { getMore$FHE } from "@/utils/utils";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 import { message, notification } from "antd";
 import React from "react";
@@ -61,7 +62,7 @@ export default function Facuet({ refreshFHE }: { refreshFHE: Function }) {
         </span>
       ) : (
         <a
-          href="http://"
+          href={getMore$FHE}
           target="_blank"
           rel="noopener noreferrer"
           className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] whitespace-nowrap underline hover:underline"
