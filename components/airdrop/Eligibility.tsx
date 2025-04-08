@@ -17,7 +17,6 @@ import {
   AirdropContractErrorCode,
 } from "@/sdk/utils/script";
 import {
-  cexInfo,
   checkAmountControlButtonShow,
   firstStakeAmount,
   judgeUseGasless,
@@ -39,9 +38,10 @@ import { isDev, isProd } from "@/sdk/utils";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 
 const successTip = "Claim Success !";
-const successTipStake = "Stake Success !";
+const successTipStake = "Claim & Stake Success !";
 
 export default function Eligibility() {
+  const [isClaimAndStake, setIsClaimAndStake] = useState(false);
   const { refresh: agentGetTokenIdRefresh } = useAgentGetTokenId();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
@@ -105,7 +105,7 @@ export default function Eligibility() {
     }
   };
 
-  const clickClaim = async () => {
+  const clickClaim = async (isClaimAndStake?: boolean) => {
     if (claimAmout?.register?.cexName === "MindChain") {
       try {
         setActionLoop(true);
@@ -123,10 +123,12 @@ export default function Eligibility() {
       const res = await claimAsync(claimAmout.amount, proof);
       if (res) {
         afterSuccessHandler();
-        notification.success({
-          message: "Success",
-          description: successTip,
-        });
+        !isClaimAndStake
+          ? notification.success({
+              message: "Success",
+              description: successTip,
+            })
+          : null;
       }
     }
   };
@@ -180,12 +182,21 @@ export default function Eligibility() {
   };
 
   const clickClaimAndStake = async () => {
+    setIsClaimAndStake(true);
     try {
-      await clickClaim();
+      await clickClaim(true);
       if (claimedByContract) {
         await stake(formatEther(BigInt(claimAmout?.amount)));
+        setIsClaimAndStake(false);
       }
-    } catch (error) {}
+    } catch (error: any) {
+      if (
+        error?.shortMessage?.toLowerCase().includes("user rejected") ||
+        error?.message?.toLowerCase().includes("user rejected")
+      ) {
+        setIsClaimAndStake(false);
+      }
+    }
   };
   const afterSuccessHandler = () => {
     refreshIsClaimed();
@@ -238,7 +249,6 @@ export default function Eligibility() {
     console.log(`checked = ${e.target.checked}`);
     setPrivacy(e.target.checked);
   };
-  console.log("isAgent", isAgent);
 
   return (
     <div>
@@ -467,8 +477,13 @@ export default function Eligibility() {
                     <Button
                       type="primary"
                       className="button-brand-border mt-[10px]"
-                      onClick={clickClaim}
-                      loading={claimLoading || actionLoop}
+                      onClick={() => clickClaim()}
+                      loading={
+                        claimLoading ||
+                        actionLoop ||
+                        agentStakeLoading ||
+                        actionLoopStake
+                      }
                     >
                       Claim $FHE
                     </Button>
@@ -494,7 +509,7 @@ export default function Eligibility() {
                     </Button>
                   </div>
                 </div>
-              ) : agentStakeAmount === "0" || !isAgent ? (
+              ) : (agentStakeAmount === "0" || !isAgent) && !isClaimAndStake ? (
                 <div className="flex-1">
                   <div>
                     <div className="text-[12px] text-center leading-[12px]">
