@@ -20,7 +20,7 @@ export default function useAgentUnlock(options?: Options<any, any>) {
         address: AGENT1_ADDRESS[chainId],
         functionName: "agentUnlock",
         args: [agentId],
-      })) as bigint;
+      })) as BigInt;
 
       console.log("agentUnlock", agentUnlock);
 

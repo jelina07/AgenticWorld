@@ -22,13 +22,19 @@ import {
   useRelayerClaimReward,
   useRelayerGetStatus,
 } from "@/sdk";
-import { judgeUseGasless, number5Digits, numberDigits } from "@/utils/utils";
+import {
+  getMore$FHE,
+  judgeUseGasless,
+  number5Digits,
+  numberDigits,
+} from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { CheckOutlined } from "@ant-design/icons";
 import Created from "../utils/created";
 import { useAccount, useChainId } from "wagmi";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
+import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 
 const successTip = "Redeem Success !";
 
@@ -42,6 +48,9 @@ export default function MyAgent({
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("CitizenZ");
   const { chainId } = useAccount();
+
+  const { loading: balanceLoading } = useGetFheBalance();
+  const { balance } = useGetFheBalanceStore();
 
   const editName = () => {
     setIsEditing(true);
@@ -311,28 +320,59 @@ export default function MyAgent({
                   </div>
                 </div>
               </div>
+              <div
+                className="px-[11px] py-[8px] mt-[15px] min-h-[70px] flex items-center
+                            bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
+              >
+                <div className="flex-1 sm:flex justify-between items-center gap-[5px]">
+                  <div className="flex items-center justify-between gap-[20px] ">
+                    <span className="text-[var(--mind-grey)] text-[14px]">
+                      Locking Phase
+                    </span>
+                    <div className="">
+                      {currentLearnedHub === undefined ? (
+                        "loading..."
+                      ) : stateType === 0 ? (
+                        <Created />
+                      ) : stateType === 1 ? (
+                        <Lock />
+                      ) : (
+                        <UnLock />
+                      )}
+                    </div>
+                  </div>
+                  <Link
+                    href="/agenticworld"
+                    className="btn-Link-white-font sm:mt-[0px] mt-[10px]"
+                  >
+                    Explore New Skills
+                  </Link>
+                </div>
+              </div>
               <div className="mt-[15px] flex gap-[14px] flex-col min-[1140px]:flex-row">
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
                   <div className="text-[14px] text-[var(--mind-grey)] my-auto">
-                    State
+                    Available to Stake
                   </div>
                   <div className="flex gap-[10px] mt-[20px] h-[45px] items-center">
-                    {currentLearnedHub === undefined ? (
-                      "loading..."
-                    ) : stateType === 0 ? (
-                      <Created />
-                    ) : stateType === 1 ? (
-                      <Lock />
-                    ) : (
-                      <UnLock />
-                    )}
+                    <span>
+                      {balanceLoading
+                        ? "loading..."
+                        : numberDigits(balance) + " FHE"}
+                    </span>
                   </div>
                   <div className="mt-[40px]">
-                    <Link href="/agenticworld" className="btn-Link-white-font">
-                      Explore New Skills
-                    </Link>
+                    <a
+                      href={getMore$FHE}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-Link-white-font"
+                    >
+                      Get More $FHE
+                    </a>
                   </div>
                 </div>
+
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
                   <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap">
                     Stake
