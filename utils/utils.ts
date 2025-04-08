@@ -3,7 +3,7 @@ import { chains, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { message } from "antd";
 import millify from "millify";
 
-export const firstStakeAmount = isDev() || isProd() ? 0 : 0;
+export const firstStakeAmount = 10;
 export const $FHELockupperiod = 30;
 export const cexInfo = [
   {

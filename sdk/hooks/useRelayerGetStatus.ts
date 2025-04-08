@@ -1,7 +1,8 @@
 import { useRequest } from "ahooks";
 import request from "../request";
+import { useAccount, useSignMessage } from "wagmi";
 
-// 支持的操作类型
+//
 const ACTIONS = [
   "stake",
   "unstake",
@@ -14,17 +15,26 @@ const ACTIONS = [
 type ActionType = (typeof ACTIONS)[number];
 
 export default function useRelayerGetStatus(type: ActionType) {
+  const { address } = useAccount();
   const result = useRequest(
-    async (chainId: number, id: number) => {
-      const res = await request.get(
-        `/relayer/agent/${chainId}/${type}/status`,
-        { params: { id } }
-      );
-      return res;
-    },
+    type === "claim"
+      ? async () => {
+          const res = await request.get(`/grant/claim`, {
+            params: { wallet: address },
+          });
+          return res;
+        }
+      : async (chainId: number, id: number) => {
+          const res = await request.get(
+            `/relayer/agent/${chainId}/${type}/status`,
+            { params: { id } }
+          );
+          return res;
+        },
     {
       manual: true,
       pollingInterval: 3000,
+      ready: type === "claim" ? !!address : true,
     }
   ) as any;
   return result;

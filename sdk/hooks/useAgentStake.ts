@@ -26,29 +26,22 @@ export default function useAgentStake(
       }
 
       //approve token
-      const gasEstimate =
-        isDev() || isProd()
-          ? await estimateGasUtil(
-              DAOTOKEN_ABI,
-              "approve",
-              [AGENT1_ADDRESS[chainId], parseEther(amount)],
-              DAOKEN_ADDRESS[chainId]
-            )
-          : null;
+      const gasEstimate = await estimateGasUtil(
+        DAOTOKEN_ABI,
+        "approve",
+        [AGENT1_ADDRESS[chainId], parseEther(amount)],
+        DAOKEN_ADDRESS[chainId]
+      );
 
-      const txHash =
-        isDev() || isProd()
-          ? await writeContractAsync({
-              abi: DAOTOKEN_ABI,
-              functionName: "approve",
-              address: DAOKEN_ADDRESS[chainId],
-              args: [AGENT1_ADDRESS[chainId], parseEther(amount)],
-              gas: gasEstimate! + gasEstimate! / BigInt(3),
-            })
-          : null;
-      isDev() || isProd()
-        ? await waitForTransactionReceipt(config, { hash: txHash! })
-        : null;
+      const txHash = await writeContractAsync({
+        abi: DAOTOKEN_ABI,
+        functionName: "approve",
+        address: DAOKEN_ADDRESS[chainId],
+        args: [AGENT1_ADDRESS[chainId], parseEther(amount)],
+        gas: gasEstimate! + gasEstimate! / BigInt(3),
+      });
+
+      await waitForTransactionReceipt(config, { hash: txHash! });
 
       //stake
       const gasEstimate2 = await estimateGasUtil(

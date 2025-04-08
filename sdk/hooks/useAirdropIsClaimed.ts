@@ -47,12 +47,27 @@ export default function useAirdropIsClaimed(options?: Options<any, any>) {
       }
       const publicClient =
         claimChain === "MindChain" ? publicClientMind : publicClientBsc;
+
+      const contractAddressChainId =
+        claimChain === "MindChain"
+          ? isDev() || isProd()
+            ? mindtestnet.id
+            : mindnet.id
+          : isDev() || isProd()
+          ? bnbtestnet.id
+          : bnb.id;
+
+      console.log("claimChain", claimChain);
+
       const res = (await publicClient.readContract({
         abi: AIRDROP_ABI,
-        address: AIRDROP_ADDRESS[chainId],
+        address: AIRDROP_ADDRESS[contractAddressChainId],
         functionName: "claimed",
         args: [address],
       })) as boolean;
+
+      console.log("res", res);
+
       return res;
     },
     {

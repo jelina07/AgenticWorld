@@ -10,6 +10,7 @@ import { isDev, isProd } from "@/sdk/utils";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import {
+  $FHELockupperiod,
   checkAmountControlButtonShow,
   checkAmountControlButtonShowCan0,
   firstStakeAmount,
@@ -30,8 +31,7 @@ const successTip = "Launch Success !";
 
 const StakeLaunch = forwardRef((_, ref) => {
   const { chainId, isConnected, address } = useAccount();
-  const startAmount = isDev() || isProd() ? "" : "0";
-  const [amount, setAmount] = useState(startAmount);
+  const [amount, setAmount] = useState("");
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
     waitForReceipt: true,
   });
@@ -76,7 +76,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   }));
 
   const stake = async () => {
-    if (checkAmountControlButtonShowCan0(amount)) {
+    if (checkAmountControlButtonShow(amount)) {
       if (Number(amount) < firstStakeAmount) {
         message.open({
           type: "warning",
@@ -123,56 +123,46 @@ const StakeLaunch = forwardRef((_, ref) => {
       <div>
         <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
         <div className="text-[14px] mt-[20px]">
-          {isDev() || isProd() ? (
-            <div>Minimum staking: {firstStakeAmount} $FHE</div>
-          ) : (
-            <div>
-              Total Agents Launched:{" "}
-              {!isConnected ? "/" : !totalAgent ? "loading..." : totalAgent}
-            </div>
-          )}
+          <div>Minimum staking: {firstStakeAmount} $FHE</div>
           <div className="mt-[10px]">
             $FHE from Mind Network Ecosystem Incentive & Potential Partner
             tokens
           </div>
-        </div>
-        {isDev() || isProd() ? (
-          <Input
-            style={{ height: "45px", margin: "26px 0 0 0" }}
-            disabled={isAgent}
-            value={amount}
-            suffix={
-              <div onClick={clickMax} className="cursor-pointer">
-                <Max />
-              </div>
-            }
-            onChange={(e: any) => {
-              setAmount(e.target.value.trim());
-            }}
-          />
-        ) : (
-          <div className="my-[26px]"></div>
-        )}
-        {isDev() || isProd() ? (
-          <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
-            <span>FHE Balance:</span>
-            <div className="flex items-center gap-[3px]">
-              <span>
-                {loading
-                  ? "loading..."
-                  : balance === undefined || numberDigits(balance) + " FHE"}
-              </span>
-              <img
-                src="/icons/refresh.svg"
-                alt="refresh"
-                onClick={fheBalanceRefresh}
-                className={`cursor-pointer ${loading ? "refresh" : ""}`}
-              />
-            </div>
+          <div className="mt-[10px]">
+            $FHE Lock up period: {$FHELockupperiod} days
           </div>
-        ) : (
-          <></>
-        )}
+        </div>
+
+        <Input
+          style={{ height: "45px", margin: "26px 0 0 0" }}
+          disabled={isAgent}
+          value={amount}
+          suffix={
+            <div onClick={clickMax} className="cursor-pointer">
+              <Max />
+            </div>
+          }
+          onChange={(e: any) => {
+            setAmount(e.target.value.trim());
+          }}
+        />
+
+        <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
+          <span>FHE Balance:</span>
+          <div className="flex items-center gap-[3px]">
+            <span>
+              {loading
+                ? "loading..."
+                : balance === undefined || numberDigits(balance) + " FHE"}
+            </span>
+            <img
+              src="/icons/refresh.svg"
+              alt="refresh"
+              onClick={fheBalanceRefresh}
+              className={`cursor-pointer ${loading ? "refresh" : ""}`}
+            />
+          </div>
+        </div>
 
         <div className="flex items-end gap-[10px]">
           <Button
@@ -182,13 +172,10 @@ const StakeLaunch = forwardRef((_, ref) => {
             onClick={stake}
             loading={agentStakeLoading || actionLoop}
           >
-            {isDev() || isProd() ? "Stake & Launch" : "Launch"}
+            Stake & Launch
           </Button>
-          {isDev() || isProd() ? (
-            <Facuet refreshFHE={fheBalanceRefresh} />
-          ) : (
-            <></>
-          )}
+
+          <Facuet refreshFHE={fheBalanceRefresh} />
         </div>
       </div>
     </div>

@@ -19,7 +19,6 @@ export default function useRelayerStatusHandler(
           cancel();
           await new Promise((resolve) => setTimeout(resolve, 5000));
           afterSuccessHandler();
-          afterSuccessHandler();
           setLoop(false);
           notification.success({
             message: "Success",

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useHubGetCurrent, useHubList } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { isDev, isMainnet, isMainnetio } from "@/sdk/utils";
+import { isDev, isMainnet, isMainnetio, isProd } from "@/sdk/utils";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -17,26 +17,7 @@ const MindMenu: React.FC = () => {
   });
 
   const items =
-    isMainnet() || isMainnetio()
-      ? [
-          {
-            label: <Link href="/airdrop">Airdrop</Link>,
-            key: "/airdrop",
-          },
-          {
-            label: <Link href="/">Dashboard</Link>,
-            key: "/",
-          },
-          {
-            label: <Link href="/agenticworld">AgenticWorld</Link>,
-            key: "/agenticworld",
-          },
-          {
-            label: <Link href="/agentlaunch">Agent Launch</Link>,
-            key: "/agentlaunch",
-          },
-        ]
-      : isDev()
+    isDev() || isMainnetio() || isMainnet()
       ? [
           {
             label: <Link href="/airdrop">Airdrop</Link>,
@@ -80,7 +61,7 @@ const MindMenu: React.FC = () => {
       mode="horizontal"
       items={items}
       className={`flex min-w-0 ${
-        isDev() ? "min-[1301px]:min-w-[600px]" : "min-[1301px]:min-w-[510px]"
+        isProd() ? "min-[1301px]:min-w-[510px]" : "min-[1301px]:min-w-[600px]"
       }`}
       theme="dark"
     />

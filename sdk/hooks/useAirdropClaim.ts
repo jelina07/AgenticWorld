@@ -10,14 +10,20 @@ import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import { estimateGasUtil } from "../utils/script";
-import { bscTestnet } from "viem/chains";
 
 export default function useAirdropClaim(
-  options?: Options<unknown, [string, string[]]> & { waitForReceipt?: boolean }
+  options?: Options<unknown, [string, string[]]> & {
+    waitForReceipt?: boolean;
+  } & { mindPayGasSelf?: boolean }
 ) {
-  const { validateAsync, chainId } = useValidateChainWalletLink(
-    isDev() || isProd() ? bnbtestnet.id : bnb.id
-  );
+  const targeChain = options?.mindPayGasSelf
+    ? isDev() || isProd()
+      ? mindtestnet.id
+      : mindnet.id
+    : isDev() || isProd()
+    ? bnbtestnet.id
+    : bnb.id;
+  const { validateAsync, chainId } = useValidateChainWalletLink(targeChain);
   const { writeContractAsync } = useWriteContract();
 
   const result = useRequest(

@@ -1,5 +1,5 @@
 export const AIRDROP_ADDRESS: Record<number, `0x${string}`> = {
-  192940: "0xDAA7fae5254F23a7Ce5B963f0e43dF1e5d0eF2C8",
+  192940: "0xBf07CC72165A0209e52e9937A7504ab23E1d051F",
   228: "0x",
   97: "0x985383f8624bde27D2792b01f55dBA3B5aC2dAC5",
   56: "0x",
@@ -39,6 +39,5 @@ export const FAUCET_ADDRESS: Record<number, `0x${string}`> = {
 
 export const AGENT_SIGVERIFY_ADDRESS: Record<number, `0x${string}`> = {
   192940: "0x5447aCAF5b14a47F6327081DcEF5EA1E56329978",
-  97: "0x",
-  56: "0x",
+  228: "0x7753E222B1bedA128Fe80151861EB30169DE2F4e",
 };

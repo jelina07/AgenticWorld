@@ -16,6 +16,7 @@ export default function useValidateChainWalletLink(targetChain?: number) {
       openChainModal?.();
       return false;
     }
+
     if (targetChain && chainId !== targetChain) {
       switchChain({
         chainId: targetChain,

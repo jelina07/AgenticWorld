@@ -2,15 +2,27 @@
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import {
   useAgentGetStakeAmount,
+  useAgentGetTokenId,
+  useAgentStake,
   useAirdropCheck,
   useAirdropClaim,
   useAirdropIsClaimed,
   useAirdropRelayerClaim,
   useGetFheBalance,
   useRelayerGetStatus,
+  useRelayerStake,
 } from "@/sdk";
-import { AirdropContractErrorCode } from "@/sdk/utils/script";
-import { cexInfo, numberDigitsNoMillify } from "@/utils/utils";
+import {
+  Agent1ContractErrorCode,
+  AirdropContractErrorCode,
+} from "@/sdk/utils/script";
+import {
+  cexInfo,
+  checkAmountControlButtonShow,
+  firstStakeAmount,
+  judgeUseGasless,
+  numberDigitsNoMillify,
+} from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAsyncEffect } from "ahooks";
 import { Button, Checkbox, CheckboxProps, message, notification } from "antd";
@@ -22,22 +34,23 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import CEXDrawer from "./CEXDrawer";
 import MindTip from "../utils/MindTip";
 import AirDropStakeModal from "./AirDropStakeModal";
+import MindChainPayGas from "./MindChainPayGas";
+import { isDev, isProd } from "@/sdk/utils";
+import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 
 const successTip = "Claim Success !";
+const successTipStake = "Stake Success !";
 
 export default function Eligibility() {
+  const { refresh: agentGetTokenIdRefresh } = useAgentGetTokenId();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
   const { address, isConnected, chainId } = useAccount();
-  // const [claimed, setClaimed] = useState(false);
   const { refresh: fheBalanceRefresh } = useGetFheBalance();
-  const {
-    data: agentStakeAmount,
-    loading: agentStakeAmountLoading,
-    refresh: refreshStakeAmount,
-  } = useAgentGetStakeAmount({
-    tokenId: agentTokenId,
-  });
+  const { data: agentStakeAmount, refresh: refreshStakeAmount } =
+    useAgentGetStakeAmount({
+      tokenId: agentTokenId,
+    });
 
   const {
     data: claimAmout,
@@ -62,7 +75,19 @@ export default function Eligibility() {
     run: statusRun,
     cancel: statusCancel,
   } = useRelayerGetStatus("claim");
+
+  const {
+    data: statusStake,
+    run: statusRunStake,
+    cancel: statusCancelStake,
+  } = useRelayerGetStatus("stake");
+
   const [actionLoop, setActionLoop] = useState(false);
+  const [actionLoopStake, setActionLoopStake] = useState(false);
+  const { runAsync: relayerAgentStake } = useRelayerStake();
+  const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
+    waitForReceipt: true,
+  });
   const [privacy, setPrivacy] = useState(false);
   const clickCheckEligibility = async () => {
     if (isConnected && address) {
@@ -84,9 +109,9 @@ export default function Eligibility() {
     if (claimAmout?.register?.cexName === "MindChain") {
       try {
         setActionLoop(true);
-        const resId = await mindAirdropRelay();
-        if (resId) {
-          statusRun(chainId, resId);
+        const res = await mindAirdropRelay();
+        if (res) {
+          statusRun();
         } else {
           setActionLoop(false);
         }
@@ -95,8 +120,6 @@ export default function Eligibility() {
       }
     } else {
       const proof = JSON.parse(claimAmout.proof);
-      console.log("proof", proof);
-
       const res = await claimAsync(claimAmout.amount, proof);
       if (res) {
         afterSuccessHandler();
@@ -108,14 +131,70 @@ export default function Eligibility() {
     }
   };
 
-  const stake = async () => {
-    //打开modal，分为有agent（没有10限制）和没有agent（有10的限制）
+  const stake = async (amount: string) => {
+    if (checkAmountControlButtonShow(amount)) {
+      const judgeCondition = !isAgent
+        ? Number(amount) < firstStakeAmount
+        : false;
+      if (judgeCondition) {
+        message.open({
+          type: "warning",
+          content: (
+            <div className="text-[12px]">
+              The minimum required amount is ${firstStakeAmount} !{" "}
+              <a
+                href="http://"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-(var[--mind-beand]) underline hover:text-(var[--mind-beand]) hover:underline"
+              >
+                Get More $FHE
+              </a>
+            </div>
+          ),
+          duration: 10,
+        });
+      } else {
+        if (judgeUseGasless(chainId)) {
+          try {
+            setActionLoopStake(true);
+            const resId = await relayerAgentStake(agentTokenId!, amount);
+            if (resId) {
+              statusRunStake(chainId, resId);
+            }
+          } catch (error) {
+            setActionLoopStake(false);
+          }
+        } else {
+          const res = await agentStake(agentTokenId!, amount);
+          if (res) {
+            afterSuccessHandlerStake();
+            notification.success({
+              message: "Success",
+              description: successTipStake,
+            });
+          }
+        }
+      }
+    }
   };
 
-  const clickClaimAndStake = async () => {};
+  const clickClaimAndStake = async () => {
+    try {
+      await clickClaim();
+      if (claimedByContract) {
+        await stake(formatEther(BigInt(claimAmout?.amount)));
+      }
+    } catch (error) {}
+  };
   const afterSuccessHandler = () => {
     refreshIsClaimed();
     fheBalanceRefresh();
+  };
+  const afterSuccessHandlerStake = () => {
+    agentGetTokenIdRefresh();
+    fheBalanceRefresh();
+    refreshStakeAmount();
   };
 
   useRelayerStatusHandler(
@@ -127,8 +206,17 @@ export default function Eligibility() {
     AirdropContractErrorCode
   );
 
+  useRelayerStatusHandler(
+    statusStake,
+    statusCancelStake,
+    afterSuccessHandlerStake,
+    setActionLoopStake,
+    successTipStake,
+    Agent1ContractErrorCode
+  );
+
   useAsyncEffect(async () => {
-    if (claimAmout) {
+    if (claimAmout?.amount) {
       if (
         claimAmout.register?.cexName &&
         claimAmout.register.cexName !== "MindChain"
@@ -161,14 +249,24 @@ export default function Eligibility() {
         <div className="text-[14px] text-center mt-[10px]">
           Check your eligibility and claim $FHE tokens
         </div>
-        <div className="text-center">
+        <div className="text-center text-[14px] text-[var(--mind-brand)]">
+          Checkout Our{" "}
           <a
-            href="http://"
+            href="https://docs.mindnetwork.xyz/minddocs/other/airdrop-user-guide"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
           >
-            Checkout Our User Guide or Provide Your Feedback
+            User Guide
+          </a>{" "}
+          or Provide Your{" "}
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdnC97a2gTJZcWip1zV0MItZyDi5uYMHkrVRYqQXg4hNy8HKw/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+          >
+            Feedback
           </a>
         </div>
       </div>
@@ -268,14 +366,48 @@ export default function Eligibility() {
                       formatEther(BigInt(claimAmout?.amount))
                     ) + " "}
                     $FHE
-                    <div
-                      className={`text-[12px] font-[600] text-white ${
-                        claimAmout?.register?.cexName &&
-                        claimAmout?.register.cexName !== "MindChain"
-                      } ? '' : 'hidden'`}
-                    >
-                      $FHE will be auto-credited to your submitted CEX account.
-                    </div>
+                    {claimAmout?.register?.cexName &&
+                    claimAmout?.register.cexName !== "MindChain" ? (
+                      <div className="text-[12px] font-[600] text-white">
+                        $FHE will be auto-credited to your submitted CEX
+                        account.
+                      </div>
+                    ) : claimedByContract &&
+                      claimAmout?.register.cexName === "MindChain" ? (
+                      <div className="text-white text-[12px] font-[600]">
+                        on{" "}
+                        <a
+                          href={
+                            isDev() || isProd()
+                              ? mindtestnet.blockExplorers.default.url
+                              : mindnet.blockExplorers.default.url
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white hover:text-white inline-block text-[12px] font-[600] underline hover:underline"
+                        >
+                          MindChain
+                        </a>
+                      </div>
+                    ) : claimedByContract ? (
+                      <div className="text-white text-[12px] font-[600]">
+                        on{" "}
+                        <a
+                          href={
+                            isDev() || isProd()
+                              ? bnbtestnet.blockExplorers.default.url
+                              : bnb.blockExplorers.default.url
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white hover:text-white inline-block text-[12px] font-[600] underline hover:underline"
+                        >
+                          BNB Smart Chain
+                        </a>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
               </div>
@@ -306,9 +438,27 @@ export default function Eligibility() {
                       <MindTip
                         placement="bottom"
                         title={
-                          claimAmout?.register?.cexName === "MindChain"
-                            ? "We offer 0 gas option for claiming your token on MindChain. However, during periods of high network traffic, tansaction may take longer than usual."
-                            : null
+                          claimAmout?.register?.cexName === "MindChain" ? (
+                            <div className="text-[12px]">
+                              We offer 0 gas option for claiming on MindChain.
+                              During periods of high network traffic,
+                              transaction may take longer than usual. You can
+                              choose to claim instantly by paying gas yourself,{" "}
+                              <a
+                                href="http://"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+                              >
+                                Bridge gas (ETH)
+                              </a>
+                              <br></br>
+                              <MindChainPayGas
+                                claimAmout={claimAmout}
+                                refreshIsClaimed={refreshIsClaimed}
+                              />
+                            </div>
+                          ) : null
                         }
                         isShow={claimAmout?.register?.cexName === "MindChain"}
                       />
@@ -333,6 +483,12 @@ export default function Eligibility() {
                       type="primary"
                       className="button-brand-border mt-[10px]"
                       onClick={clickClaimAndStake}
+                      loading={
+                        agentStakeLoading ||
+                        actionLoopStake ||
+                        claimLoading ||
+                        actionLoop
+                      }
                     >
                       Claim & Stake
                     </Button>
