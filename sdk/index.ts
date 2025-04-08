@@ -35,6 +35,7 @@ import useRelayerBurn from "./hooks/useRelayerBurn";
 import useAirdropCexRegister from "./hooks/useAirdropCexRegister";
 import useAirdropCexRegisterInfo from "./hooks/useAirdropCexRegisterInfo";
 import useAirdropIsClaimed from "./hooks/useAirdropIsClaimed";
+import useAgentUnlock from "./hooks/useAgentUnlock";
 
 export {
   useAirdropCheck,
@@ -74,4 +75,5 @@ export {
   useAirdropCexRegister,
   useAirdropCexRegisterInfo,
   useAirdropIsClaimed,
+  useAgentUnlock,
 };

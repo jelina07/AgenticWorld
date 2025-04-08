@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import DownArraw from "@/public/icons/down-arraw.svg";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import {
+  useAgentUnlock,
   useAgentUnStake,
   useGetFheBalance,
   useRelayerGetStatus,
@@ -16,11 +17,11 @@ import {
 } from "@/utils/utils";
 import Max from "../utils/Max";
 import Big from "big.js";
-import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import { isDev, isProd } from "@/sdk/utils";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import { useAccount } from "wagmi";
+import { useAsyncEffect } from "ahooks";
 
 const successTip =
   isDev() || isProd()
@@ -50,6 +51,9 @@ export default function DecreseModal({
     cancel: statusCancel,
   } = useRelayerGetStatus("unstake");
   const [actionLoop, setActionLoop] = useState(false);
+  const { data, runAsync: getAgentUnlock } = useAgentUnlock();
+  console.log("datadata1", data);
+
   const isFirstlockUpTimeReached = true;
 
   const afterSuccessHandler = () => {
@@ -115,6 +119,12 @@ export default function DecreseModal({
   const clickMax = () => {
     setAmount(String(Number(agentStakeAmount) - firstStakeAmount));
   };
+
+  useAsyncEffect(async () => {
+    if (isModalOpen) {
+      await getAgentUnlock(agentTokenId);
+    }
+  }, [isModalOpen]);
 
   return (
     <>

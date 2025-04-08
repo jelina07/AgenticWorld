@@ -9,7 +9,6 @@ import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { parseEther } from "viem";
 import { estimateGasUtil } from "../utils/script";
-import { type EstimateGasErrorType } from "@wagmi/core";
 
 export default function useAgentUnStake(
   options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }

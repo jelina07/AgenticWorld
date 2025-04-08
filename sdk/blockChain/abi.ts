@@ -426,24 +426,6 @@ export const AIRDROP_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-  {
-    inputs: [
-      {
-        internalType: "address payable",
-        name: "receiver",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "withdrawNative",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
 ];
 
 export const AGENT1_ABI = [
@@ -628,7 +610,7 @@ export const AGENT1_ABI = [
     inputs: [
       {
         internalType: "bytes32",
-        name: "contractID",
+        name: "contractId",
         type: "bytes32",
       },
       {
@@ -1063,19 +1045,6 @@ export const AGENT1_ABI = [
   },
   {
     inputs: [],
-    name: "BATCH_ROLE",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "DEFAULT_ADMIN_ROLE",
     outputs: [
       {
@@ -1089,7 +1058,52 @@ export const AGENT1_ABI = [
   },
   {
     inputs: [],
+    name: "GASLESS_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "agentLimitPerUser",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "agentLockupPeriodSec",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "agentUnlock",
     outputs: [
       {
         internalType: "uint256",
@@ -1166,12 +1180,43 @@ export const AGENT1_ABI = [
   {
     inputs: [
       {
+        internalType: "contract IERC20",
+        name: "_daoToken",
+        type: "address",
+      },
+    ],
+    name: "changeDaoToken",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "user",
         type: "address",
       },
     ],
     name: "claimReward",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "createOrStake",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1269,6 +1314,19 @@ export const AGENT1_ABI = [
         internalType: "bytes32",
         name: "",
         type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getWithdrawalCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "numWithdrawal",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -1553,6 +1611,71 @@ export const AGENT1_ABI = [
   {
     inputs: [
       {
+        components: [
+          {
+            internalType: "address",
+            name: "user",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "agentID",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "hubID",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "action",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct AgentSigVerifier.Message",
+        name: "message",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "sig",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "delegateSig",
+        type: "bytes",
+      },
+      {
+        internalType: "uint256",
+        name: "delegateSigTs",
+        type: "uint256",
+      },
+    ],
+    name: "opEIP712",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "tokenId",
         type: "uint256",
@@ -1719,6 +1842,11 @@ export const AGENT1_ABI = [
         name: "_lockupPeriodSec",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "_agentLockupPeriodSec",
+        type: "uint256",
+      },
     ],
     name: "setup",
     outputs: [],
@@ -1772,61 +1900,6 @@ export const AGENT1_ABI = [
       },
     ],
     name: "stake",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "user",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "agentID",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "hubID",
-            type: "uint256",
-          },
-          {
-            internalType: "string",
-            name: "action",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "nonce",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct AgentSigVerifier.Message",
-        name: "message",
-        type: "tuple",
-      },
-      {
-        internalType: "bytes",
-        name: "signature",
-        type: "bytes",
-      },
-    ],
-    name: "stake712",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -2077,42 +2150,9 @@ export const AGENT1_ABI = [
 
 export const DAOTOKEN_ABI = [
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "recipient",
-        type: "address",
-      },
-    ],
+    inputs: [],
     stateMutability: "nonpayable",
     type: "constructor",
-  },
-  {
-    inputs: [],
-    name: "ECDSAInvalidSignature",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "length",
-        type: "uint256",
-      },
-    ],
-    name: "ECDSAInvalidSignatureLength",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "s",
-        type: "bytes32",
-      },
-    ],
-    name: "ECDSAInvalidSignatureS",
-    type: "error",
   },
   {
     inputs: [
@@ -2203,28 +2243,12 @@ export const DAOTOKEN_ABI = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "deadline",
-        type: "uint256",
-      },
-    ],
-    name: "ERC2612ExpiredSignature",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "signer",
-        type: "address",
-      },
-      {
         internalType: "address",
         name: "owner",
         type: "address",
       },
     ],
-    name: "ERC2612InvalidSigner",
+    name: "OwnableInvalidOwner",
     type: "error",
   },
   {
@@ -2234,29 +2258,8 @@ export const DAOTOKEN_ABI = [
         name: "account",
         type: "address",
       },
-      {
-        internalType: "uint256",
-        name: "currentNonce",
-        type: "uint256",
-      },
     ],
-    name: "InvalidAccountNonce",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "InvalidShortString",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "str",
-        type: "string",
-      },
-    ],
-    name: "StringTooLong",
+    name: "OwnableUnauthorizedAccount",
     type: "error",
   },
   {
@@ -2288,19 +2291,19 @@ export const DAOTOKEN_ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
-        name: "newAdmin",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
         type: "address",
       },
     ],
-    name: "CCIPAdminChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [],
-    name: "EIP712DomainChanged",
+    name: "OwnershipTransferred",
     type: "event",
   },
   {
@@ -2327,26 +2330,6 @@ export const DAOTOKEN_ABI = [
     ],
     name: "Transfer",
     type: "event",
-  },
-  {
-    inputs: [],
-    name: "DOMAIN_SEPARATOR",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "acceptCCIPAdmin",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     inputs: [
@@ -2430,62 +2413,6 @@ export const DAOTOKEN_ABI = [
   },
   {
     inputs: [],
-    name: "eip712Domain",
-    outputs: [
-      {
-        internalType: "bytes1",
-        name: "fields",
-        type: "bytes1",
-      },
-      {
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "version",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "chainId",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "verifyingContract",
-        type: "address",
-      },
-      {
-        internalType: "bytes32",
-        name: "salt",
-        type: "bytes32",
-      },
-      {
-        internalType: "uint256[]",
-        name: "extensions",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getCCIPAdmin",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "name",
     outputs: [
       {
@@ -2498,63 +2425,21 @@ export const DAOTOKEN_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-    ],
-    name: "nonces",
+    inputs: [],
+    name: "owner",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "address",
         name: "",
-        type: "uint256",
+        type: "address",
       },
     ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "spender",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "deadline",
-        type: "uint256",
-      },
-      {
-        internalType: "uint8",
-        name: "v",
-        type: "uint8",
-      },
-      {
-        internalType: "bytes32",
-        name: "r",
-        type: "bytes32",
-      },
-      {
-        internalType: "bytes32",
-        name: "s",
-        type: "bytes32",
-      },
-    ],
-    name: "permit",
+    inputs: [],
+    name: "renounceOwnership",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -2613,19 +2498,6 @@ export const DAOTOKEN_ABI = [
     inputs: [
       {
         internalType: "address",
-        name: "newAdmin",
-        type: "address",
-      },
-    ],
-    name: "transferCCIPAdmin",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "from",
         type: "address",
       },
@@ -2648,6 +2520,19 @@ export const DAOTOKEN_ABI = [
         type: "bool",
       },
     ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -2748,6 +2633,56 @@ export const MEMBER_POOL_ABI = [
       },
     ],
     name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardAmount",
+        type: "uint256",
+      },
+    ],
+    name: "RewardClaimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "agentId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hubId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardAmount",
+        type: "uint256",
+      },
+    ],
+    name: "RewardEarned",
     type: "event",
   },
   {
@@ -2881,12 +2816,6 @@ export const MEMBER_POOL_ABI = [
         indexed: false,
         internalType: "uint256",
         name: "assetAmount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "rewardAmount",
         type: "uint256",
       },
     ],
@@ -3834,6 +3763,25 @@ export const DAO_INSPECTOR_ABI = [
   {
     inputs: [
       {
+        internalType: "uint256[]",
+        name: "hubIds",
+        type: "uint256[]",
+      },
+    ],
+    name: "getRawAPYBatch",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "apyX10000",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "user",
         type: "address",
@@ -3918,29 +3866,29 @@ export const DAO_INSPECTOR_ABI = [
 
 export const FAUCETABI = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "contract IERC20",
+        name: "_token",
+        type: "address",
+      },
+      {
+        internalType: "bytes32",
+        name: "_merkleRoot",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "_admin",
+        type: "address",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
   {
     inputs: [],
-    name: "ArrayLengthMismatch",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ExceededMax",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-    ],
-    name: "OwnableInvalidOwner",
+    name: "AccessControlBadConfirmation",
     type: "error",
   },
   {
@@ -3950,49 +3898,41 @@ export const FAUCETABI = [
         name: "account",
         type: "address",
       },
+      {
+        internalType: "bytes32",
+        name: "neededRole",
+        type: "bytes32",
+      },
     ],
-    name: "OwnableUnauthorizedAccount",
+    name: "AccessControlUnauthorizedAccount",
     type: "error",
   },
   {
-    inputs: [],
-    name: "RateLimit",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "Unauthorized",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ZeroValueCheck",
-    type: "error",
-  },
-  {
-    anonymous: false,
     inputs: [
       {
-        indexed: false,
+        internalType: "bytes32",
+        name: "contractID",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint16",
+        name: "errorCode",
+        type: "uint16",
+      },
+    ],
+    name: "GeneralError",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "token",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "wallet",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "error",
-        type: "string",
-      },
     ],
-    name: "Fail",
-    type: "event",
+    name: "SafeERC20FailedOperation",
+    type: "error",
   },
   {
     anonymous: false,
@@ -4000,32 +3940,7 @@ export const FAUCETABI = [
       {
         indexed: true,
         internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
-    name: "OwnershipTransferred",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "wallet",
+        name: "claimant",
         type: "address",
       },
       {
@@ -4035,23 +3950,118 @@ export const FAUCETABI = [
         type: "uint256",
       },
     ],
-    name: "Success",
+    name: "Claimed",
     type: "event",
   },
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "previousAdminRole",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "newAdminRole",
+        type: "bytes32",
+      },
+    ],
+    name: "RoleAdminChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
         internalType: "address",
-        name: "token",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
         type: "address",
       },
     ],
-    name: "amountPerDrop",
+    name: "RoleGranted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "RoleRevoked",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "ADMIN_ROLE",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "bytes32",
         name: "",
-        type: "uint256",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "BATCH_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "DEFAULT_ADMIN_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
       },
     ],
     stateMutability: "view",
@@ -4061,16 +4071,39 @@ export const FAUCETABI = [
     inputs: [
       {
         internalType: "address[]",
-        name: "tokens",
+        name: "users",
         type: "address[]",
       },
       {
-        internalType: "address payable[]",
-        name: "wallets",
-        type: "address[]",
+        internalType: "uint256[]",
+        name: "amounts",
+        type: "uint256[]",
+      },
+      {
+        internalType: "bytes32[][]",
+        name: "proofs",
+        type: "bytes32[][]",
       },
     ],
-    name: "batchDrop",
+    name: "batchClaim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "proof",
+        type: "bytes32[]",
+      },
+    ],
+    name: "claim",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4079,165 +4112,11 @@ export const FAUCETABI = [
     inputs: [
       {
         internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "address payable",
-        name: "wallet",
-        type: "address",
-      },
-    ],
-    name: "collect",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "address payable",
-        name: "wallet",
-        type: "address",
-      },
-    ],
-    name: "drop",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "wallet",
-        type: "address",
-      },
-    ],
-    name: "droppedAmount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "wallet",
-        type: "address",
-      },
-    ],
-    name: "isEligible",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
-    name: "maxAmountPerWallet",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
         name: "",
         type: "address",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
-    name: "rateLimitCount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "count",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "token",
-        type: "address",
-      },
-    ],
-    name: "rateLimitInterval",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "intervalSeconds",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "relayers",
+    name: "claimed",
     outputs: [
       {
         internalType: "bool",
@@ -4250,7 +4129,50 @@ export const FAUCETABI = [
   },
   {
     inputs: [],
-    name: "renounceOwnership",
+    name: "daoToken",
+    outputs: [
+      {
+        internalType: "contract IERC20",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+    ],
+    name: "getRoleAdmin",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "grantRole",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4258,17 +4180,54 @@ export const FAUCETABI = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "relayer",
-        type: "address",
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
       },
       {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "hasRole",
+    outputs: [
+      {
         internalType: "bool",
-        name: "enabled",
+        name: "",
         type: "bool",
       },
     ],
-    name: "setupRelayer",
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "merkleRoot",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "callerConfirmation",
+        type: "address",
+      },
+    ],
+    name: "renounceRole",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4276,32 +4235,17 @@ export const FAUCETABI = [
   {
     inputs: [
       {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
         internalType: "address",
-        name: "token",
+        name: "account",
         type: "address",
       },
-      {
-        internalType: "uint256",
-        name: "_maxAmountPerWallet",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_amountPerDrop",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_rateLimitInterval",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_rateLimitCount",
-        type: "uint256",
-      },
     ],
-    name: "setupToken",
+    name: "revokeRole",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4309,18 +4253,43 @@ export const FAUCETABI = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
+        internalType: "bytes4",
+        name: "interfaceId",
+        type: "bytes4",
       },
     ],
-    name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "supportsInterface",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
-    stateMutability: "payable",
-    type: "receive",
+    inputs: [
+      {
+        internalType: "contract IERC20",
+        name: "tokenToWithdraw",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "receiver",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "withdrawERC20",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
 ];
