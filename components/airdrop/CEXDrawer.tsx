@@ -103,16 +103,7 @@ export default function CEXDrawer({ claimAmout }: { claimAmout: any }) {
               disabled={true}
             />
           </div>
-          <a
-            href={currentCEX.learnMore}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`text-[var(--mind-brand)] hover:text-[var(--mind-brand)] hover:underline font-[600] underline text-[12px] ${
-              currentCEX.learnMore !== "" ? "" : "hidden"
-            }`}
-          >
-            How to find {currentCEX.label} UID and $FHE deposit address ?
-          </a>
+
           <div className="pl-[30px] pr-[10px] mind-input mt-[30px]">
             <div className="sm:flex items-center">
               <span className="text-[16px] font-[600] text-white inline-block min-w-[150px] sm:mb-[0px] mb-[5px]">

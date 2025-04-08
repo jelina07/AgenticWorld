@@ -11,7 +11,7 @@ import { AirdropContractErrorCode } from "@/sdk/utils/script";
 import { cexInfo, numberDigitsNoMillify } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAsyncEffect } from "ahooks";
-import { Button, notification } from "antd";
+import { Button, Checkbox, CheckboxProps, message, notification } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { formatEther } from "viem";
@@ -48,9 +48,18 @@ export default function Eligibility() {
     cancel: statusCancel,
   } = useRelayerGetStatus("claim");
   const [actionLoop, setActionLoop] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
   const clickCheckEligibility = async () => {
     if (isConnected && address) {
-      await checkEligibility(address);
+      if (privacy) {
+        await checkEligibility(address);
+      } else {
+        message.open({
+          type: "warning",
+          content: `To check eligibility, please agree to the Terms & Conditions and Privacy Policy.`,
+          duration: 5,
+        });
+      }
     } else {
       openConnectModal?.();
     }
@@ -115,6 +124,11 @@ export default function Eligibility() {
     }
   }, [claimAmout]);
 
+  const termsChange: CheckboxProps["onChange"] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+    setPrivacy(e.target.checked);
+  };
+
   return (
     <div>
       <div>
@@ -145,6 +159,37 @@ export default function Eligibility() {
           </div>
           <div className="mt-[20px]">
             <div className="text-[15px] font-[700]">Enter Wallet Address</div>
+            <div
+              className={`mind-checkbox mt-[15px] ${
+                isConnected ? "" : "hidden"
+              }`}
+            >
+              <Checkbox onChange={termsChange} disabled={claimAmout?.amount}>
+                <span className="text-white text-[14px]">
+                  You agree to the{" "}
+                </span>
+                <a
+                  href="https://docs.mindnetwork.xyz/minddocs/security-and-privacy/mind-network-airdrop-terms-of-service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white text-[14px] underline hover:underline inline-block"
+                >
+                  Terms & Conditions
+                </a>
+                <span className="text-white text-[14px]">
+                  {" "}
+                  and confirm you have read and understand the{" "}
+                </span>
+                <a
+                  href="https://docs.mindnetwork.xyz/minddocs/security-and-privacy/mind-network-airdrop-privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white text-[14px] underline hover:underline"
+                >
+                  Privacy Policy
+                </a>
+              </Checkbox>
+            </div>
             <div className="sm:flex justify-between gap-[10px] items-center mt-[15px] mind-input">
               <div
                 className="px-[11px] py-[8px] flex-1 flex items-center
@@ -219,7 +264,7 @@ export default function Eligibility() {
                   <Button
                     type="primary"
                     className="button-brand-border mt-[10px]"
-                    onClick={clickClaim}
+                    href="/agentlaunch"
                   >
                     Launch Your Agent
                   </Button>
