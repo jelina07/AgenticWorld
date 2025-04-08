@@ -3866,29 +3866,29 @@ export const DAO_INSPECTOR_ABI = [
 
 export const FAUCETABI = [
   {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "_token",
-        type: "address",
-      },
-      {
-        internalType: "bytes32",
-        name: "_merkleRoot",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "_admin",
-        type: "address",
-      },
-    ],
+    inputs: [],
     stateMutability: "nonpayable",
     type: "constructor",
   },
   {
     inputs: [],
-    name: "AccessControlBadConfirmation",
+    name: "ArrayLengthMismatch",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ExceededMax",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "OwnableInvalidOwner",
     type: "error",
   },
   {
@@ -3898,41 +3898,49 @@ export const FAUCETABI = [
         name: "account",
         type: "address",
       },
-      {
-        internalType: "bytes32",
-        name: "neededRole",
-        type: "bytes32",
-      },
     ],
-    name: "AccessControlUnauthorizedAccount",
+    name: "OwnableUnauthorizedAccount",
     type: "error",
   },
   {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "contractID",
-        type: "bytes32",
-      },
-      {
-        internalType: "uint16",
-        name: "errorCode",
-        type: "uint16",
-      },
-    ],
-    name: "GeneralError",
+    inputs: [],
+    name: "RateLimit",
     type: "error",
   },
   {
+    inputs: [],
+    name: "Unauthorized",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ZeroValueCheck",
+    type: "error",
+  },
+  {
+    anonymous: false,
     inputs: [
       {
+        indexed: false,
         internalType: "address",
         name: "token",
         type: "address",
       },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "error",
+        type: "string",
+      },
     ],
-    name: "SafeERC20FailedOperation",
-    type: "error",
+    name: "Fail",
+    type: "event",
   },
   {
     anonymous: false,
@@ -3940,7 +3948,32 @@ export const FAUCETABI = [
       {
         indexed: true,
         internalType: "address",
-        name: "claimant",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "wallet",
         type: "address",
       },
       {
@@ -3950,118 +3983,23 @@ export const FAUCETABI = [
         type: "uint256",
       },
     ],
-    name: "Claimed",
+    name: "Success",
     type: "event",
   },
   {
-    anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "previousAdminRole",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "newAdminRole",
-        type: "bytes32",
-      },
-    ],
-    name: "RoleAdminChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
         internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "sender",
+        name: "token",
         type: "address",
       },
     ],
-    name: "RoleGranted",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-    ],
-    name: "RoleRevoked",
-    type: "event",
-  },
-  {
-    inputs: [],
-    name: "ADMIN_ROLE",
+    name: "amountPerDrop",
     outputs: [
       {
-        internalType: "bytes32",
+        internalType: "uint256",
         name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "BATCH_ROLE",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "DEFAULT_ADMIN_ROLE",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -4071,21 +4009,16 @@ export const FAUCETABI = [
     inputs: [
       {
         internalType: "address[]",
-        name: "users",
+        name: "tokens",
         type: "address[]",
       },
       {
-        internalType: "uint256[]",
-        name: "amounts",
-        type: "uint256[]",
-      },
-      {
-        internalType: "bytes32[][]",
-        name: "proofs",
-        type: "bytes32[][]",
+        internalType: "address payable[]",
+        name: "wallets",
+        type: "address[]",
       },
     ],
-    name: "batchClaim",
+    name: "batchDrop",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4093,19 +4026,155 @@ export const FAUCETABI = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
+        internalType: "address",
+        name: "token",
+        type: "address",
       },
       {
-        internalType: "bytes32[]",
-        name: "proof",
-        type: "bytes32[]",
+        internalType: "address payable",
+        name: "wallet",
+        type: "address",
       },
     ],
-    name: "claim",
+    name: "collect",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "address payable",
+        name: "wallet",
+        type: "address",
+      },
+    ],
+    name: "drop",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+    ],
+    name: "droppedAmount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+    ],
+    name: "isEligible",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+    ],
+    name: "maxAmountPerWallet",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+    ],
+    name: "rateLimitCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "count",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+    ],
+    name: "rateLimitInterval",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "intervalSeconds",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -4116,7 +4185,7 @@ export const FAUCETABI = [
         type: "address",
       },
     ],
-    name: "claimed",
+    name: "relayers",
     outputs: [
       {
         internalType: "bool",
@@ -4129,50 +4198,7 @@ export const FAUCETABI = [
   },
   {
     inputs: [],
-    name: "daoToken",
-    outputs: [
-      {
-        internalType: "contract IERC20",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-    ],
-    name: "getRoleAdmin",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "grantRole",
+    name: "renounceOwnership",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4180,54 +4206,17 @@ export const FAUCETABI = [
   {
     inputs: [
       {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
         internalType: "address",
-        name: "account",
+        name: "relayer",
         type: "address",
       },
-    ],
-    name: "hasRole",
-    outputs: [
       {
         internalType: "bool",
-        name: "",
+        name: "enabled",
         type: "bool",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "merkleRoot",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "callerConfirmation",
-        type: "address",
-      },
-    ],
-    name: "renounceRole",
+    name: "setupRelayer",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -4235,61 +4224,51 @@ export const FAUCETABI = [
   {
     inputs: [
       {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
         internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "revokeRole",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes4",
-        name: "interfaceId",
-        type: "bytes4",
-      },
-    ],
-    name: "supportsInterface",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "tokenToWithdraw",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "receiver",
+        name: "token",
         type: "address",
       },
       {
         internalType: "uint256",
-        name: "amount",
+        name: "_maxAmountPerWallet",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_amountPerDrop",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_rateLimitInterval",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_rateLimitCount",
         type: "uint256",
       },
     ],
-    name: "withdrawERC20",
+    name: "setupToken",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "receive",
   },
 ];
