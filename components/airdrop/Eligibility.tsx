@@ -1,10 +1,12 @@
 "use client";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import {
+  useAgentGetStakeAmount,
   useAirdropCheck,
   useAirdropClaim,
   useAirdropIsClaimed,
   useAirdropRelayerClaim,
+  useGetFheBalance,
   useRelayerGetStatus,
 } from "@/sdk";
 import { AirdropContractErrorCode } from "@/sdk/utils/script";
@@ -13,23 +15,36 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAsyncEffect } from "ahooks";
 import { Button, Checkbox, CheckboxProps, message, notification } from "antd";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import CEXDrawer from "./CEXDrawer";
+import MindTip from "../utils/MindTip";
+import AirDropStakeModal from "./AirDropStakeModal";
 
 const successTip = "Claim Success !";
 
 export default function Eligibility() {
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const isAgent = agentTokenId !== 0;
   const { address, isConnected, chainId } = useAccount();
-  const [claimed, setClaimed] = useState(false);
+  // const [claimed, setClaimed] = useState(false);
+  const { refresh: fheBalanceRefresh } = useGetFheBalance();
+  const {
+    data: agentStakeAmount,
+    loading: agentStakeAmountLoading,
+    refresh: refreshStakeAmount,
+  } = useAgentGetStakeAmount({
+    tokenId: agentTokenId,
+  });
 
   const {
     data: claimAmout,
     runAsync: checkEligibility,
     loading,
   } = useAirdropCheck();
-  console.log("claimAmout", claimAmout);
+
   const {
     data: claimedByContract,
     runAsync: airdropIsClaimed,
@@ -79,10 +94,10 @@ export default function Eligibility() {
         setActionLoop(false);
       }
     } else {
-      const res = await claimAsync(
-        formatEther(BigInt(claimAmout.amount)),
-        claimAmout.proof
-      );
+      const proof = JSON.parse(claimAmout.proof);
+      console.log("proof", proof);
+
+      const res = await claimAsync(claimAmout.amount, proof);
       if (res) {
         afterSuccessHandler();
         notification.success({
@@ -93,8 +108,14 @@ export default function Eligibility() {
     }
   };
 
+  const stake = async () => {
+    //打开modal，分为有agent（没有10限制）和没有agent（有10的限制）
+  };
+
+  const clickClaimAndStake = async () => {};
   const afterSuccessHandler = () => {
     refreshIsClaimed();
+    fheBalanceRefresh();
   };
 
   useRelayerStatusHandler(
@@ -112,7 +133,7 @@ export default function Eligibility() {
         claimAmout.register?.cexName &&
         claimAmout.register.cexName !== "MindChain"
       ) {
-        setClaimed(true);
+        // setClaimed(true);
       } else if (
         claimAmout.register?.cexName &&
         claimAmout.register?.cexName === "MindChain"
@@ -123,11 +144,13 @@ export default function Eligibility() {
       }
     }
   }, [claimAmout]);
+  console.log("agentStakeAmount", agentStakeAmount);
 
   const termsChange: CheckboxProps["onChange"] = (e) => {
     console.log(`checked = ${e.target.checked}`);
     setPrivacy(e.target.checked);
   };
+  console.log("isAgent", isAgent);
 
   return (
     <div>
@@ -230,7 +253,9 @@ export default function Eligibility() {
         {claimAmout?.amount ? (
           <div className="p-[24px] mt-[50px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
             <div className="text-[18px] font-[900]">
-              Congratulations! You&apos;re Eligible
+              {!claimedByContract
+                ? "Congratulations! You're Eligible"
+                : "Congratulations! You've Claimed"}
             </div>
             <div className="flex justify-between gap-[10px] items-end flex-wrap">
               <div className="flex-1">
@@ -261,42 +286,92 @@ export default function Eligibility() {
                     You can now launch your Agent with your $FHE to start
                     earning more $FHE
                   </div>
-                  <Button
-                    type="primary"
-                    className="button-brand-border mt-[10px]"
+                  <Link
                     href="/agentlaunch"
+                    className="btn-Link-white-font inline-block flex-grow-0 mt-[10px]"
                   >
                     Launch Your Agent
-                  </Button>
+                  </Link>
                   <CEXDrawer claimAmout={claimAmout} />
                 </div>
-              ) : (
+              ) : !claimedByContract ? (
                 <div className="flex items-end pb-[10px] flex-1 justify-around">
                   <div className="w-[135px]">
-                    <div className="text-[12px] text-center leading-[12px]">
-                      {claimAmout?.register?.cexName === "MindChain"
-                        ? "Claim $FHE on MindChain"
-                        : "Claim $FHE on BNB Smart Chain"}
+                    <div className="flex justify-between items-center">
+                      <div className="text-[12px] text-center leading-[12px]">
+                        {claimAmout?.register?.cexName === "MindChain"
+                          ? "Claim $FHE on MindChain"
+                          : "Claim $FHE on BNB Smart Chain"}
+                      </div>
+                      <MindTip
+                        placement="bottom"
+                        title={
+                          claimAmout?.register?.cexName === "MindChain"
+                            ? "We offer 0 gas option for claiming your token on MindChain. However, during periods of high network traffic, tansaction may take longer than usual."
+                            : null
+                        }
+                        isShow={claimAmout?.register?.cexName === "MindChain"}
+                      />
                     </div>
+
                     <Button
                       type="primary"
                       className="button-brand-border mt-[10px]"
                       onClick={clickClaim}
+                      loading={claimLoading || actionLoop}
                     >
                       Claim $FHE
                     </Button>
                   </div>
                   <div className="w-[135px]">
                     <div className="text-[12px] text-center leading-[12px]">
-                      Launch Agent instantly to earn more $FHE
+                      {isAgent
+                        ? "Stake to your Agent to earn more $FHE"
+                        : "Launch Agent instantly to earn more $FHE"}
                     </div>
                     <Button
                       type="primary"
                       className="button-brand-border mt-[10px]"
+                      onClick={clickClaimAndStake}
                     >
                       Claim & Stake
                     </Button>
                   </div>
+                </div>
+              ) : agentStakeAmount === "0" || !isAgent ? (
+                <div className="flex-1">
+                  <div>
+                    <div className="text-[12px] text-center leading-[12px]">
+                      Next,
+                    </div>
+                    <div className="text-[12px] text-center leading-[12px]">
+                      {!agentStakeAmount ? "Launch your" : "Stake to your"}
+                      <span className="text-[var(--mind-brand)]">
+                        {" "}
+                        AI Agent{" "}
+                      </span>
+                      in AgenticWorld and start earning more $FHE!
+                    </div>
+                  </div>
+                  <AirDropStakeModal refreshStakeAmount={refreshStakeAmount} />
+                </div>
+              ) : (
+                <div className="flex-1">
+                  <div>
+                    <div className="text-[12px] text-center leading-[12px]">
+                      Well done!
+                    </div>
+                    <div className="text-[12px] text-center leading-[12px]">
+                      Your Agent is now set up.You&apos;re ready to start
+                      training it!
+                    </div>
+                  </div>
+                  <Link
+                    href="/agenticworld"
+                    className="btn-Link-white-font inline-block flex-grow-0 mt-[10px]"
+                  >
+                    Go AgenticWorld
+                  </Link>
                 </div>
               )}
             </div>

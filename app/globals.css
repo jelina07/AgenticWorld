@@ -768,3 +768,9 @@ input:focus {
 .mind-checkbox .ant-checkbox-disabled .ant-checkbox-inner {
   background: var(--mind-brand);
 }
+
+.ant-tooltip .ant-tooltip-inner {
+  border: 1px solid #2e2f31;
+  color: #fff !important;
+  font-size: 14px;
+}

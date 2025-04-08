@@ -55,8 +55,8 @@ const MindMenu: React.FC = () => {
             key: "/agentlaunch",
           },
           {
-            label: <Link href="/swap&bridge">Swap/Bridge</Link>,
-            key: "/swap&bridge",
+            label: <Link href="/bridge">Bridge</Link>,
+            key: "/bridge",
           },
         ]
       : [

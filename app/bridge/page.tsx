@@ -8,12 +8,6 @@ const items: TabsProps["items"] = [
     label: "Bridge",
     children: <Bridge />,
   },
-  {
-    key: "2",
-    label: "Swap",
-    children: "",
-    disabled: true,
-  },
 ];
 export default function page() {
   const onChange = (key: string) => {

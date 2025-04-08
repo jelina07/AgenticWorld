@@ -266,7 +266,7 @@ export default function MyAgent({
                           type="text"
                           defaultValue={text}
                           onBlur={handleInputBlur}
-                          onChange={(e) => setText(e.target.value)}
+                          onChange={(e) => setText(e.target.value.trim())}
                           autoFocus
                           maxLength={30}
                           style={{

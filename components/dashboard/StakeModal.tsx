@@ -150,7 +150,7 @@ export default function StakeModal({
               </div>
             }
             onChange={(e: any) => {
-              setAmount(e.target.value);
+              setAmount(e.target.value.trim());
             }}
           />
           <div className="text-[12px] flex justify-between gap-[5px] flex-wrap mt-[10px]">

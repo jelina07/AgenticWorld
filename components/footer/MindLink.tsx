@@ -19,14 +19,14 @@ export default function MindLink() {
       >
         Stats
       </a>
-      <a
+      {/* <a
         href="https://dapp.mindnetwork.xyz/"
         target="_blank"
         rel="noopener noreferrer"
         className="text-white hover:var(--mind-brand)"
       >
         MindV
-      </a>
+      </a> */}
     </div>
   );
 }

@@ -50,6 +50,7 @@ export default function DecreseModal({
     cancel: statusCancel,
   } = useRelayerGetStatus("unstake");
   const [actionLoop, setActionLoop] = useState(false);
+  const isFirstlockUpTimeReached = true;
 
   const afterSuccessHandler = () => {
     refreshStakeAmount();
@@ -114,6 +115,7 @@ export default function DecreseModal({
   const clickMax = () => {
     setAmount(String(Number(agentStakeAmount) - firstStakeAmount));
   };
+
   return (
     <>
       <Button
@@ -130,57 +132,81 @@ export default function DecreseModal({
         className="mind-madal"
         footer={null}
       >
-        <div className="mind-input">
-          <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
-            <span>Current Stake:</span>
-            <span>{agentStakeAmount} FHE</span>
-          </div>
-          <Input
-            value={amount}
-            style={{ height: "46px", marginTop: "20px" }}
-            suffix={
-              <div onClick={clickMax} className="cursor-pointer">
-                <Max />
-              </div>
-            }
-            onChange={(e: any) => {
-              setAmount(e.target.value);
-            }}
-          />
-          <div>
-            <div
-              className={`flex items-center gap-[2px] justify-end mt-[20px] ${
-                isNaN(Number(amount)) ? "hidden" : ""
-              }`}
-            >
-              <span className="text-[14px] font-[500]">rewards earning</span>
-              <span className="text-[20px] font-[500] text-[var(--mind-red)]">
-                ~
-                {Number(amount) === 0 ||
-                isNaN(Number(amount)) ||
-                !agentStakeAmount ||
-                agentStakeAmount === "0"
-                  ? "0%"
-                  : numberDigits(
-                      new Big(amount)
-                        .div(agentStakeAmount)
-                        .times(100)
-                        .toString()
-                    ) + "%"}
-              </span>
-              <DownArraw />
+        {isFirstlockUpTimeReached ? (
+          <div className="mind-input">
+            <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
+              <span>Current Stake:</span>
+              <span>{agentStakeAmount} FHE</span>
             </div>
+            <Input
+              value={amount}
+              style={{ height: "46px", marginTop: "20px" }}
+              suffix={
+                <div onClick={clickMax} className="cursor-pointer">
+                  <Max />
+                </div>
+              }
+              onChange={(e: any) => {
+                setAmount(e.target.value.trim());
+              }}
+            />
+            <div>
+              <div
+                className={`flex items-center gap-[2px] justify-end mt-[20px] ${
+                  isNaN(Number(amount)) ? "hidden" : ""
+                }`}
+              >
+                <span className="text-[14px] font-[500]">rewards earning</span>
+                <span className="text-[20px] font-[500] text-[var(--mind-red)]">
+                  ~
+                  {Number(amount) === 0 ||
+                  isNaN(Number(amount)) ||
+                  !agentStakeAmount ||
+                  agentStakeAmount === "0"
+                    ? "0%"
+                    : numberDigits(
+                        new Big(amount)
+                          .div(agentStakeAmount)
+                          .times(100)
+                          .toString()
+                      ) + "%"}
+                </span>
+                <DownArraw />
+              </div>
+            </div>
+            <Button
+              type="primary"
+              className="button-brand-border mt-[30px]"
+              disabled={amount === ""}
+              onClick={unstake}
+              loading={agentStakeLoading || actionLoop}
+            >
+              Unstake
+            </Button>
           </div>
-          <Button
-            type="primary"
-            className="button-brand-border mt-[30px]"
-            disabled={amount === ""}
-            onClick={unstake}
-            loading={agentStakeLoading || actionLoop}
-          >
-            Unstake
-          </Button>
-        </div>
+        ) : (
+          <div>
+            <div className="">
+              Your FHE will be locked up until
+              <span className="text-[var(--mind-brand)]">
+                {" "}
+                UTC 16:00, May 9, 2025
+              </span>
+              . You can only unstake after the lock-up period ends
+            </div>
+            <div className="flex justify-between">
+              <div>Current Stake:</div>
+              <div className="text-[var(--mind-brand)]">2000 FHE</div>
+            </div>
+            <Button
+              type="primary"
+              className="button-brand-border mt-[30px]"
+              onClick={handleCancel}
+            >
+              Close
+            </Button>
+          </div>
+        )}
       </Modal>
     </>
   );

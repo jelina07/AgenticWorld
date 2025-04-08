@@ -2,36 +2,34 @@ import {
   useAgentGetTokenId,
   useAgentStake,
   useGetFheBalance,
-  useGetAgentCount,
   useRelayerStake,
   useRelayerGetStatus,
 } from "@/sdk";
-import { isDev, isProd } from "@/sdk/utils";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import {
+  $FHELockupperiod,
   checkAmountControlButtonShow,
-  checkAmountControlButtonShowCan0,
   firstStakeAmount,
   judgeUseGasless,
   numberDigits,
 } from "@/utils/utils";
-import { Button, Input, message, notification } from "antd";
+import { Button, Input, message, Modal, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import Facuet from "../facuet/Facuet";
 import { useAccount } from "wagmi";
-import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
-import { useAsyncEffect } from "ahooks";
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import Max from "../utils/Max";
 
-const successTip = "Launch Success !";
-
-const StakeLaunch = forwardRef((_, ref) => {
-  const { chainId, isConnected, address } = useAccount();
-  const startAmount = isDev() || isProd() ? "" : "0";
-  const [amount, setAmount] = useState(startAmount);
+export default function AirDropStakeModal({
+  refreshStakeAmount,
+}: {
+  refreshStakeAmount: Function;
+}) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { chainId } = useAccount();
+  const [amount, setAmount] = useState("");
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
     waitForReceipt: true,
   });
@@ -39,9 +37,9 @@ const StakeLaunch = forwardRef((_, ref) => {
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
+  const successTip = isAgent ? "Stake Success !" : "Launch Success !";
   const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
-  const { data: totalAgent, refresh: refreshTotalAgent } = useGetAgentCount();
   const { runAsync: relayerAgentStake } = useRelayerStake();
   const {
     data: status,
@@ -53,11 +51,19 @@ const StakeLaunch = forwardRef((_, ref) => {
   const clickMax = () => {
     setAmount(balance);
   };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setAmount("");
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
   const afterSuccessHandler = () => {
     agentGetTokenIdRefresh();
     fheBalanceRefresh();
-    refreshTotalAgent();
+    refreshStakeAmount();
+    handleCancel();
   };
 
   useRelayerStatusHandler(
@@ -69,15 +75,12 @@ const StakeLaunch = forwardRef((_, ref) => {
     Agent1ContractErrorCode
   );
 
-  useImperativeHandle(ref, () => ({
-    clearStakeAmount: () => {
-      setAmount("");
-    },
-  }));
-
   const stake = async () => {
-    if (checkAmountControlButtonShowCan0(amount)) {
-      if (Number(amount) < firstStakeAmount) {
+    if (checkAmountControlButtonShow(amount)) {
+      const judgeCondition = !isAgent
+        ? Number(amount) < firstStakeAmount
+        : false;
+      if (judgeCondition) {
         message.open({
           type: "warning",
           content: `The minimum required amount is ${firstStakeAmount} !`,
@@ -115,31 +118,38 @@ const StakeLaunch = forwardRef((_, ref) => {
   };
 
   return (
-    <div
-      className="p-[24px] mind-input max-w-[850px] mx-auto flex justify-between gap-[30px] flex-wrap
-                        bg-[url('/images/agent-launch-bg.png')] bg-cover bg-no-repeat"
-    >
-      <img src="/icons/ai-agent.svg" alt="ai-agent" />
-      <div>
-        <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
-        <div className="text-[14px] mt-[20px]">
-          {isDev() || isProd() ? (
-            <div>Minimum staking: {firstStakeAmount} $FHE</div>
-          ) : (
-            <div>
-              Total Agents Launched:{" "}
-              {!isConnected ? "/" : !totalAgent ? "loading..." : totalAgent}
+    <>
+      <Button
+        type="primary"
+        className="button-brand-border mt-[10px]"
+        onClick={showModal}
+      >
+        Stake
+      </Button>
+      <Modal
+        title={!isAgent ? "Launch Your AI Agent" : "Stake to your AI Agent"}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        className="mind-madal"
+        footer={null}
+      >
+        <div className="mind-input">
+          <div className="text-[14px] mt-[20px]">
+            {!isAgent ? (
+              <div>Minimum staking: {firstStakeAmount} $FHE</div>
+            ) : (
+              <></>
+            )}
+            <div className="mt-[10px]">
+              $FHE from Mind Network Ecosystem Incentive & Potential Partner
+              tokens
             </div>
-          )}
-          <div className="mt-[10px]">
-            $FHE from Mind Network Ecosystem Incentive & Potential Partner
-            tokens
+            <div className="mt-[10px]">
+              $FHE Lock up period: {$FHELockupperiod} days
+            </div>
           </div>
-        </div>
-        {isDev() || isProd() ? (
           <Input
             style={{ height: "45px", margin: "26px 0 0 0" }}
-            disabled={isAgent}
             value={amount}
             suffix={
               <div onClick={clickMax} className="cursor-pointer">
@@ -150,10 +160,6 @@ const StakeLaunch = forwardRef((_, ref) => {
               setAmount(e.target.value.trim());
             }}
           />
-        ) : (
-          <div className="my-[26px]"></div>
-        )}
-        {isDev() || isProd() ? (
           <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
             <span>FHE Balance:</span>
             <div className="flex items-center gap-[3px]">
@@ -170,30 +176,21 @@ const StakeLaunch = forwardRef((_, ref) => {
               />
             </div>
           </div>
-        ) : (
-          <></>
-        )}
 
-        <div className="flex items-end gap-[10px]">
-          <Button
-            type="primary"
-            className="button-brand-border"
-            disabled={isAgent || amount === ""}
-            onClick={stake}
-            loading={agentStakeLoading || actionLoop}
-          >
-            {isDev() || isProd() ? "Stake & Launch" : "Launch"}
-          </Button>
-          {isDev() || isProd() ? (
+          <div className="flex items-end gap-[10px]">
+            <Button
+              type="primary"
+              className="button-brand-border"
+              disabled={amount === ""}
+              onClick={stake}
+              loading={agentStakeLoading || actionLoop}
+            >
+              {!isAgent ? "Stake & Launch" : "Stake"}
+            </Button>
             <Facuet refreshFHE={fheBalanceRefresh} />
-          ) : (
-            <></>
-          )}
+          </div>
         </div>
-      </div>
-    </div>
+      </Modal>
+    </>
   );
-});
-
-StakeLaunch.displayName = "StakeLaunch";
-export default StakeLaunch;
+}
