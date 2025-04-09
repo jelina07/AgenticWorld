@@ -86,7 +86,7 @@ const HubList = forwardRef(
           ? hubAgentCount[index]
           : "loading...",
         payoutRatio: !isConnected ? "/" : hubApy ? hubApy[index] : "loading...",
-        lockup: item.lockUp,
+        lockup: 60,
         subnetLevel: item.note,
         subnetRequire: item.requireName,
         needSign: item.needSign,

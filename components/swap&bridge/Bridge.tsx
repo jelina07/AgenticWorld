@@ -101,49 +101,72 @@ export default function Bridge() {
       currentFromChain.value === "Arbitrum" &&
       currentToChain.value === "Mind"
     ) {
-      return "https://bridge.arbitrum.io/?destinationChain=mind-network&sourceChain=arbitrum-one";
+      return [
+        "https://bridge.arbitrum.io/?destinationChain=mind-network&sourceChain=arbitrum-one",
+        "https://app.interport.fi/bridge/42161/228/ETH/ETH",
+      ];
     } else if (
       currentToken.value === "ETH" &&
       currentFromChain.value === "Mind" &&
       currentToChain.value === "Arbitrum"
     ) {
-      return "https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=mind-network";
+      return [
+        "https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=mind-network",
+      ];
     } else if (
       currentToken.value === "FHE" &&
       currentFromChain.value === "Ethereum" &&
       currentToChain.value === "Mind"
     ) {
-      return "https://app.transporter.io/?from=mainnet&tab=token&to=mind&token=FHE";
+      return [
+        "https://app.transporter.io/?from=mainnet&tab=token&to=mind&token=FHE",
+        "https://app.interport.fi/bridge/1/228/FHE/FHE",
+      ];
     } else if (
       currentToken.value === "FHE" &&
       currentFromChain.value === "Ethereum" &&
       currentToChain.value === "BSC"
     ) {
-      return "https://app.transporter.io/?from=mainnet&tab=token&to=bsc&token=FHE";
+      return [
+        "https://app.transporter.io/?from=mainnet&tab=token&to=bsc&token=FHE",
+        "https://app.interport.fi/bridge/1/56/FHE/FHE",
+      ];
     } else if (
       currentToken.value === "FHE" &&
       currentFromChain.value === "BSC" &&
       currentToChain.value === "Mind"
     ) {
-      return "https://app.transporter.io/?from=bsc&tab=token&to=mind&token=FHE";
+      return [
+        "https://app.transporter.io/?from=bsc&tab=token&to=mind&token=FHE",
+        "https://app.interport.fi/bridge/56/228/FHE/FHE",
+      ];
     } else if (
       currentToken.value === "FHE" &&
       currentFromChain.value === "BSC" &&
       currentToChain.value === "Ethereum"
     ) {
-      return "https://app.transporter.io/?from=bsc&tab=token&to=mainnet&token=FHE";
+      return [
+        "https://app.transporter.io/?from=bsc&tab=token&to=mainnet&token=FHE",
+        "https://app.interport.fi/bridge/56/1/FHE/FHE",
+      ];
     } else if (
       currentToken.value === "FHE" &&
       currentFromChain.value === "Mind" &&
       currentToChain.value === "Ethereum"
     ) {
-      return "https://app.transporter.io/?from=mind&tab=token&to=mainnet&token=FHE";
+      return [
+        "https://app.transporter.io/?from=mind&tab=token&to=mainnet&token=FHE",
+        "https://app.interport.fi/bridge/228/1/FHE/FHE",
+      ];
     } else if (
       currentToken.value === "FHE" &&
       currentFromChain.value === "Mind" &&
       currentToChain.value === "BSC"
     ) {
-      return "https://app.transporter.io/?from=mind&tab=token&to=bsc&token=FHE";
+      return [
+        "https://app.transporter.io/?from=mind&tab=token&to=bsc&token=FHE",
+        "https://app.interport.fi/bridge/228/56/FHE/FHE",
+      ];
     }
   }, [currentToChain]);
 
@@ -242,15 +265,17 @@ export default function Bridge() {
             options={toChainOption}
           />
         </div>
-        <div className="mt-[40px]">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            id="mind-bridge"
-          >
-            Go
-          </a>
+        <div className="mt-[40px] flex gap-[10px]">
+          {url?.map((item: any) => (
+            <a
+              href={item}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="mind-bridge"
+            >
+              Go
+            </a>
+          ))}
         </div>
       </div>
     </div>
