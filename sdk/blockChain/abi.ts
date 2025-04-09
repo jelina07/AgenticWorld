@@ -2150,9 +2150,42 @@ export const AGENT1_ABI = [
 
 export const DAOTOKEN_ABI = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "recipient",
+        type: "address",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "ECDSAInvalidSignature",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "length",
+        type: "uint256",
+      },
+    ],
+    name: "ECDSAInvalidSignatureLength",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "ECDSAInvalidSignatureS",
+    type: "error",
   },
   {
     inputs: [
@@ -2243,12 +2276,28 @@ export const DAOTOKEN_ABI = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "ERC2612ExpiredSignature",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "signer",
+        type: "address",
+      },
+      {
         internalType: "address",
         name: "owner",
         type: "address",
       },
     ],
-    name: "OwnableInvalidOwner",
+    name: "ERC2612InvalidSigner",
     type: "error",
   },
   {
@@ -2258,8 +2307,29 @@ export const DAOTOKEN_ABI = [
         name: "account",
         type: "address",
       },
+      {
+        internalType: "uint256",
+        name: "currentNonce",
+        type: "uint256",
+      },
     ],
-    name: "OwnableUnauthorizedAccount",
+    name: "InvalidAccountNonce",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidShortString",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "str",
+        type: "string",
+      },
+    ],
+    name: "StringTooLong",
     type: "error",
   },
   {
@@ -2291,19 +2361,19 @@ export const DAOTOKEN_ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
+        name: "newAdmin",
         type: "address",
       },
     ],
-    name: "OwnershipTransferred",
+    name: "CCIPAdminChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [],
+    name: "EIP712DomainChanged",
     type: "event",
   },
   {
@@ -2330,6 +2400,26 @@ export const DAOTOKEN_ABI = [
     ],
     name: "Transfer",
     type: "event",
+  },
+  {
+    inputs: [],
+    name: "DOMAIN_SEPARATOR",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "acceptCCIPAdmin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
@@ -2413,12 +2503,42 @@ export const DAOTOKEN_ABI = [
   },
   {
     inputs: [],
-    name: "name",
+    name: "eip712Domain",
     outputs: [
       {
+        internalType: "bytes1",
+        name: "fields",
+        type: "bytes1",
+      },
+      {
         internalType: "string",
-        name: "",
+        name: "name",
         type: "string",
+      },
+      {
+        internalType: "string",
+        name: "version",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "chainId",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "verifyingContract",
+        type: "address",
+      },
+      {
+        internalType: "bytes32",
+        name: "salt",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint256[]",
+        name: "extensions",
+        type: "uint256[]",
       },
     ],
     stateMutability: "view",
@@ -2426,7 +2546,7 @@ export const DAOTOKEN_ABI = [
   },
   {
     inputs: [],
-    name: "owner",
+    name: "getCCIPAdmin",
     outputs: [
       {
         internalType: "address",
@@ -2439,7 +2559,75 @@ export const DAOTOKEN_ABI = [
   },
   {
     inputs: [],
-    name: "renounceOwnership",
+    name: "name",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "nonces",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "v",
+        type: "uint8",
+      },
+      {
+        internalType: "bytes32",
+        name: "r",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "permit",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -2498,6 +2686,19 @@ export const DAOTOKEN_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "newAdmin",
+        type: "address",
+      },
+    ],
+    name: "transferCCIPAdmin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "from",
         type: "address",
       },
@@ -2520,19 +2721,6 @@ export const DAOTOKEN_ABI = [
         type: "bool",
       },
     ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
-      },
-    ],
-    name: "transferOwnership",
-    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },

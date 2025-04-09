@@ -2,7 +2,7 @@ import { Select } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 
 const config = {
-  EHT: {
+  ETH: {
     logo: "/icons/eth.svg",
     label: "ETH",
     value: "ETH",
@@ -77,12 +77,12 @@ const config = {
 } as any;
 
 export default function Bridge() {
-  const [currentToken, setCurrentToken] = useState(config["EHT"]);
+  const [currentToken, setCurrentToken] = useState(config["ETH"]);
   const [currentFromChain, setCurrentFromChain] = useState(
-    config["EHT"].chain.from[0]
+    config["ETH"].chain.from[0]
   );
   const [currentToChain, setCurrentToChain] = useState(
-    config["EHT"].chain.to[0]
+    config["ETH"].chain.to[0]
   );
 
   const fromChainOption = useMemo(() => {
@@ -205,7 +205,7 @@ export default function Bridge() {
       <div className="text-[var(--mind-grey)] text-[14px] text-right">
         ETH serves as the gas token for MindChain.
       </div>
-      <div className="p-[15px] bg-[#181818] mt-[10px] rounded-[20px] mind-select">
+      <div className="p-[30px] bg-[#181818] mt-[10px] rounded-[20px] mind-select pb-[50px]">
         <div className="flex gap-[30px] items-center">
           <div className="text-white font-[600]">Select Token:</div>
           <Select
@@ -219,6 +219,12 @@ export default function Bridge() {
             defaultValue="ETH"
             onChange={changeToken}
             options={supportToken}
+            style={{ width: "auto", minWidth: 120 }}
+            dropdownStyle={{
+              minWidth: "fit-content",
+              maxWidth: 300,
+              whiteSpace: "nowrap",
+            }}
           />
         </div>
         <div className="p-[15px] bg-[#0f1115] mt-[27px] rounded-[5px]">
@@ -237,6 +243,12 @@ export default function Bridge() {
             value={currentFromChain.value}
             onChange={changeFromChian}
             options={fromChainOption}
+            style={{ width: "auto", minWidth: 120 }}
+            dropdownStyle={{
+              minWidth: "fit-content",
+              maxWidth: 300,
+              whiteSpace: "nowrap",
+            }}
           />
         </div>
         <div className="my-[20px]">
@@ -263,6 +275,12 @@ export default function Bridge() {
             value={currentToChain.value}
             onChange={changeToChian}
             options={toChainOption}
+            style={{ width: "auto", minWidth: 120 }}
+            dropdownStyle={{
+              minWidth: "fit-content",
+              maxWidth: 300,
+              whiteSpace: "nowrap",
+            }}
           />
         </div>
         <div className="mt-[40px] flex gap-[10px]">
@@ -272,11 +290,19 @@ export default function Bridge() {
               target="_blank"
               rel="noopener noreferrer"
               id="mind-bridge"
+              key={item}
             >
               Go
             </a>
           ))}
         </div>
+        {currentToken.value === "ETH" ? (
+          <div className="text-[14px] font-[600] text-right text-white mt-[10px]">
+            Bridge is powered by CCIP
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
