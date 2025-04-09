@@ -470,7 +470,8 @@ export default function Eligibility() {
                   </div>
                   <Link
                     href="/agentlaunch"
-                    className="btn-Link-white-font inline-block flex-grow-0 mt-[10px] h-[38px] !leading-[38px]"
+                    style={{ height: "38px", lineHeight: "38px" }}
+                    className="btn-Link-white-font inline-block flex-grow-0 mt-[10px]"
                   >
                     Launch Your Agent
                   </Link>
@@ -579,6 +580,7 @@ export default function Eligibility() {
                   </div>
                   <Link
                     href="/agenticworld"
+                    style={{ height: "38px", lineHeight: "38px" }}
                     className="btn-Link-white-font inline-block flex-grow-0 mt-[10px]"
                   >
                     Go AgenticWorld
