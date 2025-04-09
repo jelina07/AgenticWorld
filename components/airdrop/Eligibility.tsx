@@ -236,6 +236,7 @@ export default function Eligibility() {
     setIsClaimAndStake(false);
   };
 
+  //just claim
   useRelayerStatusHandler(
     status,
     statusCancel,
@@ -245,7 +246,7 @@ export default function Eligibility() {
     AirdropContractErrorCode
   );
 
-  //stake and claim
+  //stake and claim:stake
   useRelayerStatusHandler(
     statusStake,
     statusCancelStake,
@@ -254,7 +255,7 @@ export default function Eligibility() {
     successTipStake,
     Agent1ContractErrorCode
   );
-  //stake and claim
+  //stake and claim:claim
   useRelayerClaimStatus(
     statusClaim,
     statusCancelClaim,

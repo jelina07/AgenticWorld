@@ -93,14 +93,16 @@ export default function StakeModal({
             setActionLoop(false);
           }
         } else {
-          const res = await agentStake(agentTokenId!, amount);
-          if (res) {
-            afterSuccessHandler();
-            notification.success({
-              message: "Success",
-              description: successTip,
-            });
-          }
+          try {
+            const res = await agentStake(agentTokenId!, amount);
+            if (res) {
+              afterSuccessHandler();
+              notification.success({
+                message: "Success",
+                description: successTip,
+              });
+            }
+          } catch (error) {}
         }
       }
     }
