@@ -262,11 +262,11 @@ export default function MyAgent({
               <div className="font-[800]">My Agent</div>
               <div className="min-[420px]:flex justify-between gap-[14px] flex-wrap">
                 <div
-                  className="px-[11px] py-[4px] mt-[15px] h-[70px] flex-1 flex items-center
+                  className="p-[25px] mt-[15px] h-[70px] flex-1 flex items-center
                           bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
                 >
                   <div className="flex-1 flex justify-between items-center gap-[5px] flex-wrap">
-                    <span className="text-[var(--mind-grey)] text-[14px]">
+                    <span className="text-[var(--mind-grey)] text-[14px] font-[600]">
                       Name
                     </span>
                     <div className="flex items-center gap-[5px] flex-1 justify-end">
@@ -305,11 +305,11 @@ export default function MyAgent({
                   </div>
                 </div>
                 <div
-                  className=" px-[11px] py-[4px] mt-[15px] h-[70px] flex-1 flex items-center
+                  className="p-[25px] mt-[15px] h-[70px] flex-1 flex items-center
                             bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
                 >
                   <div className="flex-1 flex justify-between items-center gap-[5px]">
-                    <span className="text-[var(--mind-grey)] text-[14px]">
+                    <span className="text-[var(--mind-grey)] text-[14px] font-[600]">
                       Hub Learned
                     </span>
                     <span className="text-[30px] text-light-shadow">
@@ -321,11 +321,11 @@ export default function MyAgent({
                 </div>
               </div>
               <div
-                className="px-[11px] py-[8px] mt-[15px] min-h-[70px] flex items-center
+                className="p-[25px] sm:py-[0] mt-[15px] min-h-[70px] flex items-center
                             bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
               >
                 <div className="flex-1 sm:flex justify-between items-center gap-[5px]">
-                  <div className="flex items-center justify-between gap-[20px] ">
+                  <div className="flex items-center justify-between gap-[20px] font-[600]">
                     <span className="text-[var(--mind-grey)] text-[14px]">
                       Locking Phase
                     </span>
@@ -343,27 +343,27 @@ export default function MyAgent({
                   </div>
                   <Link
                     href="/agenticworld"
-                    className="btn-Link-white-font sm:mt-[0px] mt-[10px]"
+                    className="btn-Link-white-font sm:mt-[0px] mt-[10px] font-[600]"
                   >
                     Explore New Skills
                   </Link>
                 </div>
               </div>
               <div className="mt-[15px] flex gap-[14px] flex-col min-[1140px]:flex-row">
-                <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
-                  <div className="text-[14px] text-[var(--mind-grey)] my-auto">
+                <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[20px]">
+                  <div className="text-[14px] text-[var(--mind-grey)] my-auto font-[600]">
                     Available to Stake
                   </div>
                   <div className="mt-[20px] align-bottom h-[45px]">
                     <span className="text-[30px] text-light-shadow">
                       {balanceLoading ? "loading..." : numberDigits(balance)}
                     </span>
-                    <span className="text-[12px] text-[var(--mind-brand)]">
+                    <span className="text-[12px] text-[var(--mind-brand)] font-[600]">
                       {" "}
                       FHE
                     </span>
                   </div>
-                  <div className="mt-[40px]">
+                  <div className="mt-[40px] font-[600]">
                     <a
                       href={getMore$FHE}
                       target="_blank"
@@ -375,8 +375,8 @@ export default function MyAgent({
                   </div>
                 </div>
 
-                <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
-                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap">
+                <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[20px]">
+                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap font-[600]">
                     Stake
                   </div>
                   <div className="mt-[20px] align-bottom h-[45px]">
@@ -385,7 +385,7 @@ export default function MyAgent({
                         ? "loading..."
                         : agentStakeAmount && numberDigits(agentStakeAmount)}
                     </span>
-                    <span className="text-[12px] text-[var(--mind-brand)]">
+                    <span className="text-[12px] text-[var(--mind-brand)] font-[600]">
                       {" "}
                       FHE
                     </span>
@@ -403,8 +403,8 @@ export default function MyAgent({
                     />
                   </div>
                 </div>
-                <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[11px]">
-                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center gap-[2px]">
+                <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[20px]">
+                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center gap-[2px] font-[600]">
                     <span>Total Rewards</span>
                     <img
                       src="/icons/refresh.svg"
@@ -421,7 +421,7 @@ export default function MyAgent({
                         ? "loading..."
                         : claimableReward && numberDigits(claimableReward)}
                     </span>
-                    <span className="text-[12px] text-[var(--mind-brand)]">
+                    <span className="text-[12px] text-[var(--mind-brand)] font-[600]">
                       {" "}
                       FHE
                     </span>
@@ -429,7 +429,7 @@ export default function MyAgent({
                   <div className="mt-[40px]">
                     <Button
                       type="primary"
-                      className="button-brand-border-white-font"
+                      className="button-brand-border-white-font font-[600]"
                       onClick={clickClaim}
                       loading={claimLoading || actionLoop}
                       disabled={

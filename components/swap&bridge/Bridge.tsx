@@ -300,7 +300,7 @@ export default function Bridge() {
             </a>
           ))}
         </div>
-        {currentToken.value === "ETH" ? (
+        {currentToken.value === "FHE" ? (
           <div className="text-[14px] font-[600] text-right text-white mt-[10px]">
             Bridge is powered by CCIP
           </div>

@@ -77,7 +77,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   }));
 
   const stake = async () => {
-    if (checkAmountControlButtonShowCan0(amount)) {
+    if (checkAmountControlButtonShow(amount)) {
       if (Number(amount) < firstStakeAmount) {
         message.open({
           type: "warning",

@@ -418,7 +418,7 @@ export default function Eligibility() {
                     $FHE
                     {claimAmout?.register?.cexName &&
                     claimAmout?.register?.cexName !== "MindChain" ? (
-                      <div className="text-[12px] font-[600] text-white">
+                      <div className="text-[12px] font-[600] text-white px-[30px]">
                         $FHE will be auto-credited to your submitted CEX
                         account.
                       </div>
@@ -463,14 +463,14 @@ export default function Eligibility() {
               </div>
               {claimAmout?.register?.cexName &&
               claimAmout?.register?.cexName !== "MindChain" ? (
-                <div className="flex-1">
+                <div className="flex-1 min-w-[200px] md:px-[30px]">
                   <div className="text-center text-[12px] leading-[12px]">
                     You can now launch your Agent with your $FHE to start
                     earning more $FHE
                   </div>
                   <Link
                     href="/agentlaunch"
-                    className="btn-Link-white-font inline-block flex-grow-0 mt-[10px]"
+                    className="btn-Link-white-font inline-block flex-grow-0 mt-[10px] h-[38px] !leading-[38px]"
                   >
                     Launch Your Agent
                   </Link>
@@ -550,7 +550,7 @@ export default function Eligibility() {
                   </div>
                 </div>
               ) : agentStakeAmount === "0" || !isAgent ? (
-                <div className="flex-1">
+                <div className="flex-1 min-w-[200px] md:px-[30px]">
                   <div>
                     <div className="text-[12px] text-center leading-[12px]">
                       Next,
@@ -567,7 +567,7 @@ export default function Eligibility() {
                   <AirDropStakeModal refreshStakeAmount={refreshStakeAmount} />
                 </div>
               ) : (
-                <div className="flex-1">
+                <div className="flex-1 min-w-[200px] md:px-[30px]">
                   <div>
                     <div className="text-[12px] text-center leading-[12px]">
                       Well done!

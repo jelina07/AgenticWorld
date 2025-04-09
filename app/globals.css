@@ -210,6 +210,7 @@ input:focus {
 .text-light-shadow {
   color: #fff;
   text-shadow: 0px 0px 6px rgba(0, 255, 177, 0.6);
+  font-weight: 600;
 }
 
 .mind-table
@@ -238,19 +239,19 @@ input:focus {
   color: #fff;
   border-bottom: 1px solid #053c2b4d;
   border-top: 1px solid #053c2b4d;
+  font-weight: 600;
 }
 .mind-table .ant-table-wrapper .ant-table-cell-fix-left,
 .mind-table .ant-table-wrapper .ant-table-cell-fix-right {
   background: #070c0b;
 }
 .mind-table .ant-table-wrapper .ant-table-cell {
-  padding: 20px 16px;
   color: white;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .mind-table .ant-table-wrapper .ant-table-cell {
-  padding: 20px 16px;
+  padding: 20px 16px 20px 25px;
 }
 .mind-table.transaction-table .ant-table-wrapper .ant-table-cell {
   font-size: 12px;

@@ -167,7 +167,7 @@ const HubList = forwardRef(
                   onClick={(event) => linkToDetial(event, item.canLinkDetial)}
                 >
                   <div
-                    className={`relative px-[20px] pt-[15px] pb-[20px] h-full ${
+                    className={`relative xl:px-[40px] px-[20px] 2xl:py-[40px] py-[20px] h-full ${
                       filter === 1 || filter === 2
                         ? "bg-[#0d1313] hub-box"
                         : "bg-[#0c0e14] hub-box2"
@@ -193,7 +193,7 @@ const HubList = forwardRef(
                         <img
                           src={item.logo}
                           alt="logo"
-                          className="rounded-[50%] w-[25%]"
+                          className="rounded-[50%] w-[18%]"
                         />
                         <span className="text-[18px] text-white font-[800] leading-[1.2] break-word">
                           {item.subnetName}

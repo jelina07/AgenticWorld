@@ -116,7 +116,7 @@ export default function ShutDownAgent({
   return (
     <>
       <div className="capitalize underline text-[12px] text-[var(--mind-brand)] text-right mt-[10px]">
-        <span onClick={showModal} className="cursor-pointer">
+        <span onClick={showModal} className="cursor-pointer font-[600]">
           Permanently Shut Down My Agent ?
         </span>
       </div>
