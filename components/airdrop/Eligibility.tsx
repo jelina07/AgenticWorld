@@ -478,8 +478,8 @@ export default function Eligibility() {
                   <CEXDrawer claimAmout={claimAmout} />
                 </div>
               ) : !claimedByContract || isClaimAndStake ? (
-                <div className="flex items-end pb-[10px] flex-1 justify-around">
-                  <div className="w-[135px]">
+                <div className="flex items-end pb-[10px] flex-1 justify-around gap-[10px]">
+                  <div className="w-[145px]">
                     <div className="flex justify-between items-center">
                       <div className="text-[12px] text-center leading-[12px]">
                         {claimAmout?.register?.cexName === "MindChain"
@@ -519,6 +519,7 @@ export default function Eligibility() {
                       type="primary"
                       className="button-brand-border mt-[10px]"
                       onClick={() => clickClaim()}
+                      style={{ height: "38px" }}
                       loading={
                         claimLoading ||
                         actionLoop ||
@@ -529,7 +530,7 @@ export default function Eligibility() {
                       Claim $FHE
                     </Button>
                   </div>
-                  <div className="w-[135px]">
+                  <div className="w-[145px]">
                     <div className="text-[12px] text-center leading-[12px]">
                       {isAgent
                         ? "Stake to your Agent to earn more $FHE"
@@ -539,6 +540,7 @@ export default function Eligibility() {
                       type="primary"
                       className="button-brand-border mt-[10px]"
                       onClick={clickClaimAndStake}
+                      style={{ height: "38px" }}
                       loading={
                         agentStakeLoading ||
                         actionLoopStake ||
