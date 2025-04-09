@@ -12,6 +12,7 @@ import {
   checkAmountControlButtonShow,
   firstStakeAmount,
   judgeUseGasless,
+  launchAgent,
   numberDigits,
 } from "@/utils/utils";
 import { Button, Input, message, Modal, notification } from "antd";
@@ -126,7 +127,7 @@ export default function AirDropStakeModal({
         className="button-brand-border mt-[10px]"
         onClick={showModal}
       >
-        Stake
+        {isAgent ? "Stake" : launchAgent}
       </Button>
       <Modal
         title={!isAgent ? "Launch Your AI Agent" : "Stake to your AI Agent"}
@@ -187,7 +188,7 @@ export default function AirDropStakeModal({
               onClick={stake}
               loading={agentStakeLoading || actionLoop}
             >
-              {!isAgent ? "Stake & Launch" : "Stake"}
+              {!isAgent ? launchAgent : "Stake"}
             </Button>
             <Facuet refreshFHE={fheBalanceRefresh} />
           </div>

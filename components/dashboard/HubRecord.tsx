@@ -56,7 +56,7 @@ export default function HubRecord({
           </a>
           <div
             className={`${
-              record.status === "Training" &&
+              record.subnetId === learningId &&
               Number(record.currentLearned) < Number(record.lockupHours)
                 ? ""
                 : "hidden"

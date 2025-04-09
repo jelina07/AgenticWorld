@@ -3,6 +3,7 @@ import { chains, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { message } from "antd";
 import millify from "millify";
 
+export const launchAgent = "Stake & Launch";
 export const firstStakeAmount = 10;
 export const $FHELockupperiod = 30;
 export const cexInfo = [

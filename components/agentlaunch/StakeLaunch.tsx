@@ -15,6 +15,7 @@ import {
   checkAmountControlButtonShowCan0,
   firstStakeAmount,
   judgeUseGasless,
+  launchAgent,
   numberDigits,
 } from "@/utils/utils";
 import { Button, Input, message, notification } from "antd";
@@ -174,7 +175,7 @@ const StakeLaunch = forwardRef((_, ref) => {
             onClick={stake}
             loading={agentStakeLoading || actionLoop}
           >
-            Stake & Launch
+            {launchAgent}
           </Button>
 
           <Facuet refreshFHE={fheBalanceRefresh} />

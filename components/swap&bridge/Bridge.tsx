@@ -284,7 +284,7 @@ export default function Bridge() {
           />
         </div>
         <div className="mt-[40px] flex gap-[10px]">
-          {url?.map((item: any) => (
+          {url?.map((item: string) => (
             <a
               href={item}
               target="_blank"
@@ -292,7 +292,11 @@ export default function Bridge() {
               id="mind-bridge"
               key={item}
             >
-              Go
+              {item.includes("transporter")
+                ? "Bridge via Transporter"
+                : item.includes("interport")
+                ? "Bridge via Interport"
+                : "Bridge via Arbitrum"}
             </a>
           ))}
         </div>
