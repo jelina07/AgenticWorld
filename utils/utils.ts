@@ -155,3 +155,31 @@ export function getUserAgent() {
 export function judgeUseGasless(chainId?: number) {
   return chainId === mindnet.id || chainId === mindtestnet.id;
 }
+
+export function timestampToUTC(timestamp: number) {
+  const ts = Number(timestamp);
+  const isSeconds = ts.toString().length <= 10;
+  const date = new Date(isSeconds ? ts * 1000 : ts);
+
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  const day = date.getUTCDate();
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  return `UTC ${hours}:${minutes}, ${month} ${day}, ${year}`;
+}

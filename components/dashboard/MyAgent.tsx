@@ -354,11 +354,13 @@ export default function MyAgent({
                   <div className="text-[14px] text-[var(--mind-grey)] my-auto">
                     Available to Stake
                   </div>
-                  <div className="flex gap-[10px] mt-[20px] h-[45px] items-center">
-                    <span>
-                      {balanceLoading
-                        ? "loading..."
-                        : numberDigits(balance) + " FHE"}
+                  <div className="mt-[20px] align-bottom h-[45px]">
+                    <span className="text-[30px] text-light-shadow">
+                      {balanceLoading ? "loading..." : numberDigits(balance)}
+                    </span>
+                    <span className="text-[12px] text-[var(--mind-brand)]">
+                      {" "}
+                      FHE
                     </span>
                   </div>
                   <div className="mt-[40px]">

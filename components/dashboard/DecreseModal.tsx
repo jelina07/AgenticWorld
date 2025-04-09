@@ -14,6 +14,7 @@ import {
   firstStakeAmount,
   judgeUseGasless,
   numberDigits,
+  timestampToUTC,
 } from "@/utils/utils";
 import Max from "../utils/Max";
 import Big from "big.js";
@@ -51,10 +52,14 @@ export default function DecreseModal({
     cancel: statusCancel,
   } = useRelayerGetStatus("unstake");
   const [actionLoop, setActionLoop] = useState(false);
-  const { data, runAsync: getAgentUnlock } = useAgentUnlock();
-  console.log("datadata1", data);
+  const {
+    data: unlockTimestamp,
+    runAsync: getAgentUnlock,
+    loading: unlockLoading,
+  } = useAgentUnlock();
 
-  const isFirstlockUpTimeReached = true;
+  const isFirstlockUpTimeReached =
+    unlockTimestamp && Date.now() > unlockTimestamp * 1000;
 
   const afterSuccessHandler = () => {
     refreshStakeAmount();
@@ -142,7 +147,9 @@ export default function DecreseModal({
         className="mind-madal"
         footer={null}
       >
-        {isFirstlockUpTimeReached ? (
+        {unlockLoading ? (
+          <div className="text-center">loading...</div>
+        ) : isFirstlockUpTimeReached ? (
           <div className="mind-input">
             <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
               <span>Current Stake:</span>
@@ -195,18 +202,19 @@ export default function DecreseModal({
             </Button>
           </div>
         ) : (
-          <div>
-            <div className="">
-              Your FHE will be locked up until
+          <div className="mt-[25px]">
+            <div className="text-[12px]">
+              Your FHE will be locked up until{" "}
               <span className="text-[var(--mind-brand)]">
-                {" "}
-                UTC 16:00, May 9, 2025
+                {unlockTimestamp && timestampToUTC(unlockTimestamp)}
               </span>
               . You can only unstake after the lock-up period ends
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-[20px]">
               <div>Current Stake:</div>
-              <div className="text-[var(--mind-brand)]">2000 FHE</div>
+              <div className="text-[var(--mind-brand)]">
+                {agentStakeAmount} FHE
+              </div>
             </div>
             <Button
               type="primary"

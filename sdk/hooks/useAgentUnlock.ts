@@ -7,6 +7,7 @@ import { config } from "../wagimConfig";
 import { AGENT1_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS } from "../blockChain/address";
 import { isSupportChain } from "../utils/script";
+import { timestampToUTC } from "@/utils/utils";
 
 export default function useAgentUnlock(options?: Options<any, any>) {
   const { address, chainId } = useAccount();
@@ -22,9 +23,7 @@ export default function useAgentUnlock(options?: Options<any, any>) {
         args: [agentId],
       })) as BigInt;
 
-      console.log("agentUnlock", agentUnlock);
-
-      return agentUnlock;
+      return Number(agentUnlock);
     },
     {
       manual: true,

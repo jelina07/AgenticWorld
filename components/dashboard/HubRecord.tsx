@@ -6,72 +6,6 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { numberDigits, secondsToHours } from "@/utils/utils";
 
-const tableColumns: TableColumnsType = [
-  {
-    title: "Basic Hub",
-    dataIndex: "subnetName",
-    render: (value: string, record: any) => (
-      <div className="flex items-center gap-[5px]">
-        <img
-          src={record.subnetLogo}
-          alt="logo"
-          width={30}
-          className="rounded-[50%]"
-        />
-        <a
-          href={`/agenticworld/${record.subnetId}`}
-          className="text-[14px] mr-[10px] underline text-white hover:underline hover:text-white"
-        >
-          {value}
-        </a>
-        <div
-          className={`${
-            record.status === "Training" &&
-            Number(record.currentLearned) < Number(record.lockupHours)
-              ? ""
-              : "hidden"
-          }`}
-        >
-          <Lock />
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "Rewards",
-    dataIndex: "rewards",
-    render: (value: any) => (
-      <div>
-        {value}
-        <span className="text-[var(--mind-brand)]"> FHE</span>
-      </div>
-    ),
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-  },
-  {
-    title: "Training Lock-up",
-    dataIndex: "lockupHours",
-    render: (value: number) => (
-      <div>
-        {secondsToHours(value)}
-        <span className="text-[var(--mind-brand)]"> H</span>
-      </div>
-    ),
-  },
-  {
-    title: "Currently Trained",
-    dataIndex: "currentLearned",
-    render: (value: number | string) => (
-      <div>
-        {secondsToHours(value)}
-        <span className="text-[var(--mind-brand)]"> H</span>
-      </div>
-    ),
-  },
-];
 export default function HubRecord({
   ids,
   loading,
@@ -101,13 +35,90 @@ export default function HubRecord({
     hubIds: ids,
     tokenId: agentTokenId,
   });
-  console.log("rewards", rewards);
+
+  const tableColumns: TableColumnsType = [
+    {
+      title: "Basic Hub",
+      dataIndex: "subnetName",
+      render: (value: string, record: any) => (
+        <div className="flex items-center gap-[5px]">
+          <img
+            src={record.subnetLogo}
+            alt="logo"
+            width={30}
+            className="rounded-[50%]"
+          />
+          <a
+            href={`/agenticworld/${record.subnetId}`}
+            className="text-[14px] mr-[10px] underline text-white hover:underline hover:text-white"
+          >
+            {value}
+          </a>
+          <div
+            className={`${
+              record.status === "Training" &&
+              Number(record.currentLearned) < Number(record.lockupHours)
+                ? ""
+                : "hidden"
+            }`}
+          >
+            <Lock />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Rewards",
+      dataIndex: "rewards",
+      render: (value: any) => (
+        <div>
+          {value}
+          <span className="text-[var(--mind-brand)]"> FHE</span>
+        </div>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (_, record: any) => (
+        <span>
+          {learningIdLoading && learningId === 0 && learnSecondLoading
+            ? "loading..."
+            : record.subnetId === learningId
+            ? "Training"
+            : record.currentLearned === 0
+            ? "/"
+            : "Exit"}
+        </span>
+      ),
+    },
+    {
+      title: "Training Lock-up",
+      dataIndex: "lockupHours",
+      render: (value: number) => (
+        <div>
+          {secondsToHours(value)}
+          <span className="text-[var(--mind-brand)]"> H</span>
+        </div>
+      ),
+    },
+    {
+      title: "Currently Trained",
+      dataIndex: "currentLearned",
+      render: (value: number | string) => (
+        <div>
+          {secondsToHours(value)}
+          <span className="text-[var(--mind-brand)]"> H</span>
+        </div>
+      ),
+    },
+  ];
 
   const learningId = useGetLearningHubId((state) => state.learningHubId);
   const tableDataAll =
     (agentTokenId &&
       hubList?.map((item: any, index: number) => {
-        const status = item.id === learningId ? "Training" : "Exit";
+        // const status = item.id === learningId ? "Training" : "Exit";
         const currentLearned = learnSecondLoading
           ? "loading..."
           : learnSecond && learnSecond[index];
@@ -118,7 +129,8 @@ export default function HubRecord({
           subnetId: item.id,
           subnetName: item.name,
           subnetLogo: item.logo,
-          status: learningIdLoading && learningId === 0 ? "loading..." : status,
+          // status: learningIdLoading && learningId === 0 ? "loading..." : status,
+          status: "",
           lockupHours: item.lockUp,
           subnetLevel: item.note,
           currentLearned: currentLearned,
