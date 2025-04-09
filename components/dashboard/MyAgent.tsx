@@ -321,10 +321,10 @@ export default function MyAgent({
                 </div>
               </div>
               <div
-                className="p-[25px] sm:py-[0] mt-[15px] min-h-[70px] flex items-center
+                className="p-[25px] md:py-[0] mt-[15px] min-h-[70px] flex items-center
                             bg-[#181818] rounded-[10px] border-[length:var(--border-width)] border-[var(--btn-border)]"
               >
-                <div className="flex-1 sm:flex justify-between items-center gap-[5px]">
+                <div className="flex-1 md:flex justify-between items-center gap-[5px]">
                   <div className="flex items-center justify-between gap-[20px] font-[600]">
                     <span className="text-[var(--mind-grey)] text-[14px]">
                       Locking Phase
@@ -343,7 +343,7 @@ export default function MyAgent({
                   </div>
                   <Link
                     href="/agenticworld"
-                    className="btn-Link-white-font sm:mt-[0px] mt-[10px] font-[600]"
+                    className="btn-Link-white-font md:mt-[0px] mt-[10px] font-[600]"
                   >
                     Explore New Skills
                   </Link>

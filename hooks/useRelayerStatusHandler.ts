@@ -8,7 +8,8 @@ export default function useRelayerStatusHandler(
   afterSuccessHandler: Function,
   setLoop: Function,
   successMess: string,
-  errorCodeMap: Function
+  errorCodeMap: Function,
+  helperFun?: Function
 ) {
   const { address } = useAccount();
   useAsyncEffect(async () => {

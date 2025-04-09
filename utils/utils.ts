@@ -5,6 +5,7 @@ import millify from "millify";
 
 export const launchAgent = "Stake & Launch";
 export const firstStakeAmount = 10;
+export const unstakeAmountThreshold = 100;
 export const $FHELockupperiod = 30;
 export const cexInfo = [
   {

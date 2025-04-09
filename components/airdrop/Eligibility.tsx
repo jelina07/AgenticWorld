@@ -39,6 +39,7 @@ import MindChainPayGas from "./MindChainPayGas";
 import { isDev, isProd } from "@/sdk/utils";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import useRelayerClaimStatus from "@/hooks/useRelayerClaimStatus";
+import useControlModal from "@/store/useControlModal";
 
 const successTip = "Claim Success !";
 const successTipStake = "Stake Success !";
@@ -98,6 +99,9 @@ export default function Eligibility() {
     waitForReceipt: true,
   });
   const [privacy, setPrivacy] = useState(false);
+  const { airdropSuccessModalopen, setIsAirdropSuccessModalopen } =
+    useControlModal();
+
   const clickCheckEligibility = async () => {
     if (isConnected && address) {
       if (privacy) {
@@ -234,6 +238,7 @@ export default function Eligibility() {
     fheBalanceRefresh();
     refreshStakeAmount();
     setIsClaimAndStake(false);
+    setIsAirdropSuccessModalopen(true);
   };
 
   //just claim
@@ -289,6 +294,8 @@ export default function Eligibility() {
     console.log(`checked = ${e.target.checked}`);
     setPrivacy(e.target.checked);
   };
+
+  console.log("airdropSuccessModalopen", airdropSuccessModalopen);
 
   return (
     <div>
@@ -418,7 +425,7 @@ export default function Eligibility() {
                     $FHE
                     {claimAmout?.register?.cexName &&
                     claimAmout?.register?.cexName !== "MindChain" ? (
-                      <div className="text-[12px] font-[600] text-white px-[30px]">
+                      <div className="text-[12px] font-[600] text-white px-[20px]">
                         $FHE will be auto-credited to your submitted CEX
                         account.
                       </div>
@@ -495,14 +502,20 @@ export default function Eligibility() {
                               During periods of high network traffic,
                               transaction may take longer than usual. You can
                               choose to claim instantly by paying gas yourself,{" "}
-                              <a
+                              <Link
+                                href={bridgeMindgasLink}
+                                className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+                              >
+                                Bridge gas (ETH)
+                              </Link>
+                              {/* <a
                                 href={bridgeMindgasLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
                               >
                                 Bridge gas (ETH)
-                              </a>
+                              </a> */}
                               <br></br>
                               <MindChainPayGas
                                 claimAmout={claimAmout}
@@ -567,8 +580,16 @@ export default function Eligibility() {
                       in AgenticWorld and start earning more $FHE!
                     </div>
                   </div>
-                  <AirDropStakeModal refreshStakeAmount={refreshStakeAmount} />
+                  <AirDropStakeModal
+                    refreshStakeAmount={refreshStakeAmount}
+                    agentStakeAmount={agentStakeAmount}
+                  />
                 </div>
+              ) : airdropSuccessModalopen ? (
+                <AirDropStakeModal
+                  refreshStakeAmount={refreshStakeAmount}
+                  agentStakeAmount={agentStakeAmount}
+                />
               ) : (
                 <div className="flex-1 min-w-[200px] md:px-[30px]">
                   <div>

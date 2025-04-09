@@ -11,7 +11,7 @@ import {
 } from "@/sdk";
 import {
   checkAmountControlButtonShow,
-  firstStakeAmount,
+  unstakeAmountThreshold,
   judgeUseGasless,
   numberDigits,
   timestampToUTC,
@@ -59,7 +59,7 @@ export default function DecreseModal({
   } = useAgentUnlock();
 
   const isFirstlockUpTimeReached =
-    unlockTimestamp && Date.now() > unlockTimestamp * 1000;
+    unlockTimestamp !== undefined && Date.now() > unlockTimestamp * 1000;
 
   const afterSuccessHandler = () => {
     refreshStakeAmount();
@@ -89,7 +89,7 @@ export default function DecreseModal({
     if (checkAmountControlButtonShow(amount)) {
       if (
         agentStakeAmount &&
-        Number(agentStakeAmount) - Number(amount) >= firstStakeAmount
+        Number(agentStakeAmount) - Number(amount) >= unstakeAmountThreshold
       ) {
         if (judgeUseGasless(chainId)) {
           try {
@@ -112,17 +112,17 @@ export default function DecreseModal({
           }
         }
       } else {
-        const max = Number(agentStakeAmount!) - firstStakeAmount;
+        const max = Number(agentStakeAmount!) - unstakeAmountThreshold;
         message.open({
           type: "warning",
-          content: `The agent must maintain a minimum of ${firstStakeAmount} tokens unless permanently shut down. The maximum amount you can unstake while keeping the agent alive is ${max} = (${agentStakeAmount} - ${firstStakeAmount}) !`,
+          content: `The agent must maintain a minimum of ${unstakeAmountThreshold} tokens unless permanently shut down. The maximum amount you can unstake while keeping the agent alive is ${max} = (${agentStakeAmount} - ${unstakeAmountThreshold}) !`,
           duration: 10,
         });
       }
     }
   };
   const clickMax = () => {
-    setAmount(String(Number(agentStakeAmount) - firstStakeAmount));
+    setAmount(String(Number(agentStakeAmount) - unstakeAmountThreshold));
   };
 
   useAsyncEffect(async () => {
@@ -130,6 +130,7 @@ export default function DecreseModal({
       await getAgentUnlock(agentTokenId);
     }
   }, [isModalOpen]);
+  console.log("unlockTimestamp", unlockTimestamp);
 
   return (
     <>
@@ -151,9 +152,11 @@ export default function DecreseModal({
           <div className="text-center">loading...</div>
         ) : isFirstlockUpTimeReached ? (
           <div className="mind-input">
-            <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
+            <div className="text-[14px] flex justify-between flex-wrap gap-[5px] mt-[10px]">
               <span>Current Stake:</span>
-              <span>{agentStakeAmount} FHE</span>
+              <span>
+                {agentStakeAmount && numberDigits(agentStakeAmount)} FHE
+              </span>
             </div>
             <Input
               value={amount}
@@ -213,7 +216,7 @@ export default function DecreseModal({
             <div className="flex justify-between mt-[20px]">
               <div>Current Stake:</div>
               <div className="text-[var(--mind-brand)]">
-                {agentStakeAmount} FHE
+                {agentStakeAmount && numberDigits(agentStakeAmount)} FHE
               </div>
             </div>
             <Button

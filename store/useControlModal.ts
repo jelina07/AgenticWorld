@@ -6,16 +6,29 @@ type ControlModalType = {
   accountModalopen: boolean;
   setIsAccountModalopen: (isAccountModalopen: boolean) => void;
   openAccountModal: () => void;
+  //airdrop success modal
+  airdropSuccessModalopen: boolean;
+  setIsAirdropSuccessModalopen: (isAccountModalopen: boolean) => void;
+  openAirdropSuccessModal: () => void;
 };
 
 const useControlModal = create<ControlModalType>((set, get) => ({
   //account modal
   accountModalopen: false,
-  setIsAccountModalopen: async (isAccountModalopen: boolean) => {
+  setIsAccountModalopen: (isAccountModalopen: boolean) => {
     set({ accountModalopen: isAccountModalopen });
   },
-  openAccountModal: async () => {
+  openAccountModal: () => {
     set({ accountModalopen: true });
+  },
+
+  //airdrop success modal
+  airdropSuccessModalopen: false,
+  setIsAirdropSuccessModalopen: (isAirdropSuccessModalopen: boolean) => {
+    set({ airdropSuccessModalopen: isAirdropSuccessModalopen });
+  },
+  openAirdropSuccessModal: () => {
+    set({ airdropSuccessModalopen: true });
   },
 }));
 

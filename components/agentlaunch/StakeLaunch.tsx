@@ -126,7 +126,9 @@ const StakeLaunch = forwardRef((_, ref) => {
       <div>
         <div className="text-[18px] font-[800]">Launch Your AI Agent</div>
         <div className="text-[14px] mt-[20px]">
-          <div>Minimum staking: {firstStakeAmount} $FHE</div>
+          <div>
+            Minimum staking: {firstStakeAmount} $FHE (Limited time promotion)
+          </div>
           <div className="mt-[10px]">
             $FHE from Mind Network Ecosystem Incentive & Potential Partner
             tokens

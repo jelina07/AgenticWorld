@@ -9,6 +9,7 @@ import {
 } from "@/sdk";
 import {
   checkAmountControlButtonShow,
+  checkAmountControlButtonShowCan0,
   judgeUseGasless,
   timestampToUTC,
 } from "@/utils/utils";
@@ -49,7 +50,7 @@ export default function ShutDownAgent({
   } = useAgentUnlock();
 
   const isFirstlockUpTimeReached =
-    unlockTimestamp && Date.now() > unlockTimestamp * 1000;
+    unlockTimestamp !== undefined && Date.now() > unlockTimestamp * 1000;
 
   const { refresh: fheBalanceRefresh } = useGetFheBalance();
   const { runAsync: relayerBurn } = useRelayerBurn();
@@ -85,26 +86,24 @@ export default function ShutDownAgent({
   };
 
   const shoutDown = async () => {
-    if (checkAmountControlButtonShow(agentStakeAmount!)) {
-      if (judgeUseGasless(chainId)) {
-        try {
-          setActionLoop(true);
-          const resId = await relayerBurn(agentTokenId!);
-          if (resId) {
-            statusRun(chainId, resId);
-          }
-        } catch (error) {
-          setActionLoop(false);
+    if (judgeUseGasless(chainId)) {
+      try {
+        setActionLoop(true);
+        const resId = await relayerBurn(agentTokenId!);
+        if (resId) {
+          statusRun(chainId, resId);
         }
-      } else {
-        const res = await agentBurn(agentTokenId!);
-        if (res) {
-          afterSuccessHandler();
-          notification.success({
-            message: "Success",
-            description: successTip,
-          });
-        }
+      } catch (error) {
+        setActionLoop(false);
+      }
+    } else {
+      const res = await agentBurn(agentTokenId!);
+      if (res) {
+        afterSuccessHandler();
+        notification.success({
+          message: "Success",
+          description: successTip,
+        });
       }
     }
   };
@@ -113,6 +112,7 @@ export default function ShutDownAgent({
       await getAgentUnlock(agentTokenId);
     }
   }, [isModalOpen]);
+
   return (
     <>
       <div className="capitalize underline text-[12px] text-[var(--mind-brand)] text-right mt-[10px]">

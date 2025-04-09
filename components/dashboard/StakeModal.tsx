@@ -1,7 +1,11 @@
 import { Button, Input, message, Modal, notification } from "antd";
 import React, { useState } from "react";
 import UpArraw from "@/public/icons/up-arraw.svg";
-import { checkAmountControlButtonShow, judgeUseGasless } from "@/utils/utils";
+import {
+  checkAmountControlButtonShow,
+  judgeUseGasless,
+  numberDigits,
+} from "@/utils/utils";
 import {
   useAgentStake,
   useGetFheBalance,
@@ -140,7 +144,9 @@ export default function StakeModal({
             </div>
             <div className="text-[14px]  flex justify-between flex-wrap gap-[5px] mt-[10px]">
               <span>Current Stake:</span>
-              <span>{agentStakeAmount} FHE</span>
+              <span>
+                {agentStakeAmount && numberDigits(agentStakeAmount)} FHE
+              </span>
             </div>
           </div>
           <Input
@@ -158,7 +164,9 @@ export default function StakeModal({
           <div className="text-[12px] flex justify-between gap-[5px] flex-wrap mt-[10px]">
             <span>Balance:</span>
             <div className="flex gap-[2px] items-center">
-              <span>{loading ? "loading..." : balance + " FHE"}</span>
+              <span>
+                {loading ? "loading..." : numberDigits(balance) + " FHE"}
+              </span>
               <img
                 src="/icons/refresh.svg"
                 alt="refresh"
