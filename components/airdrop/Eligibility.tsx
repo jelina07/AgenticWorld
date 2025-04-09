@@ -399,7 +399,7 @@ export default function Eligibility() {
           </div>
         </div>
         {claimAmout?.amount ? (
-          <div className="p-[24px] mt-[50px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
+          <div className="p-[24px] mt-[20px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
             <div className="text-[18px] font-[900]">
               {!claimedByContract
                 ? "Congratulations! You're Eligible"
@@ -410,7 +410,7 @@ export default function Eligibility() {
                 <div className="text-[var(--mind-grey)] text-[12px] mt-[5px]">
                   You can claim the following amount:
                 </div>
-                <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] min-w-[300px] bg-[rgba(255,255,255,0.05)] flex justify-center rounded-[10px] py-[30px] px-[10px]">
+                <div className="text-[30px] text-[var(--mind-brand)] font-[700] mt-[20px] min-w-[280px] bg-[rgba(255,255,255,0.05)] flex justify-center rounded-[10px] py-[30px] px-[10px]">
                   <div className="text-center">
                     {numberDigitsNoMillify(
                       formatEther(BigInt(claimAmout?.amount))

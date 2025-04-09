@@ -73,7 +73,7 @@ export default function HubRecord({
       render: (value: any) => (
         <div>
           {value}
-          <span className="text-[var(--mind-brand)]"> FHE</span>
+          <span className="text-[var(--mind-grey)]"> FHE</span>
         </div>
       ),
     },
@@ -98,7 +98,7 @@ export default function HubRecord({
       render: (value: number) => (
         <div>
           {secondsToHours(value)}
-          <span className="text-[var(--mind-brand)]"> H</span>
+          <span className="text-[var(--mind-grey)]"> H</span>
         </div>
       ),
     },
@@ -108,7 +108,7 @@ export default function HubRecord({
       render: (value: number | string) => (
         <div>
           {secondsToHours(value)}
-          <span className="text-[var(--mind-brand)]"> H</span>
+          <span className="text-[var(--mind-grey)]"> H</span>
         </div>
       ),
     },

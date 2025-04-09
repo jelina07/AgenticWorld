@@ -148,7 +148,7 @@ export default function AirDropStakeModal({
               tokens
             </div>
             <div className="mt-[10px]">
-              $FHE Lock up period: {$FHELockupperiod} days
+              $FHE Lock-up period: {$FHELockupperiod} days
             </div>
           </div>
           <Input

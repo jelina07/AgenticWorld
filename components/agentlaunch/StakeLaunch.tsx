@@ -77,7 +77,7 @@ const StakeLaunch = forwardRef((_, ref) => {
   }));
 
   const stake = async () => {
-    if (checkAmountControlButtonShow(amount)) {
+    if (checkAmountControlButtonShowCan0(amount)) {
       if (Number(amount) < firstStakeAmount) {
         message.open({
           type: "warning",
@@ -132,7 +132,7 @@ const StakeLaunch = forwardRef((_, ref) => {
             tokens
           </div>
           <div className="mt-[10px]">
-            $FHE Lock up period: {$FHELockupperiod} days
+            $FHE Lock-up period: {$FHELockupperiod} days
           </div>
         </div>
 
