@@ -22,6 +22,15 @@ export default function Page() {
           <div className="text-[24px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
             AgenticWorld
           </div>
+          <div>Total Agent:{}</div>
+          <a
+            href="https://docs.mindnetwork.xyz/minddocs/other/airdrop-user-guide"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+          >
+            User Guide
+          </a>
           <div className={`text-center mt-[26px] ${isAgent ? "hidden" : ""}`}>
             <Link
               href="/agentlaunch"
