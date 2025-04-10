@@ -100,7 +100,6 @@ export function exceptionHandler(
       duration: 5,
     });
     throw new Error(error);
-    console.log("exceptionHandler", exceptionHandler);
   } else {
     notification.error({
       message: "Error",

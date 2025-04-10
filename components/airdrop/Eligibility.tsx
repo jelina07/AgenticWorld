@@ -547,8 +547,9 @@ export default function Eligibility() {
                   <div className="w-[145px]">
                     <div className="text-[12px] text-center leading-[12px]">
                       {isAgent
-                        ? "Stake to your Agent to earn more $FHE"
-                        : "Launch Agent instantly to earn more $FHE"}
+                        ? "Stake to your Agent to earn more $FHE!"
+                        : "Launch Agent instantly to earn more $FHE!"}
+                      <br />( Highest APY: 500% )
                     </div>
                     <Button
                       type="primary"
@@ -579,6 +580,7 @@ export default function Eligibility() {
                         AI Agent{" "}
                       </span>
                       in AgenticWorld and start earning more $FHE!
+                      <br />( Highest APY: 500% )
                     </div>
                   </div>
                   <AirDropStakeModal
