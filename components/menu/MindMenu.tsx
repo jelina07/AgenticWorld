@@ -61,7 +61,7 @@ const MindMenu: React.FC = () => {
       mode="horizontal"
       items={items}
       className={`flex min-w-0 ${
-        isProd() ? "min-[1301px]:min-w-[510px]" : "min-[1301px]:min-w-[600px]"
+        isProd() ? "min-[1301px]:min-w-[510px]" : "min-[1301px]:min-w-[550px]"
       }`}
       theme="dark"
     />

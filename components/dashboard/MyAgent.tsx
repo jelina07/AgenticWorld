@@ -37,6 +37,8 @@ import { useAccount, useChainId } from "wagmi";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
+import MindPrompt from "../utils/MindPrompt";
+import { useAsyncEffect } from "ahooks";
 
 const successTip = "Redeem Success !";
 
@@ -167,7 +169,7 @@ export default function MyAgent({
     cancel: statusCancel,
   } = useRelayerGetStatus("claim");
   const [actionLoop, setActionLoop] = useState(false);
-  const { runAsync: getAgentUnlock } = useAgentUnlock();
+  const { data: unlockTimestamp, runAsync: getAgentUnlock } = useAgentUnlock();
 
   const afterSuccessHandler = () => {
     claimableRewardRefresh();
@@ -242,6 +244,11 @@ export default function MyAgent({
     }
   };
 
+  useAsyncEffect(async () => {
+    if (agentStakeAmount) {
+      await getAgentUnlock(agentTokenId);
+    }
+  }, [agentStakeAmount]);
   return (
     <>
       <div
@@ -419,7 +426,23 @@ export default function MyAgent({
                 </div>
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[20px]">
                   <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center gap-[2px] font-[600]">
-                    <span>Total Rewards</span>
+                    <div className="flex items-center">
+                      <span>Total Rewards</span>
+                      {Date.now() < unlockTimestamp * 1000 ? (
+                        <MindPrompt
+                          placement="bottom"
+                          title={
+                            <div className="text-[12px]">
+                              Your rewards will be locked up until{" "}
+                              {timestampToUTC(unlockTimestamp)}. You can redeem
+                              your rewards after the lock-up period ends !
+                            </div>
+                          }
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                     <img
                       src="/icons/refresh.svg"
                       alt="refresh"
