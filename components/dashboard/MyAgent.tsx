@@ -191,7 +191,7 @@ export default function MyAgent({
           content: `Your rewards will be locked up until ${timestampToUTC(
             unlockTimestamp
           )}. You can redeem your rewards after the lock-up period ends !`,
-          duration: 5,
+          duration: 10,
         });
       } else {
         if (judgeUseGasless(chainId)) {
