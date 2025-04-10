@@ -28,6 +28,7 @@ import {
   judgeUseGasless,
   number5Digits,
   numberDigits,
+  timestampToUTC,
 } from "@/utils/utils";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { CheckOutlined } from "@ant-design/icons";
@@ -166,7 +167,7 @@ export default function MyAgent({
     cancel: statusCancel,
   } = useRelayerGetStatus("claim");
   const [actionLoop, setActionLoop] = useState(false);
-  const { data: unlockTimestamp, runAsync: getAgentUnlock } = useAgentUnlock();
+  const { runAsync: getAgentUnlock } = useAgentUnlock();
 
   const afterSuccessHandler = () => {
     claimableRewardRefresh();
@@ -187,7 +188,9 @@ export default function MyAgent({
       if (Date.now() < unlockTimestamp * 1000) {
         message.open({
           type: "warning",
-          content: `Your rewards will be locked up until UTC 16:00, May 9, 2025. You can only redeem your rewards after the lock-up period ends !`,
+          content: `Your rewards will be locked up until ${timestampToUTC(
+            unlockTimestamp
+          )}. You can redeem your rewards after the lock-up period ends !`,
           duration: 5,
         });
       } else {

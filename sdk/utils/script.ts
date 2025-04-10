@@ -45,39 +45,45 @@ export const Agent1ContractErrorCode = (code: number) => {
     case 4001:
       return "Less than minimum amount";
     case 4002:
-      return "try to mint more than agentLimitPerUser";
+      return "Try to mint more than agentLimitPerUser";
     case 4003:
       return "Not agent owner";
     case 4004:
       return "Not agent owner";
     case 4005:
-      return "cannot delegate to more than 1 hub";
+      return "Cannot delegate to more than 1 hub";
     case 4006:
-      return "signature expired";
+      return "Signature expired";
     case 4007:
-      return "invalid signature signer";
-    case 40019:
-      return "cannot delegate due to less than minimum amount";
+      return "Invalid signature signer";
     case 4008:
       return "Not agent owner";
     case 4009:
-      return "unable to exit hub because not in any hub";
+      return "Unable to exit hub because not in any hub";
     case 40010:
-      return "unable to exit hub because not enough training period";
+      return "Unable to exit hub because not enough training period";
     case 40011:
       return "Not agent owner";
     case 40012:
-      return "amount is 0";
+      return "Amount is 0";
     case 40013:
-      return "unable to unstake because remaining amount is less than minimum amount";
+      return "Unable to unstake because remaining amount is less than minimum amount";
     case 40014:
-      return "unable to unstake because not enough training period";
+      return "Unable to unstake because not enough training period";
     case 40015:
       return "Not agent owner";
     case 40016:
-      return "unable to withdraw because of lock period";
+      return "Unable to withdraw because of lock period";
     case 40017:
-      return "already withdraw";
+      return "Already withdraw";
+    case 40019:
+      return "Cannot delegate due to less than minimum amount";
+    case 40022:
+      return "You can only unstake after the lock-up period ends";
+    case 40023:
+      return "You can only withdraw and shut down your agent after the lock-up period ends";
+    case 40024:
+      return "You can only redeem your rewards after the lock-up period ends";
     default:
       return "Unknown Error";
   }
