@@ -14,6 +14,7 @@ import {
   useAgentGetMeta,
   useAgentGetStakeAmount,
   useAgentPutMeta,
+  useAgentUnlock,
   useClaimReward,
   useGetClaimableReward,
   useGetFheBalance,
@@ -165,6 +166,7 @@ export default function MyAgent({
     cancel: statusCancel,
   } = useRelayerGetStatus("claim");
   const [actionLoop, setActionLoop] = useState(false);
+  const { data: unlockTimestamp, runAsync: getAgentUnlock } = useAgentUnlock();
 
   const afterSuccessHandler = () => {
     claimableRewardRefresh();
@@ -181,24 +183,33 @@ export default function MyAgent({
   );
   const clickClaim = async () => {
     if (claimableReward && claimableReward !== "0") {
-      if (judgeUseGasless(chainId)) {
-        try {
-          setActionLoop(true);
-          const resId = await relayerClaimReward();
-          if (resId) {
-            statusRun(chainId, resId);
-          }
-        } catch (error) {
-          setActionLoop(false);
-        }
+      const unlockTimestamp = await getAgentUnlock(agentTokenId);
+      if (Date.now() < unlockTimestamp * 1000) {
+        message.open({
+          type: "warning",
+          content: `Your rewards will be locked up until UTC 16:00, May 9, 2025. You can only redeem your rewards after the lock-up period ends !`,
+          duration: 5,
+        });
       } else {
-        const res = await claim();
-        if (res) {
-          afterSuccessHandler();
-          notification.success({
-            message: "Success",
-            description: successTip,
-          });
+        if (judgeUseGasless(chainId)) {
+          try {
+            setActionLoop(true);
+            const resId = await relayerClaimReward();
+            if (resId) {
+              statusRun(chainId, resId);
+            }
+          } catch (error) {
+            setActionLoop(false);
+          }
+        } else {
+          const res = await claim();
+          if (res) {
+            afterSuccessHandler();
+            notification.success({
+              message: "Success",
+              description: successTip,
+            });
+          }
         }
       }
     } else {

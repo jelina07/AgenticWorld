@@ -45,7 +45,8 @@ export const cexInfo = [
     createAccount: "",
   },
 ];
-export const getMore$FHE = "";
+export const getMore$FHE =
+  "https://docs.mindnetwork.xyz/minddocs/usdfhe/get-fhe";
 export const bridgeMindgasLink = "/bridge";
 export function scan(address: `0x${string}`, currentChainid: number) {
   console.log(
