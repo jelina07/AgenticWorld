@@ -5,10 +5,11 @@ import { useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 import { isMainnet, isMainnetio } from "../utils";
 
-const url =
-  isMainnet() || isMainnetio()
-    ? "https://event-api.mindnetwork.xyz/grant/check-eligibility"
-    : "/grant/check-eligibility";
+const url = isMainnet()
+  ? "https://event-api.mindnetwork.xyz/grant/cex/register"
+  : isMainnetio()
+  ? "https://event-api.mindnetwork.io/grant/cex/register"
+  : "/grant/cex/register";
 
 export default function useAirdropCheck(options?: Options<any, [string]>) {
   const { signMessageAsync } = useSignMessage();

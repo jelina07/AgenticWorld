@@ -548,7 +548,7 @@ export default function Eligibility() {
                       {isAgent
                         ? "Stake to your Agent to earn more $FHE!"
                         : "Launch Agent instantly to earn more $FHE!"}
-                      <br />( Highest APY: 500% )
+                      <br />( Highest APY: 400% )
                     </div>
                     <Button
                       type="primary"
@@ -580,7 +580,7 @@ export default function Eligibility() {
                         AI Agent{" "}
                       </span>
                       in AgenticWorld and start earning more $FHE!
-                      <br />( Highest APY: 500% )
+                      <br />( Highest APY: 400% )
                     </div>
                   </div>
                   <AirDropStakeModal

@@ -6,10 +6,11 @@ import { useAccount, useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 import { isMainnet, isMainnetio } from "../utils";
 
-const url =
-  isMainnet() || isMainnetio()
-    ? "https://event-api.mindnetwork.xyz/grant/cex/register/info"
-    : "/grant/cex/register/info";
+const url = isMainnet()
+  ? "https://event-api.mindnetwork.xyz/grant/cex/register"
+  : isMainnetio()
+  ? "https://event-api.mindnetwork.io/grant/cex/register"
+  : "/grant/cex/register";
 
 export default function useAirdropCexRegisterInfo(options?: Options<any, any>) {
   const { address } = useAccount();
