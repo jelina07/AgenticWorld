@@ -25,7 +25,7 @@ const string1 = `
           <br />
           <br />
           As the journey begins, we&apos; ll gonna launch your own AI Agent together!
-          You&apos;ll just need some $FHE tokens to launch (minimum of ${firstStakeAmount}).
+          You&apos;ll just need some $FHE tokens to launch (minimal of ${firstStakeAmount}, limited time promotion).
           <br />
           <br />
           Once your agent is launched, send your agent on adventures across
