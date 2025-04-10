@@ -126,7 +126,7 @@ export default function Eligibility() {
 
   const clickClaim = async () => {
     setIsClaimAndStake(false);
-    if (claimAmout?.register?.cexName === "MindChain") {
+    if (claimAmout?.type === "MindChain") {
       try {
         setActionLoop(true);
         const res = await mindAirdropRelay();
@@ -209,7 +209,7 @@ export default function Eligibility() {
 
   const clickClaimAndStake = async () => {
     setIsClaimAndStake(true);
-    if (claimAmout?.register?.cexName === "MindChain") {
+    if (claimAmout?.type === "MindChain") {
       try {
         setActionLoop(true);
         const res = await mindAirdropRelay();
@@ -280,15 +280,9 @@ export default function Eligibility() {
 
   useAsyncEffect(async () => {
     if (claimAmout?.amount) {
-      if (
-        claimAmout.register?.cexName &&
-        claimAmout.register.cexName !== "MindChain"
-      ) {
+      if (claimAmout?.type !== "MindChain" && claimAmout?.type !== "BSC") {
         // setClaimed(true);
-      } else if (
-        claimAmout.register?.cexName &&
-        claimAmout.register?.cexName === "MindChain"
-      ) {
+      } else if (claimAmout?.type === "MindChain") {
         await airdropIsClaimed("MindChain");
       } else {
         await airdropIsClaimed("Bsc");
@@ -429,14 +423,14 @@ export default function Eligibility() {
                       formatEther(BigInt(claimAmout?.amount))
                     ) + " "}
                     $FHE
-                    {claimAmout?.register?.cexName &&
-                    claimAmout?.register?.cexName !== "MindChain" ? (
+                    {claimAmout?.type !== "MindChain" &&
+                    claimAmout?.type !== "BSC" ? (
                       <div className="text-[12px] font-[600] text-white px-[20px]">
                         $FHE will be auto-credited to your CEX account. Deposits
                         are processed sequentially and may take up to 2h
                       </div>
                     ) : claimedByContract &&
-                      claimAmout?.register?.cexName === "MindChain" ? (
+                      claimAmout?.type === "MindChain" ? (
                       <div className="text-white text-[12px] font-[600]">
                         on{" "}
                         <a
@@ -474,8 +468,8 @@ export default function Eligibility() {
                   </div>
                 </div>
               </div>
-              {claimAmout?.register?.cexName &&
-              claimAmout?.register?.cexName !== "MindChain" ? (
+              {claimAmout?.type !== "MindChain" &&
+              claimAmout?.type !== "BSC" ? (
                 <div className="flex-1 min-w-[200px] md:px-[30px]">
                   <div className="text-center text-[12px] leading-[12px]">
                     You can now launch your Agent with your $FHE to start
@@ -495,14 +489,14 @@ export default function Eligibility() {
                   <div className="w-[145px]">
                     <div className="flex justify-between items-center">
                       <div className="text-[12px] text-center leading-[12px]">
-                        {claimAmout?.register?.cexName === "MindChain"
+                        {claimAmout?.type === "MindChain"
                           ? "Claim $FHE on MindChain"
                           : "Claim $FHE on BNB Smart Chain"}
                       </div>
                       <MindTip
                         placement="bottom"
                         title={
-                          claimAmout?.register?.cexName === "MindChain" ? (
+                          claimAmout?.type === "MindChain" ? (
                             <div className="text-[12px]">
                               We offer 0 gas option for claiming on MindChain.
                               During periods of high network traffic,
@@ -523,7 +517,7 @@ export default function Eligibility() {
                             </div>
                           ) : null
                         }
-                        isShow={claimAmout?.register?.cexName === "MindChain"}
+                        isShow={claimAmout?.type === "MindChain"}
                       />
                     </div>
 
