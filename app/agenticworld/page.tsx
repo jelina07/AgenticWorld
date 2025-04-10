@@ -26,7 +26,7 @@ export default function Page() {
           <div className="text-[24px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
             AgenticWorld
           </div>
-          <div className="text-[14px] text-center mt-[20px] font-[600]">
+          <div className="text-[14px] text-center mt-[20px] font-[600] relative z-[10]">
             Total Agents:{" "}
             {!isConnected ? "/" : loading ? "loading..." : totalAgent}
             <div className="text-center mt-[15px] font-[600]">
