@@ -202,7 +202,15 @@ export default function Bridge() {
 
   return (
     <div>
-      <div className="text-[var(--mind-grey)] text-[14px] text-right">
+      <div className="text-[var(--mind-grey)] text-[14px] flex justify-between px-[10px]">
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+        >
+          User Guide
+        </a>
         ETH serves as the gas token for MindChain.
       </div>
       <div className="p-[30px] bg-[#181818] mt-[10px] rounded-[20px] mind-select pb-[50px]">

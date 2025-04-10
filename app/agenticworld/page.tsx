@@ -1,12 +1,16 @@
 "use client";
 import HubPage from "@/components/agenticworld/HubPage";
+import { useGetAgentCount } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import Link from "next/link";
 import React from "react";
+import { useAccount } from "wagmi";
 
 export default function Page() {
+  const { isConnected } = useAccount();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
+  const { data: totalAgent, loading } = useGetAgentCount();
   return (
     <div>
       <div
@@ -22,15 +26,20 @@ export default function Page() {
           <div className="text-[24px] sm:text-[40px] font-[900] capitalize text-center relative z-[10]">
             AgenticWorld
           </div>
-          <div>Total Agent:{}</div>
-          <a
-            href="https://docs.mindnetwork.xyz/minddocs/other/airdrop-user-guide"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
-          >
-            User Guide
-          </a>
+          <div className="text-[14px] text-center mt-[20px] font-[600]">
+            Total Agents:{" "}
+            {!isConnected ? "/" : loading ? "loading..." : totalAgent}
+            <div className="text-center mt-[15px] font-[600]">
+              <a
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+              >
+                User Guide
+              </a>
+            </div>
+          </div>
           <div className={`text-center mt-[26px] ${isAgent ? "hidden" : ""}`}>
             <Link
               href="/agentlaunch"
