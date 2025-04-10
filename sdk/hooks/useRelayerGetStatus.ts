@@ -26,7 +26,7 @@ export default function useRelayerGetStatus(type: ActionType) {
   const result = useRequest(
     type === "claim"
       ? async () => {
-          const res = await request.get(`/grant/claim`, {
+          const res = await request.get(url, {
             params: { wallet: address },
           });
           return res;
