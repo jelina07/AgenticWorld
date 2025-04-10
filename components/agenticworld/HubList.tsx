@@ -85,12 +85,12 @@ const HubList = forwardRef(
         type: item.type,
         subnetName: item.name,
         subnetInfo: item.desc,
-        agent:
-          !isConnected || hubAgentCount === undefined
-            ? "/"
-            : hubAgentCountLoading
-            ? "loading..."
-            : hubAgentCount[index],
+        agent: "/",
+        // !isConnected || hubAgentCount === undefined
+        //   ? "/"
+        //   : hubAgentCountLoading
+        //   ? "loading..."
+        //   : hubAgentCount[index],
         payoutRatio:
           !isConnected || hubAgentCount === undefined
             ? "/"
