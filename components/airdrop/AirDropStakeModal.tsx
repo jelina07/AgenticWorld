@@ -36,7 +36,7 @@ export default function AirDropStakeModal({
   refreshStakeAmount: Function;
   agentStakeAmount?: string;
 }) {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { chainId } = useAccount();
   const [amount, setAmount] = useState("");
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -64,17 +64,19 @@ export default function AirDropStakeModal({
     setAmount(balance);
   };
   const handleCancel = () => {
-    setIsAirdropSuccessModalopen(false);
+    setIsModalOpen(false);
     setAmount("");
   };
   const showModal = () => {
-    setIsAirdropSuccessModalopen(true);
+    setIsModalOpen(true);
   };
 
   const afterSuccessHandler = () => {
     agentGetTokenIdRefresh();
     fheBalanceRefresh();
     refreshStakeAmount();
+    setIsModalOpen(false);
+    setIsAirdropSuccessModalopen(true);
   };
 
   useRelayerStatusHandler(
@@ -130,16 +132,11 @@ export default function AirDropStakeModal({
     }
   };
 
-  console.log(
-    "isAgent && agentStakeAmount",
-    isAgent && agentStakeAmount !== "0"
-  );
-
-  useAsyncEffect(async () => {
-    if (agentStakeAmount) {
-      await getAgentUnlock(agentTokenId);
-    }
-  }, [agentStakeAmount]);
+  // useAsyncEffect(async () => {
+  //   if (agentStakeAmount) {
+  //     await getAgentUnlock(agentTokenId);
+  //   }
+  // }, [agentStakeAmount]);
   return (
     <>
       <Button
@@ -150,19 +147,13 @@ export default function AirDropStakeModal({
         {isAgent ? "Stake" : launchAgent}
       </Button>
       <Modal
-        title={
-          !isAgent
-            ? "Launch Your AI Agent"
-            : agentStakeAmount === "0"
-            ? "Stake to your AI Agent"
-            : "Success! Your Agent Is Live"
-        }
-        open={airdropSuccessModalopen}
+        title={!isAgent ? "Launch Your AI Agent" : "Stake to your AI Agent"}
+        open={isModalOpen}
         onCancel={handleCancel}
         className="mind-madal"
         footer={null}
       >
-        {isAgent && agentStakeAmount !== "0" ? (
+        {/* {isAgent && agentStakeAmount !== "0" ? (
           <div className="mt-[25px]">
             <div className="text-[12px] leading-[1.8]">
               Your AI Agent is now active in AgenticWorld — ready to train and
@@ -249,7 +240,68 @@ export default function AirDropStakeModal({
               <Facuet refreshFHE={fheBalanceRefresh} />
             </div>
           </div>
-        )}
+        )} */}
+
+        <div className="mind-input">
+          <div className="text-[14px] mt-[20px]">
+            {!isAgent ? (
+              <div>
+                Minimum staking: {firstStakeAmount} $FHE (Limited time
+                promotion)
+              </div>
+            ) : (
+              <></>
+            )}
+            <div className="mt-[10px]">
+              $FHE from Mind Network Ecosystem Incentive & Potential Partner
+              tokens
+            </div>
+            <div className="mt-[10px]">
+              $FHE Lock-up period: {$FHELockupperiod} days
+            </div>
+          </div>
+          <Input
+            style={{ height: "45px", margin: "26px 0 0 0" }}
+            value={amount}
+            suffix={
+              <div onClick={clickMax} className="cursor-pointer">
+                <Max />
+              </div>
+            }
+            onChange={(e: any) => {
+              setAmount(e.target.value.trim());
+            }}
+          />
+          <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
+            <span>FHE Balance:</span>
+            <div className="flex items-center gap-[3px]">
+              <span>
+                {loading
+                  ? "loading..."
+                  : balance === undefined || numberDigits(balance) + " FHE"}
+              </span>
+              <img
+                src="/icons/refresh.svg"
+                alt="refresh"
+                onClick={fheBalanceRefresh}
+                className={`cursor-pointer ${loading ? "refresh" : ""}`}
+              />
+            </div>
+          </div>
+
+          <div className="flex items-end gap-[10px]">
+            <Button
+              type="primary"
+              className="button-brand-border"
+              disabled={amount === ""}
+              onClick={stake}
+              loading={agentStakeLoading || actionLoop}
+            >
+              {!isAgent ? launchAgent : "Stake"}
+            </Button>
+            <Facuet refreshFHE={fheBalanceRefresh} />
+          </div>
+        </div>
       </Modal>
     </>
   );

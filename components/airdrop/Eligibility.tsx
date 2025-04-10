@@ -40,6 +40,7 @@ import { isDev, isProd } from "@/sdk/utils";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import useRelayerClaimStatus from "@/hooks/useRelayerClaimStatus";
 import useControlModal from "@/store/useControlModal";
+import AirDropStakeSuccessModal from "./AirDropStakeSuccessModal";
 
 const successTip = "Claim Success !";
 const successTipStake = "Stake Success !";
@@ -586,9 +587,13 @@ export default function Eligibility() {
                   />
                 </div>
               ) : airdropSuccessModalopen ? (
-                <AirDropStakeModal
-                  refreshStakeAmount={refreshStakeAmount}
+                // <AirDropStakeModal
+                //   refreshStakeAmount={refreshStakeAmount}
+                //   agentStakeAmount={agentStakeAmount}
+                // />
+                <AirDropStakeSuccessModal
                   agentStakeAmount={agentStakeAmount}
+                  refreshStakeAmount={refreshStakeAmount}
                 />
               ) : (
                 <div className="flex-1 min-w-[200px] md:px-[30px]">
