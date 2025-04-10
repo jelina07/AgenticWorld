@@ -185,7 +185,7 @@ const StartConfirmModal = forwardRef(
         <div className="flex mt-[40px] gap-[20px]">
           <Button
             type="primary"
-            className="button-white-border-white-font"
+            className="button-brand-border-white-font"
             onClick={delegate}
             loading={
               learningId ? delegateLoading || actionLoop : loading || actionLoop
@@ -195,7 +195,7 @@ const StartConfirmModal = forwardRef(
           </Button>
           <Button
             type="primary"
-            className="button-brand-border-white-font"
+            className="button-white-border-white-font"
             onClick={handleCancel}
           >
             Cancel
