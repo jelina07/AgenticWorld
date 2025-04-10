@@ -31,7 +31,7 @@ export default function Page() {
             {!isConnected ? "/" : loading ? "loading..." : totalAgent}
             <div className="text-center mt-[15px] font-[600]">
               <a
-                href="/"
+                href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/agenticworld-user-guide/agent-launch-mainnet"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"

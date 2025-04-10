@@ -204,7 +204,7 @@ export default function Bridge() {
     <div>
       <div className="text-[var(--mind-grey)] text-[14px] flex justify-between px-[10px]">
         <a
-          href="/"
+          href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/bridge"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[14px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
