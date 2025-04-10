@@ -1,6 +1,7 @@
 import { useRequest } from "ahooks";
 import request from "../request";
 import { useAccount, useSignMessage } from "wagmi";
+import { isMainnet, isMainnetio } from "../utils";
 
 //
 const ACTIONS = [
@@ -13,6 +14,12 @@ const ACTIONS = [
   "claim",
 ] as const;
 type ActionType = (typeof ACTIONS)[number];
+
+const url = isMainnet()
+  ? "https://event-api.mindnetwork.xyz/grant/claim"
+  : isMainnetio()
+  ? "https://grant-api.mindnetwork.io/grant/claim"
+  : "/grant/claim";
 
 export default function useRelayerGetStatus(type: ActionType) {
   const { address } = useAccount();
