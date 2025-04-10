@@ -427,8 +427,8 @@ export default function Eligibility() {
                     {claimAmout?.register?.cexName &&
                     claimAmout?.register?.cexName !== "MindChain" ? (
                       <div className="text-[12px] font-[600] text-white px-[20px]">
-                        $FHE will be auto-credited to your submitted CEX
-                        account.
+                        $FHE will be auto-credited to your CEX account. Deposits
+                        are processed sequentially and may take up to 2h
                       </div>
                     ) : claimedByContract &&
                       claimAmout?.register?.cexName === "MindChain" ? (
