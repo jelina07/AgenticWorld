@@ -5,9 +5,11 @@ import React from "react";
 export default function MindChainPayGas({
   claimAmout,
   refreshIsClaimed,
+  btnDisabled,
 }: {
   claimAmout: any;
   refreshIsClaimed: Function;
+  btnDisabled: boolean;
 }) {
   const { refresh: fheBalanceRefresh } = useGetFheBalance();
   const { runAsync: claimAsync, loading: claimLoading } = useAirdropClaim({
@@ -36,6 +38,7 @@ export default function MindChainPayGas({
       className="button-brand-border mt-[10px]"
       onClick={clickClaim}
       loading={claimLoading}
+      disabled={btnDisabled}
     >
       Claim with gas
     </Button>

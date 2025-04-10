@@ -1,11 +1,13 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../header";
 import Footer from "../footer";
 import { useAgentGetTokenId } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { notification, Spin } from "antd";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useLov } from "@/store/useLov";
+import { useAsyncEffect } from "ahooks";
 
 export default function MindLayout({
   children,
@@ -14,6 +16,8 @@ export default function MindLayout({
 }) {
   const { loading, data, refresh } = useAgentGetTokenId();
   const { setRefreshGetAgentTokenId } = useAgentGetTokenIdStore();
+  const { fetchLov, lovs } = useLov();
+  const [getLovLoading, setGetLovLoading] = useState(false);
 
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -50,10 +54,18 @@ export default function MindLayout({
     }
   }, [faucetStatus]);
 
+  useAsyncEffect(async () => {
+    setGetLovLoading(true);
+    await fetchLov();
+    setGetLovLoading(false);
+  }, []);
+
+  console.log("lovs", lovs);
+
   return (
     <div>
       <Header />
-      {loading ? (
+      {loading || getLovLoading ? (
         <div
           className="w-full flex justify-center items-center"
           style={{ height: `calc(100vh - 160px)` }}

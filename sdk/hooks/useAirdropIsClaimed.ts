@@ -14,9 +14,9 @@ import {
 import { AIRDROP_ABI } from "../blockChain/abi";
 
 import { isSupportChain } from "../utils/script";
-import { AIRDROP_ADDRESS } from "../blockChain/address";
 import { createPublicClient } from "viem";
 import { isDev, isProd } from "../utils";
+import { useLov } from "@/store/useLov";
 
 const publicClientMind = createPublicClient({
   batch: {
@@ -39,10 +39,20 @@ const publicClientBsc = createPublicClient({
 
 export default function useAirdropIsClaimed(options?: Options<any, any>) {
   const { address, chainId } = useAccount();
+  const { getContractAdress } = useLov();
 
   const result = useRequest(
     async (claimChain) => {
-      if (!address || !chainId || !isSupportChain(chainId)) {
+      const airdropAddressArray = getContractAdress();
+      const airdropContractAddressHaveNull = airdropAddressArray.some(
+        (item) => item.value === null
+      );
+      if (
+        !address ||
+        !chainId ||
+        !isSupportChain(chainId) ||
+        airdropContractAddressHaveNull
+      ) {
         return;
       }
       const publicClient =
@@ -57,11 +67,20 @@ export default function useAirdropIsClaimed(options?: Options<any, any>) {
           ? bnbtestnet.id
           : bnb.id;
 
-      console.log("claimChain", claimChain);
+      const AIRDROP_ADDRESSByService =
+        contractAddressChainId === bnbtestnet.id ||
+        contractAddressChainId === bnb.id
+          ? airdropAddressArray.find((item) => item.key === "airdrop_bsc")
+              ?.value
+          : contractAddressChainId === mindtestnet.id ||
+            contractAddressChainId === mindnet.id
+          ? airdropAddressArray.find((item) => item.key === "airdrop_mind")
+              ?.value
+          : "0x";
 
       const res = (await publicClient.readContract({
         abi: AIRDROP_ABI,
-        address: AIRDROP_ADDRESS[contractAddressChainId],
+        address: AIRDROP_ADDRESSByService,
         functionName: "claimed",
         args: [address],
       })) as boolean;

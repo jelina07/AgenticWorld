@@ -41,6 +41,7 @@ import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import useRelayerClaimStatus from "@/hooks/useRelayerClaimStatus";
 import useControlModal from "@/store/useControlModal";
 import AirDropStakeSuccessModal from "./AirDropStakeSuccessModal";
+import { useLov } from "@/store/useLov";
 
 const successTip = "Claim Success !";
 const successTipStake = "Stake Success !";
@@ -102,6 +103,10 @@ export default function Eligibility() {
   const [privacy, setPrivacy] = useState(false);
   const { airdropSuccessModalopen, setIsAirdropSuccessModalopen } =
     useControlModal();
+  const { getContractAdress } = useLov();
+  const airdropContractAddressHaveNull = getContractAdress().some(
+    (item) => item.value === null
+  );
 
   const clickCheckEligibility = async () => {
     if (isConnected && address) {
@@ -509,18 +514,11 @@ export default function Eligibility() {
                               >
                                 Bridge gas (ETH)
                               </Link>
-                              {/* <a
-                                href={bridgeMindgasLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[12px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
-                              >
-                                Bridge gas (ETH)
-                              </a> */}
                               <br></br>
                               <MindChainPayGas
                                 claimAmout={claimAmout}
                                 refreshIsClaimed={refreshIsClaimed}
+                                btnDisabled={airdropContractAddressHaveNull}
                               />
                             </div>
                           ) : null
@@ -540,6 +538,7 @@ export default function Eligibility() {
                         agentStakeLoading ||
                         actionLoopStake
                       }
+                      disabled={airdropContractAddressHaveNull}
                     >
                       Claim $FHE
                     </Button>
@@ -562,6 +561,7 @@ export default function Eligibility() {
                         claimLoading ||
                         actionLoop
                       }
+                      disabled={airdropContractAddressHaveNull}
                     >
                       Claim & Stake
                     </Button>

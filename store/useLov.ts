@@ -1,7 +1,7 @@
 import request from "@/sdk/request";
 import { create } from "zustand";
 
-const type = "CONTRACT_ADDRESS";
+const LovType = "CONTRACT_ADDRESS"; //"CONTRACT_ADDRESS,aaaa"
 
 type Lov = {
   key: string;
@@ -12,19 +12,23 @@ type Lov = {
 type LovState = {
   lovs: Lov[];
   fetchLov: () => Promise<void>;
-  getContractAdress: () => Promise<Lov[] | undefined>;
+  getContractAdress: () => Lov[];
 };
 
 export const useLov = create<LovState>((set, get) => ({
   lovs: [],
   fetchLov: async () => {
-    const res = (await request.get("/lov", { params: type })) as Lov[];
+    const res = (await request.get("/lov", {
+      params: {
+        type: LovType,
+      },
+    })) as Lov[];
     if (res) {
       set({ lovs: res });
     }
   },
 
-  async getContractAdress() {
-    return get().lovs.filter((item) => item.key === "CONTRACT_ADDRESS");
+  getContractAdress() {
+    return get().lovs.filter((item) => item.type === "CONTRACT_ADDRESS");
   },
 }));

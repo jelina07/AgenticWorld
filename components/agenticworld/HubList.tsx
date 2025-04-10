@@ -97,6 +97,9 @@ const HubList = forwardRef(
         logo: item.logo,
       };
     }) as SubnetInfoType[];
+
+    console.log("hubApyhubApy", hubApy);
+
     const linkToDetial = (event: any, canDetial: boolean) => {
       !canDetial ? event.preventDefault() : "";
     };
