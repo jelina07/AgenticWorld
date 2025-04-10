@@ -70,9 +70,14 @@ const HubList = forwardRef(
       refresh,
     } = useHubList({ cacheKey: "useSubnetList", staleTime: 5 * 60 * 1000 });
 
-    const { data: hubAgentCount, refresh: refreshHubAgentCount } =
-      useHubAgentCount({ hubIds: subnetList });
-    const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
+    const {
+      data: hubAgentCount,
+      refresh: refreshHubAgentCount,
+      loading: hubAgentCountLoading,
+    } = useHubAgentCount({ hubIds: subnetList });
+    const { data: hubApy, loading: hubApyLoading } = useHubGetApy({
+      hubIds: subnetList,
+    });
 
     const subnetInforAll = subnetList?.map((item: any, index: number) => {
       return {
@@ -80,13 +85,19 @@ const HubList = forwardRef(
         type: item.type,
         subnetName: item.name,
         subnetInfo: item.desc,
-        agent: !isConnected
-          ? "/"
-          : hubAgentCount
-          ? hubAgentCount[index]
-          : "loading...",
-        payoutRatio: !isConnected ? "/" : hubApy ? hubApy[index] : "loading...",
-        lockup: item.lockUp, // item.lockUp
+        agent:
+          !isConnected || hubAgentCount === undefined
+            ? "/"
+            : hubAgentCountLoading
+            ? "loading..."
+            : hubAgentCount[index],
+        payoutRatio:
+          !isConnected || hubAgentCount === undefined
+            ? "/"
+            : hubApyLoading
+            ? "loading..."
+            : hubApy[index],
+        lockup: item.lockUp,
         subnetLevel: item.note,
         subnetRequire: item.requireName,
         needSign: item.needSign,

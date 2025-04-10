@@ -8,7 +8,7 @@ import { isMainnet, isMainnetio } from "../utils";
 const url = isMainnet()
   ? "https://event-api.mindnetwork.xyz/grant/cex/register"
   : isMainnetio()
-  ? "https://event-api.mindnetwork.io/grant/cex/register"
+  ? "https://grant-api.mindnetwork.io/grant/cex/register"
   : "/grant/cex/register";
 
 export default function useAirdropCheck(options?: Options<any, [string]>) {
