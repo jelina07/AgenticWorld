@@ -19,7 +19,6 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CommingSoon from "@/components/utils/CommingSoon";
-import useTest from "@/sdk/hooks/useTest";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
@@ -88,16 +87,8 @@ export default function page({ params }: { params: any }) {
     router.back();
   };
 
-  const { data, runAsync, loading } = useTest();
-
-  const test = async () => {
-    await runAsync(agentTokenId, "0.000001");
-  };
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
-      <Button onClick={test} loading={loading}>
-        test
-      </Button>
       <div className="mt-[40px] px-[20px]">
         <div
           className={`text-[26px] font-[900] flex items-center ${
