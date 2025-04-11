@@ -9,7 +9,7 @@ import { AGENT1_ABI, DAOTOKEN_ABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS, DAOKEN_ADDRESS } from "../blockChain/address";
 import { estimateGas, waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
-import { encodeFunctionData, parseEther } from "viem";
+import { encodeFunctionData, parseEther, parseGwei } from "viem";
 import { estimateGasUtil } from "../utils/script";
 
 export default function useAgentStake(
@@ -58,9 +58,10 @@ export default function useAgentStake(
         functionName: "stake",
         address: AGENT1_ADDRESS[chainId],
         args: [tokenId, parseEther(amount)],
-        gas: gasEstimate2 + gasEstimate2 / BigInt(3),
+        gas: parseGwei("1"),
       });
-      console.log("stake txHash", txHash2);
+
+      console.log("stake txHash", txHash2, parseGwei("1"));
       if (!options?.waitForReceipt) {
         return txHash2;
       }
