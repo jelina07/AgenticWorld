@@ -130,8 +130,8 @@ const StakeLaunch = forwardRef((_, ref) => {
             Minimum staking: {firstStakeAmount} $FHE (Limited time promotion)
           </div>
           <div className="mt-[10px]">
-            $FHE from Mind Network Ecosystem Incentive & Potential Partner
-            tokens
+            Rewards: $FHE from Mind Network Ecosystem Incentive & Potential
+            Partner tokens
           </div>
           <div className="mt-[10px]">
             $FHE Lock-up period: {$FHELockupperiod} days
