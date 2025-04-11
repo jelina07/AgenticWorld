@@ -85,12 +85,12 @@ const HubList = forwardRef(
         type: item.type,
         subnetName: item.name,
         subnetInfo: item.desc,
-        agent: "/",
-        // !isConnected || hubAgentCount === undefined
-        //   ? "/"
-        //   : hubAgentCountLoading
-        //   ? "loading..."
-        //   : hubAgentCount[index],
+        agent:
+          !isConnected || hubAgentCount === undefined
+            ? "/"
+            : hubAgentCountLoading
+            ? "loading..."
+            : hubAgentCount[index],
         payoutRatio:
           !isConnected || hubAgentCount === undefined
             ? "/"
@@ -245,10 +245,10 @@ const HubList = forwardRef(
                             {filter === 3 ? "/" : item.payoutRatio}
                           </span>
                         </div>
-                        <div className="flex justify-between gap-[3px]">
+                        {/* <div className="flex justify-between gap-[3px]">
                           <span>Enrolled Agents:</span>
                           <span>{filter === 3 ? "/" : item.agent}</span>
-                        </div>
+                        </div> */}
                         <div className="flex justify-between gap-[3px]">
                           <span>Training Lock-up:</span>
                           <span>

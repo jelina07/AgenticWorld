@@ -20,7 +20,7 @@ export default function HubInfo({
   const { isConnected } = useAccount();
   return (
     <div className="flex justify-between gap-[20px] flex-wrap">
-      <div className="p-[30px] flex-1 rounded-[10px] bg-[var(--bg-deep-grey)]">
+      {/* <div className="p-[30px] flex-1 rounded-[10px] bg-[var(--bg-deep-grey)]">
         <div className="text-[15px]">Enrolled Agents</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">
           {!isConnected
@@ -29,7 +29,7 @@ export default function HubInfo({
             ? numberDigitsNoMillify(agentCount)
             : "loading..."}
         </div>
-      </div>
+      </div> */}
       <div className="p-[30px] flex-[1.3] min-w-[250px] rounded-[10px] bg-[url('/images/bg-heavy.png')] bg-cover bg-no-repeat">
         <div className="text-[15px]">Emission Rate</div>
         <div className="text-[38px] text-light-shadow mt-[20px] break-all">
