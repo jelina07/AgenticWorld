@@ -5,14 +5,14 @@ import { exceptionHandler } from "../utils/exception";
 import { isDev, isProd } from "../utils";
 import { mindnet, mindtestnet } from "../wagimConfig";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
-import { AGENT1_ABI, DAOTOKEN_ABI } from "../blockChain/abi";
+import { AGENT1_ABI, DAOTOKEN_ABI, TESTABI } from "../blockChain/abi";
 import { AGENT1_ADDRESS, DAOKEN_ADDRESS } from "../blockChain/address";
 import { estimateGas, waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../wagimConfig";
 import { encodeFunctionData, parseEther, parseGwei } from "viem";
 import { estimateGasUtil } from "../utils/script";
 
-export default function useAgentStake(
+export default function useTest(
   options?: Options<unknown, [number, string]> & { waitForReceipt?: boolean }
 ) {
   const { validateAsync, chainId } = useValidateChainWalletLink();
@@ -47,14 +47,14 @@ export default function useAgentStake(
 
       //stake
       const gasEstimate2 = await estimateGasUtil(
-        AGENT1_ABI,
+        TESTABI,
         "stake",
         [tokenId, parseEther(amount)],
         AGENT1_ADDRESS[chainId]
       );
       console.log("stake gasEstimate", gasEstimate2);
       const txHash2 = await writeContractAsync({
-        abi: AGENT1_ABI,
+        abi: TESTABI,
         functionName: "stake",
         address: AGENT1_ADDRESS[chainId],
         args: [tokenId, parseEther(amount)],
@@ -74,7 +74,7 @@ export default function useAgentStake(
     },
     {
       manual: true,
-      onError: (err) => exceptionHandler(err, "agent", AGENT1_ABI, true),
+      onError: (err) => exceptionHandler(err),
       ...options,
     }
   );
