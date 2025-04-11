@@ -58,10 +58,11 @@ export default function useAgentStake(
         functionName: "stake",
         address: AGENT1_ADDRESS[chainId],
         args: [tokenId, parseEther(amount)],
-        gas: parseGwei("1"),
+        gas: gasEstimate2 + gasEstimate2 / BigInt(3),
+        gasPrice: parseGwei("1"),
       });
 
-      console.log("stake txHash", txHash2, parseGwei("1"));
+      console.log("stake txHash", txHash2);
       if (!options?.waitForReceipt) {
         return txHash2;
       }
