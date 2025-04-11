@@ -8,11 +8,13 @@ import MindLayout from "@/components/mindLayout/MindLayout";
 import { Suspense } from "react";
 import VConsole from "vconsole";
 import { isMainnetio } from "@/sdk/utils";
+import dynamic from "next/dynamic";
 
 export const metadata: Metadata = siteConfig;
-if (isMainnetio()) {
-  const vConsole = new VConsole();
-}
+
+const VConsoleLoader = dynamic(() => import("@/components/VConsoleLoader"), {
+  ssr: false,
+});
 
 export default function RootLayout({
   children,
@@ -40,6 +42,7 @@ export default function RootLayout({
           >
             <Providers>
               <Suspense>
+                {isMainnetio() ? <VConsoleLoader /> : null}
                 <MindLayout>{children}</MindLayout>
               </Suspense>
             </Providers>
