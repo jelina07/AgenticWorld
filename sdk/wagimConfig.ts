@@ -23,7 +23,7 @@ export const getTransports = (chainId: number) => {
   switch (chainId) {
     case bnb.id:
       return fallback([
-        http(`https://bsc-dataseed3.binance.org/`),
+        http(`https://bsc-mainnet.infura.io/v3/${INFURA_ID_MAINNET}`),
         http(`https://rpc.ankr.com/bsc/${ANKRID}`),
       ]);
     case bnbtestnet.id:
