@@ -14,6 +14,8 @@ export function exceptionHandler(
   isAgentStake?: boolean,
   description?: string
 ) {
+  console.log("exceptionHandler", error);
+
   if (abi && errorType === "agent") {
     const errorCode = decodeErrorData(abi, error?.cause?.cause?.data);
     const errorMessage = (
@@ -21,6 +23,7 @@ export function exceptionHandler(
         ? Agent1ContractErrorCode(errorCode)
         : errorCode
     ) as string;
+    console.log("agent errorCode errorMessage", errorCode, errorMessage);
     if (
       error?.shortMessage?.toLowerCase().includes("user rejected") ||
       error?.message?.toLowerCase().includes("user rejected")

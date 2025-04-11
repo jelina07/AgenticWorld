@@ -32,6 +32,7 @@ export default function useAgentStake(
         [AGENT1_ADDRESS[chainId], parseEther(amount)],
         DAOKEN_ADDRESS[chainId]
       );
+      console.log("approve gasEstimate", gasEstimate);
 
       const txHash = await writeContractAsync({
         abi: DAOTOKEN_ABI,
@@ -40,7 +41,7 @@ export default function useAgentStake(
         args: [AGENT1_ADDRESS[chainId], parseEther(amount)],
         gas: gasEstimate! + gasEstimate! / BigInt(3),
       });
-
+      console.log("approve txHash", txHash);
       await waitForTransactionReceipt(config, { hash: txHash! });
 
       //stake
@@ -50,6 +51,7 @@ export default function useAgentStake(
         [tokenId, parseEther(amount)],
         AGENT1_ADDRESS[chainId]
       );
+      console.log("stake gasEstimate", gasEstimate2);
       const txHash2 = await writeContractAsync({
         abi: AGENT1_ABI,
         functionName: "stake",
@@ -57,13 +59,15 @@ export default function useAgentStake(
         args: [tokenId, parseEther(amount)],
         gas: gasEstimate2 + gasEstimate2 / BigInt(3),
       });
-
+      console.log("stake txHash", txHash2);
       if (!options?.waitForReceipt) {
         return txHash2;
       }
       const receipt = await waitForTransactionReceipt(config, {
         hash: txHash2,
       });
+      console.log("stake receipt", receipt);
+
       return receipt;
     },
     {

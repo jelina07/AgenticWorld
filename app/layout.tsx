@@ -6,8 +6,13 @@ import { ConfigProvider } from "antd";
 import { Providers } from "./Providers";
 import MindLayout from "@/components/mindLayout/MindLayout";
 import { Suspense } from "react";
+import VConsole from "vconsole";
+import { isMainnetio } from "@/sdk/utils";
 
 export const metadata: Metadata = siteConfig;
+if (isMainnetio()) {
+  const vConsole = new VConsole();
+}
 
 export default function RootLayout({
   children,
