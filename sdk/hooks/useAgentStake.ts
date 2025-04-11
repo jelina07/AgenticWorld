@@ -24,6 +24,7 @@ export default function useAgentStake(
       if (!isValid || !chainId) {
         return;
       }
+      console.log("tokenId amount", tokenId, amount);
 
       //approve token
       const gasEstimate = await estimateGasUtil(
