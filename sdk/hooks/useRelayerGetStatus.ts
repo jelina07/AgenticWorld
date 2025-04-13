@@ -15,7 +15,7 @@ const ACTIONS = [
 ] as const;
 type ActionType = (typeof ACTIONS)[number];
 
-const url = "/airdropapi/grant/claim";
+const url = "/grant/claim";
 
 // const url = isMainnet()
 //   ? "https://event-api.mindnetwork.xyz/grant/claim"

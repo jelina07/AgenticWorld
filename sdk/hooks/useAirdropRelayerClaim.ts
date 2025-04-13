@@ -7,7 +7,7 @@ import { mindnet, mindtestnet } from "../wagimConfig";
 import { exceptionHandler } from "../utils/exception";
 import { useSignMessage } from "wagmi";
 
-const url = "/airdropapi/grant/claim";
+const url = "/grant/claim";
 
 // const url = isMainnet()
 //   ? "https://event-api.mindnetwork.xyz/grant/claim"

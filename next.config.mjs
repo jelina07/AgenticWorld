@@ -12,6 +12,11 @@ if (
     },
   };
 }
+
+const isProxyEnabled =
+  process.env.NEXT_PUBLIC_ENV === "mainnet" ||
+  process.env.NEXT_PUBLIC_ENV === "mainnetio";
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -22,6 +27,21 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
     return config;
+  },
+  async rewrites() {
+    if (!isProxyEnabled) return []; // 不启用代理时返回空
+
+    return {
+      fallback: [
+        {
+          source: "/api",
+          destination:
+            process.env.NEXT_PUBLIC_ENV === "mainnet"
+              ? "https://agent-api.mindnetwork.xyz"
+              : "https://agent-api.mindnetwork.io",
+        },
+      ],
+    };
   },
   compiler,
 };
