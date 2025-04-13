@@ -7,11 +7,13 @@ import { mindnet, mindtestnet } from "../wagimConfig";
 import { exceptionHandler } from "../utils/exception";
 import { useSignMessage } from "wagmi";
 
-const url = isMainnet()
-  ? "https://event-api.mindnetwork.xyz/grant/claim"
-  : isMainnetio()
-  ? "https://grant-api.mindnetwork.io/grant/claim"
-  : "/grant/claim";
+const url = "/airdropapi/grant/claim";
+
+// const url = isMainnet()
+//   ? "https://event-api.mindnetwork.xyz/grant/claim"
+//   : isMainnetio()
+//   ? "https://grant-api.mindnetwork.io/grant/claim"
+//   : "/grant/claim";
 
 export default function useAirdropRelayerClaim(options?: Options<any, any>) {
   const { signMessageAsync } = useSignMessage();

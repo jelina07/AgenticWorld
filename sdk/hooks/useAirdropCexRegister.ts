@@ -10,11 +10,13 @@ type Payload = {
   cexAddress: string;
   cexUuid: string;
 };
-const url = isMainnet()
-  ? "https://event-api.mindnetwork.xyz/grant/cex/register"
-  : isMainnetio()
-  ? "https://grant-api.mindnetwork.io/grant/cex/register"
-  : "/grant/cex/register";
+const url = "/airdropapi/grant/cex/register";
+
+// const url = isMainnet()
+//   ? "https://event-api.mindnetwork.xyz/grant/cex/register"
+//   : isMainnetio()
+//   ? "https://grant-api.mindnetwork.io/grant/cex/register"
+//   : "/grant/cex/register";
 
 export default function useAirdropCexRegister(
   options?: Options<unknown, [Payload]>

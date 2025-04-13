@@ -15,11 +15,13 @@ const ACTIONS = [
 ] as const;
 type ActionType = (typeof ACTIONS)[number];
 
-const url = isMainnet()
-  ? "https://event-api.mindnetwork.xyz/grant/claim"
-  : isMainnetio()
-  ? "https://grant-api.mindnetwork.io/grant/claim"
-  : "/grant/claim";
+const url = "/airdropapi/grant/claim";
+
+// const url = isMainnet()
+//   ? "https://event-api.mindnetwork.xyz/grant/claim"
+//   : isMainnetio()
+//   ? "https://grant-api.mindnetwork.io/grant/claim"
+//   : "/grant/claim";
 
 export default function useRelayerGetStatus(type: ActionType) {
   const { address } = useAccount();
