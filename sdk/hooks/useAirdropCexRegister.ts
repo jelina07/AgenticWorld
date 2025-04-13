@@ -10,7 +10,9 @@ type Payload = {
   cexAddress: string;
   cexUuid: string;
 };
-const url = "/grant/cex/register";
+const url = isMainnet()
+  ? "https://agent.mindnetwork.xyz/airdropapi/grant/cex/register"
+  : "/grant/cex/register";
 
 // const url = isMainnet()
 //   ? "https://event-api.mindnetwork.xyz/grant/cex/register"

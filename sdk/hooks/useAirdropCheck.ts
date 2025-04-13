@@ -5,7 +5,9 @@ import { useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 import { isMainnet, isMainnetio } from "../utils";
 
-const url = "/grant/check-eligibility";
+const url = isMainnet()
+  ? "https://agent.mindnetwork.xyz/airdropapi/grant/check-eligibility"
+  : "/grant/check-eligibility";
 
 // const url = isMainnet()
 //   ? "https://event-api.mindnetwork.xyz/grant/check-eligibility"
