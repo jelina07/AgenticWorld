@@ -20,7 +20,17 @@ const MindMenu: React.FC = () => {
     isDev() || isMainnetio() || isMainnet()
       ? [
           {
-            label: <Link href="/airdrop">Airdrop</Link>,
+            label: (
+              <Link
+                href="/airdrop"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = "/airdrop";
+                }}
+              >
+                Airdrop
+              </Link>
+            ),
             key: "/airdrop",
           },
           {
