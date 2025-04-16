@@ -28,21 +28,27 @@ const nextConfig = {
     });
     return config;
   },
-  async rewrites() {
-    if (!isProxyEnabled) return []; // 不启用代理时返回空
-
-    return {
-      fallback: [
-        {
-          source: "/api",
-          destination:
-            process.env.NEXT_PUBLIC_ENV === "mainnet"
-              ? "https://agent-api.mindnetwork.xyz"
-              : "https://agent-api.mindnetwork.io",
-        },
-      ],
-    };
-  },
+  // async rewrites() {
+  //   if (!isProxyEnabled) return []; // 不启用代理时返回空
+  //   return {
+  //     fallback: [
+  //       {
+  //         source: "/api/:path*",
+  //         destination:
+  //           process.env.NEXT_PUBLIC_ENV === "mainnet"
+  //             ? `https://agent-api.mindnetwork.xyz/:path*`
+  //             : "https://agent-api.mindnetwork.io/:path*",
+  //       },
+  //       {
+  //         source: "/airdropapi",
+  //         destination:
+  //           process.env.NEXT_PUBLIC_ENV === "mainnet"
+  //             ? "https://agent-api.mindnetwork.xyz"
+  //             : "https://agent-api.mindnetwork.io",
+  //       },
+  //     ],
+  //   };
+  // },
   compiler,
 };
 
