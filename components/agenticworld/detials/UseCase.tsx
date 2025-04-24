@@ -14,7 +14,7 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
   console.log("morInfoArray", morInfoArray);
 
   return (
-    <div className="px-[28px] py-[40px] rounded-[20px] bg-[var(--bg-deep-grey)]">
+    <div className="px-[28px] py-[40px] rounded-[20px] bg-[var(--bg-deep-grey)] mt-[50px]">
       <div className="text-[18px] font-[700] capitalize">Use Case</div>
       <div className="mt-[25px] text-[12px] leading-[1.2] usecase">
         <div

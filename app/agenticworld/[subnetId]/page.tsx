@@ -19,6 +19,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CommingSoon from "@/components/utils/CommingSoon";
+import DeepSeekHub from "@/components/deepseekHub";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
@@ -86,6 +87,7 @@ export default function page({ params }: { params: any }) {
   const goback = () => {
     router.back();
   };
+  console.log("currentSubnet?.subnetId", currentSubnet?.subnetId);
 
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
@@ -162,13 +164,13 @@ export default function page({ params }: { params: any }) {
             Explore New Skills
           </Link>
         </div>
-        <div
-          className={`mt-[50px] ${
-            currentSubnet?.canLinkDetial ? "" : "hidden"
-          }`}
-        >
+        {currentSubnet?.canLinkDetial && currentSubnet?.subnetId !== 27 ? (
           <UseCase currentSubnet={currentSubnet} />
-        </div>
+        ) : currentSubnet?.subnetId === 27 ? (
+          <DeepSeekHub currentSubnet={currentSubnet} />
+        ) : (
+          <></>
+        )}
       </div>
       <StartConfirmModal
         ref={startModalRef}

@@ -76,6 +76,21 @@ export default function MindLayout({
         <div style={{ minHeight: `calc(100vh - 160px)` }}>{children}</div>
       )}
       <Footer />
+      <div
+        className={`w-full p-[8px] bg-[var(--mind-brand)] text-center text-black absolute top-[80px] ${
+          pathName === "/airdrop" ? "" : "hidden"
+        }`}
+      >
+        Trade $FHE Now on{" "}
+        <a
+          href="https://www.gate.io/signup?ch=signupFHE"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-black hover:text-black underline hover:underline"
+        >
+          Gate.io
+        </a>
+      </div>
     </div>
   );
 }

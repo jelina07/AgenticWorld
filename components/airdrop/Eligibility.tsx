@@ -300,7 +300,7 @@ export default function Eligibility() {
   return (
     <div>
       <div>
-        <div className="text-[24px] sm:text-[40px] text-center font-[800] pt-[30px]">
+        <div className="text-[24px] sm:text-[40px] text-center font-[800] pt-[50px]">
           Mind Network Airdrop
         </div>
         <div className="text-[14px] text-center mt-[10px]">

@@ -25,6 +25,7 @@
   --foreground: #fff;
   --bg-deep-grey: #181818;
   --mind-brand: #00ffb1;
+  --mind-deep-green: #1b352d;
   --mind-grey: #878c8b;
   --mind-grey2: #a3a9a8;
   --mind-red: #ff7853;
@@ -775,4 +776,67 @@ input:focus {
   border: 1px solid #2e2f31;
   color: #fff !important;
   font-size: 14px;
+}
+
+.deepseek-welcome .ant-welcome-title {
+  color: white;
+  font-size: 16px;
+}
+
+.deepseek-welcome.ant-welcome-filled {
+  align-items: center;
+}
+
+.deepseek-sender.ant-sender {
+  border-color: var(--mind-deep-green);
+}
+.deepseek-sender .ant-sender-content .ant-input {
+  color: white;
+}
+
+.deepseek-sender .ant-sender-content textarea::placeholder {
+  color: var(--mind-grey);
+}
+
+.deepseek-sender
+  .send-button.ant-sender-actions-btn-disabled
+  .ant-btn-icon
+  svg {
+  fill: var(--mind-grey);
+  stroke: var(--mind-grey);
+  stroke-width: 50;
+}
+
+.ant-welcome.deepseek-welcome.ant-welcome-filled {
+  padding-inline: unset;
+}
+
+.deepseek-chat .ant-avatar {
+  width: 35px;
+  height: 35px;
+}
+
+.deepseek-chat .ant-bubble .ant-bubble-content {
+  color: white;
+  font-size: 16px;
+  line-height: 110%;
+}
+.deepseek-chat .ant-bubble-start .ant-bubble-content-filled {
+  width: 100%;
+}
+
+.deepseek-chat .ant-bubble .ant-bubble-content-filled {
+  background-color: transparent;
+  padding: 12px 0px;
+}
+
+.deepseek-chat .highlight {
+  color: var(--mind-brand);
+}
+
+.ant-progress .ant-progress-text {
+  color: white !important;
+}
+.ant-progress.ant-progress-status-success .ant-progress-text {
+  color: var(--mind-brand) !important;
 }
