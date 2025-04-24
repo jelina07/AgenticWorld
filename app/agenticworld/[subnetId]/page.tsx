@@ -87,7 +87,6 @@ export default function page({ params }: { params: any }) {
   const goback = () => {
     router.back();
   };
-  console.log("currentSubnet?.subnetId", currentSubnet?.subnetId);
 
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
