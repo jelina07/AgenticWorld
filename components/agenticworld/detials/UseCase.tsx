@@ -26,8 +26,8 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
       <div className={`mt-[25px] ${currentSubnet?.moreInfo ? "" : "hidden"}`}>
         <div className="text-[14px] font-[600]">More Information:</div>
         <div className="flex gap-[5px]">
-          {morInfoArray?.map((item: any) => (
-            <div>
+          {morInfoArray?.map((item: any, index: number) => (
+            <div key={index}>
               <a
                 href={item.link}
                 target="_blank"
@@ -48,9 +48,7 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
       </div>
       <div
         className={`mt-[25px] ${
-          currentSubnet?.subnetId === 27 ||
-          currentSubnet?.subnetId === 28 ||
-          currentSubnet?.subnetId === 29
+          currentSubnet?.subnetId === 28 || currentSubnet?.subnetId === 29
             ? ""
             : "hidden"
         }`}
@@ -59,9 +57,7 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
         <Image
           className="w-full mt-[10px]"
           src={`${
-            currentSubnet?.subnetId === 27
-              ? "/images/deepseek-preview.png"
-              : currentSubnet?.subnetId === 28
+            currentSubnet?.subnetId === 28
               ? "/images/hack-ai-preview.png"
               : currentSubnet?.subnetId === 29
               ? "/images/mindx-preview.png"

@@ -163,8 +163,10 @@ export default function page({ params }: { params: any }) {
             Explore New Skills
           </Link>
         </div>
-        {currentSubnet?.canLinkDetial ? (
+        {currentSubnet?.canLinkDetial && currentSubnet?.subnetId !== 4 ? (
           <UseCase currentSubnet={currentSubnet} />
+        ) : currentSubnet?.subnetId === 4 ? (
+          <DeepSeekHub currentSubnet={currentSubnet} />
         ) : (
           <></>
         )}

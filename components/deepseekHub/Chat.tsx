@@ -1,12 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bubble, BubbleProps, Sender, Welcome } from "@ant-design/x";
-import { App, Divider, Flex, GetProp, GetRef } from "antd";
+import { App, Divider, Flex, GetProp, GetRef, message, Spin } from "antd";
 import BubbleThink from "./BubbleThink";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useAccount } from "wagmi";
+import {
+  useAiDeepSeek,
+  useAiDeepSeekStream,
+  useGetDeepSeekCredit,
+} from "@/sdk";
+import { isMainnet } from "@/sdk/utils";
+import axios from "axios";
+import markdownit from "markdown-it";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAsyncEffect } from "ahooks";
 
 const rolesAsObject: GetProp<typeof Bubble.List, "roles"> = {
-  ai: {
+  assistant: {
     placement: "start",
     avatar: {
       icon: <div className="rounded-[50%]"></div>,
@@ -25,25 +35,192 @@ const rolesAsObject: GetProp<typeof Bubble.List, "roles"> = {
     placement: "end",
   },
 };
+const md = markdownit({ html: true, breaks: true });
 
 export default function Chat() {
-  const { message } = App.useApp();
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
   const listRef = useRef<GetRef<typeof Bubble.List>>(null);
-  const [count, setCount] = useState(0); // 0 welcome
-  const queryNumber = 3;
+  const [bubbleList, setBubbleList] = useState<Array<any>>([]);
+  const { runAsync: getAiResponse } = useAiDeepSeek();
+  const { runAsync: getAiResponseStream } = useAiDeepSeekStream();
+  const [generatedText, setGeneratedText] = useState("");
+  const { data: deepSeekCredit, refresh } = useGetDeepSeekCredit();
+  const deepSeekCreditFormat = !deepSeekCredit ? 0 : deepSeekCredit.credits;
+  console.log("generatedText", generatedText);
 
-  const sendMessage = () => {
-    if (queryNumber) {
-      setCount(count + 2);
+  const sendMessage = async () => {
+    if (isConnected) {
+      if (deepSeekCreditFormat) {
+        setLoading(true);
+        const newItems = [
+          ...bubbleList,
+          {
+            role: "user",
+            content: (
+              <div className="max-w-[600px] bg-[#1C2925] rounded-[8px] px-[20px] py-[12px]">
+                {value}
+              </div>
+            ),
+          },
+          {
+            role: "aiThink",
+            content: <BubbleThink />,
+          },
+        ];
+        setValue("");
+        const message = newItems
+          .filter((item: any) => item.role !== "aiThink")
+          .map((item: any) => {
+            let content;
+            if (item.role === "user") {
+              content = item.content.props.children;
+            }
+            if (item.role === "assistant") {
+              content = item.content.props.dangerouslySetInnerHTML.__html;
+            }
+            return {
+              ...item,
+              content,
+            };
+          });
+        console.log("message", message);
+        try {
+          const asRes = await getAiResponse(message);
+          console.log("asRes", asRes);
+          if (asRes) {
+            setBubbleList(newItems);
+            const newItems2 = [
+              ...newItems,
+              {
+                role: "assistant",
+                content: (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: md.render(
+                        asRes.data.replace(/\[done\]$/, "").trim()
+                      ),
+                    }}
+                  />
+                ),
+              },
+            ];
+            await new Promise((resolve) => setTimeout(resolve, 14000));
+            setBubbleList(newItems2);
+            refresh();
+            setLoading(false);
+          }
+        } catch (error) {
+          setLoading(false);
+        }
+      } else {
+        message.open({
+          type: "warning",
+          content: `You have reached your maximum number of uses today`,
+          duration: 5,
+        });
+        setLoading(false);
+      }
     } else {
-      message.warning("You have reached your maximum number of uses today");
+      openConnectModal?.();
     }
   };
+
+  // const sendMessage = async () => {
+  //   if (isConnected) {
+  //     if (deepSeekCreditFormat) {
+  //       setLoading(true);
+  //       const newItems = [
+  //         ...bubbleList,
+  //         {
+  //           role: "user",
+  //           content: (
+  //             <div className="max-w-[600px] bg-[#1C2925] rounded-[8px] px-[20px] py-[12px]">
+  //               {value}
+  //             </div>
+  //           ),
+  //         },
+  //         {
+  //           role: "aiThink",
+  //           content: <BubbleThink />,
+  //         },
+  //       ];
+  //       setValue("");
+  //       const message = newItems
+  //         .filter((item: any) => item.role !== "aiThink")
+  //         .map((item: any) => {
+  //           let content
+  //           if (item.role === "user") {
+  //             content = item.content.props.children;
+  //           }
+  //           if (item.role === "assistant") {
+  //             content = item.content.props.dangerouslySetInnerHTML.__html;
+  //           }
+  //           return {
+  //             ...item,
+  //             content,
+  //           };
+  //         });
+  //       const res = await getAiResponseStream(message, setGeneratedText);
+  //       console.log("res", res);
+
+  //       if (res) {
+  //         setBubbleList(newItems);
+  //       }
+  //     } else {
+  //       message.open({
+  //         type: "warning",
+  //         content: `You have reached your maximum number of uses today`,
+  //         duration: 5,
+  //       });
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     openConnectModal?.();
+  //   }
+  // };
+
+  // useAsyncEffect(async () => {
+  //   if (generatedText.length) {
+  //     if (bubbleList.length + (1 % 3) !== 0) {
+  //       const newItems2 = [
+  //         ...bubbleList,
+  //         {
+  //           role: "assistant",
+  //           content: (
+  //             <div
+  //               dangerouslySetInnerHTML={{ __html: md.render(generatedText) }}
+  //             />
+  //           ),
+  //         },
+  //       ];
+  //       await new Promise((resolve) => setTimeout(resolve, 14000));
+  //       setBubbleList(newItems2);
+  //       refresh();
+  //     } else {
+  //       const updatedBubbleList = bubbleList.map((item, index) => {
+  //         if (index === bubbleList.length - 1) {
+  //           return {
+  //             ...item,
+  //             content: (
+  //               <div
+  //                 dangerouslySetInnerHTML={{ __html: md.render(generatedText) }}
+  //               />
+  //             ),
+  //           };
+  //         }
+  //         return item;
+  //       });
+  //       setBubbleList(updatedBubbleList);
+  //     }
+  //     if (generatedText.includes("[done]")) setLoading(false);
+  //   }
+  // }, [generatedText]);
+
   return (
     <div className="mt-[50px] deepseek-chat">
       <div className="px-[28px] py-[26px] bg-[#181818] rounded-[20px]">
@@ -53,7 +230,9 @@ export default function Chat() {
             <img src="/icons/small-earth.svg" alt="small-earth" />
             <div className="text-[14px] font-[600] flex-shrink-0">
               <span>My query credits: </span>
-              <span>{!isConnected ? "/" : !isAgent ? 0 : 3}</span>
+              <span>
+                {!isConnected ? "/" : !isAgent ? 0 : deepSeekCreditFormat}
+              </span>
             </div>
           </div>
         </div>
@@ -62,7 +241,7 @@ export default function Chat() {
         </div>
         <hr className="border-[var(--mind-grey)] mt-[5px]" />
         <div className="py-[30px]">
-          <div className={`${count > 0 ? "hidden" : ""}`}>
+          <div className={`${bubbleList.length > 0 ? "hidden" : ""}`}>
             <Welcome
               rootClassName="deepseek-welcome"
               icon={
@@ -73,7 +252,7 @@ export default function Chat() {
                 />
               }
               title={
-                !isAgent
+                !isAgent && isConnected
                   ? "Please create an Agent first !"
                   : "Hello, CitizenZ !"
               }
@@ -84,34 +263,11 @@ export default function Chat() {
             ref={listRef}
             style={{ maxHeight: 300 }}
             roles={rolesAsObject}
-            items={Array.from({ length: count }).map((_, i) => {
-              const contentType = (i + 1) % 3;
-              const content =
-                contentType === 1 ? (
-                  <div className="max-w-[600px] bg-[#1C2925] rounded-[8px] px-[20px] py-[12px]">
-                    Mock AI content
-                  </div>
-                ) : contentType === 2 ? (
-                  <BubbleThink />
-                ) : (
-                  "Mock AI content. ".repeat(20)
-                );
-
-              return {
-                key: i,
-                role:
-                  contentType === 1
-                    ? "user"
-                    : contentType === 2
-                    ? "aiThink"
-                    : "ai",
-                content,
-              };
-            })}
+            items={bubbleList}
           />
         </div>
         <Sender
-          disabled={!isAgent || loading}
+          disabled={!isAgent && isConnected}
           rootClassName="deepseek-sender"
           placeholder="How can I help you today?"
           loading={loading}
@@ -129,19 +285,23 @@ export default function Chat() {
                   </span>
                 </div>
                 <div>
-                  <SendButton
-                    type="primary"
-                    disabled={value === "" || !isAgent}
-                    className="send-button"
-                    onClick={sendMessage}
-                  />
+                  {
+                    <SendButton
+                      type="primary"
+                      disabled={
+                        value === "" || (!isAgent && isConnected) || loading
+                      }
+                      className="send-button"
+                      loading={loading}
+                    />
+                  }
                 </div>
               </div>
             );
           }}
+          // onSubmit={onSubmit}
           onSubmit={() => {
-            setValue("");
-            setLoading(true);
+            sendMessage();
           }}
           onCancel={() => {
             setLoading(false);

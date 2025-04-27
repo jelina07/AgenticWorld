@@ -10,7 +10,7 @@ const texts = [
   "Ready to Respond",
 ];
 
-const randomTime = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
+// const randomTime = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
 
 const conicColors: ProgressProps["strokeColor"] = {
   "0%": "#00FFB1",
@@ -34,7 +34,7 @@ export default function BubbleThink() {
           }
           return newPercent;
         });
-      }, randomTime);
+      }, 2000);
 
       return () => clearInterval(interval);
     }

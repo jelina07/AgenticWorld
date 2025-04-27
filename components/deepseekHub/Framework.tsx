@@ -59,8 +59,8 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
       <div className={`mt-[25px] ${currentSubnet?.moreInfo ? "" : "hidden"}`}>
         <div className="text-[14px] font-[600]">More Information:</div>
         <div className="flex gap-[5px]">
-          {morInfoArray?.map((item: any) => (
-            <div>
+          {morInfoArray?.map((item: any, index: number) => (
+            <div key={index}>
               <a
                 href={item.link}
                 target="_blank"

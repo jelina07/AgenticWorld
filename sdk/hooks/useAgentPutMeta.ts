@@ -24,14 +24,6 @@ export default function useAgentPutMeta(
       const signature = await signMessageAsync({
         message: `You are modifying your agent information on the chain:${chainId}`,
       });
-      console.log("bbbb", {
-        ...postData,
-        walletAddress: address,
-        chainId,
-        signature,
-        agentAddress: AGENT1_ADDRESS[chainId],
-      });
-
       const res = await request.put("/user-agent/info", {
         ...postData,
         walletAddress: address,

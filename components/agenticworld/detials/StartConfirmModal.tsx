@@ -106,7 +106,8 @@ const StartConfirmModal = forwardRef(
               setActionLoop(true);
               const resId = await relayerSwitchHub(
                 agentTokenId,
-                currentHub?.subnetId!
+                currentHub?.subnetId!,
+                Boolean(currentHub?.needSign!)
               );
               if (resId) {
                 statusRunSwitch(chainId, resId);
@@ -127,7 +128,8 @@ const StartConfirmModal = forwardRef(
               setActionLoop(true);
               const resId = await relayerDelegate(
                 agentTokenId,
-                currentHub?.subnetId!
+                currentHub?.subnetId!,
+                Boolean(currentHub?.needSign!)
               );
               if (resId) {
                 statusRun(chainId, resId);

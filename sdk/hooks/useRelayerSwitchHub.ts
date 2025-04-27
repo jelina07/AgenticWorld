@@ -4,19 +4,21 @@ import request from "../request";
 import useValidateChainWalletLink from "./useValidateChainWalletLink";
 import useRelayerSignTypedData from "./useRelayerSignTypedData";
 import { exceptionHandler } from "../utils/exception";
-
-export default function useRelayerSwitchHub(options?: Options<any, [number, number]>) {
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { AGENT1_ADDRESS } from "../blockChain/address";
+dayjs.extend(utc);
+export default function useRelayerSwitchHub(
+  options?: Options<any, [number, number, boolean]>
+) {
   const { validateAsync, chainId, address } = useValidateChainWalletLink();
-
   const { signRelayerAsync } = useRelayerSignTypedData();
-
   const result = useRequest(
-    async (agentId, hubId) => {
+    async (agentId, hubId, needSign = false) => {
       const isValid = await validateAsync?.();
       if (!isValid || !chainId) {
         return;
       }
-
       const postData = {
         user: address!,
         hubID: hubId,
@@ -24,9 +26,19 @@ export default function useRelayerSwitchHub(options?: Options<any, [number, numb
         action: "Switch to another Hub",
         amount: BigInt(0),
       };
-
-      const { signature, timestamp, nonce } = await signRelayerAsync?.(postData);
-
+      const sigTs = dayjs().utc().unix();
+      let delegateSig = "0x";
+      if (needSign) {
+        delegateSig = await request.post("/hub/verify", {
+          tokenId: agentId,
+          hubId,
+          sigTs,
+          address: AGENT1_ADDRESS[chainId],
+        });
+      }
+      const { signature, timestamp, nonce } = await signRelayerAsync?.(
+        postData
+      );
       const res = (await request.post(`/relayer/agent/${chainId}/switch`, {
         user: postData.user,
         agentId: postData.agentID,
@@ -36,6 +48,8 @@ export default function useRelayerSwitchHub(options?: Options<any, [number, numb
         timestamp,
         nonce,
         amount: postData.amount.toString(),
+        delegateSig,
+        delegateSigTs: sigTs,
       })) as { id: number };
       return res.id;
     },
@@ -45,6 +59,5 @@ export default function useRelayerSwitchHub(options?: Options<any, [number, numb
       ...options,
     }
   );
-
   return result;
 }

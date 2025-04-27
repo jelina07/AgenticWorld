@@ -186,3 +186,5 @@ export function timestampToUTC(timestamp: number) {
 
   return `UTC ${hours}:${minutes}, ${month} ${day}, ${year}`;
 }
+
+export function formatTime() {}

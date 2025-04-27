@@ -36,6 +36,9 @@ import useAirdropCexRegister from "./hooks/useAirdropCexRegister";
 import useAirdropCexRegisterInfo from "./hooks/useAirdropCexRegisterInfo";
 import useAirdropIsClaimed from "./hooks/useAirdropIsClaimed";
 import useAgentUnlock from "./hooks/useAgentUnlock";
+import useAiDeepSeek from "./hooks/useAiDeepSeek";
+import useGetDeepSeekCredit from "./hooks/useGetDeepSeekCredit";
+import useAiDeepSeekStream from "./hooks/useAiDeepSeekStream";
 
 export {
   useAirdropCheck,
@@ -76,4 +79,7 @@ export {
   useAirdropCexRegisterInfo,
   useAirdropIsClaimed,
   useAgentUnlock,
+  useAiDeepSeek,
+  useGetDeepSeekCredit,
+  useAiDeepSeekStream,
 };
