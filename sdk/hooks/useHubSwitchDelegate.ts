@@ -40,6 +40,7 @@ export default function useHubSwitchDelegate(
           ...payload,
           sigTs,
           address: AGENT1_ADDRESS[chainId],
+          chainId,
         });
       }
       const gasEstimate = await estimateGasUtil(

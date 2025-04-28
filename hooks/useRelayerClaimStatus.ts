@@ -31,14 +31,14 @@ export default function useRelayerClaimStatus(
         } else if (statusRes.status === "-1") {
           cancel();
           if (statusRes.message) {
-            notification.error({
-              message: "Error",
+            notification.warning({
+              message: "Warning",
               description: statusRes.message,
             });
           } else if (statusRes.errorCode) {
             const errorMess = errorCodeMap(statusRes.errorCode);
-            notification.error({
-              message: "Error",
+            notification.warning({
+              message: "Warning",
               description: errorMess,
             });
           }

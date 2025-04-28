@@ -34,6 +34,7 @@ export default function useRelayerSwitchHub(
           hubId,
           sigTs,
           address: AGENT1_ADDRESS[chainId],
+          chainId,
         });
       }
       const { signature, timestamp, nonce } = await signRelayerAsync?.(
