@@ -50,6 +50,7 @@ export default function useRelayerDelegate(
         amount: postData.amount.toString(),
         delegateSig,
         delegateSigTs: sigTs,
+        chainId,
       })) as { id: number };
       return res.id;
     },

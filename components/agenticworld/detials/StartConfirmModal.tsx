@@ -120,6 +120,7 @@ const StartConfirmModal = forwardRef(
               tokenId: agentTokenId,
               hubId: currentHub?.subnetId!,
               needSign: Boolean(currentHub?.needSign!),
+              chainId: chainId!,
             });
           }
         } else {
@@ -142,6 +143,7 @@ const StartConfirmModal = forwardRef(
               tokenId: agentTokenId,
               hubId: currentHub?.subnetId!,
               needSign: Boolean(currentHub?.needSign!),
+              chainId: chainId!,
             });
           }
         }

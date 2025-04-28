@@ -187,4 +187,21 @@ export function timestampToUTC(timestamp: number) {
   return `UTC ${hours}:${minutes}, ${month} ${day}, ${year}`;
 }
 
-export function formatTime() {}
+export function generateRandomArray() {
+  const arr = [];
+  let sum = 0;
+
+  for (let i = 0; i < 6; i++) {
+    const num = Math.floor(Math.random() * 20) + 1;
+    arr.push(num);
+    sum += num;
+  }
+
+  while (sum <= 100) {
+    const index = Math.floor(Math.random() * 6);
+    arr[index]++;
+    sum++;
+  }
+
+  return arr;
+}

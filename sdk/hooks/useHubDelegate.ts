@@ -19,6 +19,7 @@ type DelegatePayload = {
   tokenId: number;
   hubId: number;
   needSign: boolean;
+  chainId: number;
 };
 
 export default function useHubDelegate(

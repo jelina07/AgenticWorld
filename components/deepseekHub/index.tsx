@@ -6,8 +6,8 @@ import Chat2 from "./Chat2";
 export default function DeepSeekHub({ currentSubnet }: { currentSubnet: any }) {
   return (
     <div>
-      {/* <Chat2 /> */}
-      <Chat />
+      <Chat2 />
+      {/* <Chat /> */}
       <Framework currentSubnet={currentSubnet} />
     </div>
   );

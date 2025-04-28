@@ -50,6 +50,7 @@ export default function useRelayerSwitchHub(
         amount: postData.amount.toString(),
         delegateSig,
         delegateSigTs: sigTs,
+        chainId: chainId,
       })) as { id: number };
       return res.id;
     },

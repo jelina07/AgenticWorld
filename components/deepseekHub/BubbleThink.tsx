@@ -1,3 +1,4 @@
+import { generateRandomArray } from "@/utils/utils";
 import { Progress, ProgressProps } from "antd";
 import { useEffect, useState } from "react";
 const texts = [
@@ -17,6 +18,7 @@ const conicColors: ProgressProps["strokeColor"] = {
   "70%": "#00996A",
   "100%": "#FFF",
 };
+const randomArray = generateRandomArray();
 
 export default function BubbleThink() {
   const [percent, setPercent] = useState<number>(0);
@@ -26,9 +28,8 @@ export default function BubbleThink() {
     if (currentIndex < texts.length - 1) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) => prevIndex + 1);
-
         setPercent((prevPercent) => {
-          const newPercent = prevPercent + 17;
+          const newPercent = prevPercent + randomArray[currentIndex] || 0;
           if (newPercent > 100) {
             return 100;
           }

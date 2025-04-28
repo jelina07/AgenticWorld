@@ -19,10 +19,9 @@ export default function useAiDeepSeek(options?: Options<any, any>) {
   dayjs.extend(utc);
   const result = useRequest(
     async (messages: any) => {
-      const utcFormattedTime = dayjs.utc().format("YYYY-MM-DD:HH:mm:ss");
-      const signMessage = `Sign to confirm your DeepSeek query\n. No gas or fee required.\n Time(UTC):${utcFormattedTime}`;
-
-      let signature, res;
+      const utcFormattedTime = dayjs.utc().format("YYYY-MM-DD HH:mm:ss");
+      let signMessage = `Sign to confirm your DeepSeek query\n. No gas or fee required.\n Time(UTC):${utcFormattedTime}`;
+      let signature: any, res;
       const storedArray = localStorage.getItem("signature");
       if (storedArray) {
         const parseStoredArray = JSON.parse(storedArray);
@@ -33,13 +32,17 @@ export default function useAiDeepSeek(options?: Options<any, any>) {
           signature = parseStoredArray.find(
             (item: any) => item.address === address
           ).signature;
+          signMessage = parseStoredArray.find(
+            (item: any) => item.address === address
+          ).signMessage;
         } else {
           signature = await signMessageAsync({
             message: signMessage,
           });
           const currentSignObj = {
-            address: address,
-            signature: signature,
+            address,
+            signature,
+            signMessage,
           };
           parseStoredArray.push(currentSignObj);
           localStorage.setItem("signature", JSON.stringify(parseStoredArray));
@@ -49,38 +52,47 @@ export default function useAiDeepSeek(options?: Options<any, any>) {
           message: signMessage,
         });
         const currentSignObj = {
-          address: address,
-          signature: signature,
+          address,
+          signature,
+          signMessage,
         };
         localStorage.setItem("signature", JSON.stringify([currentSignObj]));
       }
-
-      res = await axios.post(url, {
-        wallet: address,
-        signature,
-        signMessage,
-        messages,
-        chainId,
-      });
-      if (res.status === 401) {
-        const signature = await signMessageAsync({
-          message: signMessage,
-        });
-        const storedArray = localStorage.getItem("signature")!;
-        const parseStoredArray = JSON.parse(storedArray);
-        const currentSignObj = {
-          address: address,
-          signature: signature,
-        };
-        parseStoredArray.push(currentSignObj);
-        localStorage.setItem("signature", JSON.stringify(parseStoredArray));
-        res = await axios.post(url, {
+      const getFetch = async () => {
+        const response = await axios.post(url, {
           wallet: address,
           signature,
           signMessage,
           messages,
           chainId,
         });
+        return response;
+      };
+      try {
+        res = await getFetch();
+      } catch (error: any) {
+        if (error.response.status === 401) {
+          signMessage = `Sign to confirm your DeepSeek query\n. No gas or fee required.\n Time(UTC):${utcFormattedTime}`;
+          signature = await signMessageAsync({
+            message: signMessage,
+          });
+          console.log("signature", signature);
+
+          const storedArray = localStorage.getItem("signature")!;
+          const parseStoredArray = JSON.parse(storedArray);
+
+          const newStoredArray = parseStoredArray.filter(
+            (item: any) => item.address !== address
+          );
+          const currentSignObj = {
+            address,
+            signature,
+            signMessage,
+          };
+          newStoredArray.push(currentSignObj);
+          localStorage.setItem("signature", JSON.stringify(newStoredArray));
+          res = await getFetch();
+        }
       }
       return res;
     },

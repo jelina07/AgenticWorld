@@ -22,6 +22,7 @@ import markdownit from "markdown-it";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
+import { BubbleDataType } from "@ant-design/x/es/bubble/BubbleList";
 
 const rolesAsObject: GetProp<typeof Bubble.List, "roles"> = {
   assistant: {
@@ -61,191 +62,44 @@ export default function Chat2() {
   const { data: deepSeekCredit, refresh } = useGetDeepSeekCredit();
   const deepSeekCreditFormat = !deepSeekCredit ? 0 : deepSeekCredit.credits;
 
-  const [agent] = useXAgent({
-    request: async ({ message, messages }, { onSuccess, onUpdate }) => {
-      console.log("messages11", messages);
-      const utcFormattedTime = dayjs.utc().format("YYYY-MM-DD HH:mm:ss");
-      let signMessage = `Sign to confirm your DeepSeek query\n. No gas or fee required.\n Time(UTC):${utcFormattedTime}`;
-      let signature: any;
-      const storedArray = localStorage.getItem("signature");
-      if (storedArray) {
-        const parseStoredArray = JSON.parse(storedArray);
-        const currentAddress = parseStoredArray.find(
-          (item: any) => item.address === address
-        );
-        if (currentAddress) {
-          signature = parseStoredArray.find(
-            (item: any) => item.address === address
-          ).signature;
-          signMessage = parseStoredArray.find(
-            (item: any) => item.address === address
-          ).signMessage;
-        } else {
-          try {
-            signature = await signMessageAsync({
-              message: signMessage,
-            });
-            const currentSignObj = {
-              address,
-              signature,
-              signMessage,
-            };
-            parseStoredArray.push(currentSignObj);
-            localStorage.setItem("signature", JSON.stringify(parseStoredArray));
-          } catch (error) {
-            setLoading(false);
-          }
-        }
-      } else {
-        try {
-          signature = await signMessageAsync({
-            message: signMessage,
-          });
-          const currentSignObj = {
-            address,
-            signature,
-            signMessage,
-          };
-          localStorage.setItem("signature", JSON.stringify([currentSignObj]));
-        } catch (error) {
-          setLoading(false);
-        }
-      }
-      //签名验证函数
-      if (true) {
-        // const allMess = messages?.map((item: any, index: number) => {
-        //   if (index + (1 % 3) === 1) {
-        //     return {
-        //       id: uuidv4(),
-        //       status: "local",
-        //       message: item,
-        //     };
-        //   }
-        // });
-        const allMess = [
-          {
-            id: uuidv4(),
-            status: "local",
-            message: message!,
-          },
-          {
-            id: uuidv4(),
-            status: "aiThink",
-            message: "",
-          },
-        ] as any;
-        const putMessages = allMess
-          ?.filter((item: any) => item.status !== "aiThink")
-          .map((item: any) => {
-            let role;
-            if (item.status === "local") {
-              role = "user";
-            }
-            return {
-              key: item.id,
-              role: role,
-              content: item.message,
-            };
-          });
-        const getFetch = async () => {
-          const response = await fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-              wallet: address,
-              signature,
-              signMessage,
-              messages: putMessages,
-              chainId,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          return response;
-        };
-        const response = await getFetch();
-        console.log("response", response);
-        if (response.body) {
-          if (200 <= response.status && response.status <= 299) {
-            // setMessages(allMess);
-            await new Promise((resolve) => setTimeout(resolve, 14000));
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let a = "";
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              const chunk = decoder.decode(value);
-              console.log("chunk", chunk);
-              a = a + chunk;
-              if (a.includes("[done]")) {
-                //@ts-ignore
-                onSuccess(a);
-              } else {
-                //@ts-ignore
-                onUpdate(a);
-              }
-            }
-            refresh();
-            setLoading(false);
-          } else if (response.status === 401) {
-            try {
-              signMessage = `Sign to confirm your DeepSeek query\n. No gas or fee required.\n Time(UTC):${utcFormattedTime}`;
-              signature = await signMessageAsync({
-                message: signMessage,
-              });
-              const storedArray = localStorage.getItem("signature")!;
-              const parseStoredArray = JSON.parse(storedArray);
-              const newStoredArray = parseStoredArray.filter(
-                (item: any) => item.address !== address
-              );
-              const currentSignObj = {
-                address,
-                signature,
-                signMessage,
-              };
-              newStoredArray.push(currentSignObj);
-
-              localStorage.setItem("signature", JSON.stringify(newStoredArray));
-              const response = await getFetch();
-              // setMessages(allMess);
-              await new Promise((resolve) => setTimeout(resolve, 14000));
-              if (response.body) {
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder();
-                let a = "";
-                while (true) {
-                  const { done, value } = await reader.read();
-                  if (done) break;
-                  const chunk = decoder.decode(value);
-                  console.log("chunk", chunk);
-                  a = a + chunk;
-                  if (a.includes("[done]")) {
-                    //@ts-ignore
-                    onSuccess(a);
-                  } else {
-                    //@ts-ignore
-                    onUpdate(a);
-                  }
-                }
-                refresh();
-                setLoading(false);
-              } else {
-                throw new Error("No response body");
-              }
-            } catch (error) {
-              setLoading(false);
-            }
-          }
-        } else {
-          throw new Error("No response body");
-        }
-      }
-    },
+  const [agent] = useXAgent<BubbleDataType>({
+    baseURL: "https://api.siliconflow.cn/v1/chat/completions",
   });
 
-  const { onRequest, messages, setMessages } = useXChat({
+  const { messages, onRequest, setMessages } = useXChat({
     agent,
+    requestFallback: (_, { error }) => {
+      console.log("requestFallback", _);
+
+      if (error.name === "AbortError") {
+        return {
+          content: "Request is aborted",
+          role: "assistant",
+        };
+      }
+      return {
+        content: "Request failed, please try again!",
+        role: "assistant",
+      };
+    },
+    transformMessage: (info) => {
+      const { originMessage, chunk } = info || {};
+      let currentText = "";
+      try {
+        if (chunk?.data && !chunk?.data.includes("DONE")) {
+          const message = JSON.parse(chunk?.data);
+          currentText = !message?.choices?.[0].delta?.reasoning_content
+            ? ""
+            : message?.choices?.[0].delta?.reasoning_content;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      return {
+        content: (originMessage?.content || "") + currentText,
+        role: "assistant",
+      };
+    },
   });
 
   const onSubmit = (nextContent: string) => {
