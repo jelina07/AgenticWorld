@@ -20,7 +20,15 @@ const conicColors: ProgressProps["strokeColor"] = {
 };
 const randomArray = generateRandomArray();
 
-export default function BubbleThink() {
+export default function BubbleThink({
+  BubbleThinkKey,
+  changeBubbleThinkId,
+  bubbleThinkId,
+}: {
+  BubbleThinkKey?: number | string;
+  changeBubbleThinkId?: Function;
+  bubbleThinkId?: Array<any>;
+}) {
   const [percent, setPercent] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -41,14 +49,38 @@ export default function BubbleThink() {
     }
   }, [currentIndex, texts.length]);
 
-  return (
+  useEffect(() => {
+    if (percent === 100) {
+      changeBubbleThinkId && changeBubbleThinkId(BubbleThinkKey);
+    }
+  }, [percent]);
+
+  return bubbleThinkId?.includes(BubbleThinkKey) ? (
     <div className="bg-[#2f2f2f] rounded-[8px] px-[20px] py-[12px]">
       <Progress percent={percent} type="line" strokeColor={conicColors} />
       <div className="text-[#D9D9D9] text-[14px] font-[500] mt-[10px]">
         {texts.map((text, index) => (
           <div
             key={index}
-            className={currentIndex === index ? "highlight" : ""}
+            className={index === texts.length - 1 ? "highlight" : ""}
+          >
+            {text}
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div className="bg-[#2f2f2f] rounded-[8px] px-[20px] py-[12px]">
+      <Progress percent={percent} type="line" strokeColor={conicColors} />
+      <div className="text-[#D9D9D9] text-[14px] font-[500] mt-[10px]">
+        {texts.slice(0, currentIndex).map((text, index) => (
+          <div
+            key={index}
+            className={
+              index === texts.slice(0, currentIndex).length - 1
+                ? "highlight"
+                : ""
+            }
           >
             {text}
           </div>
