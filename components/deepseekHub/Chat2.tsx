@@ -58,11 +58,14 @@ export default function Chat2() {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
   const listRef = useRef<GetRef<typeof Bubble.List>>(null);
-  const { data: deepSeekCredit, refresh } = useGetDeepSeekCredit();
+  const { data: deepSeekCredit, refresh, runAsync } = useGetDeepSeekCredit();
   const deepSeekCreditFormat = !deepSeekCredit ? 0 : deepSeekCredit.credits;
 
   const [agent] = useXAgent({
-    request: async ({ message, messages }, { onSuccess, onUpdate }) => {
+    request: async (
+      { message: userMessage, messages },
+      { onSuccess, onUpdate }
+    ) => {
       console.log("messages11", messages);
       const utcFormattedTime = dayjs.utc().format("YYYY-MM-DD HH:mm:ss");
       let signMessage = `Sign to confirm your DeepSeek query\n. No gas or fee required.\n Time(UTC):${utcFormattedTime}`;
@@ -111,35 +114,53 @@ export default function Chat2() {
           setLoading(false);
         }
       }
-      //签名验证函数
-      if (true) {
-        // const allMess = messages?.map((item: any, index: number) => {
-        //   if (index + (1 % 3) === 1) {
-        //     return {
-        //       id: uuidv4(),
-        //       status: "local",
-        //       message: item,
-        //     };
-        //   }
-        // });
-        const allMess = [
-          {
-            id: uuidv4(),
-            status: "local",
-            message: message!,
-          },
-          {
-            id: uuidv4(),
-            status: "aiThink",
-            message: "",
-          },
-        ] as any;
+      const credti = await runAsync();
+      console.log("credti", credti);
+      if (credti && credti.credits) {
+        messages?.push("ai");
+        const allMess =
+          messages?.map((item: any, index: number) => {
+            if ((index + 1) % 3 === 1) {
+              return {
+                id: uuidv4(),
+                status: "local",
+                message: item,
+              };
+            } else if ((index + 1) % 3 === 2) {
+              return {
+                id: uuidv4(),
+                status: "aiThink",
+                message: item,
+              };
+            } else {
+              return {
+                id: uuidv4(),
+                status: "assistant",
+                message: item,
+              };
+            }
+          }) || [];
+
+        // const allMess = [
+        //   {
+        //     id: uuidv4(),
+        //     status: "local",
+        //     message: userMessage!,
+        //   },
+        //   {
+        //     id: uuidv4(),
+        //     status: "aiThink",
+        //     message: "",
+        //   },
+        // ] as any;
         const putMessages = allMess
           ?.filter((item: any) => item.status !== "aiThink")
           .map((item: any) => {
             let role;
             if (item.status === "local") {
               role = "user";
+            } else if (item.status === "assistant") {
+              role = "assistant";
             }
             return {
               key: item.id,
@@ -147,6 +168,7 @@ export default function Chat2() {
               content: item.message,
             };
           });
+
         const getFetch = async () => {
           const response = await fetch(url, {
             method: "POST",
@@ -164,10 +186,11 @@ export default function Chat2() {
           return response;
         };
         const response = await getFetch();
-        console.log("response", response);
+
         if (response.body) {
           if (200 <= response.status && response.status <= 299) {
-            // setMessages(allMess);
+            //@ts-ignore
+            setMessages(allMess);
             await new Promise((resolve) => setTimeout(resolve, 14000));
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
@@ -208,7 +231,8 @@ export default function Chat2() {
 
               localStorage.setItem("signature", JSON.stringify(newStoredArray));
               const response = await getFetch();
-              // setMessages(allMess);
+              //@ts-ignore
+              setMessages(allMess);
               await new Promise((resolve) => setTimeout(resolve, 14000));
               if (response.body) {
                 const reader = response.body.getReader();
@@ -240,6 +264,13 @@ export default function Chat2() {
         } else {
           throw new Error("No response body");
         }
+      } else {
+        message.open({
+          type: "warning",
+          content: `You have reached your maximum number of uses today`,
+          duration: 5,
+        });
+        setLoading(false);
       }
     },
   });
