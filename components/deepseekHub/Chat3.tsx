@@ -127,7 +127,7 @@ export default function Chat2() {
       content:
         status === "local" ? (
           <div className="max-w-[600px] bg-[#1C2925] rounded-[8px] px-[20px] py-[12px]">
-            {message}
+            1
           </div>
         ) : //@ts-ignore
         status === "aiThink" ? (
@@ -135,7 +135,7 @@ export default function Chat2() {
         ) : (
           <div
             dangerouslySetInnerHTML={{
-              __html: md.render(message.replace(/\[done\]$/, "").trim()),
+              __html: md.render(""),
             }}
           />
         ),
