@@ -847,3 +847,13 @@ input:focus {
 #hub-des-a:hover {
   color: var(--mind-brand);
 }
+
+.hub-text-ellipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: calc(1.5em * 3);
+}

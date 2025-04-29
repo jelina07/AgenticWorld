@@ -181,7 +181,7 @@ const HubList = forwardRef(
                   onClick={(event) => linkToDetial(event, item.canLinkDetial)}
                 >
                   <div
-                    className={`relative xl:px-[40px] px-[20px] 2xl:py-[40px] py-[20px] h-full ${
+                    className={`relative flex flex-col justify-between gap-[30px] xl:px-[40px] px-[20px] 2xl:py-[40px] py-[20px] h-full ${
                       filter === 1 || filter === 2
                         ? "bg-[#0d1313] hub-box"
                         : "bg-[#0c0e14] hub-box2"
@@ -195,83 +195,87 @@ const HubList = forwardRef(
                         : ""
                     }`}
                   >
-                    <div
-                      className={`flex items-center mb-[20px] justify-end ${
-                        item?.isAccess ? "hidden" : ""
-                      }`}
-                    >
-                      <CommingSoon />
-                    </div>
-                    <div className="flex items-center gap-[5px] justify-between">
-                      <div className="flex items-center gap-[5px] w-full flex-wrap">
-                        <img
-                          src={item.logo}
-                          alt="logo"
-                          className="rounded-[50%] w-[18%]"
-                        />
-                        <span className="text-[18px] text-white font-[800] leading-[1.2] break-word">
-                          {item.subnetName}
-                        </span>
+                    <div>
+                      <div
+                        className={`flex items-center mb-[20px] justify-end ${
+                          item?.isAccess ? "hidden" : ""
+                        }`}
+                      >
+                        <CommingSoon />
                       </div>
-                    </div>
-                    {filter === 1 || (filter === 2 && !isLaunch) ? (
-                      <div className="mt-[20px] flex justify-between gap-[5] flex-wrap">
-                        <span className="text-[var(--mind-brand)] text-[18px]">
-                          {item.subnetLevel}
-                        </span>
-                        <div
-                          className={`text-white ${
-                            learningId &&
-                            item.subnetId === learningId &&
-                            learnSecond !== undefined &&
-                            !lockTimeReach
-                              ? ""
-                              : "hidden"
-                          }`}
-                        >
-                          <Lock />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-[14px] text-[#C7C7C7] mt-[20px]">
-                        {item.subnetInfo}
-                      </div>
-                    )}
-                    <div className="relative z-10">
-                      <div className="mt-[30px] text-white text-[14px]">
-                        <div className="flex justify-between gap-[3px]">
-                          <span>APY:</span>
-                          <span className="break-words max-w-[80%] whitespace-normal text-right">
-                            {filter === 3 && item.subnetId !== 4
-                              ? "/"
-                              : item.payoutRatio}
+                      <div className="flex items-center gap-[5px] justify-between">
+                        <div className="flex items-center gap-[5px] w-full flex-wrap">
+                          <img
+                            src={item.logo}
+                            alt="logo"
+                            className="rounded-[50%] w-[18%]"
+                          />
+                          <span className="text-[18px] text-white font-[800] leading-[1.2] break-word">
+                            {item.subnetName}
                           </span>
                         </div>
-                        {/* <div className="flex justify-between gap-[3px]">
+                      </div>
+                      {filter === 1 || (filter === 2 && !isLaunch) ? (
+                        <div className="mt-[20px] flex justify-between gap-[5] flex-wrap">
+                          <span className="text-[var(--mind-brand)] text-[18px]">
+                            {item.subnetLevel}
+                          </span>
+                          <div
+                            className={`text-white ${
+                              learningId &&
+                              item.subnetId === learningId &&
+                              learnSecond !== undefined &&
+                              !lockTimeReach
+                                ? ""
+                                : "hidden"
+                            }`}
+                          >
+                            <Lock />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-[14px] text-[#C7C7C7] mt-[20px] hub-text-ellipsis">
+                          {item.subnetInfo}
+                        </div>
+                      )}
+                      <div className="relative z-10">
+                        <div className="mt-[30px] text-white text-[14px]">
+                          <div className="flex justify-between gap-[3px]">
+                            <span>APY:</span>
+                            <span className="break-words max-w-[80%] whitespace-normal text-right">
+                              {filter === 3 && item.subnetId !== 4
+                                ? "/"
+                                : item.payoutRatio}
+                            </span>
+                          </div>
+                          {/* <div className="flex justify-between gap-[3px]">
                           <span>Enrolled Agents:</span>
                           <span>{filter === 3 ? "/" : item.agent}</span>
                         </div> */}
-                        <div className="flex justify-between gap-[3px]">
-                          <span>Training Lock-up:</span>
-                          <span>
-                            {filter === 3 && item.subnetId !== 4
-                              ? "/"
-                              : secondsToHours(item.lockup) + " H"}
-                          </span>
-                        </div>
-                        <div
-                          className={`flex justify-between gap-[3px] items-start ${
-                            item.subnetRequire ? "" : "hidden"
-                          }`}
-                        >
-                          <span>Require:</span>
-                          <div className="text-right text-[var(--mind-brand)]">
-                            {item.subnetRequire}
+                          <div className="flex justify-between gap-[3px]">
+                            <span>Training Lock-up:</span>
+                            <span>
+                              {filter === 3 && item.subnetId !== 4
+                                ? "/"
+                                : secondsToHours(item.lockup) + " H"}
+                            </span>
+                          </div>
+                          <div
+                            className={`flex justify-between gap-[3px] items-start ${
+                              item.subnetRequire ? "" : "hidden"
+                            }`}
+                          >
+                            <span>Require:</span>
+                            <div className="text-right text-[var(--mind-brand)]">
+                              {item.subnetRequire}
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div>
                       {learningId && item.subnetId === learningId ? (
-                        <div className="flex items-center mt-[30px] justify-end">
+                        <div className="flex items-center justify-end">
                           <span className="text-[var(--mind-brand)]">
                             Training
                           </span>
@@ -283,7 +287,7 @@ const HubList = forwardRef(
                           lockTimeReach ||
                           !address) &&
                         item.isAccess ? (
-                        <div className="text-white text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                        <div className="text-white text-[14px] font-[600] flex items-center justify-end">
                           <span
                             onClick={(event) => showModal(event, item)}
                             className="hover:text-[var(--mind-brand)]"
@@ -292,12 +296,11 @@ const HubList = forwardRef(
                           </span>
                         </div>
                       ) : (
-                        <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center mt-[30px] justify-end">
+                        <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center justify-end">
                           <span>Start Training</span>
                         </div>
                       )}
                     </div>
-
                     <img
                       src={
                         filter === 1 || filter === 2
