@@ -33,13 +33,13 @@ request.interceptors.response.use(
         message: "Network Error",
         description: "Please check your network connectivity !",
       });
-      throw error("Please check your network connectivity !");
+      throw new Error("Please check your network connectivity !");
     } else {
       notification.error({
         message: "Server Error",
         description: error?.message || "Unknown Error",
       });
-      throw error;
+      throw new Error(error);
     }
   }
 );

@@ -242,7 +242,9 @@ const HubList = forwardRef(
                         <div className="flex justify-between gap-[3px]">
                           <span>APY:</span>
                           <span className="break-words max-w-[80%] whitespace-normal text-right">
-                            {filter === 3 ? "/" : item.payoutRatio}
+                            {filter === 3 && item.subnetId !== 4
+                              ? "/"
+                              : item.payoutRatio}
                           </span>
                         </div>
                         {/* <div className="flex justify-between gap-[3px]">
@@ -252,7 +254,7 @@ const HubList = forwardRef(
                         <div className="flex justify-between gap-[3px]">
                           <span>Training Lock-up:</span>
                           <span>
-                            {filter === 3
+                            {filter === 3 && item.subnetId !== 4
                               ? "/"
                               : secondsToHours(item.lockup) + " H"}
                           </span>
@@ -263,17 +265,8 @@ const HubList = forwardRef(
                           }`}
                         >
                           <span>Require:</span>
-                          <div className="text-right">
-                            {item.subnetRequire
-                              ?.split(",")
-                              .map((obj: any, index: number) => (
-                                <div
-                                  className="text-[var(--mind-brand)]"
-                                  key={index}
-                                >
-                                  [{obj}]
-                                </div>
-                              ))}
+                          <div className="text-right text-[var(--mind-brand)]">
+                            {item.subnetRequire}
                           </div>
                         </div>
                       </div>

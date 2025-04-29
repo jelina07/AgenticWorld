@@ -113,8 +113,12 @@ export default function page({ params }: { params: any }) {
             <CommingSoon />
           </div>
         </div>
-        <div className="mt-[20px] text-[12px] leading-3">
-          {currentSubnet?.subnetInfo}
+        <div className="mt-[20px] text-[12px] leading-4">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: currentSubnet?.subnetInfo || "",
+            }}
+          />
         </div>
         <div className="mt-[80px]">
           <HubInfo

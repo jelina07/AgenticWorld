@@ -840,3 +840,10 @@ input:focus {
 .ant-progress.ant-progress-status-success .ant-progress-text {
   color: var(--mind-brand) !important;
 }
+
+#hub-des-a {
+  color: var(--mind-brand);
+}
+#hub-des-a:hover {
+  color: var(--mind-brand);
+}
