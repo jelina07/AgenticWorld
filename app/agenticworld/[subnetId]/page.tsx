@@ -61,6 +61,7 @@ export default function page({ params }: { params: any }) {
       type: obj.type,
       subnetName: obj.name,
       subnetInfo: obj.desc,
+      descDetail: obj.descDetail,
       lockup: obj.lockUp,
       subnetLevel: obj.Note,
       subnetRequire: obj.requireName,
@@ -116,7 +117,7 @@ export default function page({ params }: { params: any }) {
         <div className="mt-[20px] text-[12px] leading-4">
           <div
             dangerouslySetInnerHTML={{
-              __html: currentSubnet?.subnetInfo || "",
+              __html: currentSubnet?.descDetail || "",
             }}
           />
         </div>
