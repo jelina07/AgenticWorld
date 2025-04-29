@@ -307,6 +307,7 @@ export default function Chat4() {
           />
         ) : (
           <div
+            className="text-[14px] leading-5"
             dangerouslySetInnerHTML={{
               __html: md.render(message.replace(/\[done\]$/, "").trim()),
             }}

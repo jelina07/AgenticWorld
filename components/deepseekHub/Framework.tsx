@@ -18,14 +18,14 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
           src="/images/deepseek-framework.png"
         />
         <div className="text-right">
-          {/* <a
-            href="http://"
+          <a
+            href="https://explorer.mindnetwork.xyz/address/0x6cA48342b70ea382Ab9FCdf7C0E4073eA10850C6"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[12px] font-[600] text-[var(--mind-brand)] underline hover:text-[var(--mind-brand)] hover:underline"
           >
-            View latest consensus output on-chain
-          </a> */}
+            View latest voting transactions on-chain
+          </a>
         </div>
       </div>
       <div className="mt-[30px]">
@@ -35,10 +35,12 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
         </div>
         <div className="text-[14px] text-[#888E8D] mt-[10px] leading-[1.1]">
           <div>
-            AI models can “hallucinate” — confidently giving wrong or made-up
-            answers — especially when their integrity isn't fully verified.
-            Today, hallucination is a critical issue threatening AI's
-            reliability and user trust.
+            AI agents can give inaccurate or misleading response — especially
+            when the model has been tampered with or pre-tuned in unauthorized
+            ways — all without the user ever knowing. This poses a serious
+            threat to AI trust, transparency, and safety, especially as these
+            models are increasingly used to inform decisions and shape
+            narratives.
           </div>
           <div>
             <span className="text-[var(--mind-brand)]">→</span> To tackle this,
@@ -50,9 +52,12 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
             <span className="text-[var(--mind-brand)]">→</span> FHE makes
             verification secure and trustworthy — allows nodes vote securely
             without data-reveal, keeping the process private, tamper-proof, and
-            reliable. This combination guarantees the privacy, accuracy, and
-            reliability of your AI interactions, eliminating hallucinations and
-            building trust.
+            reliable.
+          </div>
+          <div>
+            This combination guarantees the privacy, accuracy, and reliability
+            of your AI interactions, eliminating hallucinations and building
+            trust.
           </div>
         </div>
       </div>
