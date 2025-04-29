@@ -44,9 +44,7 @@ const rolesAsObject: GetProp<typeof Bubble.List, "roles"> = {
   },
 };
 const md = markdownit({ html: true, breaks: true });
-const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/ai/deepseek/chat"
-  : process.env.NEXT_PUBLIC_API_URL + "/ai/deepseek/chat";
+const url = process.env.NEXT_PUBLIC_API_URL + "/ai/deepseek/chat";
 
 export default function Chat2() {
   const [value, setValue] = useState<string>("");

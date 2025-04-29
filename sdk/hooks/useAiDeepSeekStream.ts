@@ -6,9 +6,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useState } from "react";
 
-const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/ai/deepseek/chat"
-  : process.env.NEXT_PUBLIC_API_URL + "/ai/deepseek/chat";
+const url = process.env.NEXT_PUBLIC_API_URL + "/ai/deepseek/chat";
 
 export default function useAiDeepSeekStream(options?: Options<any, any>) {
   const { address, chainId } = useAccount();

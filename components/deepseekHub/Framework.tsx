@@ -18,14 +18,14 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
           src="/images/deepseek-framework.png"
         />
         <div className="text-right">
-          <a
+          {/* <a
             href="http://"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[12px] font-[600] text-[var(--mind-brand)] underline hover:text-[var(--mind-brand)] hover:underline"
           >
             View latest consensus output on-chain
-          </a>
+          </a> */}
         </div>
       </div>
       <div className="mt-[30px]">
