@@ -39,7 +39,7 @@ export default function useHubGetStakeAmount(
 
   const result = useRequest(
     async () => {
-      if (!hubIds?.length || !chainId || !isSupportChain(chainId)) {
+      if (!hubIds?.length) {
         return;
       }
       const justHubIds = hubIds.map((obj: any) => obj.id);
