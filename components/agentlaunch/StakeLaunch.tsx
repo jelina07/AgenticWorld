@@ -2,7 +2,6 @@ import {
   useAgentGetTokenId,
   useAgentStake,
   useGetFheBalance,
-  useGetAgentCount,
   useRelayerStake,
   useRelayerGetStatus,
 } from "@/sdk";
@@ -42,7 +41,6 @@ const StakeLaunch = forwardRef((_, ref) => {
   const isAgent = agentTokenId !== 0;
   const { refresh: fheBalanceRefresh, loading } = useGetFheBalance();
   const { balance } = useGetFheBalanceStore();
-  const { data: totalAgent, refresh: refreshTotalAgent } = useGetAgentCount();
   const { runAsync: relayerAgentStake } = useRelayerStake();
   const {
     data: status,
@@ -58,7 +56,6 @@ const StakeLaunch = forwardRef((_, ref) => {
   const afterSuccessHandler = () => {
     agentGetTokenIdRefresh();
     fheBalanceRefresh();
-    refreshTotalAgent();
   };
 
   useRelayerStatusHandler(

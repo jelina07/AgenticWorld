@@ -32,11 +32,12 @@ export default function useGetAgentCount(options?: Options<any, any>) {
           };
         })
       );
-
       const allAgent = agentsCountNow.reduce(
         (accumulator, currentValue) => accumulator + currentValue.count,
         0
       );
+      console.log("agentsCountNow", agentsCountNow);
+
       return allAgent;
     },
     {

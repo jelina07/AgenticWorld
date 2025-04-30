@@ -2,6 +2,7 @@
 import HubPage from "@/components/agenticworld/HubPage";
 import { useGetAgentCount } from "@/sdk";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { numberDigitsNoMillify } from "@/utils/utils";
 import Link from "next/link";
 import React from "react";
 import { useAccount } from "wagmi";
@@ -30,7 +31,11 @@ export default function Page() {
           </div>
           <div className="text-[14px] text-center mt-[20px] font-[600] relative z-[10]">
             Total Agents:{" "}
-            {!isConnected ? "/" : loading ? "loading..." : totalAgent}
+            {!isConnected
+              ? "/"
+              : loading
+              ? "loading..."
+              : numberDigitsNoMillify(totalAgent)}
             <div className="text-center mt-[15px] font-[600]">
               <a
                 href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/agenticworld-user-guide/agent-launch-mainnet"
