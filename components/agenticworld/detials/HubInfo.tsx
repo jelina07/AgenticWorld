@@ -39,9 +39,12 @@ export default function HubInfo({
       <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[var(--bg-deep-grey)]">
         <div className="text-[15px]">Total Stake</div>
         <div className="text-[38px] text-light-shadow mt-[20px]">
-          {!isConnected
+          {/* {!isConnected
             ? "/"
             : hubStakeAmount !== undefined
+            ? numberDigits(hubStakeAmount)
+            : "loading..."} */}
+          {hubStakeAmount !== undefined
             ? numberDigits(hubStakeAmount)
             : "loading..."}
         </div>
