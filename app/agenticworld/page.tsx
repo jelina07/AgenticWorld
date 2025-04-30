@@ -11,6 +11,8 @@ export default function Page() {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
   const { data: totalAgent, loading } = useGetAgentCount();
+  console.log("totalAgent", totalAgent);
+
   return (
     <div>
       <div
