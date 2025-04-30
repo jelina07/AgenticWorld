@@ -56,7 +56,7 @@ export default function MindLayout({
 
   useAsyncEffect(async () => {
     setGetLovLoading(true);
-    // await fetchLov();
+    await fetchLov();
     setGetLovLoading(false);
   }, []);
 
