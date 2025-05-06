@@ -8,6 +8,7 @@ import { notification, Spin } from "antd";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLov } from "@/store/useLov";
 import { useAsyncEffect } from "ahooks";
+import NotLearnedHub from "../agenticworld/NotLearnedHub";
 
 export default function MindLayout({
   children,
@@ -60,8 +61,6 @@ export default function MindLayout({
     setGetLovLoading(false);
   }, []);
 
-  console.log("lovs", lovs);
-
   return (
     <div>
       <Header />
@@ -91,6 +90,7 @@ export default function MindLayout({
           Gate.io
         </a>
       </div> */}
+      <NotLearnedHub />
     </div>
   );
 }
