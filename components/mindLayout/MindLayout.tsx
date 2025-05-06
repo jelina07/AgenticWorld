@@ -76,7 +76,7 @@ export default function MindLayout({
         <div style={{ minHeight: `calc(100vh - 160px)` }}>{children}</div>
       )}
       <Footer />
-      <div
+      {/* <div
         className={`w-full p-[8px] bg-[var(--mind-brand)] text-center text-black absolute top-[80px] ${
           pathName === "/airdrop" ? "" : "hidden"
         }`}
@@ -90,7 +90,7 @@ export default function MindLayout({
         >
           Gate.io
         </a>
-      </div>
+      </div> */}
     </div>
   );
 }
