@@ -29,6 +29,7 @@ export function decodeErrorData(contractABI: any, data?: `0x${string}`) {
     return "Unknown Error";
   } else {
     try {
+      console.log("decodeErrorResult");
       const result = decodeErrorResult({
         abi: contractABI,
         data,
@@ -37,6 +38,7 @@ export function decodeErrorData(contractABI: any, data?: `0x${string}`) {
 
       return result.args[1];
     } catch (e) {
+      console.log("decodeErrorDataError", e);
       return "Unknown Error";
     }
   }
