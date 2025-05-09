@@ -4,7 +4,6 @@ export const AIRDROP_ADDRESS: Record<number, `0x${string}`> = {
   97: "0x39825a723991f8f90f5575eE0C18031275D95b66",
   56: "0x",
 };
-
 export const AGENT1_ADDRESS: Record<number, `0x${string}`> = {
   192940: "0x4a412444Bb9BC6f83478cd593fB7b9EB1e4bB3C3",
   228: "0xdeD96288c99145da4800f55355A2466f6238fBBE",

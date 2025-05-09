@@ -715,7 +715,8 @@ input:focus {
   box-shadow: unset;
 }
 .mind-drawer.ant-drawer .ant-drawer-content {
-  background-image: url("/images/vhe-claim-bg.png");
+  /* background-image: url("/images/vhe-claim-bg.png"); */
+  background-image: url("/images/bnbAirdrop.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -39,6 +39,9 @@ import useAgentUnlock from "./hooks/useAgentUnlock";
 import useAiDeepSeek from "./hooks/useAiDeepSeek";
 import useGetDeepSeekCredit from "./hooks/useGetDeepSeekCredit";
 import useAiDeepSeekStream from "./hooks/useAiDeepSeekStream";
+import useBnbAirdropClaim from "./hooks/useBnbAirdropClaim";
+import useBnbAirdropCheck from "./hooks/useBnbAirdropCheck";
+import useBnbAirdropIsClaimed from "./hooks/useBnbAirdropIsClaimed";
 
 export {
   useAirdropCheck,
@@ -82,4 +85,7 @@ export {
   useAiDeepSeek,
   useGetDeepSeekCredit,
   useAiDeepSeekStream,
+  useBnbAirdropClaim,
+  useBnbAirdropCheck,
+  useBnbAirdropIsClaimed,
 };

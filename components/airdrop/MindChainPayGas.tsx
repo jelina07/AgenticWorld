@@ -9,7 +9,7 @@ export default function MindChainPayGas({
 }: {
   claimAmout: any;
   refreshIsClaimed: Function;
-  btnDisabled: boolean;
+  btnDisabled?: boolean;
 }) {
   const { refresh: fheBalanceRefresh } = useGetFheBalance();
   const { runAsync: claimAsync, loading: claimLoading } = useAirdropClaim({

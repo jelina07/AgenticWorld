@@ -115,14 +115,35 @@ export default function DecreseModal({
         const max = Number(agentStakeAmount!) - unstakeAmountThreshold;
         message.open({
           type: "warning",
-          content: `The agent must maintain a minimum of ${unstakeAmountThreshold} tokens unless permanently shut down. The maximum amount you can unstake while keeping the agent alive is ${max} = (${agentStakeAmount} - ${unstakeAmountThreshold}) !`,
-          duration: 10,
+
+          content:
+            max > 0 ? (
+              <span>
+                To keep your agent active, you must maintain at least{" "}
+                {unstakeAmountThreshold} tokens.<br></br>
+                (If your stake is below {unstakeAmountThreshold}, unstaking is
+                not allowed unless you shut down your agent.)<br></br>
+                You can safely unstake up to {max} tokens ({agentStakeAmount} -
+                {unstakeAmountThreshold}).
+              </span>
+            ) : (
+              <span>
+                To keep your agent active, you must maintain at least{" "}
+                {unstakeAmountThreshold} tokens.<br></br>
+                (If your stake is below {unstakeAmountThreshold}, unstaking is
+                not allowed unless you shut down your agent.)<br></br>
+                You can safely unstake up to 0 tokens.
+              </span>
+            ),
+          duration: 15,
         });
       }
     }
   };
   const clickMax = () => {
-    setAmount(String(Number(agentStakeAmount) - unstakeAmountThreshold));
+    Number(agentStakeAmount!) - unstakeAmountThreshold <= 0
+      ? setAmount("0")
+      : setAmount(String(Number(agentStakeAmount) - unstakeAmountThreshold));
   };
 
   useAsyncEffect(async () => {

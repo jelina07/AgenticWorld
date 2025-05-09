@@ -273,7 +273,7 @@ const HubList = forwardRef(
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div className="relative z-10">
                       {learningId && item.subnetId === learningId ? (
                         <div className="flex items-center justify-end">
                           <span className="text-[var(--mind-brand)]">
