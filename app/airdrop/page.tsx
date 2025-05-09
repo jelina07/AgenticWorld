@@ -14,12 +14,12 @@ export default function Page() {
       <div className="text-[24px] sm:text-[40px] text-center font-[800] pt-[50px]">
         Mind Network Airdrop
       </div>
-      <div className="max-w-[700px] mx-auto relative pb-[300px]">
+      <div className="max-w-[700px] mx-auto relative">
         <AirDropEnd />
         <BnbAirdropBox />
       </div>
 
-      <div className="max-w-[800px] mx-auto relative">
+      <div className="max-w-[800px] mx-auto relative pb-[300px]">
         {/* <div className="text-[20px] font-[900] absolute sm:left-[110px] left-[35px]">
           Airdrops Rules
         </div>

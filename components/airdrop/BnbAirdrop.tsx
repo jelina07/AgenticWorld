@@ -302,7 +302,7 @@ export default function BnbAirdrop() {
     <div>
       <div className="relative">
         <div>
-          <div className="mt-[20px]">
+          <div className={`mt-[20px] ${claimAmout?.amount ? "hidden" : ""}`}>
             <div
               className={`mind-checkbox mt-[15px] ${
                 isConnected ? "" : "hidden"
@@ -582,17 +582,17 @@ export default function BnbAirdrop() {
         ) : (
           ""
         )}
-        <img src="/icons/divide.svg" alt="divide" className="mt-[70px]" />
-        <div className="mt-[70px]">
+        <img src="/icons/divide.svg" alt="divide" className="mt-[55px]" />
+        <div className="mt-[55px]">
           <div>
             <div className="text-[16px] font-[900] capitalize text-white">
               About the campaign
             </div>
           </div>
-          <div className="flex justify-between items-center gap-[20px] flex-wrap">
+          <div className="flex justify-between gap-[20px] flex-wrap items-end">
             <div className="flex-1 min-w-[250px]">
-              <div className="text-[#A0A0A0] text-[12px] mt-[17px]">
-                <div className="leading-[120%]">
+              <div className="text-[#A0A0A0] text-[12px]">
+                <div className="leading-[120%] mt-[17px]">
                   This campaign was launched during the Mind Network early stage
                   in collaboration with BNB Chain.
                 </div>
@@ -628,7 +628,7 @@ export default function BnbAirdrop() {
             <img
               src="/icons/bnb-campaign.svg"
               alt="bnb-campaign"
-              className="flex-1"
+              className="h-[148px]"
             />
           </div>
         </div>

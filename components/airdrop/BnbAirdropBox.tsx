@@ -13,7 +13,7 @@ export default function BnbAirdropBox() {
   };
   return (
     <div>
-      <div className="py-[30px] px-[50px] mt-[20px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
+      <div className="py-[30px] px-[50px] mt-[60px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
         <div className="text-[18px] font-[900]">
           <span className="text-[var(--mind-brand)]">Mind Network</span> ×{" "}
           <span className="text-[#DEB03D]">BNB Chain</span> Retroactive Rewards
