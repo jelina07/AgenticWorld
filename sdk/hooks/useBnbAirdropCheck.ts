@@ -6,9 +6,9 @@ import { exceptionHandler } from "../utils/exception";
 import { isMainnet, isMainnetio } from "../utils";
 
 const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/grant/bnb_launch/check-eligibility"
+  ? "https://agent.mindnetwork.xyz/airdropapi/grant/bnb_launch/check-eligibility"
   : isMainnetio()
-  ? "https://agent.mindnetwork.io/grant/bnb_launch/check-eligibility"
+  ? "https://agent.mindnetwork.io/airdropapi/grant/bnb_launch/check-eligibility"
   : "/grant/bnb_launch/check-eligibility";
 
 export default function useBnbAirdropCheck(options?: Options<any, [string]>) {
