@@ -5,10 +5,11 @@ import { useSignMessage } from "wagmi";
 import { exceptionHandler } from "../utils/exception";
 import { isMainnet, isMainnetio } from "../utils";
 
-const url =
-  isMainnet() || isMainnetio()
-    ? "https://agent.mindnetwork.xyz/grant/bnb_launch/check-eligibility"
-    : "/grant/bnb_launch/check-eligibility";
+const url = isMainnet()
+  ? "https://agent.mindnetwork.xyz/grant/bnb_launch/check-eligibility"
+  : isMainnetio()
+  ? "https://agent.mindnetwork.io/grant/bnb_launch/check-eligibility"
+  : "/grant/bnb_launch/check-eligibility";
 
 export default function useBnbAirdropCheck(options?: Options<any, [string]>) {
   const { signMessageAsync } = useSignMessage();
