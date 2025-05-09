@@ -78,6 +78,8 @@ export function exceptionHandler(
         ? AirdropContractErrorCode(errorCode)
         : errorCode
     ) as string;
+    console.log("errorCode", errorCode);
+
     if (
       error?.shortMessage?.toLowerCase().includes("user rejected") ||
       error?.message?.toLowerCase().includes("user rejected")
