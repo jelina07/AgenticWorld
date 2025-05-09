@@ -582,6 +582,7 @@ export default function BnbAirdrop() {
         ) : (
           ""
         )}
+        <img src="/icons/divide.svg" alt="divide" className="mt-[70px]" />
         <div className="mt-[70px]">
           <div>
             <div className="text-[16px] font-[900] capitalize text-white">
