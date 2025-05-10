@@ -35,7 +35,6 @@ export function decodeErrorData(contractABI: any, data?: `0x${string}`) {
         data,
       });
       console.log("decodeErrorData", result, result.errorName);
-
       return result.args[1];
     } catch (e) {
       console.log("decodeErrorDataError", e);
