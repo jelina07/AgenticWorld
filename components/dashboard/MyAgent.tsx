@@ -167,7 +167,7 @@ export default function MyAgent({
     data: status,
     run: statusRun,
     cancel: statusCancel,
-  } = useRelayerGetStatus("claim");
+  } = useRelayerGetStatus("rewardsClaim");
   const [actionLoop, setActionLoop] = useState(false);
   const { data: unlockTimestamp, runAsync: getAgentUnlock } = useAgentUnlock();
 

@@ -12,6 +12,7 @@ const ACTIONS = [
   "switch",
   "burn",
   "claim",
+  "rewardsClaim",
 ] as const;
 type ActionType = (typeof ACTIONS)[number];
 
@@ -36,11 +37,19 @@ export default function useRelayerGetStatus(type: ActionType) {
           return res;
         }
       : async (chainId: number, id: number) => {
-          const res = await request.get(
-            `/relayer/agent/${chainId}/${type}/status`,
-            { params: { id } }
-          );
-          return res;
+          if (type === "rewardsClaim") {
+            const res = await request.get(
+              `/relayer/agent/${chainId}/claim/status`,
+              { params: { id } }
+            );
+            return res;
+          } else {
+            const res = await request.get(
+              `/relayer/agent/${chainId}/${type}/status`,
+              { params: { id } }
+            );
+            return res;
+          }
         },
     {
       manual: true,
