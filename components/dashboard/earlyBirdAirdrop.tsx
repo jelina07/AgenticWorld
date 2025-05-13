@@ -79,13 +79,13 @@ export default function EarlyBirdAirdrop() {
     data: status,
     run: statusRun,
     cancel: statusCancel,
-  } = useRelayerGetStatus("claim");
+  } = useRelayerGetStatus("claim", "early-bird");
 
   const {
     data: statusClaim,
     run: statusRunClaim,
     cancel: statusCancelClaim,
-  } = useRelayerGetStatus("claim");
+  } = useRelayerGetStatus("claim", "early-bird");
 
   const {
     data: statusStake,
