@@ -16,23 +16,13 @@ const ACTIONS = [
 ] as const;
 type ActionType = (typeof ACTIONS)[number];
 
-type CampaignType = "early-bird";
+const url = isMainnet()
+  ? "https://agent.mindnetwork.xyz/airdropapi/grant/claim"
+  : "/grant/claim";
 
-export default function useRelayerGetStatus(
-  type: ActionType,
-  airdropCampaignType?: CampaignType
-) {
+export default function useRelayerGetStatus(type: ActionType) {
   const { address } = useAccount();
-  const url = isMainnet()
-    ? airdropCampaignType === "early-bird"
-      ? "https://agent.mindnetwork.xyz/airdropapi/grant/early_bird/claim"
-      : "https://agent.mindnetwork.xyz/airdropapi/grant/claim"
-    : airdropCampaignType === "early-bird"
-    ? "/grant/early_bird/claim"
-    : "/grant/claim";
-
   const result = useRequest(
-    //airdrop
     type === "claim"
       ? async () => {
           const res = await request.get(url, {
@@ -40,8 +30,7 @@ export default function useRelayerGetStatus(
           });
           return res;
         }
-      : //else
-        async (chainId: number, id: number) => {
+      : async (chainId: number, id: number) => {
           if (type === "rewardsClaim") {
             const res = await request.get(
               `/relayer/agent/${chainId}/claim/status`,

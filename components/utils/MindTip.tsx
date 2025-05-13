@@ -4,11 +4,11 @@ import AddTip from "@/public/icons/add-tip.svg";
 import { TooltipPlacement } from "antd/es/tooltip";
 
 export default function MindTip({
-  isShow,
+  isShow = true,
   placement,
   title,
 }: {
-  isShow: boolean;
+  isShow?: boolean;
   placement: TooltipPlacement;
   title: ReactNode;
 }) {

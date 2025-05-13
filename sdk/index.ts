@@ -42,6 +42,10 @@ import useAiDeepSeekStream from "./hooks/useAiDeepSeekStream";
 import useBnbAirdropClaim from "./hooks/useBnbAirdropClaim";
 import useBnbAirdropCheck from "./hooks/useBnbAirdropCheck";
 import useBnbAirdropIsClaimed from "./hooks/useBnbAirdropIsClaimed";
+import useEarlyBirdAirdropCheck from "./hooks/useEarlyBirdAirdropCheck";
+import useEarlyBirdAirdropClaim from "./hooks/useEarlyBirdAirdropClaim";
+import useEarlyBirdAirdropIsClaimed from "./hooks/useEarlyBirdAirdropIsClaimed";
+import useEarlyBirdAirdropRelayerClaim from "./hooks/useEarlyBirdAirdropRelayerClaim";
 
 export {
   useAirdropCheck,
@@ -88,4 +92,8 @@ export {
   useBnbAirdropClaim,
   useBnbAirdropCheck,
   useBnbAirdropIsClaimed,
+  useEarlyBirdAirdropCheck,
+  useEarlyBirdAirdropClaim,
+  useEarlyBirdAirdropIsClaimed,
+  useEarlyBirdAirdropRelayerClaim,
 };

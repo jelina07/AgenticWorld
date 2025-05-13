@@ -39,6 +39,7 @@ import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
 import MindPrompt from "../utils/MindPrompt";
 import { useAsyncEffect } from "ahooks";
+import EarlyBirdAirdrop from "./earlyBirdAirdrop";
 
 const successTip = "Redeem Success !";
 
@@ -376,7 +377,7 @@ export default function MyAgent({
                     Available to Stake
                   </div>
                   <div className="mt-[20px] align-bottom h-[45px]">
-                    <span className="text-[30px] text-light-shadow">
+                    <span className="text-[30px] text-light-shadow leading-[100%]">
                       {balanceLoading ? "loading..." : numberDigits(balance)}
                     </span>
                     <span className="text-[12px] text-[var(--mind-brand)] font-[600]">
@@ -401,7 +402,7 @@ export default function MyAgent({
                     Stake
                   </div>
                   <div className="mt-[20px] align-bottom h-[45px]">
-                    <span className="text-[30px] text-light-shadow">
+                    <span className="text-[30px] text-light-shadow leading-[100%]">
                       {agentStakeAmountLoading
                         ? "loading..."
                         : agentStakeAmount && numberDigits(agentStakeAmount)}
@@ -425,44 +426,51 @@ export default function MyAgent({
                   </div>
                 </div>
                 <div className="rounded-[8px] flex-1 border-[length:var(--border-width)] border-[var(--btn-border)] p-[20px]">
-                  <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center gap-[2px] font-[600]">
-                    <div className="flex items-center">
-                      <span>Total Rewards</span>
-                      {Date.now() < unlockTimestamp * 1000 ? (
-                        <MindPrompt
-                          placement="bottom"
-                          title={
-                            <div className="text-[12px]">
-                              Your rewards will be locked up until{" "}
-                              {timestampToUTC(unlockTimestamp)}. You can redeem
-                              your rewards after the lock-up period ends !
-                            </div>
-                          }
+                  <div className="flex justify-between items-start flex-wrap gap-[15px]">
+                    <div>
+                      <div className="text-[14px] text-[var(--mind-grey)] whitespace-nowrap flex justify-between items-center gap-[2px] font-[600]">
+                        <div className="flex items-center">
+                          <span>Total Rewards</span>
+                          {Date.now() < unlockTimestamp * 1000 ? (
+                            <MindPrompt
+                              placement="bottom"
+                              title={
+                                <div className="text-[12px]">
+                                  Your rewards will be locked up until{" "}
+                                  {timestampToUTC(unlockTimestamp)}. You can
+                                  redeem your rewards after the lock-up period
+                                  ends !
+                                </div>
+                              }
+                            />
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                        <img
+                          src="/icons/refresh.svg"
+                          alt="refresh"
+                          onClick={claimableRewardRefresh}
+                          className={`cursor-pointer ${
+                            claimableRewardLoading ? "refresh" : ""
+                          }`}
                         />
-                      ) : (
-                        <></>
-                      )}
+                      </div>
+                      <div className="mt-[20px] align-bottom h-[45px]">
+                        <span className="text-[30px] text-light-shadow leading-[100%]">
+                          {claimableRewardLoading
+                            ? "loading..."
+                            : claimableReward && numberDigits(claimableReward)}
+                        </span>
+                        <span className="text-[12px] text-[var(--mind-brand)] font-[600]">
+                          {" "}
+                          FHE
+                        </span>
+                      </div>
                     </div>
-                    <img
-                      src="/icons/refresh.svg"
-                      alt="refresh"
-                      onClick={claimableRewardRefresh}
-                      className={`cursor-pointer ${
-                        claimableRewardLoading ? "refresh" : ""
-                      }`}
-                    />
+                    <EarlyBirdAirdrop />
                   </div>
-                  <div className="mt-[20px] align-bottom h-[45px]">
-                    <span className="text-[30px] text-light-shadow">
-                      {claimableRewardLoading
-                        ? "loading..."
-                        : claimableReward && numberDigits(claimableReward)}
-                    </span>
-                    <span className="text-[12px] text-[var(--mind-brand)] font-[600]">
-                      {" "}
-                      FHE
-                    </span>
-                  </div>
+
                   <div className="mt-[40px]">
                     <Button
                       type="primary"

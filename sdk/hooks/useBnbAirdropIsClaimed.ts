@@ -54,8 +54,6 @@ export default function useBnbAirdropIsClaimed(options?: Options<any, any>) {
         args: [address],
       })) as boolean;
 
-      console.log("res", res);
-
       return res;
     },
     {
