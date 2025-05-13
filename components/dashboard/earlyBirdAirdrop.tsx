@@ -35,6 +35,7 @@ import { useLov } from "@/store/useLov";
 const successTip = "Claim Success !";
 const successTipStake = "Stake Success !";
 export default function EarlyBirdAirdrop() {
+  const [isClaimAndStake, setIsClaimAndStake] = useState(false);
   const [actionLoop, setActionLoop] = useState(false);
   const [actionLoopStake, setActionLoopStake] = useState(false);
   const { chainId } = useAccount();
@@ -102,6 +103,7 @@ export default function EarlyBirdAirdrop() {
     .some((item) => item.value);
 
   const clickClaim = async () => {
+    setIsClaimAndStake(false);
     if (claimAmout?.type === "MindChain") {
       try {
         setActionLoop(true);
@@ -152,6 +154,7 @@ export default function EarlyBirdAirdrop() {
           ),
           duration: 10,
         });
+        setIsClaimAndStake(false);
       } else {
         if (judgeUseGasless(chainId)) {
           try {
@@ -162,6 +165,7 @@ export default function EarlyBirdAirdrop() {
             }
           } catch (error: any) {
             setActionLoopStake(false);
+            setIsClaimAndStake(false);
           }
         } else {
           try {
@@ -173,12 +177,15 @@ export default function EarlyBirdAirdrop() {
                 description: successTipStake,
               });
             }
-          } catch (error: any) {}
+          } catch (error: any) {
+            setIsClaimAndStake(false);
+          }
         }
       }
     }
   };
   const clickClaimAndStake = async () => {
+    setIsClaimAndStake(true);
     if (claimAmout?.type === "MindChain") {
       try {
         setActionLoop(true);
@@ -212,6 +219,7 @@ export default function EarlyBirdAirdrop() {
     agentGetTokenIdRefresh();
     fheBalanceRefresh();
     refreshStakeAmount();
+    setIsClaimAndStake(false);
   };
 
   //just claim
@@ -319,7 +327,7 @@ export default function EarlyBirdAirdrop() {
               className="w-[220px]"
             />
           </div>
-          {claimedByContract ? (
+          {claimedByContract && !isClaimAndStake ? (
             <Button
               type="primary"
               className="button-brand-border-white-font"
