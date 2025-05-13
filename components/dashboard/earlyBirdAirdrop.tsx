@@ -108,8 +108,6 @@ export default function EarlyBirdAirdrop() {
       try {
         setActionLoop(true);
         const res = await mindAirdropRelay();
-        console.log("res", res);
-
         if (res) {
           statusRun();
         } else {
@@ -215,6 +213,7 @@ export default function EarlyBirdAirdrop() {
     refreshIsClaimed();
     fheBalanceRefresh();
   };
+
   const afterSuccessHandlerStake = () => {
     agentGetTokenIdRefresh();
     fheBalanceRefresh();
