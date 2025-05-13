@@ -27,6 +27,10 @@ export default function useRelayerGetStatus(
     ? airdropCampaignType === "early-bird"
       ? "https://agent.mindnetwork.xyz/airdropapi/grant/early_bird/claim"
       : "https://agent.mindnetwork.xyz/airdropapi/grant/claim"
+    : isMainnetio()
+    ? airdropCampaignType === "early-bird"
+      ? "https://agent.mindnetwork.io/airdropapi/grant/early_bird/claim"
+      : "https://agent.mindnetwork.io/airdropapi/grant/claim"
     : airdropCampaignType === "early-bird"
     ? "/grant/early_bird/claim"
     : "/grant/claim";

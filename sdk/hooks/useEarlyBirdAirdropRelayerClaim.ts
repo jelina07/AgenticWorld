@@ -9,6 +9,8 @@ import { useSignMessage } from "wagmi";
 
 const url = isMainnet()
   ? "https://agent.mindnetwork.xyz/airdropapi/grant/early_bird/claim"
+  : isMainnetio()
+  ? "https://agent.mindnetwork.io/airdropapi/grant/early_bird/claim"
   : "/grant/early_bird/claim";
 
 export default function useEarlyBirdAirdropRelayerClaim(
