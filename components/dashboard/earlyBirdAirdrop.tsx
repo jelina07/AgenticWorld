@@ -366,6 +366,16 @@ export default function EarlyBirdAirdrop() {
               </Button>
             </div>
           )}
+          <div className="text-right mt-[10px]">
+            <a
+              href="https://docs.mindnetwork.xyz/minddocs/other/early-bird-rewards"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline hover:underline"
+            >
+              view rules
+            </a>
+          </div>
         </div>
       </Modal>
     </>
