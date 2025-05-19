@@ -269,6 +269,9 @@ export default function MyAgent({
             width="140"
             className="mx-auto pt-[30px]"
           />
+          <div className="mt-[20px] text-center font-[600]">
+            Agent ID: {agentTokenId}
+          </div>
           {/* <div className={`${!isAgent ? "hidden" : ""}`}>
             <Button
               type="primary"
