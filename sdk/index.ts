@@ -46,6 +46,7 @@ import useEarlyBirdAirdropCheck from "./hooks/useEarlyBirdAirdropCheck";
 import useEarlyBirdAirdropClaim from "./hooks/useEarlyBirdAirdropClaim";
 import useEarlyBirdAirdropIsClaimed from "./hooks/useEarlyBirdAirdropIsClaimed";
 import useEarlyBirdAirdropRelayerClaim from "./hooks/useEarlyBirdAirdropRelayerClaim";
+import useFHETokenIntoWallet from "./hooks/useAddFHE";
 
 export {
   useAirdropCheck,
@@ -96,4 +97,5 @@ export {
   useEarlyBirdAirdropClaim,
   useEarlyBirdAirdropIsClaimed,
   useEarlyBirdAirdropRelayerClaim,
+  useFHETokenIntoWallet,
 };

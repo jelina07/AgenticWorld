@@ -23,6 +23,7 @@ import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import { useAccount } from "wagmi";
 import { useAsyncEffect } from "ahooks";
+import AddFHE from "../account/AddFHE";
 
 const successTip =
   isDev() || isProd()
@@ -193,26 +194,31 @@ export default function DecreseModal({
             />
             <div>
               <div
-                className={`flex items-center gap-[2px] justify-end mt-[20px] ${
+                className={`flex items-center justify-between mt-[20px] ${
                   isNaN(Number(amount)) ? "hidden" : ""
                 }`}
               >
-                <span className="text-[14px] font-[500]">rewards earning</span>
-                <span className="text-[20px] font-[500] text-[var(--mind-red)]">
-                  ~
-                  {Number(amount) === 0 ||
-                  isNaN(Number(amount)) ||
-                  !agentStakeAmount ||
-                  agentStakeAmount === "0"
-                    ? "0%"
-                    : numberDigits(
-                        new Big(amount)
-                          .div(agentStakeAmount)
-                          .times(100)
-                          .toString()
-                      ) + "%"}
-                </span>
-                <DownArraw />
+                <AddFHE />
+                <div className="flex items-center gap-[2px] justify-end">
+                  <span className="text-[14px] font-[500]">
+                    rewards earning
+                  </span>
+                  <span className="text-[20px] font-[500] text-[var(--mind-red)]">
+                    ~
+                    {Number(amount) === 0 ||
+                    isNaN(Number(amount)) ||
+                    !agentStakeAmount ||
+                    agentStakeAmount === "0"
+                      ? "0%"
+                      : numberDigits(
+                          new Big(amount)
+                            .div(agentStakeAmount)
+                            .times(100)
+                            .toString()
+                        ) + "%"}
+                  </span>
+                  <DownArraw />
+                </div>
               </div>
             </div>
             <Button

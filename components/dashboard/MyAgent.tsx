@@ -269,7 +269,11 @@ export default function MyAgent({
             width="140"
             className="mx-auto pt-[30px]"
           />
-          <div className="mt-[20px] text-center font-[600]">
+          <div
+            className={`mt-[20px] text-center font-[600] ${
+              agentTokenId === 0 ? "hidden" : ""
+            }`}
+          >
             Agent ID: {agentTokenId}
           </div>
           {/* <div className={`${!isAgent ? "hidden" : ""}`}>

@@ -4,7 +4,9 @@ import { useAccount, useDisconnect } from "wagmi";
 import Copy from "@/public/icons/copy.svg";
 import Mindscan from "@/public/icons/mindscan.svg";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
-import { useGetFheBalance } from "@/sdk";
+import { useFHETokenIntoWallet, useGetFheBalance } from "@/sdk";
+import { Button } from "antd";
+import AddFHE from "./AddFHE";
 
 export default function AccountWallet({
   gasBalance,
@@ -58,7 +60,8 @@ export default function AccountWallet({
           />
         </div>
       </div>
-      <div className="text-right mt-[40px]">
+      <div className="flex justify-between mt-[40px]">
+        <AddFHE />
         <a
           href={scan(address!, chainId!)}
           target="_blank"
