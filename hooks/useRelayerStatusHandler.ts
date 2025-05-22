@@ -9,7 +9,8 @@ export default function useRelayerStatusHandler(
   setLoop: Function,
   successMess: string,
   errorCodeMap: Function,
-  helperFun?: Function
+  helperFun?: Function,
+  tipManualClose?: boolean
 ) {
   const { address } = useAccount();
   useAsyncEffect(async () => {
@@ -21,10 +22,16 @@ export default function useRelayerStatusHandler(
           await new Promise((resolve) => setTimeout(resolve, 5000));
           afterSuccessHandler();
           setLoop(false);
-          notification.success({
-            message: "Success",
-            description: successMess,
-          });
+          tipManualClose
+            ? notification.success({
+                message: "Success",
+                description: successMess,
+                duration: null,
+              })
+            : notification.success({
+                message: "Success",
+                description: successMess,
+              });
         } else if (statusRes.status === "-1") {
           cancel();
           afterSuccessHandler();

@@ -27,8 +27,8 @@ import AddFHE from "../account/AddFHE";
 
 const successTip =
   isDev() || isProd()
-    ? "Unstake Success ! Unstaking may take up to 2 minutes to process and arrive in your wallet !"
-    : "Unstake Success ! Unstaking may take up to 48 hours to process and arrive in your wallet !";
+    ? "Unstake Success ! Unstaked FHE takes around 2 minutes to arrive in your wallet"
+    : "Unstake Success ! Unstaked FHE takes around 48 hours to arrive in your wallet";
 
 export default function DecreseModal({
   refreshStakeAmount,
@@ -74,7 +74,9 @@ export default function DecreseModal({
     afterSuccessHandler,
     setActionLoop,
     successTip,
-    Agent1ContractErrorCode
+    Agent1ContractErrorCode,
+    undefined,
+    true
   );
 
   const showModal = () => {
@@ -109,6 +111,7 @@ export default function DecreseModal({
             notification.success({
               message: "Success",
               description: successTip,
+              duration: null,
             });
           }
         }

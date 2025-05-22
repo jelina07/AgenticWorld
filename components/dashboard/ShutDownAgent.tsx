@@ -24,8 +24,8 @@ import { useAsyncEffect } from "ahooks";
 
 const successTip =
   isDev() || isProd()
-    ? "Your agent has been successfully shut down ! Withdraw may take up to 2 minutes to process and arrive in your wallet (if you still have unextracted tokens) !"
-    : "Your agent has been successfully shut down ! Withdraw may take up to 48 hours to process and arrive in your wallet (if you still have unextracted tokens) !";
+    ? "Your agent has been successfully shut down! Agent rewards will arrive in your wallet immediately, while withdraw may take up to 2 minutes to process."
+    : "Your agent has been successfully shut down! Agent rewards will arrive in your wallet immediately, while withdraw may take up to 48 hours to process.";
 
 export default function ShutDownAgent({
   refreshStakeAmount,
@@ -74,7 +74,9 @@ export default function ShutDownAgent({
     afterSuccessHandler,
     setActionLoop,
     successTip,
-    Agent1ContractErrorCode
+    Agent1ContractErrorCode,
+    undefined,
+    true
   );
 
   const showModal = () => {
@@ -103,6 +105,7 @@ export default function ShutDownAgent({
         notification.success({
           message: "Success",
           description: successTip,
+          duration: null,
         });
       }
     }
