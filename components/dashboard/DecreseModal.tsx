@@ -25,10 +25,16 @@ import { useAccount } from "wagmi";
 import { useAsyncEffect } from "ahooks";
 import AddFHE from "../account/AddFHE";
 
-const successTip =
-  isDev() || isProd()
-    ? "Unstake Success ! Unstaked FHE takes around 2 minutes to arrive in your wallet"
-    : "Unstake Success ! Unstaked FHE takes around 48 hours to arrive in your wallet";
+const successTip = (
+  <div>
+    <div>Unstake Success!</div>
+    <div>
+      {isDev() || isProd()
+        ? "Unstaked FHE takes around 2 minutes to arrive in your wallet!"
+        : "Unstaked FHE takes around 48 hours to arrive in your wallet!"}
+    </div>
+  </div>
+);
 
 export default function DecreseModal({
   refreshStakeAmount,
@@ -108,8 +114,8 @@ export default function DecreseModal({
           const res = await agentUnStake(agentTokenId!, amount);
           if (res) {
             afterSuccessHandler();
-            notification.success({
-              message: "Success",
+            notification.warning({
+              message: "Warning",
               description: successTip,
               duration: null,
             });
@@ -155,7 +161,6 @@ export default function DecreseModal({
       await getAgentUnlock(agentTokenId);
     }
   }, [isModalOpen]);
-  console.log("unlockTimestamp", unlockTimestamp);
 
   return (
     <>

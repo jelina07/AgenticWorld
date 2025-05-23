@@ -1,5 +1,6 @@
 import { useAsyncEffect } from "ahooks";
 import { notification } from "antd";
+import { ReactNode } from "react";
 import { useAccount } from "wagmi";
 
 export default function useRelayerStatusHandler(
@@ -7,7 +8,7 @@ export default function useRelayerStatusHandler(
   cancel: Function,
   afterSuccessHandler: Function,
   setLoop: Function,
-  successMess: string,
+  successMess: string | ReactNode,
   errorCodeMap: Function,
   helperFun?: Function,
   tipManualClose?: boolean
@@ -23,8 +24,8 @@ export default function useRelayerStatusHandler(
           afterSuccessHandler();
           setLoop(false);
           tipManualClose
-            ? notification.success({
-                message: "Success",
+            ? notification.warning({
+                message: "Warning",
                 description: successMess,
                 duration: null,
               })

@@ -22,10 +22,32 @@ import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import { useAccount } from "wagmi";
 import { useAsyncEffect } from "ahooks";
 
-const successTip =
-  isDev() || isProd()
-    ? "Your agent has been successfully shut down! Agent rewards will arrive in your wallet immediately, while withdraw may take up to 2 minutes to process."
-    : "Your agent has been successfully shut down! Agent rewards will arrive in your wallet immediately, while withdraw may take up to 48 hours to process.";
+const successTip = (
+  <div>
+    <div>Your agent has been successfully shut down!</div>
+    <div>
+      {isDev() || isProd() ? (
+        <ul>
+          <li className="list-disc">
+            Withdrawing takes around 2 minutes to process.
+          </li>
+          <li className="list-disc">
+            Agent rewards will arrive in your wallet immediately
+          </li>
+        </ul>
+      ) : (
+        <ul>
+          <li className="list-disc">
+            Withdrawing takes around 48 hours to process.
+          </li>
+          <li className="list-disc">
+            Agent rewards will arrive in your wallet immediately
+          </li>
+        </ul>
+      )}
+    </div>
+  </div>
+);
 
 export default function ShutDownAgent({
   refreshStakeAmount,
@@ -102,9 +124,9 @@ export default function ShutDownAgent({
       const res = await agentBurn(agentTokenId!);
       if (res) {
         afterSuccessHandler();
-        notification.success({
-          message: "Success",
-          description: successTip,
+        notification.warning({
+          message: "Warning",
+          description: <>{successTip}</>,
           duration: null,
         });
       }
