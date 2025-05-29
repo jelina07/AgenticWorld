@@ -46,7 +46,7 @@ const HubList = forwardRef(
       },
     }));
     const { openConnectModal } = useConnectModal();
-    const { isConnected, address } = useAccount();
+    const { isConnected, address, chainId } = useAccount();
     const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
     const { data, refresh: refreshLearningId } = useHubGetCurrent({
       tokenId: agentTokenId,
@@ -198,7 +198,17 @@ const HubList = forwardRef(
                     <div>
                       <div
                         className={`flex items-center mb-[20px] justify-end ${
-                          item?.isAccess ? "hidden" : ""
+                          (
+                            item.subnetId === 5 &&
+                            (chainId === 192940 || chainId === 228)
+                              ? false
+                              : item.subnetId === 5 &&
+                                (chainId === 56 || chainId === 97)
+                              ? item.isAccess
+                              : item.isAccess
+                          )
+                            ? "hidden"
+                            : ""
                         }`}
                       >
                         <CommingSoon />
@@ -286,7 +296,13 @@ const HubList = forwardRef(
                           learningId === 0) ||
                           lockTimeReach ||
                           !address) &&
-                        item.isAccess ? (
+                        (item.subnetId === 5 &&
+                        (chainId === 192940 || chainId === 228)
+                          ? false
+                          : item.subnetId === 5 &&
+                            (chainId === 56 || chainId === 97)
+                          ? item.isAccess
+                          : item.isAccess) ? (
                         <div className="text-white text-[14px] font-[600] flex items-center justify-end">
                           <span
                             onClick={(event) => showModal(event, item)}

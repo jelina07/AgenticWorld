@@ -25,7 +25,7 @@ export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
   const router = useRouter();
   const { openConnectModal } = useConnectModal();
-  const { address, isConnected } = useAccount();
+  const { chainId, isConnected } = useAccount();
   const { data: subnetList } = useHubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
@@ -107,9 +107,21 @@ export default function page({ params }: { params: any }) {
             {currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}
           </span>
           <div
-            className={`flex items-center ml-[20px] ${
-              currentSubnet?.isAccess ? "hidden" : ""
-            }`}
+            className={`flex items-center ml-[20px]
+              ${
+                (
+                  currentSubnet.subnetId === 5 &&
+                  (chainId === 192940 || chainId === 228)
+                    ? false
+                    : currentSubnet.subnetId === 5 &&
+                      (chainId === 56 || chainId === 97)
+                    ? currentSubnet.isAccess
+                    : currentSubnet.isAccess
+                )
+                  ? "hidden"
+                  : ""
+              }
+              `}
           >
             <CommingSoon />
           </div>
@@ -131,7 +143,15 @@ export default function page({ params }: { params: any }) {
         </div>
         <div className="mt-[50px] flex gap-[20px]">
           <div>
-            {currentSubnet?.isAccess ? (
+            {(
+              currentSubnet.subnetId === 5 &&
+              (chainId === 192940 || chainId === 228)
+                ? false
+                : currentSubnet.subnetId === 5 &&
+                  (chainId === 56 || chainId === 97)
+                ? currentSubnet.isAccess
+                : currentSubnet.isAccess
+            ) ? (
               <Button
                 type="primary"
                 className="button-brand-border-white-font"
