@@ -110,13 +110,13 @@ export default function page({ params }: { params: any }) {
             className={`flex items-center ml-[20px]
               ${
                 (
-                  currentSubnet.subnetId === 5 &&
+                  currentSubnet?.subnetId === 5 &&
                   (chainId === 192940 || chainId === 228)
                     ? false
-                    : currentSubnet.subnetId === 5 &&
+                    : currentSubnet?.subnetId === 5 &&
                       (chainId === 56 || chainId === 97)
-                    ? currentSubnet.isAccess
-                    : currentSubnet.isAccess
+                    ? currentSubnet?.isAccess
+                    : currentSubnet?.isAccess
                 )
                   ? "hidden"
                   : ""
@@ -144,13 +144,13 @@ export default function page({ params }: { params: any }) {
         <div className="mt-[50px] flex gap-[20px]">
           <div>
             {(
-              currentSubnet.subnetId === 5 &&
+              currentSubnet?.subnetId === 5 &&
               (chainId === 192940 || chainId === 228)
                 ? false
-                : currentSubnet.subnetId === 5 &&
+                : currentSubnet?.subnetId === 5 &&
                   (chainId === 56 || chainId === 97)
-                ? currentSubnet.isAccess
-                : currentSubnet.isAccess
+                ? currentSubnet?.isAccess
+                : currentSubnet?.isAccess
             ) ? (
               <Button
                 type="primary"
