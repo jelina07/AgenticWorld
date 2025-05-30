@@ -3,15 +3,15 @@ import { Image } from "antd";
 
 export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
   const morInfoArray =
-    currentSubnet?.moreInfo !== "" &&
-    currentSubnet?.moreInfo?.split(",").map((item: string) => {
-      const [type, link] = item?.split("#");
-      return {
-        type: type?.trim(),
-        link: link?.trim(),
-      };
-    });
-  console.log("morInfoArray", morInfoArray);
+    currentSubnet?.moreInfo !== ""
+      ? null
+      : currentSubnet?.moreInfo?.split(",").map((item: string) => {
+          const [type, link] = item?.split("#");
+          return {
+            type: type?.trim(),
+            link: link?.trim(),
+          };
+        });
 
   return (
     <div className="px-[28px] py-[40px] rounded-[20px] bg-[var(--bg-deep-grey)] mt-[50px]">
