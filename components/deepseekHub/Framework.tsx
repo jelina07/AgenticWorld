@@ -1,9 +1,9 @@
 import { Image } from "antd";
 
 export default function Framework({ currentSubnet }: { currentSubnet: any }) {
-  const morInfoArray = currentSubnet?.moreInfo
-    ?.split(",")
-    .map((item: string) => {
+  const morInfoArray =
+    currentSubnet?.moreInfo !== "" &&
+    currentSubnet?.moreInfo?.split(",").map((item: string) => {
       const [type, link] = item.split("#");
       return {
         type: type.trim(),
