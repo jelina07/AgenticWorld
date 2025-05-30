@@ -2,13 +2,13 @@ import React from "react";
 import { Image } from "antd";
 
 export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
-  const morInfoArray = currentSubnet?.moreInfo
-    ?.split(",")
-    .map((item: string) => {
-      const [type, link] = item.split("#");
+  const morInfoArray =
+    currentSubnet?.moreInfo !== "" &&
+    currentSubnet?.moreInfo?.split(",").map((item: string) => {
+      const [type, link] = item?.split("#");
       return {
-        type: type.trim(),
-        link: link.trim(),
+        type: type?.trim(),
+        link: link?.trim(),
       };
     });
   console.log("morInfoArray", morInfoArray);
@@ -23,7 +23,13 @@ export default function UseCase({ currentSubnet }: { currentSubnet: any }) {
           }}
         />
       </div>
-      <div className={`mt-[25px] ${currentSubnet?.moreInfo ? "" : "hidden"}`}>
+      <div
+        className={`mt-[25px] ${
+          currentSubnet?.moreInfo && currentSubnet?.moreInfo !== ""
+            ? ""
+            : "hidden"
+        }`}
+      >
         <div className="text-[14px] font-[600]">More Information:</div>
         <div className="flex gap-[5px]">
           {morInfoArray?.map((item: any, index: number) => (

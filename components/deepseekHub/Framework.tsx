@@ -4,12 +4,13 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
   const morInfoArray =
     currentSubnet?.moreInfo !== "" &&
     currentSubnet?.moreInfo?.split(",").map((item: string) => {
-      const [type, link] = item.split("#");
+      const [type, link] = item?.split("#");
       return {
-        type: type.trim(),
-        link: link.trim(),
+        type: type?.trim(),
+        link: link?.trim(),
       };
     });
+
   return (
     <div className="mt-[25px]">
       <div className="px-[28px] py-[26px] bg-[#181818] rounded-[20px]">
@@ -61,7 +62,13 @@ export default function Framework({ currentSubnet }: { currentSubnet: any }) {
           </div>
         </div>
       </div>
-      <div className={`mt-[25px] ${currentSubnet?.moreInfo ? "" : "hidden"}`}>
+      <div
+        className={`mt-[25px] ${
+          currentSubnet?.moreInfo && currentSubnet?.moreInfo !== ""
+            ? ""
+            : "hidden"
+        }`}
+      >
         <div className="text-[14px] font-[600]">More Information:</div>
         <div className="flex gap-[5px]">
           {morInfoArray?.map((item: any, index: number) => (
