@@ -291,7 +291,7 @@ const HubList = forwardRef(
                       {learningId && item.subnetId === learningId ? (
                         <div className="flex items-center justify-end">
                           <span className="text-[var(--mind-brand)]">
-                            Training
+                            {item.type === 0 ? "Training" : "Working"}
                           </span>
                           <img src="/icons/cz.svg" alt="cz" width={25} />
                         </div>

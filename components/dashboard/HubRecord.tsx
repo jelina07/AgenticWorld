@@ -162,8 +162,10 @@ export default function HubRecord({
         <span>
           {learningIdLoading && learningId === 0 && learnSecondLoading
             ? "loading..."
-            : record.subnetId === learningId
+            : record.subnetId === learningId && record.type === 0
             ? "Training"
+            : record.subnetId === learningId && record.type === 1
+            ? "Working"
             : record.currentLearned === 0
             ? "/"
             : "Exit"}
@@ -196,7 +198,6 @@ export default function HubRecord({
   const tableDataAll =
     (agentTokenId &&
       hubList?.map((item: any, index: number) => {
-        // const status = item.id === learningId ? "Training" : "Exit";
         const currentLearned = learnSecondLoading
           ? "loading..."
           : learnSecond && learnSecond[index];
@@ -207,7 +208,6 @@ export default function HubRecord({
           subnetId: item.id,
           subnetName: item.name,
           subnetLogo: item.logo,
-          // status: learningIdLoading && learningId === 0 ? "loading..." : status,
           status: "",
           lockupHours: item.lockUp,
           subnetLevel: item.note,
