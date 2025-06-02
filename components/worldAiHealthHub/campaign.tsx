@@ -8,14 +8,16 @@ import {
   useHubList,
 } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
+import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAccount, useSwitchChain } from "wagmi";
 import Link from "next/link";
+import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
+import { isDev, isProd } from "@/sdk/utils";
 
 export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
-  const { isConnected } = useAccount();
+  const { isConnected, chainId } = useAccount();
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { openConnectModal } = useConnectModal();
+  const { switchChain } = useSwitchChain();
   const isAgent = agentTokenId !== 0;
   const { data: hubList, loading } = useHubList();
 
@@ -75,14 +77,27 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
             <div className="font-[700]">
               How to Participate in World AI Health Hub
             </div>
-            {!isConnected || isAgent ? (
+            {chainId === mindnet.id || chainId === mindtestnet.id ? (
+              <span
+                className="inline-block mt-[15px] text-[var(--mind-brand)] cursor-pointer"
+                onClick={() =>
+                  switchChain({
+                    chainId: isDev() || isProd() ? bnbtestnet.id : bnb.id,
+                  })
+                }
+              >
+                click to change network to bnb
+              </span>
+            ) : !isConnected || isAgent ? (
               <>
                 <div
                   className={`px-[12px] py-[16px] rounded-[15px] ${
                     isLearned ? "bg-[#1c2e27]" : "bg-[#212121]"
                   } mt-[12px] flex justify-between gap-[5px]`}
                 >
-                  <span className="text-[var(--mind-brand)]">Task 1</span>
+                  <span className="text-[var(--mind-brand)] flex-shrink-0">
+                    Task 1
+                  </span>
                   <span className="ml-[10px]">
                     Click the Start Working button to let your agent work in
                     World AI Health Hub.
@@ -108,11 +123,66 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
             ) : (
               <Link
                 href="/agentlaunch"
-                className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)]"
+                className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
               >
                 Go to create a agent first !
               </Link>
             )}
+            {/* {!isConnected || isAgent ? (
+              <>
+                <div
+                  className={`px-[12px] py-[16px] rounded-[15px] ${
+                    isLearned ? "bg-[#1c2e27]" : "bg-[#212121]"
+                  } mt-[12px] flex justify-between gap-[5px]`}
+                >
+                  <span className="text-[var(--mind-brand)] flex-shrink-0">
+                    Task 1
+                  </span>
+                  <span className="ml-[10px]">
+                    Click the Start Working button to let your agent work in
+                    World AI Health Hub.
+                    {isLearned ? " ✅" : ""}
+                  </span>
+                  <img
+                    src="/icons/refresh.svg"
+                    alt="refresh"
+                    onClick={refresh}
+                    width={15}
+                    className={`cursor-pointer ${
+                      learnSecondLoading ? "refresh" : ""
+                    } ${!isConnected || isLearned ? "hidden" : ""} `}
+                  />
+                </div>
+                <div className="px-[12px] py-[16px] rounded-[15px] bg-[#212121] mt-[12px]">
+                  <span className="text-[var(--mind-brand)]">Task 2</span>
+                  <span className="ml-[10px]">
+                    Upload your Health Data with FHE. (Coming Soon)
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                {chainId === mindnet.id || chainId === mindtestnet.id ? (
+                  <span
+                    className="inline-block mt-[15px] text-[var(--mind-brand)] cursor-pointer"
+                    onClick={() =>
+                      switchChain({
+                        chainId: isDev() || isProd() ? bnbtestnet.id : bnb.id,
+                      })
+                    }
+                  >
+                    click to change network to bnb
+                  </span>
+                ) : (
+                  <Link
+                    href="/agentlaunch"
+                    className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
+                  >
+                    Go to create a agent first !
+                  </Link>
+                )}
+              </>
+            )} */}
           </div>
         </div>
         <img
