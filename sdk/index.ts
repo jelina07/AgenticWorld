@@ -47,6 +47,7 @@ import useEarlyBirdAirdropClaim from "./hooks/useEarlyBirdAirdropClaim";
 import useEarlyBirdAirdropIsClaimed from "./hooks/useEarlyBirdAirdropIsClaimed";
 import useEarlyBirdAirdropRelayerClaim from "./hooks/useEarlyBirdAirdropRelayerClaim";
 import useFHETokenIntoWallet from "./hooks/useAddFHE";
+import useEncryptData from "./hooks/worldAiHealth/useEncryptData";
 
 export {
   useAirdropCheck,
@@ -98,4 +99,5 @@ export {
   useEarlyBirdAirdropIsClaimed,
   useEarlyBirdAirdropRelayerClaim,
   useFHETokenIntoWallet,
+  useEncryptData,
 };

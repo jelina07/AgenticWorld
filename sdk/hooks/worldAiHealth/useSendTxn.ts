@@ -4,7 +4,6 @@ import {
   readContract,
   sendTransaction,
   waitForTransactionReceipt,
-  writeContract,
 } from "wagmi/actions";
 import {
   bnb,
@@ -30,26 +29,13 @@ import useValidateChainWalletLink from "../useValidateChainWalletLink";
 import { isDev, isProd } from "@/sdk/utils";
 import { createPublicClient, keccak256, toBytes } from "viem";
 import axios from "axios";
-import { estimateGasUtil } from "@/sdk/utils/script";
-
-const publicClientMind = createPublicClient({
-  batch: {
-    multicall: true,
-  },
-  chain: isDev() || isProd() ? mindtestnet : mindnet,
-  transport:
-    isDev() || isProd()
-      ? getTransports(mindtestnet.id)
-      : getTransports(mindnet.id),
-});
-
-const quryMindChainId = isDev() || isProd() ? mindtestnet.id : mindnet.id;
+import { writeContract } from "viem/actions";
 
 export default function useEncryptData(
   options?: Options<any, any>,
   waitForReceipt = true
 ) {
-  const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
+  const targetChain = isDev() || isProd() ? mindtestnet.id : mindnet.id;
   const { validateAsync, address, chainId } =
     useValidateChainWalletLink(targetChain);
 
@@ -59,16 +45,17 @@ export default function useEncryptData(
       if (!isValid || !chainId) {
         return;
       }
-      //get publicKey
-      const keySetId = (await publicClientMind.readContract({
+
+      const keySetId = (await readContract(config, {
         abi: WORLDAIHEALTHY_ABI,
-        address: WORLAIHEALTHY_HUB_ADDRESS[quryMindChainId],
+        address: WORLAIHEALTHY_HUB_ADDRESS[chainId],
         functionName: "fheKeySetId",
       })) as string;
       console.log("keySetId", keySetId);
-      const publicKeyUrlArray = (await publicClientMind.readContract({
+
+      const publicKeyUrlArray = (await readContract(config, {
         abi: FHEKEY_REGISTRY_ABI,
-        address: FHEKEY_REGISTRY_ADDRESS[quryMindChainId],
+        address: FHEKEY_REGISTRY_ADDRESS[chainId],
         functionName: "fheKeySets",
         args: [keySetId],
       })) as Array<any>;
@@ -78,12 +65,17 @@ export default function useEncryptData(
       const response = await fetch(publicKeyUrl);
       console.log("response", response);
       const sPublicKey = await response.text();
+
       console.log("sPublicKey", sPublicKey);
+      console.log("paillier", paillier);
+
       const publicKey = paillier.deserializePublicKey(sPublicKey);
+
       console.log("publicKey", publicKey);
 
       const VOTER = new paillier.Voter(129, publicKey);
       const userInputBigInt = BigInt(`0b${userInputBinary}`);
+
       console.log("userInputInt", userInputBigInt);
 
       //EncryptData
@@ -93,49 +85,40 @@ export default function useEncryptData(
         (_, value) => (typeof value === "bigint" ? value.toString() : value)
       );
       console.log("proofs", typeof proofs, proofs);
+
       const hash = keccak256(toBytes(proofs));
       console.log("hash", hash);
-
       //upload proofs to google cloud
-      const googleCloudUrlObj = (await axios.post(
+      const response1 = (await axios.post(
         "https://signed-url.mindnetwork.xyz/",
         {
           bucket: "world-ai-health-hub",
           filename: hash,
         }
       )) as any;
-      console.log("google cloud url", googleCloudUrlObj);
-      const response2 = axios.put(googleCloudUrlObj.data.url, proofs, {
+      console.log("google cloud url", response1);
+
+      const encoder = new TextEncoder();
+      const binaryData = encoder.encode(proofs);
+
+      const response2 = axios.put(response1.data.url, proofs, {
         headers: {
           "Content-Type": "application/octet-stream",
         },
       });
       console.log("response2", response2);
 
-      // send hash to chain: bsc
-      const gasEstimate = await estimateGasUtil(
-        WORLDAIHEALTHY_ABI,
-        "vote",
-        [hash],
-        WORLAIHEALTHY_HUB_ADDRESS[chainId]
-      );
-      const txHash = await writeContract(config, {
-        abi: WORLDAIHEALTHY_ABI,
-        address: WORLAIHEALTHY_HUB_ADDRESS[chainId],
-        functionName: "vote",
-        args: [hash],
-        gas: gasEstimate! + gasEstimate! / BigInt(3),
-        chainId: targetChain,
-      });
-      console.log("txHash", txHash);
+      //send hash to chain
 
-      if (!waitForReceipt) {
-        return txHash;
-      }
-      const receipt = await waitForTransactionReceipt(config, {
-        hash: txHash,
-      });
-      return receipt;
+      // const txHash = await publicClientBsc.writeContract({});
+
+      // if (!waitForReceipt) {
+      //   return txHash;
+      // }
+      // const receipt = await waitForTransactionReceipt(config, {
+      //   hash: txHash,
+      // });
+      // return receipt;
     },
     {
       manual: true,

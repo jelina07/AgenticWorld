@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CommingSoon from "@/components/utils/CommingSoon";
 import DeepSeekHub from "@/components/deepseekHub";
+import WorldAiHealthHub from "@/components/worldAiHealthHub";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
@@ -162,13 +163,18 @@ export default function page({ params }: { params: any }) {
                     agentTokenId !== 0 &&
                     learningId === 0
                   ) &&
-                    !lockTimeReach)
+                    !lockTimeReach &&
+                    isConnected)
                 }
                 onClick={() => showModal()}
               >
                 {learningId === Number(params.subnetId)
-                  ? "Training..."
-                  : "Start Training"}
+                  ? currentSubnet?.type === 0
+                    ? "Training..."
+                    : "Working..."
+                  : currentSubnet?.type === 0
+                  ? "Start Training"
+                  : "Start Working"}
               </Button>
             ) : (
               <Button
@@ -177,7 +183,7 @@ export default function page({ params }: { params: any }) {
                 disabled={true}
                 onClick={() => showModal()}
               >
-                Start Training
+                {currentSubnet?.type === 0 ? "Start Training" : "Start Working"}
               </Button>
             )}
           </div>
@@ -188,10 +194,17 @@ export default function page({ params }: { params: any }) {
             Explore New Skills
           </Link>
         </div>
-        {currentSubnet?.canLinkDetial && currentSubnet?.subnetId !== 4 ? (
+        {currentSubnet?.canLinkDetial &&
+        currentSubnet?.subnetId !== 4 &&
+        currentSubnet?.subnetId !== 5 ? (
           <UseCase currentSubnet={currentSubnet} />
         ) : currentSubnet?.subnetId === 4 ? (
           <DeepSeekHub currentSubnet={currentSubnet} />
+        ) : currentSubnet?.subnetId === 5 ? (
+          <>
+            <WorldAiHealthHub currentSubnet={currentSubnet} />
+            <UseCase currentSubnet={currentSubnet} />
+          </>
         ) : (
           <></>
         )}

@@ -4,8 +4,6 @@ import { useAccount, useDisconnect } from "wagmi";
 import Copy from "@/public/icons/copy.svg";
 import Mindscan from "@/public/icons/mindscan.svg";
 import useGetFheBalanceStore from "@/store/useGetFheBalanceStore";
-import { useFHETokenIntoWallet, useGetFheBalance } from "@/sdk";
-import { Button } from "antd";
 import AddFHE from "./AddFHE";
 
 export default function AccountWallet({

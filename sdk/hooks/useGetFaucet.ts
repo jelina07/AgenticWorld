@@ -37,7 +37,7 @@ export default function useGetFaucet(
         gas: gasEstimate + gasEstimate / BigInt(3),
       });
 
-      if (waitForReceipt) {
+      if (!waitForReceipt) {
         return txHash;
       }
       const receipt = await waitForTransactionReceipt(config, {

@@ -157,7 +157,7 @@ const StartConfirmModal = forwardRef(
       } else {
         message.open({
           type: "warning",
-          content: `The amount in your agent is 0 and you can't start training`,
+          content: `The amount in your agent is 0 and you can't start`,
           duration: 5,
         });
       }
@@ -181,9 +181,13 @@ const StartConfirmModal = forwardRef(
               ? `This action will Pause your agent in ${
                   subnetList?.find((item) => item.id === learningId)?.name
                 } Hub and continue
-        training with ${currentHub?.subnetName} Hub`
+        ${currentHub?.type === 0 ? "training" : "working"} with ${
+                  currentHub?.subnetName
+                } Hub`
               : `
-        This action will start training your agent with ${currentHub?.subnetName} Hub`}
+        This action will start ${
+          currentHub?.type === 0 ? "training" : "working"
+        } your agent with ${currentHub?.subnetName} Hub`}
           </div>
         </div>
         <div className="flex mt-[40px] gap-[20px]">

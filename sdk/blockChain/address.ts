@@ -41,7 +41,15 @@ export const AGENT_SIGVERIFY_ADDRESS: Record<number, `0x${string}`> = {
   228: "0x7753E222B1bedA128Fe80151861EB30169DE2F4e",
 };
 
-export const WORLD_AI_HEALTHY: Record<number, `0x${string}`> = {
-  192940: "0x5447aCAF5b14a47F6327081DcEF5EA1E56329978",
-  228: "0x7753E222B1bedA128Fe80151861EB30169DE2F4e",
+export const WORLAIHEALTHY_HUB_ADDRESS: Record<number, `0x${string}`> = {
+  192940: "0x865CB24625741AddC482321fd9DeBD0c4dE2F992",
+  97: "0x6E5e6ba629fE6857C55b1c33389B0f153a287494",
+};
+
+export const DEEPSEEK_HUB_ADDRESS: Record<number, `0x${string}`> = {
+  192940: "0x5956B28d53B74CcEDb3791Dc6E79f793371f5Ec8",
+};
+
+export const FHEKEY_REGISTRY_ADDRESS: Record<number, `0x${string}`> = {
+  192940: "0x350D2819Df60aDE1D074EdB11f7900dDDA068Ab5",
 };

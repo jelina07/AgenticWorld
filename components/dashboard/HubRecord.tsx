@@ -114,6 +114,84 @@ export default function HubRecord({
     },
   ];
 
+  const tableColumns2: TableColumnsType = [
+    {
+      title: "Advance Hub",
+      dataIndex: "subnetName",
+      render: (value: string, record: any) => (
+        <div className="flex items-center gap-[5px]">
+          <img
+            src={record.subnetLogo}
+            alt="logo"
+            width={30}
+            className="rounded-[50%]"
+          />
+          <a
+            href={`/agenticworld/${record.subnetId}`}
+            className="text-[14px] mr-[10px] underline text-white hover:underline hover:text-white"
+          >
+            {value}
+          </a>
+          <div
+            className={`${
+              record.subnetId === learningId &&
+              Number(record.currentLearned) < Number(record.lockupHours)
+                ? ""
+                : "hidden"
+            }`}
+          >
+            <Lock />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Rewards",
+      dataIndex: "rewards",
+      render: (value: any) => (
+        <div>
+          {value}
+          <span className="text-[var(--mind-grey)]"> FHE</span>
+        </div>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (_, record: any) => (
+        <span>
+          {learningIdLoading && learningId === 0 && learnSecondLoading
+            ? "loading..."
+            : record.subnetId === learningId
+            ? "Training"
+            : record.currentLearned === 0
+            ? "/"
+            : "Exit"}
+        </span>
+      ),
+    },
+    {
+      title: "Training Lock-up",
+      dataIndex: "lockupHours",
+      render: (value: number) => (
+        <div>
+          {secondsToHours(value)}
+          <span className="text-[var(--mind-grey)]"> H</span>
+        </div>
+      ),
+    },
+    {
+      title: "Currently Trained",
+      dataIndex: "currentLearned",
+      render: (value: number | string) => (
+        <div>
+          {secondsToHours(value)}
+          <span className="text-[var(--mind-grey)]"> H</span>
+        </div>
+      ),
+    },
+  ];
+
   const learningId = useGetLearningHubId((state) => state.learningHubId);
   const tableDataAll =
     (agentTokenId &&
@@ -139,8 +217,10 @@ export default function HubRecord({
         };
       })) ||
     [];
-  const tableData = tableDataAll?.filter(
-    (item: any) => item.type === 0 || item.currentLearned > 0
+  const tableData = tableDataAll?.filter((item: any) => item.type === 0);
+
+  const tableData2 = tableDataAll?.filter(
+    (item: any) => item.type === 1 && item.currentLearned > 0
   );
 
   const refresh = () => {
@@ -165,6 +245,17 @@ export default function HubRecord({
         className="mt-[20px]"
         dataSource={tableData}
         columns={tableColumns}
+        pagination={false}
+        bordered={false}
+        rowKey={"subnetId"}
+        scroll={{ x: 764 }}
+        loading={loading}
+      />
+
+      <Table
+        className="mt-[50px]"
+        dataSource={tableData2}
+        columns={tableColumns2}
         pagination={false}
         bordered={false}
         rowKey={"subnetId"}

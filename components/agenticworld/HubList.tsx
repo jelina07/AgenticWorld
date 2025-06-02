@@ -308,12 +308,18 @@ const HubList = forwardRef(
                             onClick={(event) => showModal(event, item)}
                             className="hover:text-[var(--mind-brand)]"
                           >
-                            Start Training
+                            {item.type === 0
+                              ? "Start Training"
+                              : "Start Working"}
                           </span>
                         </div>
                       ) : (
                         <div className="text-[var(--mind-grey)] text-[14px] font-[600] flex items-center justify-end">
-                          <span>Start Training</span>
+                          <span>
+                            {item.type === 0
+                              ? "Start Training"
+                              : "Start Working"}
+                          </span>
                         </div>
                       )}
                     </div>
