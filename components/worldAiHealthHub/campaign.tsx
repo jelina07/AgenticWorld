@@ -58,7 +58,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
             <div>
               <span>Rewards: Share in a 10,000 FHE prize pool.</span>
               <a
-                href="http://"
+                href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/agenticworld-user-guide/world-ai-health-hub"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline text-[var(--mind-brand)] hover:text-[var(--mind-brand)] hover:underline ml-[10px]"
