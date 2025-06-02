@@ -253,7 +253,9 @@ const HubList = forwardRef(
                           <div className="flex justify-between gap-[3px]">
                             <span>APY:</span>
                             <span className="break-words max-w-[80%] whitespace-normal text-right">
-                              {filter === 3 && item.subnetId !== 4
+                              {filter === 3 &&
+                              item.subnetId !== 4 &&
+                              item.subnetId !== 5
                                 ? "/"
                                 : item.payoutRatio}
                             </span>
@@ -265,7 +267,9 @@ const HubList = forwardRef(
                           <div className="flex justify-between gap-[3px]">
                             <span>Training Lock-up:</span>
                             <span>
-                              {filter === 3 && item.subnetId !== 4
+                              {filter === 3 &&
+                              item.subnetId !== 4 &&
+                              item.subnetId !== 5
                                 ? "/"
                                 : secondsToHours(item.lockup) + " H"}
                             </span>
