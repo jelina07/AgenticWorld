@@ -23,7 +23,11 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
     return hubList?.map((item: any) => item.id) || [];
   }, [hubList]);
 
-  const { learnSecond } = useHubGetCurrentExp({
+  const {
+    learnSecond,
+    loading: learnSecondLoading,
+    refresh,
+  } = useHubGetCurrentExp({
     tokenId: agentTokenId,
     hubIds: ids,
   });
@@ -34,7 +38,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
     return learnSecond !== undefined && learnSecond[index] > 0;
   }, [learnSecond]);
 
-  console.log("learnSecond", learnSecond, isLearned);
+  console.log("learnSecond", learnSecond, isLearned, isConnected || isLearned);
 
   return (
     <div className="px-[32px] py-[28px] bg-[var(--bg-deep-grey)] rounded-[20px]">
@@ -76,7 +80,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                 <div
                   className={`px-[12px] py-[16px] rounded-[15px] ${
                     isLearned ? "bg-[#1c2e27]" : "bg-[#212121]"
-                  } mt-[12px]`}
+                  } mt-[12px] flex justify-between gap-[5px]`}
                 >
                   <span className="text-[var(--mind-brand)]">Task 1</span>
                   <span className="ml-[10px]">
@@ -84,6 +88,15 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                     World AI Health Hub.
                     {isLearned ? " ✅" : ""}
                   </span>
+                  <img
+                    src="/icons/refresh.svg"
+                    alt="refresh"
+                    onClick={refresh}
+                    width={15}
+                    className={`cursor-pointer ${
+                      learnSecondLoading ? "refresh" : ""
+                    } ${!isConnected || isLearned ? "hidden" : ""} `}
+                  />
                 </div>
                 <div className="px-[12px] py-[16px] rounded-[15px] bg-[#212121] mt-[12px]">
                   <span className="text-[var(--mind-brand)]">Task 2</span>
