@@ -173,7 +173,7 @@ export default function HubRecord({
       ),
     },
     {
-      title: "Training Lock-up",
+      title: "Working Lock-up",
       dataIndex: "lockupHours",
       render: (value: number) => (
         <div>
@@ -183,7 +183,7 @@ export default function HubRecord({
       ),
     },
     {
-      title: "Currently Trained",
+      title: "Currently Worked",
       dataIndex: "currentLearned",
       render: (value: number | string) => (
         <div>
