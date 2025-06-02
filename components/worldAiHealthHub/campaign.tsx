@@ -62,7 +62,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
           <div className="mt-[12px] font-[600]">
             <div>Time: June 3, 2025 - June 17, 2025.</div>
             <div>
-              <span>Rewards: Share in a 10,000 FHE prize pool.</span>
+              <span>Rewards: Share in a 10,000,000 FHE prize pool.</span>
               <a
                 href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/agenticworld-user-guide/world-ai-health-hub"
                 target="_blank"
