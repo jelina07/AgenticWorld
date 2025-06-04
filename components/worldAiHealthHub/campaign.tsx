@@ -1,25 +1,19 @@
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import StartConfirmModal from "../agenticworld/detials/StartConfirmModal";
 import { useMemo, useRef } from "react";
-import {
-  useHubAgentCount,
-  useHubGetCurrent,
-  useHubGetCurrentExp,
-  useHubList,
-} from "@/sdk";
-import useGetLearningHubId from "@/store/useGetLearningHubId";
-import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import { useHubGetCurrentExp, useHubList, useIsVoted } from "@/sdk";
 import { useAccount, useSwitchChain } from "wagmi";
 import Link from "next/link";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { isDev, isProd } from "@/sdk/utils";
 
 export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
-  const { isConnected, chainId } = useAccount();
+  const { isConnected, chainId, chain } = useAccount();
+  console.log("chain", chain);
+
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { switchChain } = useSwitchChain();
   const isAgent = agentTokenId !== 0;
-  const { data: hubList, loading } = useHubList();
+  const { data: hubList } = useHubList();
 
   const ids = useMemo(() => {
     return hubList?.map((item: any) => item.id) || [];
@@ -34,13 +28,19 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
     hubIds: ids,
   });
 
+  const {
+    data: isVoted,
+    refresh: refreshVoted,
+    loading: isVotedLoading,
+  } = useIsVoted();
+
   const isLearned = useMemo(() => {
     console.log("ids", ids);
     const index = ids.indexOf(5);
     return learnSecond !== undefined && learnSecond[index] > 0;
   }, [learnSecond]);
 
-  console.log("learnSecond", learnSecond, isLearned, isConnected || isLearned);
+  console.log("isVoted", isVoted);
 
   return (
     <div className="px-[32px] py-[28px] bg-[var(--bg-deep-grey)] rounded-[20px]">
@@ -51,12 +51,12 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
               World AI Health Campaign on{" "}
               <span className="text-[#e7bb41]">BNB chain</span>
             </div>
-            <span
+            {/* <span
               className={`text-[var(--mind-brand)] text-[12px] px-[6px] py-[4px] border border-[var(--mind-brand)] bg-[#0f1a15] 
                     rounded-[4px] inline-block font-[500]`}
             >
               Upcoming
-            </span>
+            </span> */}
           </div>
 
           <div className="mt-[12px] font-[600]">
@@ -77,7 +77,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
             <div className="font-[700]">
               How to Participate in World AI Health Hub
             </div>
-            {chainId === mindnet.id || chainId === mindtestnet.id ? (
+            {chainId === mindnet.id || chainId === mindtestnet.id || !chain ? (
               <span
                 className="inline-block mt-[15px] text-[var(--mind-brand)] cursor-pointer"
                 onClick={() =>
@@ -95,14 +95,16 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                     isLearned ? "bg-[#1c2e27]" : "bg-[#212121]"
                   } mt-[12px] flex justify-between gap-[5px]`}
                 >
-                  <span className="text-[var(--mind-brand)] flex-shrink-0">
-                    Task 1
-                  </span>
-                  <span className="ml-[10px]">
-                    Click the Start Working button to let your agent work in
-                    World AI Health Hub.
-                    {isLearned ? " ✅" : ""}
-                  </span>
+                  <div>
+                    <span className="text-[var(--mind-brand)] flex-shrink-0">
+                      Task 1
+                    </span>
+                    <span className="ml-[10px]">
+                      Click the Start Working button to let your agent work in
+                      World AI Health Hub.
+                      {isLearned ? " ✅" : ""}
+                    </span>
+                  </div>
                   <img
                     src="/icons/refresh.svg"
                     alt="refresh"
@@ -113,11 +115,27 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                     } ${!isConnected || isLearned ? "hidden" : ""} `}
                   />
                 </div>
-                <div className="px-[12px] py-[16px] rounded-[15px] bg-[#212121] mt-[12px]">
-                  <span className="text-[var(--mind-brand)]">Task 2</span>
-                  <span className="ml-[10px]">
-                    Upload your Health Data with FHE. (Coming Soon)
-                  </span>
+                <div
+                  className={`px-[12px] py-[16px] rounded-[15px] mt-[12px] ${
+                    isVoted ? "bg-[#1c2e27]" : "bg-[#212121]"
+                  } mt-[12px] flex justify-between gap-[5px]`}
+                >
+                  <div>
+                    <span className="text-[var(--mind-brand)]">Task 2</span>
+                    <span className="ml-[10px]">
+                      Upload your Health Data with FHE.
+                      {isVoted ? " ✅" : ""}
+                    </span>
+                  </div>
+                  <img
+                    src="/icons/refresh.svg"
+                    alt="refresh"
+                    onClick={refreshVoted}
+                    width={15}
+                    className={`cursor-pointer ${
+                      isVotedLoading ? "refresh" : ""
+                    } ${!isConnected || isVoted ? "hidden" : ""} `}
+                  />
                 </div>
               </>
             ) : (
@@ -156,7 +174,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                 <div className="px-[12px] py-[16px] rounded-[15px] bg-[#212121] mt-[12px]">
                   <span className="text-[var(--mind-brand)]">Task 2</span>
                   <span className="ml-[10px]">
-                    Upload your Health Data with FHE. (Coming Soon)
+                    Upload your Health Data with FHE.
                   </span>
                 </div>
               </>

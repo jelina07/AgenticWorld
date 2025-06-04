@@ -187,6 +187,8 @@ export function timestampToUTC(timestamp: number) {
   return `UTC ${hours}:${minutes}, ${month} ${day}, ${year}`;
 }
 
+export function UTCToTimestamp(utc: string) {}
+
 export function generateRandomArray() {
   const arr = [];
   let sum = 0;

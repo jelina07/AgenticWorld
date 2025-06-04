@@ -4489,6 +4489,33 @@ export const WORLDAIHEALTHY_ABI = [
     type: "error",
   },
   {
+    inputs: [],
+    name: "ECDSAInvalidSignature",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "length",
+        type: "uint256",
+      },
+    ],
+    name: "ECDSAInvalidSignatureLength",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "ECDSAInvalidSignatureS",
+    type: "error",
+  },
+  {
     inputs: [
       {
         internalType: "bytes32",
@@ -4801,6 +4828,38 @@ export const WORLDAIHEALTHY_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "signer",
+        type: "address",
+      },
+    ],
+    name: "isValidVoteSigner",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "isVoteSigNeeded",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "user",
         type: "address",
       },
@@ -4948,6 +5007,29 @@ export const WORLDAIHEALTHY_ABI = [
   {
     inputs: [
       {
+        internalType: "bool",
+        name: "_isVoteSigNeeded",
+        type: "bool",
+      },
+      {
+        internalType: "address[]",
+        name: "_signers",
+        type: "address[]",
+      },
+      {
+        internalType: "bool[]",
+        name: "_isSigners",
+        type: "bool[]",
+      },
+    ],
+    name: "setupVoteSigner",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -4983,6 +5065,16 @@ export const WORLDAIHEALTHY_ABI = [
         internalType: "string",
         name: "uriPath",
         type: "string",
+      },
+      {
+        internalType: "bytes",
+        name: "signature",
+        type: "bytes",
+      },
+      {
+        internalType: "uint256",
+        name: "sigTs",
+        type: "uint256",
       },
     ],
     name: "vote",

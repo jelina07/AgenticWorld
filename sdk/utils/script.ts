@@ -122,3 +122,16 @@ export const faucetError = (data?: string) => {
       return "Unknown Error";
   }
 };
+
+export const WorldHealthErrorCode = (code: number) => {
+  switch (code) {
+    case 4001:
+      return "no agent";
+    case 4002:
+      return "Repeat the existing content";
+    case 4003:
+      return "have voted";
+    default:
+      return "Unknown Error";
+  }
+};

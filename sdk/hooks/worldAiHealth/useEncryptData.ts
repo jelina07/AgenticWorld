@@ -1,15 +1,8 @@
 import { useRequest } from "ahooks";
 import { Options } from "../../types";
 import {
-  readContract,
-  sendTransaction,
-  waitForTransactionReceipt,
-  writeContract,
-} from "wagmi/actions";
-import {
   bnb,
   bnbtestnet,
-  config,
   getTransports,
   mindnet,
   mindtestnet,
@@ -27,10 +20,20 @@ import {
   WORLDAIHEALTHY_ABI,
 } from "@/sdk/blockChain/abi";
 import useValidateChainWalletLink from "../useValidateChainWalletLink";
-import { isDev, isProd } from "@/sdk/utils";
+import { isDev, isMainnet, isMainnetio, isProd } from "@/sdk/utils";
 import { createPublicClient, keccak256, toBytes } from "viem";
 import axios from "axios";
-import { estimateGasUtil } from "@/sdk/utils/script";
+import { useSignMessage } from "wagmi";
+import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import { message } from "antd";
+
+const signurl = isMainnet()
+  ? "https://agent.mindnetwork.xyz/health-hub/sign-url"
+  : isMainnetio()
+  ? "https://agent.mindnetwork.io/health-hub/sign-url"
+  : `${process.env.NEXT_PUBLIC_API_URL}/health-hub/sign-url`;
+const signMessage =
+  "Sign to authorize encryption and upload of your selected health data to the secure cloud endpoint";
 
 const publicClientMind = createPublicClient({
   batch: {
@@ -44,19 +47,26 @@ const publicClientMind = createPublicClient({
 });
 
 const quryMindChainId = isDev() || isProd() ? mindtestnet.id : mindnet.id;
-
-export default function useEncryptData(
-  options?: Options<any, any>,
-  waitForReceipt = true
-) {
-  const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
-  const { validateAsync, address, chainId } =
+const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
+export default function useEncryptData(options?: Options<any, any>) {
+  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const isAgent = agentTokenId !== 0;
+  const { validateAsync, chainId, address } =
     useValidateChainWalletLink(targetChain);
+  const { signMessageAsync } = useSignMessage();
 
   const result = useRequest(
-    async (userInputBinary: string) => {
+    async (userInputBinary: string, content) => {
       const isValid = await validateAsync?.();
       if (!isValid || !chainId) {
+        return;
+      }
+      if (!isAgent) {
+        message.open({
+          type: "warning",
+          content: content,
+          duration: 5,
+        });
         return;
       }
       //get publicKey
@@ -97,45 +107,31 @@ export default function useEncryptData(
       console.log("hash", hash);
 
       //upload proofs to google cloud
-      const googleCloudUrlObj = (await axios.post(
-        "https://signed-url.mindnetwork.xyz/",
-        {
-          bucket: "world-ai-health-hub",
-          filename: hash,
-        }
-      )) as any;
+
+      const signature = await signMessageAsync({
+        message: signMessage,
+      });
+      const googleCloudUrlObj = (await axios.post(signurl, {
+        bucket:
+          isDev() || isProd() ? "world-ai-health-hub" : "world-ai-health-hub",
+        fileHash: hash,
+        walletAddress: address,
+        message: signMessage,
+        signature,
+      })) as any;
+
       console.log("google cloud url", googleCloudUrlObj);
-      const response2 = axios.put(googleCloudUrlObj.data.url, proofs, {
+      const response2 = await axios.put(googleCloudUrlObj.data.data, proofs, {
         headers: {
           "Content-Type": "application/octet-stream",
         },
       });
       console.log("response2", response2);
 
-      // send hash to chain: bsc
-      const gasEstimate = await estimateGasUtil(
-        WORLDAIHEALTHY_ABI,
-        "vote",
-        [hash],
-        WORLAIHEALTHY_HUB_ADDRESS[chainId]
-      );
-      const txHash = await writeContract(config, {
-        abi: WORLDAIHEALTHY_ABI,
-        address: WORLAIHEALTHY_HUB_ADDRESS[chainId],
-        functionName: "vote",
-        args: [hash],
-        gas: gasEstimate! + gasEstimate! / BigInt(3),
-        chainId: targetChain,
-      });
-      console.log("txHash", txHash);
-
-      if (!waitForReceipt) {
-        return txHash;
-      }
-      const receipt = await waitForTransactionReceipt(config, {
-        hash: txHash,
-      });
-      return receipt;
+      return {
+        encryptHash: hash,
+        proofs,
+      };
     },
     {
       manual: true,

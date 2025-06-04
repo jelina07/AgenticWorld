@@ -48,6 +48,11 @@ import useEarlyBirdAirdropIsClaimed from "./hooks/useEarlyBirdAirdropIsClaimed";
 import useEarlyBirdAirdropRelayerClaim from "./hooks/useEarlyBirdAirdropRelayerClaim";
 import useFHETokenIntoWallet from "./hooks/useAddFHE";
 import useEncryptData from "./hooks/worldAiHealth/useEncryptData";
+import useVerify from "./hooks/worldAiHealth/useVerify";
+import useGetVerifyStatus from "./hooks/worldAiHealth/useGetVerifyStatus";
+import useGetVerifyQueue from "./hooks/worldAiHealth/useGetVerifyQueue";
+import useSendTxn from "./hooks/worldAiHealth/useSendTxn";
+import useIsVoted from "./hooks/worldAiHealth/useIsVoted";
 
 export {
   useAirdropCheck,
@@ -100,4 +105,9 @@ export {
   useEarlyBirdAirdropRelayerClaim,
   useFHETokenIntoWallet,
   useEncryptData,
+  useVerify,
+  useGetVerifyStatus,
+  useGetVerifyQueue,
+  useSendTxn,
+  useIsVoted,
 };

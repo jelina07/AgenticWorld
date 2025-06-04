@@ -4,6 +4,7 @@ import {
   Agent1ContractErrorCode,
   AirdropContractErrorCode,
   decodeErrorData,
+  WorldHealthErrorCode,
 } from "./script";
 
 //Differential Contracts ：airdrop, DAO_INSPECTOR_ADDRESS,DAOKEN_ADDRESS
@@ -79,7 +80,31 @@ export function exceptionHandler(
         : errorCode
     ) as string;
     console.log("errorCode", errorCode);
-
+    if (
+      error?.shortMessage?.toLowerCase().includes("user rejected") ||
+      error?.message?.toLowerCase().includes("user rejected")
+    ) {
+      notification.error({
+        message: "Error",
+        description: description || error?.shortMessage || error?.message,
+        duration: 5,
+      });
+    } else {
+      notification.warning({
+        message: "Warning",
+        description:
+          errorMessage || description || error?.shortMessage || error?.message,
+        duration: 5,
+      });
+    }
+  } else if (abi && errorType === "worldAIHealth") {
+    const errorCode = decodeErrorData(abi, error?.cause?.cause?.data);
+    const errorMessage = (
+      typeof errorCode === "number"
+        ? WorldHealthErrorCode(errorCode)
+        : errorCode
+    ) as string;
+    console.log("errorCode", errorCode);
     if (
       error?.shortMessage?.toLowerCase().includes("user rejected") ||
       error?.message?.toLowerCase().includes("user rejected")

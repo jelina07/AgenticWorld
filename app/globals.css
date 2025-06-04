@@ -158,6 +158,38 @@ body {
   color: black;
 }
 
+.encrypt-btn.ant-btn-variant-outlined,
+.send-btn.ant-btn-variant-outlined {
+  background: #3f8ef7;
+  border-color: #3f8ef7 !important;
+  color: white !important;
+  width: 40% !important;
+  min-width: 200px !important;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  overflow-wrap: break-word;
+}
+.encrypt-btn.ant-btn-variant-outlined:disabled {
+  background: #1d232d;
+}
+.send-btn.ant-btn-variant-outlined:disabled {
+  background: #1e2a1f;
+}
+.encrypt-btn.ant-btn-variant-outlined:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  background: #3f8ef7;
+}
+
+.send-btn.ant-btn-variant-outlined:not(:disabled):not(.ant-btn-disabled):hover {
+  background: #4e984c;
+}
+
+.send-btn.ant-btn-variant-outlined {
+  background: #4e984c;
+  border-color: #4e984c !important;
+}
+
 .mind-menu .ant-menu-dark {
   color: var(--foreground);
   background: transparent;
@@ -857,4 +889,71 @@ input:focus {
   overflow: hidden;
   line-height: 1.5;
   max-height: calc(1.5em * 3);
+}
+
+.mind-step.ant-steps
+  .ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title {
+  color: var(--mind-brand);
+}
+
+.mind-step.ant-steps
+  .ant-steps-item-process
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title,
+.mind-step.ant-steps
+  .ant-steps-item-wait
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title {
+  color: #888e8d;
+}
+
+.mind-step .anticon {
+  color: black;
+}
+
+.mind-step.ant-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: var(--mind-brand);
+  border-color: var(--mind-brand);
+}
+
+.mind-step.ant-steps
+  .ant-steps-item-process
+  .ant-steps-item-icon
+  > .ant-steps-icon {
+  color: black;
+}
+
+.mind-step.ant-steps .ant-steps-item-wait .ant-steps-item-icon {
+  background-color: #888e8d;
+  border-color: #888e8d;
+}
+
+.world-health-hub .ant-collapse-header-text {
+  color: white;
+  font-size: 14px;
+}
+
+.healthCheckBox .ant-checkbox-wrapper {
+  padding: 14px !important;
+  border-radius: 12px;
+  border: 1px solid #1f1f1f;
+  background: #181d1c;
+  margin: 5px 0;
+}
+.healthCheckBox .ant-checkbox {
+  display: none !important;
+}
+
+.healthCheckBox .ant-checkbox-label {
+  color: white;
+  font-size: 16px;
+}
+.healthCheckBox .ant-checkbox-wrapper-checked {
+  border: 1px solid #44f797;
+  background: rgba(68, 247, 151, 0.12);
 }
