@@ -6,9 +6,9 @@ import useValidateChainWalletLink from "../useValidateChainWalletLink";
 import { bnb, bnbtestnet } from "@/sdk/wagimConfig";
 
 const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/health-hub/verify"
+  ? "https://agent.mindnetwork.xyz/api/health-hub/verify"
   : isMainnetio()
-  ? "https://agent.mindnetwork.io/health-hub/verify"
+  ? "https://agent.mindnetwork.io/api/health-hub/verify"
   : "/health-hub/verify";
 const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
 

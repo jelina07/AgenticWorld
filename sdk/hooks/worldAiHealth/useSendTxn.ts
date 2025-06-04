@@ -11,9 +11,9 @@ import { estimateGasUtil } from "@/sdk/utils/script";
 import axios from "axios";
 
 const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/health-hub/sign-message"
+  ? "https://agent.mindnetwork.xyz/api/health-hub/sign-message"
   : isMainnetio()
-  ? "https://agent.mindnetwork.io/health-hub/sign-message"
+  ? "https://agent.mindnetwork.io/api/health-hub/sign-message"
   : `${process.env.NEXT_PUBLIC_API_URL}/health-hub/sign-message`;
 
 export default function useSendTxn(

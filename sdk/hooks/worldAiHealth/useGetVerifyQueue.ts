@@ -5,9 +5,9 @@ import { useRequest } from "ahooks";
 import { useAccount } from "wagmi";
 
 const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/health-hub/queue"
+  ? "https://agent.mindnetwork.xyz/api/health-hub/queue"
   : isMainnetio()
-  ? "https://agent.mindnetwork.io/health-hub/queue"
+  ? "https://agent.mindnetwork.io/api/health-hub/queue"
   : "/health-hub/queue";
 
 export default function useGetVerifyQueue(options?: Options<any, any>) {

@@ -28,10 +28,11 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { message } from "antd";
 
 const signurl = isMainnet()
-  ? "https://agent.mindnetwork.xyz/health-hub/sign-url"
+  ? "https://agent.mindnetwork.xyz/api/health-hub/sign-url"
   : isMainnetio()
-  ? "https://agent.mindnetwork.io/health-hub/sign-url"
+  ? "https://agent.mindnetwork.io/api/health-hub/sign-url"
   : `${process.env.NEXT_PUBLIC_API_URL}/health-hub/sign-url`;
+
 const signMessage =
   "Sign to authorize encryption and upload of your selected health data to the secure cloud endpoint";
 

@@ -6,9 +6,9 @@ import request from "@/sdk/request";
 import { useAccount } from "wagmi";
 
 const url = isMainnet()
-  ? "https://agent.mindnetwork.xyz/health-hub/status"
+  ? "https://agent.mindnetwork.xyz/api/health-hub/status"
   : isMainnetio()
-  ? "https://agent.mindnetwork.io/health-hub/status"
+  ? "https://agent.mindnetwork.io/api/health-hub/status"
   : "/health-hub/status";
 
 export default function useGetVerifyStatus(options?: Options<any, any>) {
