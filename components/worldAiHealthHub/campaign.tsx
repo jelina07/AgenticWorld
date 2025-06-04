@@ -60,7 +60,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
           </div>
 
           <div className="mt-[12px] font-[600]">
-            <div>Time: June 3, 2025 - June 17, 2025.</div>
+            <div>Time: June 3, 2025 - June 23, 2025.</div>
             <div>
               <span>Rewards: Share in a 10,000,000 FHE prize pool.</span>
               <a
