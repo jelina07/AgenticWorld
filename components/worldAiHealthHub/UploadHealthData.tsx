@@ -262,6 +262,7 @@ const content = (
 
 export default function UploadHealthData() {
   const { address } = useAccount();
+  const [showEncryptData, setShowEncryptData] = useState("");
   const [checkedList1, setCheckedList1] = useState<string[]>([]);
   const [checkedList2, setCheckedList2] = useState<string[]>([]);
   const [checkedList3, setCheckedList3] = useState<string[]>([]);
@@ -327,6 +328,7 @@ export default function UploadHealthData() {
     setBinaryMusculoskeletalConcerns(
       Array(optionsMusculoskeletalConcerns.length).fill(0)
     );
+    setShowEncryptData("");
   };
   const onChangeOptions = (
     checkedValues: any,
@@ -671,13 +673,13 @@ export default function UploadHealthData() {
   const setpCurrent = useMemo(() => {
     if (
       !selectedNumMin5 &&
-      !encryptData?.proofs &&
+      !showEncryptData &&
       !verifyStatus?.isVerifying &&
       (!verifyStatus?.isVerified || verifyStatus?.isVerified === 0)
     ) {
       return 1;
     } else if (
-      (encryptData?.proofs || verifyStatus?.isVerifying) &&
+      (showEncryptData || verifyStatus?.isVerifying) &&
       (!verifyStatus?.isVerified ||
         verifyStatus?.isVerified === 0 ||
         verifyStatus?.isVerified === -1)
@@ -691,8 +693,6 @@ export default function UploadHealthData() {
     }
     // if send to bsc return 4
   }, [selectedNumMin5, encryptData, isVoted, verifyStatus]);
-
-  console.log("setpCurrent", setpCurrent);
 
   const clickencryptData = async () => {
     try {
@@ -734,6 +734,10 @@ export default function UploadHealthData() {
     } catch (error) {}
   }, []);
 
+  useEffect(() => {
+    if (encryptData) setShowEncryptData(encryptData.proofs);
+  }, [encryptData]);
+
   // useEffect(() => {
   //   if (verifyStatus?.isVerified)
   //     notification.success({
@@ -765,7 +769,9 @@ export default function UploadHealthData() {
             title: "Encrypt Data",
           },
           {
-            title: `Verify Data ${verifyQueue ? "Queue" + verifyQueue : ""}`,
+            title: `Verify Data ${
+              verifyQueue ? "(Queue: " + verifyQueue + " )" : ""
+            }`,
           },
           {
             title: "Send Data",
@@ -817,14 +823,12 @@ export default function UploadHealthData() {
         </div>
         <div className="flex-1 sm:mt-[0px] mt-[30px]">
           <div className="bg-[#1f1f1f] border border-[#484848] rounded-[12px] p-[26px] h-[200px] break-all overflow-y-auto">
-            {!encryptData?.proofs ? (
+            {!showEncryptData ? (
               <span className="text-[#626262]">
                 Encrypted ciphertext will appear here after encryption
               </span>
             ) : (
-              encryptData?.proofs.slice(0, 50) +
-              "..." +
-              encryptData?.proofs.slice(-50)
+              showEncryptData.slice(0, 50) + "..." + showEncryptData.slice(-50)
             )}
           </div>
           <div className="mt-[15px] text-[14px] text-center text-[#888e8d]">
@@ -848,7 +852,7 @@ export default function UploadHealthData() {
           <span className="text-[14px] whitespace-normal">
             {verifyStatus?.isVerified ||
             verifyStatus?.isVerifying ||
-            encryptData?.proofs
+            showEncryptData
               ? "Encrypted"
               : `Encrypt ${
                   selectedNumMin5 ? " (Select at least 5 symptoms)" : ""
