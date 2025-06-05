@@ -60,7 +60,7 @@ export default function Campaign() {
           </div>
 
           <div className="mt-[12px] font-[600]">
-            <div>Time: June 3, 2025 - June 23, 2025.</div>
+            <div>Time: June 5 - June 23, 09:00 AM UTC, 2025</div>
             <div>
               <span>Rewards: Share in a 10,000,000 FHE prize pool.</span>
               <a
