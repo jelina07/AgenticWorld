@@ -26,12 +26,13 @@ import axios from "axios";
 import { useSignMessage } from "wagmi";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { message } from "antd";
+import request from "@/sdk/request";
 
 const signurl = isMainnet()
   ? "https://agent.mindnetwork.xyz/api/health-hub/sign-url"
   : isMainnetio()
   ? "https://agent.mindnetwork.io/api/health-hub/sign-url"
-  : `${process.env.NEXT_PUBLIC_API_URL}/health-hub/sign-url`;
+  : `/health-hub/sign-url`;
 
 const signMessage =
   "Sign to authorize encryption and upload of your selected health data to the secure cloud endpoint";
@@ -70,8 +71,8 @@ const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
 //         });
 //         return;
 //       }
-//       return new Promise(async (resolve, reject) => {
-//         const worker = new Worker(new URL("../utils/healthAiWorker.ts"));
+//       const result = new Promise(async (resolve, reject) => {
+//         const worker = new Worker("../utils/healthAiWorker.ts");
 //         worker.onmessage = (e) => {
 //           resolve(e.data);
 //           worker.terminate();
@@ -82,13 +83,15 @@ const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
 //           worker.terminate();
 //         };
 
-//         // 传递必要参数到Worker
 //         worker.postMessage({
 //           userInputBinary,
 //           address,
 //           signMessageAsync,
 //         });
 //       });
+//       console.log("result", result);
+
+//       return result;
 //     },
 //     {
 //       manual: true,
@@ -160,7 +163,7 @@ export default function useEncryptData(options?: Options<any, any>) {
       const signature = await signMessageAsync({
         message: signMessage,
       });
-      const googleCloudUrlObj = (await axios.post(signurl, {
+      const googleCloudUrlObj = (await request.post(signurl, {
         bucket:
           isDev() || isProd() ? "world-ai-health-hub" : "world-ai-health-hub",
         fileHash: hash,
@@ -170,7 +173,7 @@ export default function useEncryptData(options?: Options<any, any>) {
       })) as any;
 
       console.log("google cloud url", googleCloudUrlObj);
-      const response2 = await axios.put(googleCloudUrlObj.data.data, proofs, {
+      const response2 = await request.put(googleCloudUrlObj.data.data, proofs, {
         headers: {
           "Content-Type": "application/octet-stream",
         },

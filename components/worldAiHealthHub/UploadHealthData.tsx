@@ -18,6 +18,8 @@ import {
   useGetUploadStatus,
   useGetVerifyQueue,
   useGetVerifyStatus,
+  useHubGetCurrentExp,
+  useHubList,
   useIsVoted,
   useSendTxn,
   useVerify,
@@ -680,6 +682,19 @@ export default function UploadHealthData() {
   const { data: isVoted, refresh: isVotedRefresh } = useIsVoted();
   const [isRestart, setIsRestart] = useState(false);
 
+  const { data: hubList } = useHubList();
+  const ids = useMemo(() => {
+    return hubList?.map((item: any) => item.id) || [];
+  }, [hubList]);
+  const { learnSecond, loading: learnSecondLoading } = useHubGetCurrentExp({
+    tokenId: agentTokenId,
+    hubIds: ids,
+  });
+  const isLearned = useMemo(() => {
+    const index = ids.indexOf(5);
+    return learnSecond !== undefined && learnSecond[index] > 0;
+  }, [learnSecond]);
+
   console.log("lll", uploadStatus);
 
   const setpCurrent = useMemo(() => {
@@ -691,7 +706,7 @@ export default function UploadHealthData() {
     ) {
       return 1;
     } else if (
-      (showEncryptData || verifyStatus?.isVerifying) &&
+      (uploadStatus || verifyStatus?.isVerifying) &&
       (!verifyStatus?.isVerified || verifyStatus?.isVerified === -1)
     ) {
       return 2;
@@ -702,24 +717,32 @@ export default function UploadHealthData() {
       return 4;
     }
     // if send to bsc return 4
-  }, [selectedNumMin5, showEncryptData, isVoted, verifyStatus]);
+  }, [selectedNumMin5, showEncryptData, uploadStatus, isVoted, verifyStatus]);
 
   console.log("setpCurrent", setpCurrent);
 
   const clickencryptData = async () => {
-    try {
-      const res = await encryptDataRunAsync(
-        binaryFormatString.replace(/,/g, ""),
-        content
-      );
-      if (res)
-        notification.success({
-          message: "Success",
-          description: "Encrypt Success",
-        });
-      setIsRestart(false);
-      getUploadStatusRefresh();
-    } catch (error) {}
+    if (isLearned) {
+      try {
+        const res = await encryptDataRunAsync(
+          binaryFormatString.replace(/,/g, ""),
+          content
+        );
+        if (res)
+          notification.success({
+            message: "Success",
+            description: "Encrypt Success",
+          });
+        setIsRestart(false);
+        getUploadStatusRefresh();
+      } catch (error) {}
+    } else {
+      message.open({
+        type: "warning",
+        content: `You need to work on this hub first.`,
+        duration: 5,
+      });
+    }
   };
   const clickVerify = async () => {
     try {
