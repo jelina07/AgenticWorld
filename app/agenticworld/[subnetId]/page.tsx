@@ -202,7 +202,7 @@ export default function page({ params }: { params: any }) {
           <DeepSeekHub currentSubnet={currentSubnet} />
         ) : currentSubnet?.subnetId === 5 ? (
           <>
-            <WorldAiHealthHub currentSubnet={currentSubnet} />
+            <WorldAiHealthHub />
             <UseCase currentSubnet={currentSubnet} />
           </>
         ) : (

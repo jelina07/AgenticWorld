@@ -15,6 +15,7 @@ import Verify from "@/public/icons/verify.svg";
 import Send from "@/public/icons/send.svg";
 import {
   useEncryptData,
+  useGetUploadStatus,
   useGetVerifyQueue,
   useGetVerifyStatus,
   useIsVoted,
@@ -329,6 +330,10 @@ export default function UploadHealthData() {
       Array(optionsMusculoskeletalConcerns.length).fill(0)
     );
     setShowEncryptData("");
+  };
+  const clickRestart = () => {
+    refresh();
+    setIsRestart(true);
   };
   const onChangeOptions = (
     checkedValues: any,
@@ -665,24 +670,32 @@ export default function UploadHealthData() {
     refresh: getVerifyQueueRefresh,
     loading: verifyQueueLoading,
   } = useGetVerifyQueue();
+  const {
+    data: uploadStatus,
+    runAsync: getUploadStatus,
+    refresh: getUploadStatusRefresh,
+    loading: uploadStatusLoading,
+  } = useGetUploadStatus();
   const { runAsync: sendTxn, loading: sendTxnLoading } = useSendTxn();
   const { data: isVoted, refresh: isVotedRefresh } = useIsVoted();
+  const [isRestart, setIsRestart] = useState(false);
 
-  console.log("lll", verifyStatus?.isVerified === 1 && !isVoted);
+  console.log("lll", uploadStatus);
 
   const setpCurrent = useMemo(() => {
     if (
-      !selectedNumMin5 &&
-      !showEncryptData &&
-      !verifyStatus?.isVerifying &&
-      (!verifyStatus?.isVerified || verifyStatus?.isVerified === 0)
+      (!selectedNumMin5 &&
+        !showEncryptData &&
+        !verifyStatus?.isVerifying &&
+        !verifyStatus?.isVerified) ||
+      verifyStatus?.isVerified === -1
     ) {
       return 1;
     } else if (
-      (showEncryptData || verifyStatus?.isVerifying) &&
-      (!verifyStatus?.isVerified ||
-        verifyStatus?.isVerified === 0 ||
-        verifyStatus?.isVerified === -1)
+      showEncryptData ||
+      uploadStatus ||
+      verifyStatus?.isVerifying
+      // &&(!verifyStatus?.isVerified || verifyStatus?.isVerified === -1)
     ) {
       return 2;
       // if verify success return 3
@@ -692,7 +705,7 @@ export default function UploadHealthData() {
       return 4;
     }
     // if send to bsc return 4
-  }, [selectedNumMin5, encryptData, isVoted, verifyStatus]);
+  }, [selectedNumMin5, encryptData, isVoted, verifyStatus, uploadStatus]);
 
   const clickencryptData = async () => {
     try {
@@ -705,6 +718,8 @@ export default function UploadHealthData() {
           message: "Success",
           description: "Encrypt Success",
         });
+      setIsRestart(false);
+      getUploadStatusRefresh();
     } catch (error) {}
   };
   const clickVerify = async () => {
@@ -729,6 +744,7 @@ export default function UploadHealthData() {
 
   useAsyncEffect(async () => {
     try {
+      await getUploadStatus();
       await getVerifyStatus();
       await getVerifyQueue();
     } catch (error) {}
@@ -737,20 +753,6 @@ export default function UploadHealthData() {
   useEffect(() => {
     if (encryptData) setShowEncryptData(encryptData.proofs);
   }, [encryptData]);
-
-  // useEffect(() => {
-  //   if (verifyStatus?.isVerified)
-  //     notification.success({
-  //       message: "Success",
-  //       description: "Verify Success",
-  //     });
-  //   else if (verifyStatus?.isVerified === -1) {
-  //     notification.success({
-  //       message: "Error",
-  //       description: "Verify failed, please try again",
-  //     });
-  //   }
-  // }, [verifyStatus]);
 
   return (
     <div className="mt-[40px] pt-[28px] pb-[60px] px-[28px] bg-[#181818] rounded-[20px]">
@@ -778,29 +780,45 @@ export default function UploadHealthData() {
           },
         ]}
       />
-      <div className="flex items-center gap-[10px] mt-[50px] font-[700]">
-        <div>Health Symptoms Selection</div>
-        <img
-          src="/icons/refresh.svg"
-          alt="refresh"
-          onClick={refresh}
-          width={15}
-          className={`cursor-pointer`}
-        />
-      </div>
-      <div className="text-[14px] mt-[10px]">
-        Select at least 5 symptoms that apply to your last condition
-      </div>
-
-      <div className="mt-[20px]">
-        <Collapse
-          accordion
-          items={getItems(panelStyle)}
-          bordered={false}
-          className="mind-collapse world-health-hub"
-          expandIconPosition="end"
-        />
-      </div>
+      {uploadStatusLoading ? (
+        <div className="text-center">loading...</div>
+      ) : uploadStatus && !isRestart ? (
+        <div className="text-center mt-[30px]">
+          <span
+            className="text-[var(--mind-brand)] px-[10px] py-[4px] cursor-pointer border border-[var(--mind-brand)] rounded-[10px]"
+            onClick={clickRestart}
+          >
+            Restart
+          </span>
+        </div>
+      ) : verifyStatus?.isVerified === 1 || verifyStatus?.isVerifying ? (
+        <></>
+      ) : (
+        <div>
+          <div className="flex items-center gap-[10px] mt-[50px] font-[700]">
+            <div>Health Symptoms Selection</div>
+            <img
+              src="/icons/refresh.svg"
+              alt="refresh"
+              onClick={refresh}
+              width={15}
+              className={`cursor-pointer`}
+            />
+          </div>
+          <div className="text-[14px] mt-[10px]">
+            Select at least 5 symptoms that apply to your last condition
+          </div>
+          <div className="mt-[20px]">
+            <Collapse
+              accordion
+              items={getItems(panelStyle)}
+              bordered={false}
+              className="mind-collapse world-health-hub"
+              expandIconPosition="end"
+            />
+          </div>
+        </div>
+      )}
 
       <div className="mt-[40px] font-[700]">Encrypt Data with FHE</div>
       <div className="text-[14px] mt-[10px]">
@@ -843,16 +861,17 @@ export default function UploadHealthData() {
           className="encrypt-btn"
           disabled={
             selectedNumMin5 ||
-            verifyStatus?.isVerified ||
+            verifyStatus?.isVerified === 1 ||
             verifyStatus?.isVerifying
           }
           loading={loading}
           onClick={clickencryptData}
         >
           <span className="text-[14px] whitespace-normal">
-            {verifyStatus?.isVerified ||
-            verifyStatus?.isVerifying ||
-            showEncryptData
+            {(verifyStatus?.isVerified === 1 ||
+              verifyStatus?.isVerifying ||
+              showEncryptData) &&
+            verifyStatus?.isVerified !== -1
               ? "Encrypted"
               : `Encrypt ${
                   selectedNumMin5 ? " (Select at least 5 symptoms)" : ""
@@ -871,9 +890,11 @@ export default function UploadHealthData() {
             className="encrypt-btn"
             onClick={clickVerify}
             loading={verifyLoading}
-            disabled={verifyStatus?.isVerified || verifyStatus?.isVerifying}
+            disabled={
+              verifyStatus?.isVerified === 1 || verifyStatus?.isVerifying
+            }
           >
-            {verifyStatus?.isVerified
+            {verifyStatus?.isVerified === 1
               ? "Verified"
               : verifyStatus?.isVerifying || verifyLoading
               ? "Verifying..."

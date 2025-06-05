@@ -49,6 +49,55 @@ const publicClientMind = createPublicClient({
 
 const quryMindChainId = isDev() || isProd() ? mindtestnet.id : mindnet.id;
 const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
+// export default function useEncryptData(options?: Options<any, any>) {
+//   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+//   const isAgent = agentTokenId !== 0;
+//   const { validateAsync, chainId, address } =
+//     useValidateChainWalletLink(targetChain);
+//   const { signMessageAsync } = useSignMessage();
+
+//   const result = useRequest(
+//     async (userInputBinary: string, content) => {
+//       const isValid = await validateAsync?.();
+//       if (!isValid || !chainId) {
+//         return;
+//       }
+//       if (!isAgent) {
+//         message.open({
+//           type: "warning",
+//           content: content,
+//           duration: 5,
+//         });
+//         return;
+//       }
+//       return new Promise(async (resolve, reject) => {
+//         const worker = new Worker(new URL("../utils/healthAiWorker.ts"));
+//         worker.onmessage = (e) => {
+//           resolve(e.data);
+//           worker.terminate();
+//         };
+
+//         worker.onerror = (err) => {
+//           reject(err);
+//           worker.terminate();
+//         };
+
+//         // 传递必要参数到Worker
+//         worker.postMessage({
+//           userInputBinary,
+//           address,
+//           signMessageAsync,
+//         });
+//       });
+//     },
+//     {
+//       manual: true,
+//       onError: (err) => exceptionHandler(err),
+//       ...options,
+//     }
+//   );
+//   return result;
+// }
 export default function useEncryptData(options?: Options<any, any>) {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
@@ -108,7 +157,6 @@ export default function useEncryptData(options?: Options<any, any>) {
       console.log("hash", hash);
 
       //upload proofs to google cloud
-
       const signature = await signMessageAsync({
         message: signMessage,
       });

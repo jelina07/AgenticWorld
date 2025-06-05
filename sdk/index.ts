@@ -53,6 +53,7 @@ import useGetVerifyStatus from "./hooks/worldAiHealth/useGetVerifyStatus";
 import useGetVerifyQueue from "./hooks/worldAiHealth/useGetVerifyQueue";
 import useSendTxn from "./hooks/worldAiHealth/useSendTxn";
 import useIsVoted from "./hooks/worldAiHealth/useIsVoted";
+import useGetUploadStatus from "./hooks/worldAiHealth/useGetUploadStatus";
 
 export {
   useAirdropCheck,
@@ -110,4 +111,5 @@ export {
   useGetVerifyQueue,
   useSendTxn,
   useIsVoted,
+  useGetUploadStatus,
 };

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { isDev, isProd } from "@/sdk/utils";
 
-export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
+export default function Campaign() {
   const { isConnected, chainId, chain } = useAccount();
   console.log("chain", chain);
 
@@ -86,7 +86,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                   })
                 }
               >
-                click to change network to bnb
+                click to change network to BNB
               </span>
             ) : !isConnected || isAgent ? (
               <>
@@ -189,7 +189,7 @@ export default function Campaign({ currentSubnet }: { currentSubnet: any }) {
                       })
                     }
                   >
-                    click to change network to bnb
+                    click to change network to BNB
                   </span>
                 ) : (
                   <Link
