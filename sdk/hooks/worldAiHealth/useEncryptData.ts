@@ -1,5 +1,7 @@
 import { useRequest } from "ahooks";
 import { Options } from "../../types";
+import "whatwg-fetch";
+import "promise-polyfill/src/polyfill";
 import {
   bnb,
   bnbtestnet,
@@ -50,57 +52,6 @@ const publicClientMind = createPublicClient({
 
 const quryMindChainId = isDev() || isProd() ? mindtestnet.id : mindnet.id;
 const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
-// export default function useEncryptData(options?: Options<any, any>) {
-//   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-//   const isAgent = agentTokenId !== 0;
-//   const { validateAsync, chainId, address } =
-//     useValidateChainWalletLink(targetChain);
-//   const { signMessageAsync } = useSignMessage();
-
-//   const result = useRequest(
-//     async (userInputBinary: string, content) => {
-//       const isValid = await validateAsync?.();
-//       if (!isValid || !chainId) {
-//         return;
-//       }
-//       if (!isAgent) {
-//         message.open({
-//           type: "warning",
-//           content: content,
-//           duration: 5,
-//         });
-//         return;
-//       }
-//       const result = new Promise(async (resolve, reject) => {
-//         const worker = new Worker("../utils/healthAiWorker.ts");
-//         worker.onmessage = (e) => {
-//           resolve(e.data);
-//           worker.terminate();
-//         };
-
-//         worker.onerror = (err) => {
-//           reject(err);
-//           worker.terminate();
-//         };
-
-//         worker.postMessage({
-//           userInputBinary,
-//           address,
-//           signMessageAsync,
-//         });
-//       });
-//       console.log("result", result);
-
-//       return result;
-//     },
-//     {
-//       manual: true,
-//       onError: (err) => exceptionHandler(err),
-//       ...options,
-//     }
-//   );
-//   return result;
-// }
 export default function useEncryptData(options?: Options<any, any>) {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
