@@ -916,7 +916,7 @@ export default function UploadHealthData() {
           </span>
         </Button>
         <div
-          className={`flex text-[14px] text-center justify-center gap-[5px] mt-[10px]${
+          className={`flex text-[14px] text-center justify-center gap-[5px] mt-[10px] ${
             !isConnected || isLearned ? "hidden" : ""
           }`}
         >
