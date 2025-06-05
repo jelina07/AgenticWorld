@@ -705,7 +705,9 @@ export default function UploadHealthData() {
       return 4;
     }
     // if send to bsc return 4
-  }, [selectedNumMin5, encryptData, isVoted, verifyStatus, uploadStatus]);
+  }, [selectedNumMin5, showEncryptData, isVoted, verifyStatus, uploadStatus]);
+
+  console.log("setpCurrent", setpCurrent);
 
   const clickencryptData = async () => {
     try {
@@ -752,7 +754,7 @@ export default function UploadHealthData() {
 
   useEffect(() => {
     if (encryptData) setShowEncryptData(encryptData.proofs);
-  }, [encryptData]);
+  }, [encryptData?.proofs]);
 
   return (
     <div className="mt-[40px] pt-[28px] pb-[60px] px-[28px] bg-[#181818] rounded-[20px]">
