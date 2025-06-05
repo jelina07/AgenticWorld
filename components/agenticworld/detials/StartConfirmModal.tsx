@@ -3,6 +3,8 @@ import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
 import {
   useAgentGetStakeAmount,
   useHubDelegate,
+  useHubGetCurrentExp,
+  useHubList,
   useHubSwitchDelegate,
   useRelayerDelegate,
   useRelayerGetStatus,
@@ -11,10 +13,17 @@ import {
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
+import useHubLearningTime from "@/store/useHubLearningTime";
 import { judgeUseGasless, secondsToHours } from "@/utils/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Button, message, Modal, notification } from "antd";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import { useAccount } from "wagmi";
 
 const successTip = "Agent training has successfully started !";
@@ -61,11 +70,25 @@ const StartConfirmModal = forwardRef(
       cancel: statusCancelSwitch,
     } = useRelayerGetStatus("switch");
     const [actionLoop, setActionLoop] = useState(false);
+    // const { data: hubList } = useHubList();
+    // const ids = useMemo(() => {
+    //   return hubList?.map((item: any) => item.id) || [];
+    // }, [hubList]);
+    // const { refresh: refreshHubLearning } = useHubGetCurrentExp({
+    //   tokenId: agentTokenId,
+    //   hubIds: ids,
+    // });
+    // const { setRefreshGetHubLearningTime } = useHubLearningTime();
+
+    // useEffect(() => {
+    //   setRefreshGetHubLearningTime(refreshHubLearning);
+    // }, [refreshHubLearning]);
 
     const afterSuccessHandler = () => {
       handleCancel();
       refreshLearningId();
       refreshHubAgentCount();
+      // refreshHubLearning();
     };
     useRelayerStatusHandler(
       status,

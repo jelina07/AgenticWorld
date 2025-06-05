@@ -29,6 +29,7 @@ import { useAsyncEffect } from "ahooks";
 import { bnb, bnbtestnet } from "@/sdk/wagimConfig";
 import { isDev, isProd } from "@/sdk/utils";
 import { useAccount } from "wagmi";
+import useHubLearningTime from "@/store/useHubLearningTime";
 const optionsGeneralConcerns: CheckboxOptionType<string>[] = [
   { label: "Acute Liver Failure", value: "Acute Liver Failure" },
   { label: "Altered Sensorium", value: "Altered Sensorium" },
@@ -264,7 +265,7 @@ const content = (
 );
 
 export default function UploadHealthData() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [showEncryptData, setShowEncryptData] = useState("");
   const [checkedList1, setCheckedList1] = useState<string[]>([]);
   const [checkedList2, setCheckedList2] = useState<string[]>([]);
@@ -681,12 +682,17 @@ export default function UploadHealthData() {
   const { runAsync: sendTxn, loading: sendTxnLoading } = useSendTxn();
   const { data: isVoted, refresh: isVotedRefresh } = useIsVoted();
   const [isRestart, setIsRestart] = useState(false);
+  const { hubLearningTime, refreshGetHubLearningTime } = useHubLearningTime();
 
   const { data: hubList } = useHubList();
   const ids = useMemo(() => {
     return hubList?.map((item: any) => item.id) || [];
   }, [hubList]);
-  const { learnSecond, loading: learnSecondLoading } = useHubGetCurrentExp({
+  const {
+    learnSecond,
+    loading: learnSecondLoading,
+    refresh: refreshHubGetCurrentExp,
+  } = useHubGetCurrentExp({
     tokenId: agentTokenId,
     hubIds: ids,
   });
@@ -694,6 +700,12 @@ export default function UploadHealthData() {
     const index = ids.indexOf(5);
     return learnSecond !== undefined && learnSecond[index] > 0;
   }, [learnSecond]);
+
+  // const isLearned = useMemo(() => {
+  //   console.log("ids", ids);
+  //   const index = ids.indexOf(5);
+  //   return hubLearningTime.length && hubLearningTime[index] > 0;
+  // }, [hubLearningTime]);
 
   console.log("lll", uploadStatus);
 
@@ -804,7 +816,10 @@ export default function UploadHealthData() {
       />
       {uploadStatusLoading ? (
         <div className="text-center">loading...</div>
-      ) : uploadStatus && !isRestart ? (
+      ) : uploadStatus &&
+        !isRestart &&
+        verifyStatus?.isVerified !== 1 &&
+        !verifyStatus?.isVerifying ? (
         <div className="text-center mt-[30px]">
           <span
             className="text-[var(--mind-brand)] px-[10px] py-[4px] cursor-pointer border border-[var(--mind-brand)] rounded-[10px]"
@@ -900,6 +915,20 @@ export default function UploadHealthData() {
                 }`}
           </span>
         </Button>
+        <div
+          className={`text-[14px] text-center ${
+            !isConnected || isLearned ? "hidden" : ""
+          }`}
+        >
+          Refresh the learning status of this hub:
+          <img
+            src="/icons/refresh.svg"
+            alt="refresh"
+            onClick={() => refreshHubGetCurrentExp()}
+            width={15}
+            className={`cursor-pointer ${learnSecondLoading ? "refresh" : ""} `}
+          />
+        </div>
       </div>
 
       <div className="mt-[26px]">

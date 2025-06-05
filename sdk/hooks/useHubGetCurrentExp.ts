@@ -8,6 +8,7 @@ import { exceptionHandler } from "../utils/exception";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 import { isSupportChain } from "../utils/script";
+import useHubLearningTime from "@/store/useHubLearningTime";
 
 export default function useHubGetCurrentExp(
   options?: Options<bigint[] | undefined, []> & {
@@ -18,6 +19,9 @@ export default function useHubGetCurrentExp(
 ) {
   const { tokenId, hubIds, learningId, ...rest } = options || {};
   const { chainId } = useAccount();
+  // const setHubLearningTime = useHubLearningTime(
+  //   (state) => state.setHubLearningTime
+  // );
   const result = useRequest(
     async () => {
       if (
@@ -26,6 +30,7 @@ export default function useHubGetCurrentExp(
         !chainId ||
         !isSupportChain(chainId)
       ) {
+        // setHubLearningTime([]);
         return;
       }
       const currentExp = (await readContract(config, {
@@ -48,6 +53,7 @@ export default function useHubGetCurrentExp(
       Math.floor(Number(item) / 3600)
     );
     const learnSecond = result.data?.map((item: any) => Number(item));
+    // setHubLearningTime(learnSecond || []);
     return {
       learnHour,
       learnSecond,

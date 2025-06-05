@@ -5,6 +5,7 @@ import { useAccount, useSwitchChain } from "wagmi";
 import Link from "next/link";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { isDev, isProd } from "@/sdk/utils";
+import useHubLearningTime from "@/store/useHubLearningTime";
 
 export default function Campaign() {
   const { isConnected, chainId, chain } = useAccount();
@@ -13,12 +14,11 @@ export default function Campaign() {
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const { switchChain } = useSwitchChain();
   const isAgent = agentTokenId !== 0;
+  const { hubLearningTime, refreshGetHubLearningTime } = useHubLearningTime();
   const { data: hubList } = useHubList();
-
   const ids = useMemo(() => {
     return hubList?.map((item: any) => item.id) || [];
   }, [hubList]);
-
   const {
     learnSecond,
     loading: learnSecondLoading,
@@ -28,17 +28,23 @@ export default function Campaign() {
     hubIds: ids,
   });
 
-  const {
-    data: isVoted,
-    refresh: refreshVoted,
-    loading: isVotedLoading,
-  } = useIsVoted();
-
   const isLearned = useMemo(() => {
     console.log("ids", ids);
     const index = ids.indexOf(5);
     return learnSecond !== undefined && learnSecond[index] > 0;
   }, [learnSecond]);
+
+  // const isLearned = useMemo(() => {
+  //   console.log("ids", ids);
+  //   const index = ids.indexOf(5);
+  //   return hubLearningTime.length && hubLearningTime[index] > 0;
+  // }, [hubLearningTime]);
+
+  const {
+    data: isVoted,
+    refresh: refreshVoted,
+    loading: isVotedLoading,
+  } = useIsVoted();
 
   console.log("isVoted", isVoted);
 
@@ -108,7 +114,7 @@ export default function Campaign() {
                   <img
                     src="/icons/refresh.svg"
                     alt="refresh"
-                    onClick={refresh}
+                    onClick={() => refresh()}
                     width={15}
                     className={`cursor-pointer ${
                       learnSecondLoading ? "refresh" : ""
@@ -146,61 +152,6 @@ export default function Campaign() {
                 Go to create a agent first !
               </Link>
             )}
-            {/* {!isConnected || isAgent ? (
-              <>
-                <div
-                  className={`px-[12px] py-[16px] rounded-[15px] ${
-                    isLearned ? "bg-[#1c2e27]" : "bg-[#212121]"
-                  } mt-[12px] flex justify-between gap-[5px]`}
-                >
-                  <span className="text-[var(--mind-brand)] flex-shrink-0">
-                    Task 1
-                  </span>
-                  <span className="ml-[10px]">
-                    Click the Start Working button to let your agent work in
-                    World AI Health Hub.
-                    {isLearned ? " ✅" : ""}
-                  </span>
-                  <img
-                    src="/icons/refresh.svg"
-                    alt="refresh"
-                    onClick={refresh}
-                    width={15}
-                    className={`cursor-pointer ${
-                      learnSecondLoading ? "refresh" : ""
-                    } ${!isConnected || isLearned ? "hidden" : ""} `}
-                  />
-                </div>
-                <div className="px-[12px] py-[16px] rounded-[15px] bg-[#212121] mt-[12px]">
-                  <span className="text-[var(--mind-brand)]">Task 2</span>
-                  <span className="ml-[10px]">
-                    Upload your Health Data with FHE.
-                  </span>
-                </div>
-              </>
-            ) : (
-              <>
-                {chainId === mindnet.id || chainId === mindtestnet.id ? (
-                  <span
-                    className="inline-block mt-[15px] text-[var(--mind-brand)] cursor-pointer"
-                    onClick={() =>
-                      switchChain({
-                        chainId: isDev() || isProd() ? bnbtestnet.id : bnb.id,
-                      })
-                    }
-                  >
-                    click to change network to BNB
-                  </span>
-                ) : (
-                  <Link
-                    href="/agentlaunch"
-                    className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
-                  >
-                    Go to create a agent first !
-                  </Link>
-                )}
-              </>
-            )} */}
           </div>
         </div>
         <img

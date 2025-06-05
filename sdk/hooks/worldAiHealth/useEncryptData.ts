@@ -150,11 +150,28 @@ export default function useEncryptData(options?: Options<any, any>) {
       console.log("userInputInt", userInputBigInt);
 
       //EncryptData
-      const proofs = JSON.stringify(
-        //@ts-ignore
-        VOTER.encryptNumber(userInputBigInt),
-        (_, value) => (typeof value === "bigint" ? value.toString() : value)
-      );
+      const proofs: string = await new Promise((resolve, reject) => {
+        const worker = new Worker(
+          new URL("./encrypt-worker.ts", import.meta.url),
+          {
+            type: "module",
+          }
+        );
+        worker.onmessage = (e) => {
+          const { success, proofs, error } = e.data;
+          if (success) {
+            resolve(proofs);
+          } else {
+            reject(new Error(error));
+          }
+          worker.terminate();
+        };
+        worker.onerror = (err) => {
+          reject(err);
+          worker.terminate();
+        };
+        worker.postMessage({ userInputBinary, sPublicKey });
+      });
       console.log("proofs", typeof proofs, proofs);
       const hash = keccak256(toBytes(proofs));
       console.log("hash", hash);
@@ -173,7 +190,7 @@ export default function useEncryptData(options?: Options<any, any>) {
       })) as any;
 
       console.log("google cloud url", googleCloudUrlObj);
-      const response2 = await request.put(googleCloudUrlObj.data.data, proofs, {
+      const response2 = await axios.put(googleCloudUrlObj, proofs, {
         headers: {
           "Content-Type": "application/octet-stream",
         },
