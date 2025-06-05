@@ -870,7 +870,7 @@ export default function UploadHealthData() {
           <span className="text-[14px] whitespace-normal">
             {(verifyStatus?.isVerified === 1 ||
               verifyStatus?.isVerifying ||
-              showEncryptData) &&
+              (uploadStatus && !isRestart)) &&
             verifyStatus?.isVerified !== -1
               ? "Encrypted"
               : `Encrypt ${
