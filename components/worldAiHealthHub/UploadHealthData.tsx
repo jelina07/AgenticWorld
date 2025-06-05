@@ -684,18 +684,15 @@ export default function UploadHealthData() {
 
   const setpCurrent = useMemo(() => {
     if (
-      (!selectedNumMin5 &&
-        !showEncryptData &&
-        !verifyStatus?.isVerifying &&
-        !verifyStatus?.isVerified) ||
-      verifyStatus?.isVerified === -1
+      !selectedNumMin5 &&
+      !showEncryptData &&
+      !verifyStatus?.isVerifying &&
+      (!verifyStatus?.isVerified || verifyStatus?.isVerified === -1)
     ) {
       return 1;
     } else if (
-      showEncryptData ||
-      uploadStatus ||
-      verifyStatus?.isVerifying
-      // &&(!verifyStatus?.isVerified || verifyStatus?.isVerified === -1)
+      (showEncryptData || verifyStatus?.isVerifying) &&
+      (!verifyStatus?.isVerified || verifyStatus?.isVerified === -1)
     ) {
       return 2;
       // if verify success return 3
@@ -705,7 +702,7 @@ export default function UploadHealthData() {
       return 4;
     }
     // if send to bsc return 4
-  }, [selectedNumMin5, showEncryptData, isVoted, verifyStatus, uploadStatus]);
+  }, [selectedNumMin5, showEncryptData, isVoted, verifyStatus]);
 
   console.log("setpCurrent", setpCurrent);
 
