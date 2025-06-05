@@ -899,7 +899,8 @@ export default function UploadHealthData() {
           disabled={
             selectedNumMin5 ||
             verifyStatus?.isVerified === 1 ||
-            verifyStatus?.isVerifying
+            verifyStatus?.isVerifying ||
+            (uploadStatus && !isRestart)
           }
           loading={loading}
           onClick={clickencryptData}

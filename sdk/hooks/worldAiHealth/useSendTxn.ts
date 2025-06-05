@@ -9,12 +9,19 @@ import useValidateChainWalletLink from "../useValidateChainWalletLink";
 import { isDev, isMainnet, isMainnetio, isProd } from "@/sdk/utils";
 import { estimateGasUtil } from "@/sdk/utils/script";
 import axios from "axios";
+import request from "@/sdk/request";
+
+// const url = isMainnet()
+//   ? "https://agent.mindnetwork.xyz/api/health-hub/sign-message"
+//   : isMainnetio()
+//   ? "https://agent.mindnetwork.io/api/health-hub/sign-message"
+//   : `${process.env.NEXT_PUBLIC_API_URL}/health-hub/sign-message`;
 
 const url = isMainnet()
   ? "https://agent.mindnetwork.xyz/api/health-hub/sign-message"
   : isMainnetio()
   ? "https://agent.mindnetwork.io/api/health-hub/sign-message"
-  : `${process.env.NEXT_PUBLIC_API_URL}/health-hub/sign-message`;
+  : `/health-hub/sign-message`;
 
 export default function useSendTxn(
   options?: Options<any, any>,
@@ -32,7 +39,7 @@ export default function useSendTxn(
       }
 
       // get signature
-      const resSignature = await axios.post(url, {
+      const resSignature = await request.post(url, {
         walletAddress: address,
         contractAddress: WORLAIHEALTHY_HUB_ADDRESS[chainId],
       });
