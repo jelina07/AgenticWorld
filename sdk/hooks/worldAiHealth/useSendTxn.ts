@@ -23,13 +23,9 @@ const url = isMainnet()
   ? "https://agent.mindnetwork.io/api/health-hub/sign-message"
   : `/health-hub/sign-message`;
 
-export default function useSendTxn(
-  options?: Options<any, any>,
-  waitForReceipt = true
-) {
+export default function useSendTxn(options?: Options<any, any>, waitForReceipt = true) {
   const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
-  const { validateAsync, chainId, address } =
-    useValidateChainWalletLink(targetChain);
+  const { validateAsync, chainId, address } = useValidateChainWalletLink(targetChain);
 
   const result = useRequest(
     async () => {
@@ -39,31 +35,23 @@ export default function useSendTxn(
       }
 
       // get signature
-      const resSignature = await request.post(url, {
+      const resSignature = (await request.post(url, {
         walletAddress: address,
         contractAddress: WORLAIHEALTHY_HUB_ADDRESS[chainId],
-      });
+      })) as any;
 
       // send hash to chain: bsc
       const gasEstimate = await estimateGasUtil(
         WORLDAIHEALTHY_ABI,
         "vote",
-        [
-          resSignature.data.data.fileHash,
-          resSignature.data.data.signature,
-          resSignature.data.data.sigTs,
-        ],
+        [resSignature.fileHash, resSignature.signature, resSignature.sigTs],
         WORLAIHEALTHY_HUB_ADDRESS[chainId]
       );
       const txHash = await writeContract(config, {
         abi: WORLDAIHEALTHY_ABI,
         address: WORLAIHEALTHY_HUB_ADDRESS[chainId],
         functionName: "vote",
-        args: [
-          resSignature.data.data.fileHash,
-          resSignature.data.data.signature,
-          resSignature.data.data.sigTs,
-        ],
+        args: [resSignature.fileHash, resSignature.signature, resSignature.sigTs],
         gas: gasEstimate! + gasEstimate! / BigInt(3),
         chainId: targetChain,
       });
@@ -79,8 +67,7 @@ export default function useSendTxn(
     },
     {
       manual: true,
-      onError: (err) =>
-        exceptionHandler(err, "worldAIHealth", WORLDAIHEALTHY_ABI),
+      onError: (err) => exceptionHandler(err, "worldAIHealth", WORLDAIHEALTHY_ABI),
       ...options,
     }
   );
