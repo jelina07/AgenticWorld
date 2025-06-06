@@ -790,8 +790,17 @@ export default function UploadHealthData() {
 
   return (
     <div className="mt-[40px] pt-[28px] pb-[60px] px-[28px] bg-[#181818] rounded-[20px]">
-      <div className="text-[18px] font-[800] mb-[20px]">
+      <div className="text-[18px] font-[800] mb-[0px]">
         Upload Health Data with FHE
+      </div>
+      <div className="mb-[20px]">
+        <div className="font-[700]">
+          Recommend uploading health data on a PC.
+        </div>
+        <div className="text-[14px]">
+          Encryption is resource-intensive and may take longer time on mobile
+          devices.
+        </div>
       </div>
       <Steps
         current={setpCurrent}

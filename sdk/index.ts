@@ -54,6 +54,7 @@ import useGetVerifyQueue from "./hooks/worldAiHealth/useGetVerifyQueue";
 import useSendTxn from "./hooks/worldAiHealth/useSendTxn";
 import useIsVoted from "./hooks/worldAiHealth/useIsVoted";
 import useGetUploadStatus from "./hooks/worldAiHealth/useGetUploadStatus";
+import useParticipate from "./hooks/worldAiHealth/useParticipate";
 
 export {
   useAirdropCheck,
@@ -112,4 +113,5 @@ export {
   useSendTxn,
   useIsVoted,
   useGetUploadStatus,
+  useParticipate,
 };

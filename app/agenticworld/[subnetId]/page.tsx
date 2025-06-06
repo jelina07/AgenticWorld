@@ -10,6 +10,7 @@ import {
   useHubGetCurrentExp,
   useHubGetStakeAmount,
   useHubList,
+  useParticipate,
 } from "@/sdk";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { Button } from "antd";
@@ -21,12 +22,13 @@ import { useRouter } from "next/navigation";
 import CommingSoon from "@/components/utils/CommingSoon";
 import DeepSeekHub from "@/components/deepseekHub";
 import WorldAiHealthHub from "@/components/worldAiHealthHub";
+import { useAsyncEffect } from "ahooks";
 
 export default function page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
   const router = useRouter();
   const { openConnectModal } = useConnectModal();
-  const { chainId, isConnected } = useAccount();
+  const { chainId, isConnected, address } = useAccount();
   const { data: subnetList } = useHubList({
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
@@ -47,6 +49,7 @@ export default function page({ params }: { params: any }) {
     tokenId: agentTokenId,
     hubIds: hubIds,
   });
+  const { run: postParticipate } = useParticipate();
 
   const lockTimeReach =
     subnetList &&
@@ -89,7 +92,12 @@ export default function page({ params }: { params: any }) {
   const goback = () => {
     router.back();
   };
-
+  // useAsyncEffect(async () => {
+  //   if (Number(params.subnetId) === 5 && address) await postParticipate();
+  // }, [address]);
+  useEffect(() => {
+    if (Number(params.subnetId) === 5 && address) postParticipate();
+  }, [address]);
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
