@@ -1005,7 +1005,7 @@ export default function UploadHealthData() {
             loading={sendTxnLoading}
             onClick={sendToBsc}
           >
-            {isVoted ? "Sended" : "Send"}
+            {isVoted ? "Sent" : "Send"}
           </Button>
           {isVoted ? (
             <a
