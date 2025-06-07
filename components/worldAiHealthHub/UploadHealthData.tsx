@@ -260,7 +260,7 @@ const content = (
     href="/agentlaunch"
     className="inline-block text-black hover:text-black underline text-[14px]"
   >
-    Go to create a agent first !
+    Go to create an Agent first !
   </Link>
 );
 

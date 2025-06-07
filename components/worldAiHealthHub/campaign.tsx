@@ -149,7 +149,7 @@ export default function Campaign() {
                 href="/agentlaunch"
                 className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
               >
-                Go to create a agent first !
+                Go to create an Agent first !
               </Link>
             )}
           </div>
