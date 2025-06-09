@@ -952,7 +952,9 @@ export default function UploadHealthData() {
             onClick={clickVerify}
             loading={verifyLoading}
             disabled={
-              verifyStatus?.isVerified === 1 || verifyStatus?.isVerifying
+              verifyStatus?.isVerified === 1 ||
+              verifyStatus?.isVerifying ||
+              !uploadStatus
             }
           >
             {verifyStatus?.isVerified === 1
