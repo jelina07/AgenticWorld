@@ -152,10 +152,11 @@ const BeginInfo3 = () => {
                 onInit={(typewriter) => {
                   typewriter
                     .typeString(string1)
-                    .start()
+                    .pauseFor(100)
                     .callFunction(() => {
                       setStringtypedout1(true);
-                    });
+                    })
+                    .start();
                 }}
               />
               <div
@@ -174,13 +175,14 @@ const BeginInfo3 = () => {
                     delay: 0,
                   }}
                   onInit={(typewriter) => {
-                    stakeLaunchRef.current?.clearStakeAmount();
+                    stakeLaunchRef?.current?.clearStakeAmount();
                     typewriter
                       .typeString(string2)
-                      .start()
+                      .pauseFor(100)
                       .callFunction(() => {
                         setStringtypedout2(true);
-                      });
+                      })
+                      .start();
                   }}
                 />
               ) : (
@@ -207,10 +209,11 @@ const BeginInfo3 = () => {
               onInit={(typewriter) => {
                 typewriter
                   .typeString(string3)
-                  .start()
+                  .pauseFor(100)
                   .callFunction(() => {
                     setStringtypedout3(true);
-                  });
+                  })
+                  .start();
               }}
             />
           ) : (
