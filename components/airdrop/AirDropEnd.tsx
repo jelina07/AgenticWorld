@@ -9,8 +9,13 @@ export default function AirDropEnd() {
           className="py-[30px] px-[50px] rounded-[8px] bg-[url('/images/check-eligibility-bg.png')]
                   bg-center bg-cover opacity-90"
         >
-          <div className="text-[18px] sm:text-[20px] font-[900] capitalize">
-            Community Airdrop Claim Period Has Ended
+          <div className=" flex justify-between items-center">
+            <span className="text-[18px] sm:text-[20px] font-[900] capitalize">
+              Community Airdrop Claim Period Has Ended
+            </span>
+            <span className="text-[14px] text-[var(--mind-grey)] border border-[var(--mind-grey)] p-[5px] rounded-[8px] bg-[#1a1d1e]">
+              Ended
+            </span>
           </div>
           <div className="text-[var(--mind-brand)] text-[12px] mt-[16px] font-[600]">
             Claim Time: April 10th - May 10th

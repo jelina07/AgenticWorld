@@ -14,10 +14,15 @@ export default function BnbAirdropBox() {
   return (
     <div>
       <div className="py-[30px] px-[50px] mt-[60px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-center bg-cover">
-        <div className="text-[18px] font-[900]">
-          <span className="text-[var(--mind-brand)]">Mind Network</span> ×{" "}
-          <span className="text-[#DEB03D]">BNB Chain</span> Retroactive Rewards
-          Claim
+        <div className="flex justify-between items-center">
+          <div className="text-[18px] font-[900]">
+            <span className="text-[var(--mind-brand)]">Mind Network</span> ×{" "}
+            <span className="text-[#DEB03D]">BNB Chain</span> Retroactive
+            Rewards Claim
+          </div>
+          <span className="text-[14px] text-[var(--mind-grey)] border border-[var(--mind-grey)] p-[5px] rounded-[8px] bg-[#1a1d1e]">
+            Ended
+          </span>
         </div>
 
         <div className="mt-[16px] text-[12px] font-[600] capitalize text-[var(--mind-brand)]">
@@ -27,14 +32,14 @@ export default function BnbAirdropBox() {
           $FHE rewards for early participants in the BNB Chain campaign Campaign
           Duration: Nov 7, 2023 - Nov 14, 2023
         </div>
-        <div
+        {/* <div
           className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer mt-[10px] text-right"
           onClick={showDrawer}
         >
           Click to claim your $FHE rewards →
-        </div>
+        </div> */}
       </div>
-      <Drawer
+      {/* <Drawer
         title={
           <div className="text-white">
             <span onClick={onClose} className="cursor-pointer mr-[10px]">
@@ -61,7 +66,7 @@ export default function BnbAirdropBox() {
             <BnbAirdrop />
           </div>
         </div>
-      </Drawer>
+      </Drawer> */}
     </div>
   );
 }
