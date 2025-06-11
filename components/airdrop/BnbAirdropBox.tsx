@@ -25,7 +25,7 @@ export default function BnbAirdropBox() {
         </div>
         <div className="mt-[20px] text-[14px] font-[600]">
           $FHE rewards for early participants in the BNB Chain campaign Campaign
-          Duration: Nov 7, 2023 - Nov 14, 202
+          Duration: Nov 7, 2023 - Nov 14, 2023
         </div>
         <div
           className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer mt-[10px] text-right"
