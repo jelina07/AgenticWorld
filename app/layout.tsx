@@ -6,7 +6,6 @@ import { ConfigProvider } from "antd";
 import { Providers } from "./Providers";
 import MindLayout from "@/components/mindLayout/MindLayout";
 import { Suspense } from "react";
-import VConsole from "vconsole";
 import { isMainnetio } from "@/sdk/utils";
 import dynamic from "next/dynamic";
 
@@ -41,10 +40,8 @@ export default function RootLayout({
             }}
           >
             <Providers>
-              <Suspense>
-                {isMainnetio() ? <VConsoleLoader /> : null}
-                <MindLayout>{children}</MindLayout>
-              </Suspense>
+              <Suspense>{isMainnetio() ? <VConsoleLoader /> : null}</Suspense>
+              <MindLayout>{children}</MindLayout>
             </Providers>
           </ConfigProvider>
         </AntdRegistry>
