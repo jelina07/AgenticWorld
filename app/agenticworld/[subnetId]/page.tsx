@@ -24,7 +24,7 @@ import DeepSeekHub from "@/components/deepseekHub";
 import WorldAiHealthHub from "@/components/worldAiHealthHub";
 import { useAsyncEffect } from "ahooks";
 
-export default function page({ params }: { params: any }) {
+export default function Page({ params }: { params: any }) {
   const startModalRef: any = useRef(null);
   const router = useRouter();
   const { openConnectModal } = useConnectModal();
@@ -33,8 +33,7 @@ export default function page({ params }: { params: any }) {
     cacheKey: "useSubnetList",
     staleTime: 5 * 60 * 1000,
   });
-  const { data: hubAgentCount, refresh: refreshHubAgentCount } =
-    useHubAgentCount({ hubIds: subnetList });
+  const { data: hubAgentCount, refresh: refreshHubAgentCount } = useHubAgentCount({ hubIds: subnetList });
   const { data: hubApy } = useHubGetApy({ hubIds: subnetList });
   const { data: hubStake } = useHubGetStakeAmount({ hubIds: subnetList });
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
@@ -55,8 +54,7 @@ export default function page({ params }: { params: any }) {
     subnetList &&
     learningId &&
     learnSecond !== undefined &&
-    learnSecond[0] >
-      Number(subnetList.find((item: any) => item.id === learningId)?.lockUp);
+    learnSecond[0] > Number(subnetList.find((item: any) => item.id === learningId)?.lockUp);
 
   const currentSubnet = subnetList
     ?.filter((item: any) => item.id === Number(params.subnetId))
@@ -101,29 +99,18 @@ export default function page({ params }: { params: any }) {
   return (
     <div className="px-[var(--layout-sm)] md:px-[var(--layout-md)] lg:px-[var(--layout-lg)] xl:px-[var(--layout-xl)] 2xl:px-[var(--layout-2xl)] overflow-hidden pb-[100px]">
       <div className="mt-[40px] px-[20px]">
-        <div
-          className={`text-[26px] font-[900] flex items-center ${
-            currentSubnet?.subnetName ? "" : "hidden"
-          }'`}
-        >
-          <span
-            className="text-white hover:text-white cursor-pointer mr-[10px] font-[500]"
-            onClick={goback}
-          >
+        <div className={`text-[26px] font-[900] flex items-center ${currentSubnet?.subnetName ? "" : "hidden"}'`}>
+          <span className="text-white hover:text-white cursor-pointer mr-[10px] font-[500]" onClick={goback}>
             &lt;
           </span>
-          <span>
-            {currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}
-          </span>
+          <span>{currentSubnet?.subnetName ? " " + currentSubnet?.subnetName : ""}</span>
           <div
             className={`flex items-center ml-[20px]
               ${
                 (
-                  currentSubnet?.subnetId === 5 &&
-                  (chainId === 192940 || chainId === 228)
+                  currentSubnet?.subnetId === 5 && (chainId === 192940 || chainId === 228)
                     ? false
-                    : currentSubnet?.subnetId === 5 &&
-                      (chainId === 56 || chainId === 97)
+                    : currentSubnet?.subnetId === 5 && (chainId === 56 || chainId === 97)
                     ? currentSubnet?.isAccess
                     : currentSubnet?.isAccess
                 )
@@ -153,11 +140,9 @@ export default function page({ params }: { params: any }) {
         <div className="mt-[50px] flex gap-[20px]">
           <div>
             {(
-              currentSubnet?.subnetId === 5 &&
-              (chainId === 192940 || chainId === 228)
+              currentSubnet?.subnetId === 5 && (chainId === 192940 || chainId === 228)
                 ? false
-                : currentSubnet?.subnetId === 5 &&
-                  (chainId === 56 || chainId === 97)
+                : currentSubnet?.subnetId === 5 && (chainId === 56 || chainId === 97)
                 ? currentSubnet?.isAccess
                 : currentSubnet?.isAccess
             ) ? (
@@ -166,11 +151,7 @@ export default function page({ params }: { params: any }) {
                 className="button-brand-border-white-font"
                 disabled={
                   learningId === Number(params.subnetId) ||
-                  (!(
-                    agentTokenId !== undefined &&
-                    agentTokenId !== 0 &&
-                    learningId === 0
-                  ) &&
+                  (!(agentTokenId !== undefined && agentTokenId !== 0 && learningId === 0) &&
                     !lockTimeReach &&
                     isConnected)
                 }
@@ -195,16 +176,11 @@ export default function page({ params }: { params: any }) {
               </Button>
             )}
           </div>
-          <Link
-            href="/agenticworld"
-            className="btn-Link-white-font inline-block flex-grow-0"
-          >
+          <Link href="/agenticworld" className="btn-Link-white-font inline-block flex-grow-0">
             Explore New Skills
           </Link>
         </div>
-        {currentSubnet?.canLinkDetial &&
-        currentSubnet?.subnetId !== 4 &&
-        currentSubnet?.subnetId !== 5 ? (
+        {currentSubnet?.canLinkDetial && currentSubnet?.subnetId !== 4 && currentSubnet?.subnetId !== 5 ? (
           <UseCase currentSubnet={currentSubnet} />
         ) : currentSubnet?.subnetId === 4 ? (
           <DeepSeekHub currentSubnet={currentSubnet} />

@@ -6148,3 +6148,2609 @@ export const FHEKEY_REGISTRY_ABI = [
     type: "function",
   },
 ];
+
+export const DataLiquidityPoolImplementationAbi = [
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "target",
+        type: "address",
+      },
+    ],
+    name: "AddressEmptyCode",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "AddressInsufficientBalance",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ECDSAInvalidSignature",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "length",
+        type: "uint256",
+      },
+    ],
+    name: "ECDSAInvalidSignatureLength",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "ECDSAInvalidSignatureS",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "ERC1967InvalidImplementation",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ERC1967NonPayable",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "EnforcedPause",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ExpectedPause",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "FailedInnerCall",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "FileAlreadyAdded",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidAttestator",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidInitialization",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidProof",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotInitializing",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "OwnableInvalidOwner",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "OwnableUnauthorizedAccount",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ReentrancyGuardReentrantCall",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+    ],
+    name: "SafeERC20FailedOperation",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "UUPSUnauthorizedCallContext",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "slot",
+        type: "bytes32",
+      },
+    ],
+    name: "UUPSUnsupportedProxiableUUID",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "FileInvalidated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newFileRewardFactor",
+        type: "uint256",
+      },
+    ],
+    name: "FileRewardFactorUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "FileValidated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint64",
+        name: "version",
+        type: "uint64",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferStarted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Paused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "newProofInstruction",
+        type: "string",
+      },
+    ],
+    name: "ProofInstructionUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "newPublicKey",
+        type: "string",
+      },
+    ],
+    name: "PublicKeyUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "contributorAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "proofIndex",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rewardAmount",
+        type: "uint256",
+      },
+    ],
+    name: "RewardRequested",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newTeePool",
+        type: "address",
+      },
+    ],
+    name: "TeePoolUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Unpaused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "UPGRADE_INTERFACE_VERSION",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "acceptOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "contributorsRewardAmount",
+        type: "uint256",
+      },
+    ],
+    name: "addRewardsForContributors",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "contributorAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "contributorFiles",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "fileId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "proofIndex",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "rewardAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IDataLiquidityPool.FileResponse",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "contributorAddress",
+        type: "address",
+      },
+    ],
+    name: "contributorInfo",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "contributorAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "filesListCount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IDataLiquidityPool.ContributorInfoResponse",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "contributors",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "contributorAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "filesListCount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IDataLiquidityPool.ContributorInfoResponse",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "contributorsCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "dataRegistry",
+    outputs: [
+      {
+        internalType: "contract IDataRegistry",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fileRewardFactor",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "files",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "fileId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "proofIndex",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "rewardAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IDataLiquidityPool.FileResponse",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "filesListAt",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "filesListCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "ownerAddress",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "dataRegistryAddress",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "teePoolAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "name",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "publicKey",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "proofInstruction",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "fileRewardFactor",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct DataLiquidityPoolImplementation.InitParams",
+        name: "params",
+        type: "tuple",
+      },
+    ],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes[]",
+        name: "data",
+        type: "bytes[]",
+      },
+    ],
+    name: "multicall",
+    outputs: [
+      {
+        internalType: "bytes[]",
+        name: "results",
+        type: "bytes[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "paused",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pendingOwner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "proofInstruction",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "publicKey",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "proofIndex",
+        type: "uint256",
+      },
+    ],
+    name: "requestReward",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "teePool",
+    outputs: [
+      {
+        internalType: "contract ITeePool",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "token",
+    outputs: [
+      {
+        internalType: "contract IERC20",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalContributorsRewardAmount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unpause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "newFileRewardFactor",
+        type: "uint256",
+      },
+    ],
+    name: "updateFileRewardFactor",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "newProofInstruction",
+        type: "string",
+      },
+    ],
+    name: "updateProofInstruction",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "newPublicKey",
+        type: "string",
+      },
+    ],
+    name: "updatePublicKey",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newTeePool",
+        type: "address",
+      },
+    ],
+    name: "updateTeePool",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+] as const;
+
+export const DataRegistryImplementationAbi = [
+  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
+  { inputs: [], name: "AccessControlBadConfirmation", type: "error" },
+  {
+    inputs: [
+      { internalType: "address", name: "account", type: "address" },
+      { internalType: "bytes32", name: "neededRole", type: "bytes32" },
+    ],
+    name: "AccessControlUnauthorizedAccount",
+    type: "error",
+  },
+  {
+    inputs: [{ internalType: "address", name: "target", type: "address" }],
+    name: "AddressEmptyCode",
+    type: "error",
+  },
+  {
+    inputs: [{ internalType: "address", name: "implementation", type: "address" }],
+    name: "ERC1967InvalidImplementation",
+    type: "error",
+  },
+  { inputs: [], name: "ERC1967NonPayable", type: "error" },
+  { inputs: [], name: "EnforcedPause", type: "error" },
+  { inputs: [], name: "ExpectedPause", type: "error" },
+  { inputs: [], name: "FailedInnerCall", type: "error" },
+  { inputs: [], name: "FileUrlAlreadyUsed", type: "error" },
+  { inputs: [], name: "InvalidInitialization", type: "error" },
+  { inputs: [], name: "NotFileOwner", type: "error" },
+  { inputs: [], name: "NotInitializing", type: "error" },
+  { inputs: [], name: "UUPSUnauthorizedCallContext", type: "error" },
+  {
+    inputs: [{ internalType: "bytes32", name: "slot", type: "bytes32" }],
+    name: "UUPSUnsupportedProxiableUUID",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "ownerAddress",
+        type: "address",
+      },
+      { indexed: false, internalType: "string", name: "url", type: "string" },
+    ],
+    name: "FileAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint64",
+        name: "version",
+        type: "uint64",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Paused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "PermissionGranted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "ownerAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "proofIndex",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "dlpId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "score",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "proofUrl",
+        type: "string",
+      },
+    ],
+    name: "ProofAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "previousAdminRole",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "newAdminRole",
+        type: "bytes32",
+      },
+    ],
+    name: "RoleAdminChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "RoleGranted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "RoleRevoked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Unpaused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "DEFAULT_ADMIN_ROLE",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAINTAINER_ROLE",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "UPGRADE_INTERFACE_VERSION",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "string", name: "url", type: "string" }],
+    name: "addFile",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "fileId", type: "uint256" },
+      { internalType: "address", name: "account", type: "address" },
+      { internalType: "string", name: "key", type: "string" },
+    ],
+    name: "addFilePermission",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "string", name: "url", type: "string" },
+      { internalType: "address", name: "ownerAddress", type: "address" },
+      {
+        components: [
+          { internalType: "address", name: "account", type: "address" },
+          { internalType: "string", name: "key", type: "string" },
+        ],
+        internalType: "struct IDataRegistry.Permission[]",
+        name: "permissions",
+        type: "tuple[]",
+      },
+    ],
+    name: "addFileWithPermissions",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "fileId", type: "uint256" },
+      {
+        components: [
+          { internalType: "bytes", name: "signature", type: "bytes" },
+          {
+            components: [
+              { internalType: "uint256", name: "score", type: "uint256" },
+              { internalType: "uint256", name: "dlpId", type: "uint256" },
+              { internalType: "string", name: "metadata", type: "string" },
+              { internalType: "string", name: "proofUrl", type: "string" },
+              { internalType: "string", name: "instruction", type: "string" },
+            ],
+            internalType: "struct IDataRegistry.ProofData",
+            name: "data",
+            type: "tuple",
+          },
+        ],
+        internalType: "struct IDataRegistry.Proof",
+        name: "proof",
+        type: "tuple",
+      },
+    ],
+    name: "addProof",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "string", name: "url", type: "string" }],
+    name: "fileIdByUrl",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "fileId", type: "uint256" },
+      { internalType: "address", name: "account", type: "address" },
+    ],
+    name: "filePermissions",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "fileId", type: "uint256" },
+      { internalType: "uint256", name: "index", type: "uint256" },
+    ],
+    name: "fileProofs",
+    outputs: [
+      {
+        components: [
+          { internalType: "bytes", name: "signature", type: "bytes" },
+          {
+            components: [
+              { internalType: "uint256", name: "score", type: "uint256" },
+              { internalType: "uint256", name: "dlpId", type: "uint256" },
+              { internalType: "string", name: "metadata", type: "string" },
+              { internalType: "string", name: "proofUrl", type: "string" },
+              { internalType: "string", name: "instruction", type: "string" },
+            ],
+            internalType: "struct IDataRegistry.ProofData",
+            name: "data",
+            type: "tuple",
+          },
+        ],
+        internalType: "struct IDataRegistry.Proof",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "fileId", type: "uint256" }],
+    name: "files",
+    outputs: [
+      {
+        components: [
+          { internalType: "uint256", name: "id", type: "uint256" },
+          { internalType: "address", name: "ownerAddress", type: "address" },
+          { internalType: "string", name: "url", type: "string" },
+          { internalType: "uint256", name: "addedAtBlock", type: "uint256" },
+        ],
+        internalType: "struct IDataRegistry.FileResponse",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "filesCount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bytes32", name: "role", type: "bytes32" }],
+    name: "getRoleAdmin",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bytes32", name: "role", type: "bytes32" },
+      { internalType: "address", name: "account", type: "address" },
+    ],
+    name: "grantRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bytes32", name: "role", type: "bytes32" },
+      { internalType: "address", name: "account", type: "address" },
+    ],
+    name: "hasRole",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "trustedForwarderAddress",
+        type: "address",
+      },
+      { internalType: "address", name: "ownerAddress", type: "address" },
+    ],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "forwarder", type: "address" }],
+    name: "isTrustedForwarder",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bytes[]", name: "data", type: "bytes[]" }],
+    name: "multicall",
+    outputs: [{ internalType: "bytes[]", name: "results", type: "bytes[]" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "paused",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "proxiableUUID",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bytes32", name: "role", type: "bytes32" },
+      { internalType: "address", name: "callerConfirmation", type: "address" },
+    ],
+    name: "renounceRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bytes32", name: "role", type: "bytes32" },
+      { internalType: "address", name: "account", type: "address" },
+    ],
+    name: "revokeRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "bytes4", name: "interfaceId", type: "bytes4" }],
+    name: "supportsInterface",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "trustedForwarder",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unpause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "trustedForwarderAddress",
+        type: "address",
+      },
+    ],
+    name: "updateTrustedForwarder",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "newImplementation", type: "address" },
+      { internalType: "bytes", name: "data", type: "bytes" },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "pure",
+    type: "function",
+  },
+];
+
+export const TeePoolImplementationAbi = [
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "target",
+        type: "address",
+      },
+    ],
+    name: "AddressEmptyCode",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "CancelDelayNotPassed",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "ERC1967InvalidImplementation",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ERC1967NonPayable",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "EnforcedPause",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ExpectedPause",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "FailedInnerCall",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InsufficientFee",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidInitialization",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidJobStatus",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidJobTee",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "JobCompleted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NoActiveTee",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotInitializing",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotJobOwner",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NothingToClaim",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "OwnableInvalidOwner",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "OwnableUnauthorizedAccount",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "ReentrancyGuardReentrantCall",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "TeeAlreadyAdded",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "TeeNotActive",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "TransferFailed",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "UUPSUnauthorizedCallContext",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "slot",
+        type: "bytes32",
+      },
+    ],
+    name: "UUPSUnsupportedProxiableUUID",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "Claimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint64",
+        name: "version",
+        type: "uint64",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "jobId",
+        type: "uint256",
+      },
+    ],
+    name: "JobCanceled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "jobId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "bidAmount",
+        type: "uint256",
+      },
+    ],
+    name: "JobSubmitted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferStarted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Paused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "attestator",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "jobId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "ProofAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+    ],
+    name: "TeeAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+    ],
+    name: "TeeRemoved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Unpaused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "UPGRADE_INTERFACE_VERSION",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "acceptOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "activeTeeList",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "activeTeeListAt",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "teeAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "url",
+            type: "string",
+          },
+          {
+            internalType: "enum ITeePool.TeeStatus",
+            name: "status",
+            type: "uint8",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "withdrawnAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "jobsCount",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "publicKey",
+            type: "string",
+          },
+        ],
+        internalType: "struct ITeePool.TeeInfo",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "activeTeesCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "jobId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "bytes",
+            name: "signature",
+            type: "bytes",
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "score",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "dlpId",
+                type: "uint256",
+              },
+              {
+                internalType: "string",
+                name: "metadata",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "proofUrl",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "instruction",
+                type: "string",
+              },
+            ],
+            internalType: "struct IDataRegistry.ProofData",
+            name: "data",
+            type: "tuple",
+          },
+        ],
+        internalType: "struct IDataRegistry.Proof",
+        name: "proof",
+        type: "tuple",
+      },
+    ],
+    name: "addProof",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "url",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "publicKey",
+        type: "string",
+      },
+    ],
+    name: "addTee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "cancelDelay",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "jobId",
+        type: "uint256",
+      },
+    ],
+    name: "cancelJob",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "dataRegistry",
+    outputs: [
+      {
+        internalType: "contract IDataRegistry",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "fileJobIds",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "ownerAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "dataRegistryAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "initialCancelDelay",
+        type: "uint256",
+      },
+    ],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+    ],
+    name: "isTee",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "jobId",
+        type: "uint256",
+      },
+    ],
+    name: "jobs",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "fileId",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bidAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "enum ITeePool.JobStatus",
+            name: "status",
+            type: "uint8",
+          },
+          {
+            internalType: "uint256",
+            name: "addedTimestamp",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "ownerAddress",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "teeAddress",
+            type: "address",
+          },
+        ],
+        internalType: "struct ITeePool.Job",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "jobsCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes[]",
+        name: "data",
+        type: "bytes[]",
+      },
+    ],
+    name: "multicall",
+    outputs: [
+      {
+        internalType: "bytes[]",
+        name: "results",
+        type: "bytes[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "paused",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pendingOwner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+    ],
+    name: "removeTee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "requestContributionProof",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "fileId",
+        type: "uint256",
+      },
+    ],
+    name: "submitJob",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "teeFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "start",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "limit",
+        type: "uint256",
+      },
+    ],
+    name: "teeJobIdsPaginated",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "teeList",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "teeListAt",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "teeAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "url",
+            type: "string",
+          },
+          {
+            internalType: "enum ITeePool.TeeStatus",
+            name: "status",
+            type: "uint8",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "withdrawnAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "jobsCount",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "publicKey",
+            type: "string",
+          },
+        ],
+        internalType: "struct ITeePool.TeeInfo",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "teeAddress",
+        type: "address",
+      },
+    ],
+    name: "tees",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "teeAddress",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "url",
+            type: "string",
+          },
+          {
+            internalType: "enum ITeePool.TeeStatus",
+            name: "status",
+            type: "uint8",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "withdrawnAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "jobsCount",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "publicKey",
+            type: "string",
+          },
+        ],
+        internalType: "struct ITeePool.TeeInfo",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "teesCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unpause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "newCancelDelay",
+        type: "uint256",
+      },
+    ],
+    name: "updateCancelDelay",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IDataRegistry",
+        name: "newDataRegistry",
+        type: "address",
+      },
+    ],
+    name: "updateDataRegistry",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "newTeeFee",
+        type: "uint256",
+      },
+    ],
+    name: "updateTeeFee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+];

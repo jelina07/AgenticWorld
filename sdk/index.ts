@@ -55,6 +55,7 @@ import useSendTxn from "./hooks/worldAiHealth/useSendTxn";
 import useIsVoted from "./hooks/worldAiHealth/useIsVoted";
 import useGetUploadStatus from "./hooks/worldAiHealth/useGetUploadStatus";
 import useParticipate from "./hooks/worldAiHealth/useParticipate";
+import useVanaSend from "./hooks/worldAiHealth/useVanaSend";
 
 export {
   useAirdropCheck,
@@ -114,4 +115,5 @@ export {
   useIsVoted,
   useGetUploadStatus,
   useParticipate,
+  useVanaSend,
 };

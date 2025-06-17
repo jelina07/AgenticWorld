@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 export const AIRDROP_ADDRESS: Record<number, `0x${string}`> = {
   192940: "0x1d297979fd76058F7Cc1E0AB5D2105268a9BCE10",
   228: "0x",
@@ -56,4 +58,30 @@ export const DEEPSEEK_HUB_ADDRESS: Record<number, `0x${string}`> = {
 export const FHEKEY_REGISTRY_ADDRESS: Record<number, `0x${string}`> = {
   192940: "0x350D2819Df60aDE1D074EdB11f7900dDDA068Ab5",
   228: "0xA0006842E14313EBef80Bf74cE1803fE6f1Baf3B",
+};
+
+const vanaContracts = ["DataRegistryProxy", "TeePoolProxy", "DataLiquidityPoolProxy"] as const;
+export type VanaContract = (typeof vanaContracts)[number];
+
+const addresses: Record<number, Record<VanaContract, Address>> = {
+  // Moksha Testnet
+  14800: {
+    DataRegistryProxy: "0x8C8788f98385F6ba1adD4234e551ABba0f82Cb7C",
+    TeePoolProxy: "0xE8EC6BD73b23Ad40E6B9a6f4bD343FAc411bD99A",
+    DataLiquidityPoolProxy: "0x832674060C0e96ca4Dc901FA1C2dB02dB7da9435",
+  },
+  // Mainnet
+  1480: {
+    DataRegistryProxy: "0x8C8788f98385F6ba1adD4234e551ABba0f82Cb7C",
+    TeePoolProxy: "0xE8EC6BD73b23Ad40E6B9a6f4bD343FAc411bD99A",
+    DataLiquidityPoolProxy: "0x832674060C0e96ca4Dc901FA1C2dB02dB7da9435",
+  },
+};
+
+export const getContractAddress = (chainId: number, contract: VanaContract) => {
+  const contractAddress = addresses[chainId]?.[contract];
+  if (!contractAddress) {
+    throw new Error(`Contract address not found for ${contract} on chain ${chainId}`);
+  }
+  return contractAddress;
 };

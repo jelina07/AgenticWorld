@@ -1,14 +1,5 @@
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
-import {
-  Button,
-  Checkbox,
-  CheckboxOptionType,
-  Collapse,
-  CollapseProps,
-  message,
-  notification,
-  Steps,
-} from "antd";
+import { Button, Checkbox, CheckboxOptionType, Collapse, CollapseProps, message, notification, Steps } from "antd";
 import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import Encrypt from "@/public/icons/encrypt.svg";
 import Verify from "@/public/icons/verify.svg";
@@ -22,6 +13,7 @@ import {
   useHubList,
   useIsVoted,
   useSendTxn,
+  useVanaSend,
   useVerify,
 } from "@/sdk";
 import Link from "next/link";
@@ -256,10 +248,7 @@ const optionsMusculoskeletalConcerns: CheckboxOptionType<string>[] = [
   { label: "Weakness Of One Body Side", value: "Weakness Of One Body Side" },
 ];
 const content = (
-  <Link
-    href="/agentlaunch"
-    className="inline-block text-black hover:text-black underline text-[14px]"
-  >
+  <Link href="/agentlaunch" className="inline-block text-black hover:text-black underline text-[14px]">
     Go to create an Agent first !
   </Link>
 );
@@ -282,23 +271,23 @@ export default function UploadHealthData() {
   const [urologicalConcerns, setUrologicalConcerns] = useState(0);
   const [musculoskeletalConcerns, setMusculoskeletalConcerns] = useState(0);
 
-  const [binaryGeneralConcerns, setBinaryGeneralConcerns] = useState(
-    Array(optionsGeneralConcerns.length).fill(0)
+  const [binaryGeneralConcerns, setBinaryGeneralConcerns] = useState(Array(optionsGeneralConcerns.length).fill(0));
+  const [binaryDigestiveSystemConcerns, setBinaryDigestiveSystemConcerns] = useState(
+    Array(optionsDigestiveSystemConcerns.length).fill(0)
   );
-  const [binaryDigestiveSystemConcerns, setBinaryDigestiveSystemConcerns] =
-    useState(Array(optionsDigestiveSystemConcerns.length).fill(0));
-  const [binaryDermatologicalConcerns, setBinaryDermatologicalConcerns] =
-    useState(Array(optionsDermatologicalConcerns.length).fill(0));
-  const [binaryENTConcerns, setBinaryENTConcerns] = useState(
-    Array(optionsENTConcerns.length).fill(0)
+  const [binaryDermatologicalConcerns, setBinaryDermatologicalConcerns] = useState(
+    Array(optionsDermatologicalConcerns.length).fill(0)
   );
-  const [binaryOphthalmologicalConcerns, setBinaryOphthalmologicalConcerns] =
-    useState(Array(optionsOphthalmologicalConcerns.length).fill(0));
+  const [binaryENTConcerns, setBinaryENTConcerns] = useState(Array(optionsENTConcerns.length).fill(0));
+  const [binaryOphthalmologicalConcerns, setBinaryOphthalmologicalConcerns] = useState(
+    Array(optionsOphthalmologicalConcerns.length).fill(0)
+  );
   const [binaryUrologicalConcerns, setBinaryUrologicalConcerns] = useState(
     Array(optionsUrologicalConcerns.length).fill(0)
   );
-  const [binaryMusculoskeletalConcerns, setBinaryMusculoskeletalConcerns] =
-    useState(Array(optionsMusculoskeletalConcerns.length).fill(0));
+  const [binaryMusculoskeletalConcerns, setBinaryMusculoskeletalConcerns] = useState(
+    Array(optionsMusculoskeletalConcerns.length).fill(0)
+  );
 
   const refresh = () => {
     setCheckedList1([]);
@@ -316,22 +305,12 @@ export default function UploadHealthData() {
     setUrologicalConcerns(0);
     setMusculoskeletalConcerns(0);
     setBinaryGeneralConcerns(Array(optionsGeneralConcerns.length).fill(0));
-    setBinaryDigestiveSystemConcerns(
-      Array(optionsDigestiveSystemConcerns.length).fill(0)
-    );
-    setBinaryDermatologicalConcerns(
-      Array(optionsDermatologicalConcerns.length).fill(0)
-    );
+    setBinaryDigestiveSystemConcerns(Array(optionsDigestiveSystemConcerns.length).fill(0));
+    setBinaryDermatologicalConcerns(Array(optionsDermatologicalConcerns.length).fill(0));
     setBinaryENTConcerns(Array(optionsENTConcerns.length).fill(0));
-    setBinaryOphthalmologicalConcerns(
-      Array(optionsOphthalmologicalConcerns.length).fill(0)
-    );
-    setBinaryUrologicalConcerns(
-      Array(optionsUrologicalConcerns.length).fill(0)
-    );
-    setBinaryMusculoskeletalConcerns(
-      Array(optionsMusculoskeletalConcerns.length).fill(0)
-    );
+    setBinaryOphthalmologicalConcerns(Array(optionsOphthalmologicalConcerns.length).fill(0));
+    setBinaryUrologicalConcerns(Array(optionsUrologicalConcerns.length).fill(0));
+    setBinaryMusculoskeletalConcerns(Array(optionsMusculoskeletalConcerns.length).fill(0));
     setShowEncryptData("");
   };
   const clickRestart = () => {
@@ -362,9 +341,7 @@ export default function UploadHealthData() {
     border: "1px solid #28A57F",
     padding: "20px",
   };
-  const getItems: (panelStyle: CSSProperties) => CollapseProps["items"] = (
-    panelStyle
-  ) => [
+  const getItems: (panelStyle: CSSProperties) => CollapseProps["items"] = (panelStyle) => [
     {
       key: "1",
       label: (
@@ -486,13 +463,7 @@ export default function UploadHealthData() {
           <Checkbox.Group
             options={optionsENTConcerns}
             onChange={(checkedValues) =>
-              onChangeOptions(
-                checkedValues,
-                optionsENTConcerns,
-                setENTConcerns,
-                setBinaryENTConcerns,
-                setCheckedList4
-              )
+              onChangeOptions(checkedValues, optionsENTConcerns, setENTConcerns, setBinaryENTConcerns, setCheckedList4)
             }
             className="healthCheckBox"
             value={checkedList4}
@@ -509,9 +480,7 @@ export default function UploadHealthData() {
           <span
             className={`px-[20px] py-[5px] border rounded-[95px] text-[12px] ${
               ophthalmologicalConcerns > 0 ? "border-[var(--mind-brand)]" : ""
-            } ${
-              ophthalmologicalConcerns > 0 ? "text-[var(--mind-brand)]" : ""
-            }`}
+            } ${ophthalmologicalConcerns > 0 ? "text-[var(--mind-brand)]" : ""}`}
           >
             {ophthalmologicalConcerns} selected
           </span>
@@ -655,11 +624,7 @@ export default function UploadHealthData() {
 
   const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   const isAgent = agentTokenId !== 0;
-  const {
-    data: encryptData,
-    runAsync: encryptDataRunAsync,
-    loading,
-  } = useEncryptData();
+  const { data: encryptData, runAsync: encryptDataRunAsync, loading } = useEncryptData();
   const { runAsync: verify, loading: verifyLoading } = useVerify();
   const {
     data: verifyStatus,
@@ -683,6 +648,8 @@ export default function UploadHealthData() {
   const { data: isVoted, refresh: isVotedRefresh } = useIsVoted();
   const [isRestart, setIsRestart] = useState(false);
   const { hubLearningTime, refreshGetHubLearningTime } = useHubLearningTime();
+
+  const { runAsync: vanaSend } = useVanaSend();
 
   const { data: hubList } = useHubList();
   const ids = useMemo(() => {
@@ -736,10 +703,7 @@ export default function UploadHealthData() {
   const clickencryptData = async () => {
     if (isLearned) {
       try {
-        const res = await encryptDataRunAsync(
-          binaryFormatString.replace(/,/g, ""),
-          content
-        );
+        const res = await encryptDataRunAsync(binaryFormatString.replace(/,/g, ""), content);
         if (res)
           notification.success({
             message: "Success",
@@ -768,7 +732,8 @@ export default function UploadHealthData() {
     getVerifyRefresh();
   };
   const sendToBsc = async () => {
-    await sendTxn();
+    // await sendTxn();
+    await vanaSend(address as string);
     isVotedRefresh();
     notification.success({
       message: "Success",
@@ -790,17 +755,10 @@ export default function UploadHealthData() {
 
   return (
     <div className="mt-[40px] pt-[28px] pb-[60px] px-[28px] bg-[#181818] rounded-[20px]">
-      <div className="text-[18px] font-[800] mb-[0px]">
-        Upload Health Data with FHE
-      </div>
+      <div className="text-[18px] font-[800] mb-[0px]">Upload Health Data with FHE</div>
       <div className="mb-[20px]">
-        <div className="font-[700]">
-          Recommend uploading health data on a PC.
-        </div>
-        <div className="text-[14px]">
-          Encryption is resource-intensive and may take longer time on mobile
-          devices.
-        </div>
+        <div className="font-[700]">Recommend uploading health data on a PC.</div>
+        <div className="text-[14px]">Encryption is resource-intensive and may take longer time on mobile devices.</div>
       </div>
       <Steps
         current={setpCurrent}
@@ -814,9 +772,7 @@ export default function UploadHealthData() {
             title: "Encrypt Data",
           },
           {
-            title: `Verify Data ${
-              verifyQueue ? "(Queue: " + verifyQueue + " )" : ""
-            }`,
+            title: `Verify Data ${verifyQueue ? "(Queue: " + verifyQueue + " )" : ""}`,
           },
           {
             title: "Send Data",
@@ -825,10 +781,7 @@ export default function UploadHealthData() {
       />
       {uploadStatusLoading ? (
         <div className="text-center">loading...</div>
-      ) : uploadStatus &&
-        !isRestart &&
-        verifyStatus?.isVerified !== 1 &&
-        !verifyStatus?.isVerifying ? (
+      ) : uploadStatus && !isRestart && verifyStatus?.isVerified !== 1 && !verifyStatus?.isVerifying ? (
         <div className="text-center mt-[30px]">
           <span
             className="text-[var(--mind-brand)] px-[10px] py-[4px] cursor-pointer border border-[var(--mind-brand)] rounded-[10px]"
@@ -843,17 +796,9 @@ export default function UploadHealthData() {
         <div>
           <div className="flex items-center gap-[10px] mt-[50px] font-[700]">
             <div>Health Symptoms Selection</div>
-            <img
-              src="/icons/refresh.svg"
-              alt="refresh"
-              onClick={refresh}
-              width={15}
-              className={`cursor-pointer`}
-            />
+            <img src="/icons/refresh.svg" alt="refresh" onClick={refresh} width={15} className={`cursor-pointer`} />
           </div>
-          <div className="text-[14px] mt-[10px]">
-            Select at least 5 symptoms that apply to your last condition
-          </div>
+          <div className="text-[14px] mt-[10px]">Select at least 5 symptoms that apply to your last condition</div>
           <div className="mt-[20px]">
             <Collapse
               accordion
@@ -867,9 +812,7 @@ export default function UploadHealthData() {
       )}
 
       <div className="mt-[40px] font-[700]">Encrypt Data with FHE</div>
-      <div className="text-[14px] mt-[10px]">
-        Transform your symptom data into encrypted format
-      </div>
+      <div className="text-[14px] mt-[10px]">Transform your symptom data into encrypted format</div>
       <div className="mt-[30px] flex gap-[10px] items-center">
         <span>User Symptoms Vector</span>
         <span className="bg-[#1f1f1f] inline-block py-[5px] px-[20px] border border-[#484848] rounded-[15px] text-[#888e8d]">
@@ -888,9 +831,7 @@ export default function UploadHealthData() {
         <div className="flex-1 sm:mt-[0px] mt-[30px]">
           <div className="bg-[#1f1f1f] border border-[#484848] rounded-[12px] p-[26px] h-[200px] break-all overflow-y-auto">
             {!showEncryptData ? (
-              <span className="text-[#626262]">
-                Encrypted ciphertext will appear here after encryption
-              </span>
+              <span className="text-[#626262]">Encrypted ciphertext will appear here after encryption</span>
             ) : (
               showEncryptData.slice(0, 50) + "..." + showEncryptData.slice(-50)
             )}
@@ -915,14 +856,10 @@ export default function UploadHealthData() {
           onClick={clickencryptData}
         >
           <span className="text-[14px] whitespace-normal">
-            {(verifyStatus?.isVerified === 1 ||
-              verifyStatus?.isVerifying ||
-              (uploadStatus && !isRestart)) &&
+            {(verifyStatus?.isVerified === 1 || verifyStatus?.isVerifying || (uploadStatus && !isRestart)) &&
             verifyStatus?.isVerified !== -1
               ? "Encrypted"
-              : `Encrypt ${
-                  selectedNumMin5 ? " (Select at least 5 symptoms)" : ""
-                }`}
+              : `Encrypt ${selectedNumMin5 ? " (Select at least 5 symptoms)" : ""}`}
           </span>
         </Button>
         <div
@@ -942,20 +879,14 @@ export default function UploadHealthData() {
       </div>
 
       <div className="mt-[26px]">
-        <div className="font-[600]">
-          Verify encrypted data status before on-chain submission.
-        </div>
+        <div className="font-[600]">Verify encrypted data status before on-chain submission.</div>
         <div className="text-center mt-[26px]">
           <Button
             icon={<Verify />}
             className="encrypt-btn"
             onClick={clickVerify}
             loading={verifyLoading}
-            disabled={
-              verifyStatus?.isVerified === 1 ||
-              verifyStatus?.isVerifying ||
-              !uploadStatus
-            }
+            disabled={verifyStatus?.isVerified === 1 || verifyStatus?.isVerifying || !uploadStatus}
           >
             {verifyStatus?.isVerified === 1
               ? "Verified"
@@ -973,23 +904,18 @@ export default function UploadHealthData() {
           {verifyQueue ? (
             <>
               <div className="text-[14px] text-[var(--mind-brand)] mt-[15px]">
-                {verifyQueueLoading
-                  ? "loading..."
-                  : `Queue:${" " + verifyQueue}`}
+                {verifyQueueLoading ? "loading..." : `Queue:${" " + verifyQueue}`}
               </div>
               <div className="text-[14px] font-[600] text-[#888E8D] flex gap-[5px] justify-center">
                 <span className="leading-5">
-                  Come back later or refresh to check the verifying status and
-                  continue to next step
+                  Come back later or refresh to check the verifying status and continue to next step
                 </span>
                 <img
                   src="/icons/refresh.svg"
                   alt="refresh"
                   onClick={refreshVerifyStatus}
                   width={15}
-                  className={`cursor-pointer ${
-                    verifyStatusLoading || verifyQueueLoading ? "refresh" : ""
-                  }`}
+                  className={`cursor-pointer ${verifyStatusLoading || verifyQueueLoading ? "refresh" : ""}`}
                 />
               </div>
             </>
@@ -1001,18 +927,12 @@ export default function UploadHealthData() {
 
       <div className="mt-[40px] ">
         <div className="font-[600]">Send the FHE Encrypted Data on-chain</div>
-        <div className="text-[14px] text-[#A3A3A3] mt-[10px]">
-          Securely transmit your encrypted health data
-        </div>
+        <div className="text-[14px] text-[#A3A3A3] mt-[10px]">Securely transmit your encrypted health data</div>
         <div className="text-center mt-[26px]">
           <Button
             icon={<Send />}
             className="send-btn"
-            disabled={
-              !verifyStatus?.isVerified ||
-              verifyStatus?.isVerified === -1 ||
-              isVoted
-            }
+            disabled={!verifyStatus?.isVerified || verifyStatus?.isVerified === -1 || isVoted}
             loading={sendTxnLoading}
             onClick={sendToBsc}
           >
@@ -1022,8 +942,7 @@ export default function UploadHealthData() {
             <a
               href={
                 isDev() || isProd()
-                  ? bnbtestnet.blockExplorers.default.url +
-                    `/address/${address}`
+                  ? bnbtestnet.blockExplorers.default.url + `/address/${address}`
                   : bnb.blockExplorers.default.url + `/address/${address}`
               }
               target="_blank"
@@ -1037,8 +956,7 @@ export default function UploadHealthData() {
           )}
         </div>
         <div className="text-[12px] text-[var(--mind-brand)] mt-[30px] text-center">
-          Your encrypted data will be securely transmitted and stored with
-          end-to-end encryption
+          Your encrypted data will be securely transmitted and stored with end-to-end encryption
         </div>
       </div>
     </div>

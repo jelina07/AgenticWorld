@@ -4,16 +4,12 @@ import UploadHealthData from "./UploadHealthData";
 import { useAccount } from "wagmi";
 import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
 
-export default function index() {
+export default function Index() {
   const { chainId } = useAccount();
   return (
     <div className="mt-[60px]">
       <Campaign />
-      {chainId === mindnet.id || chainId === mindtestnet.id ? (
-        <></>
-      ) : (
-        <UploadHealthData />
-      )}
+      {chainId === mindnet.id || chainId === mindtestnet.id ? <></> : <UploadHealthData />}
     </div>
   );
 }

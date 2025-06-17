@@ -2,20 +2,14 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import { Chain, getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { isDev, isMainnet, isMainnetio, isProd } from "./utils";
-import {
-  injectedWallet,
-  metaMaskWallet,
-  rainbowWallet,
-  walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { injectedWallet, metaMaskWallet, rainbowWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
 import { bsc, bscTestnet } from "viem/chains";
 import { fallback, http } from "wagmi";
 import { getUserAgent } from "@/utils/utils";
 const userAgentBrowser = getUserAgent(); //
 const INFURA_ID = "6f7f75dedc2a46669b6373796866b12a"; //testnet
 const INFURA_ID_MAINNET = "81cc77112fc44930806b6cb99ab24caf";
-const ANKRID =
-  "25d7836da278ec26551f9b7297ffea417c87fbb26caffe92ba656ee8e0f391d4";
+const ANKRID = "25d7836da278ec26551f9b7297ffea417c87fbb26caffe92ba656ee8e0f391d4";
 const NODEREALID = "01355584a3da4d22a34f4b6008e72c08";
 import binanceWallet from "@binance/w3w-rainbow-connector-v2";
 
@@ -35,10 +29,11 @@ export const getTransports = (chainId: number) => {
     case mindtestnet.id:
       return http("https://rpc-testnet.mindnetwork.xyz");
     case mindnet.id:
-      return fallback([
-        http(`https://rpc.mindnetwork.xyz`),
-        http(`https://rpc-mainnet.mindnetwork.xyz`),
-      ]);
+      return fallback([http(`https://rpc.mindnetwork.xyz`), http(`https://rpc-mainnet.mindnetwork.xyz`)]);
+    case mokshaTestnet.id:
+      return http("https://rpc.moksha.vana.org");
+    case vanaMainnet.id:
+      return http("https://rpc.vana.org");
     default:
       throw new Error("Unsupported chain");
   }
@@ -78,6 +73,50 @@ export const mindnet = {
   },
 } as const satisfies Chain;
 
+export const mokshaTestnet = {
+  id: 14800,
+  name: "VANA - Moksha",
+  iconUrl: "/icons/mind-chain.svg",
+  iconBackground: "#fff",
+  nativeCurrency: {
+    name: "VANA",
+    symbol: "VANA",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.moksha.vana.org"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      url: "https://moksha.vanascan.io",
+      name: "VANAScan",
+    },
+  },
+} as const satisfies Chain;
+
+export const vanaMainnet = {
+  id: 1480,
+  name: "VANA - Mainnet",
+  nativeCurrency: {
+    name: "VANA",
+    symbol: "VANA",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.vana.org"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      url: "https://vanascan.io",
+      name: "VANAScan",
+    },
+  },
+} as const satisfies Chain;
+
 const bnbtestnet = {
   ...bscTestnet,
   name: "BNB Smart Chain Testnet",
@@ -98,14 +137,11 @@ let chains: any = [];
 if ((isDev() || isProd()) && userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnbtestnet }];
 } else if (isDev() || (isProd() && !userAgentBrowser.includes("BNC"))) {
-  chains = [mindtestnet, { ...bnbtestnet }];
+  chains = [mindtestnet, { ...bnbtestnet }, mokshaTestnet];
 } else if ((isMainnet() || isMainnetio()) && userAgentBrowser.includes("BNC")) {
   chains = [{ ...bnb }];
-} else if (
-  (isMainnet() || isMainnetio()) &&
-  !userAgentBrowser.includes("BNC")
-) {
-  chains = [mindnet, { ...bnb }];
+} else if ((isMainnet() || isMainnetio()) && !userAgentBrowser.includes("BNC")) {
+  chains = [mindnet, { ...bnb }, vanaMainnet];
 } else {
   chains = [];
 }
@@ -116,12 +152,7 @@ export const config = getDefaultConfig({
   wallets: [
     {
       groupName: "Recommended",
-      wallets: [
-        binanceWallet,
-        walletConnectWallet,
-        rainbowWallet,
-        metaMaskWallet,
-      ],
+      wallets: [binanceWallet, walletConnectWallet, rainbowWallet, metaMaskWallet],
     },
     {
       groupName: "Others",
@@ -138,6 +169,5 @@ export const config = getDefaultConfig({
   },
 });
 
-export const supportChainId =
-  chains.length === 0 ? [] : chains.map((item: any) => item.id);
+export const supportChainId = chains.length === 0 ? [] : chains.map((item: any) => item.id);
 export { chains, bnbtestnet, bnb };
