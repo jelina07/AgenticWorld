@@ -14,6 +14,8 @@ import {
 import { getContractAddress } from "@/sdk/blockChain/address";
 import { waitForTransactionReceipt, readContract, writeContract } from "wagmi/actions";
 import { Log, parseEventLogs, TransactionReceipt } from "viem";
+import { useState } from "react";
+import { exceptionHandler } from "@/sdk/utils/exception";
 
 const SIGN_MESSAGE = "Please sign to retrieve your encryption key";
 
@@ -50,11 +52,20 @@ interface ProofRequestBody {
   encryption_key?: string;
 }
 
-const NEXT_PUBLIC_PROOF_URL = "";
+/**
+ * step
+ * 1:Recording encrypted data on the VANA network
+ * 2:Running proof-of-contribution in trusted environment
+ * 3:Recording validation proof on-chain
+ */
+
+const NEXT_PUBLIC_PROOF_URL =
+  "https://github.com/joshuamind/vana-satya-proof-template-py/releases/download/v12/my-proof-12.tar.gz";
 
 export default function useVanaSend(options?: Options<string, any>) {
   const { signMessageAsync } = useSignMessage();
   const { chainId } = useAccount();
+  const [step, setStep] = useState<number>(1);
 
   const result = useRequest(
     async (walletAddress: string) => {
@@ -78,20 +89,20 @@ export default function useVanaSend(options?: Options<string, any>) {
         signature,
         chainId as number
       );
-
+      setStep(2);
       await requestContributionProof(chainId as number, fileId, signature, publicKey);
-
+      setStep(3);
       await claimReward(chainId as number, fileId);
-
       return ""; // Return the string data, not the AxiosResponse
     },
     {
       manual: true,
+      onError: (err) => exceptionHandler(err),
       ...options,
     }
   );
 
-  return result;
+  return { ...result, step };
 }
 
 async function uploadToStorage(walletAddress: string, fileHash: string, signature: string) {
@@ -391,7 +402,7 @@ async function requestContributionProof(chainId: number, fileId: number, signatu
       validateStatus: () => true, // 自己处理状态码，不让 axios 自动抛异常
     }
   );
-
+  console.log("🚀 ~ requestContributionProof ~ contributionProofResponse.data:", contributionProofResponse.data);
   // 手动判断状态码
   if (contributionProofResponse.status < 200 || contributionProofResponse.status >= 300) {
     throw new Error(`TEE request failed: ${JSON.stringify(contributionProofResponse.data)}`);
