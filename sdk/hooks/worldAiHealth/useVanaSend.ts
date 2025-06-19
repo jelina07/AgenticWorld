@@ -73,6 +73,7 @@ export default function useVanaSend(options?: Options<string, any>) {
         walletAddress,
         contractAddress: "0x3aa0bc0182209C37f52A512E119CFE663f014398", // 没有用处，只是为了获取签名
       });
+      setStep(1);
       const signature = await signMessageAsync?.({
         message: SIGN_MESSAGE,
       });
