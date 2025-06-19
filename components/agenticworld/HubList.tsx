@@ -23,6 +23,7 @@ import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import useGetLearningHubId from "@/store/useGetLearningHubId";
 import { secondsToHours } from "@/utils/utils";
 import CommingSoon from "../utils/CommingSoon";
+import { mokshaTestnet, vanaMainnet } from "@/sdk/wagimConfig";
 
 const HubList = forwardRef(
   (
@@ -200,12 +201,15 @@ const HubList = forwardRef(
                         className={`flex items-center mb-[20px] justify-end ${
                           (
                             item.subnetId === 5 &&
-                            (chainId === 192940 || chainId === 228)
+                            (chainId === 192940 ||
+                              chainId === 228 ||
+                              chainId === vanaMainnet.id ||
+                              chainId === mokshaTestnet.id)
                               ? false
-                              : item.subnetId === 5 &&
-                                (chainId === 56 || chainId === 97)
-                              ? item.isAccess
-                              : item.isAccess
+                              : // : item.subnetId === 5 &&
+                                // (chainId === 56 || chainId === 97)
+                                // ? item.isAccess
+                                item.isAccess
                           )
                             ? "hidden"
                             : ""

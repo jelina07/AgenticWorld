@@ -22,16 +22,16 @@ const MindMenu: React.FC = () => {
           {
             label: (
               <Link
-                href="/airdrop"
+                href="/campaign"
                 onClick={(e) => {
                   e.preventDefault();
-                  window.location.href = "/airdrop";
+                  window.location.href = "/campaign";
                 }}
               >
-                Airdrop
+                Campaign
               </Link>
             ),
-            key: "/airdrop",
+            key: "/campaign",
           },
           {
             label: <Link href="/">Dashboard</Link>,

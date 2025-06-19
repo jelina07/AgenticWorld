@@ -18,7 +18,7 @@ export default function AirDropEnd() {
             </span>
           </div>
           <div className="text-[var(--mind-brand)] text-[12px] mt-[16px] font-[600]">
-            Claim Time: April 10th - May 10th
+            Claim Time: April 10 - May 10
           </div>
           <div className="mt-[27px] text-[14px] font-[600] capitalize leading-6">
             the First airdrop claiming period is now closed. All unclaimed

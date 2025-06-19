@@ -26,7 +26,7 @@ export default function BnbAirdropBox() {
         </div>
 
         <div className="mt-[16px] text-[12px] font-[600] capitalize text-[var(--mind-brand)]">
-          Claim Time: May 10th - June 10th
+          Claim Time: May 10 - June 10
         </div>
         <div className="mt-[20px] text-[14px] font-[600]">
           $FHE rewards for early participants in the BNB Chain campaign Campaign
@@ -61,7 +61,7 @@ export default function BnbAirdropBox() {
         <div>
           <div>
             <div className="text-[12px] font-[600] capitalize text-[var(--mind-brand)]">
-              Claim Time: May 10th - June 10th
+              Claim Time: May 10 - June 10
             </div>
             <BnbAirdrop />
           </div>

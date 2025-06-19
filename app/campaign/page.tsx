@@ -3,6 +3,7 @@ import AirdropRules from "@/components/airdrop/AirdropRules";
 import BnbAirdropBox from "@/components/airdrop/BnbAirdropBox";
 import Eligibility from "@/components/airdrop/Eligibility";
 import EligibilityPreDeposit from "@/components/airdrop/EligibilityPreDeposit";
+import BnbAndVana from "@/components/campaign/BnbAndVana";
 import React from "react";
 
 export default function Page() {
@@ -12,9 +13,11 @@ export default function Page() {
         <Eligibility />
       </div> */}
       <div className="text-[24px] sm:text-[40px] text-center font-[800] pt-[50px]">
-        Mind Network Airdrop
+        Campaign & Rewards
       </div>
       <div className="max-w-[700px] mx-auto relative">
+        <BnbAndVana />
+        <hr className="border-[var(--mind-brand)] mt-[30px]" />
         <AirDropEnd />
         <BnbAirdropBox />
       </div>

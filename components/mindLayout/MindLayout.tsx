@@ -15,14 +15,13 @@ export default function MindLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { loading, data, refresh } = useAgentGetTokenId();
+  const { loading, refresh } = useAgentGetTokenId();
   const { setRefreshGetAgentTokenId } = useAgentGetTokenIdStore();
   const { fetchLov, lovs } = useLov();
   const [getLovLoading, setGetLovLoading] = useState(false);
 
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  console.log("pathName", pathName);
 
   const faucetStatus = searchParams.get("faucetStatus");
   const error = searchParams.get("error");
@@ -77,7 +76,7 @@ export default function MindLayout({
       <Footer />
       {/* <div
         className={`w-full p-[8px] bg-[var(--mind-brand)] text-center text-black absolute top-[80px] ${
-          pathName === "/airdrop" ? "" : "hidden"
+          pathName === "/campaign" ? "" : "hidden"
         }`}
       >
         Trade $FHE Now on{" "}
