@@ -18,7 +18,7 @@ export default function BnbAndVana() {
         ZAMA, enables privacy-preserving AI training on encrypted data.
       </div>
       <div className="text-[16px] font-[800] mt-[16px] capitalize">
-        15,000,000 ? $FHE for distribution
+        15,000,000 $FHE for distribution
       </div>
       <div>
         <div className="flex items-center justify-between gap-[5px] sm:w-2/3 flex-wrap rounded-tl-[8px] rounded-tr-[8px] py-[12px] px-[20px] mt-[25px] text-[14px] font-[600] bg-[#283d3a]">
@@ -68,7 +68,7 @@ export default function BnbAndVana() {
             <div className="flex justify-between items-center">
               <div className="text-[18px] font-[900]">
                 <span className="text-[var(--mind-brand)]">Mind Network</span> ×{" "}
-                <span className="">VANA</span>
+                <span className="text-[#4141e9]">VANA</span>
               </div>
             </div>
 

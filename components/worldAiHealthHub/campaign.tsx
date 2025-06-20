@@ -127,8 +127,9 @@ export default function Campaign() {
                       Task 1
                     </span>
                     <span className="ml-[10px]">
-                      Click the "Start Working" button on bnb chain to let your
-                      agent work in World AI Health Hub.
+                      Click the "Start Working" button on{" "}
+                      <span className="text-[#DEB03D]">BNB chain</span> to let
+                      your agent work in World AI Health Hub.
                       {isLearned ? " ✅" : ""}
                     </span>
                   </div>
