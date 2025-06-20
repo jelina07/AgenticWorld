@@ -1,3 +1,4 @@
+import { isSupportChain } from "@/sdk/utils/script";
 import {
   numberDigits,
   numberDigitsNoMillify,
@@ -17,7 +18,7 @@ export default function HubInfo({
   hubStakeAmount?: string;
   hubApy?: string;
 }) {
-  const { isConnected } = useAccount();
+  const { isConnected, chainId } = useAccount();
   return (
     <div className="flex justify-between gap-[20px] flex-wrap">
       {/* <div className="p-[30px] flex-1 rounded-[10px] bg-[var(--bg-deep-grey)]">
@@ -33,7 +34,11 @@ export default function HubInfo({
       <div className="p-[30px] flex-[1.3] min-w-[250px] rounded-[10px] bg-[url('/images/bg-heavy.png')] bg-cover bg-no-repeat">
         <div className="text-[15px]">Emission Rate</div>
         <div className="text-[38px] text-light-shadow mt-[20px] break-all">
-          {!isConnected ? "/" : hubApy !== undefined ? hubApy : "loading..."}
+          {!isConnected || (chainId && !isSupportChain(chainId))
+            ? "/"
+            : hubApy !== undefined
+            ? hubApy
+            : "loading..."}
         </div>
       </div>
       <div className="p-[30px] flex-[1.3] rounded-[10px] bg-[var(--bg-deep-grey)]">

@@ -694,7 +694,7 @@ export default function UploadHealthData() {
   const [isRestart, setIsRestart] = useState(false);
   const { hubLearningTime, refreshGetHubLearningTime } = useHubLearningTime();
 
-  const { runAsync: vanaSend, loading: vanaSendLoading } = useVanaSend();
+  const { runAsync: vanaSend, loading: vanaSendLoading, step } = useVanaSend();
 
   const { data: hubList } = useHubList();
   const ids = useMemo(() => {
@@ -1075,6 +1075,40 @@ export default function UploadHealthData() {
             <></>
           )}
         </div>
+        {vanaSendLoading ? (
+          <div className="text-[14px] text-[#A3A3A3] mt-[10px] text-center">
+            current step:{" "}
+            {step === 1
+              ? "Recording encrypted data on the VANA network"
+              : step === 2
+              ? "Running proof-of-contribution in trusted environment"
+              : step === 3
+              ? "Recording validation proof on-chain"
+              : ""}
+            {/* <Steps
+            progressDot
+            current={step}
+            items={[
+              {
+                title: "1",
+                description: "Recording encrypted data on the VANA network",
+              },
+              {
+                title: "2",
+                description:
+                  "Running proof-of-contribution in trusted environment",
+              },
+              {
+                title: "3",
+                description: "Recording validation proof on-chain",
+              },
+            ]}
+          /> */}
+          </div>
+        ) : (
+          <></>
+        )}
+
         <div className="text-[12px] text-[var(--mind-brand)] mt-[30px] text-center">
           Your encrypted data will be securely transmitted and stored with
           end-to-end encryption
