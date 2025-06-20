@@ -1077,7 +1077,7 @@ export default function UploadHealthData() {
         </div>
         {vanaSendLoading ? (
           <div className="text-[14px] text-[#A3A3A3] mt-[10px] text-center">
-            current step:{" "}
+            current step{` ${step}`}:{" "}
             {step === 1
               ? "Recording encrypted data on the VANA network"
               : step === 2
