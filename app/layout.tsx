@@ -40,8 +40,10 @@ export default function RootLayout({
             }}
           >
             <Providers>
-              <Suspense>{isMainnetio() ? <VConsoleLoader /> : null}</Suspense>
-              <MindLayout>{children}</MindLayout>
+              {isMainnetio() ? <VConsoleLoader /> : null}
+              <Suspense>
+                <MindLayout>{children}</MindLayout>
+              </Suspense>
             </Providers>
           </ConfigProvider>
         </AntdRegistry>
