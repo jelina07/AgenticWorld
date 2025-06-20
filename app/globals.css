@@ -966,10 +966,12 @@ input:focus {
   ):first-child {
   border: 1px solid #e7bb41 !important;
   color: #e7bb41 !important;
+  background: #282519 !important;
 }
 .ant-radio-button-wrapper-checked:not(
     .ant-radio-button-wrapper-disabled
   ):last-child {
   border: 1px solid #4141f2 !important;
   color: #4141f2 !important;
+  background: #20202e !important;
 }

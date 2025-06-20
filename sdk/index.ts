@@ -58,6 +58,7 @@ import useParticipate from "./hooks/worldAiHealth/useParticipate";
 import useVanaSend from "./hooks/worldAiHealth/useVanaSend";
 import useAgentGetBnbTokenId from "./hooks/useAgentGetBnbTokenId";
 import useHubGetBnbCurrentExp from "./hooks/useHubGetBnbCurrentExp";
+import useVanaHasSend from "./hooks/worldAiHealth/useVanaHasSend";
 
 export {
   useAirdropCheck,
@@ -120,4 +121,5 @@ export {
   useVanaSend,
   useAgentGetBnbTokenId,
   useHubGetBnbCurrentExp,
+  useVanaHasSend,
 };

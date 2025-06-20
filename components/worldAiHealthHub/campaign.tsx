@@ -6,6 +6,7 @@ import {
   useHubGetCurrentExp,
   useHubList,
   useIsVoted,
+  useVanaHasSend,
 } from "@/sdk";
 import { useAccount, useSwitchChain } from "wagmi";
 import Link from "next/link";
@@ -44,9 +45,18 @@ export default function Campaign() {
     refresh: refreshVoted,
     loading: isVotedLoading,
   } = useIsVoted();
+  const {
+    data: isVanaSend,
+    refresh: isVanaSendRefresh,
+    loading: isVanaSendLoading,
+  } = useVanaHasSend();
+
+  const refreshTask2 = () => {
+    refreshVoted();
+    isVanaSendRefresh();
+  };
 
   console.log("isAgent", bnbAgentTokenId, isAgent);
-
   console.log("isVoted", isVoted);
 
   return (
@@ -134,24 +144,26 @@ export default function Campaign() {
                 </div>
                 <div
                   className={`px-[12px] py-[16px] rounded-[15px] mt-[12px] ${
-                    isVoted ? "bg-[#1c2e27]" : "bg-[#212121]"
+                    isVoted || isVanaSend ? "bg-[#1c2e27]" : "bg-[#212121]"
                   } mt-[12px] flex justify-between gap-[5px]`}
                 >
                   <div>
                     <span className="text-[var(--mind-brand)]">Task 2</span>
                     <span className="ml-[10px]">
                       Upload your Health Data with FHE.
-                      {isVoted ? " ✅" : ""}
+                      {isVoted || isVanaSend ? " ✅" : ""}
                     </span>
                   </div>
                   <img
                     src="/icons/refresh.svg"
                     alt="refresh"
-                    onClick={refreshVoted}
+                    onClick={refreshTask2}
                     width={15}
                     className={`cursor-pointer ${
-                      isVotedLoading ? "refresh" : ""
-                    } ${!isConnected || isVoted ? "hidden" : ""} `}
+                      isVotedLoading || isVanaSendLoading ? "refresh" : ""
+                    } ${
+                      !isConnected || isVoted || isVanaSend ? "hidden" : ""
+                    } `}
                   />
                 </div>
               </>

@@ -26,6 +26,7 @@ import {
   useHubList,
   useIsVoted,
   useSendTxn,
+  useVanaHasSend,
   useVanaSend,
   useVerify,
 } from "@/sdk";
@@ -693,8 +694,9 @@ export default function UploadHealthData() {
   const { data: isVoted, refresh: isVotedRefresh } = useIsVoted();
   const [isRestart, setIsRestart] = useState(false);
   const { hubLearningTime, refreshGetHubLearningTime } = useHubLearningTime();
-
+  const { data: isVanaSend, refresh: isVanaSendRefresh } = useVanaHasSend();
   const { runAsync: vanaSend, loading: vanaSendLoading, step } = useVanaSend();
+  console.log("isVanaSend", isVanaSend);
 
   const { data: hubList } = useHubList();
   const ids = useMemo(() => {
@@ -732,13 +734,20 @@ export default function UploadHealthData() {
     ) {
       return 2;
       // if verify success return 3
-    } else if (verifyStatus?.isVerified === 1 && !isVoted) {
+    } else if (verifyStatus?.isVerified === 1 && !isVoted && !isVanaSend) {
       return 3;
-    } else if (isVoted) {
+    } else if (isVoted || isVanaSend) {
       return 4;
     }
     // if send to bsc return 4
-  }, [selectedNumMin5, showEncryptData, uploadStatus, isVoted, verifyStatus]);
+  }, [
+    selectedNumMin5,
+    showEncryptData,
+    uploadStatus,
+    isVoted,
+    verifyStatus,
+    isVanaSend,
+  ]);
 
   console.log("setpCurrent", setpCurrent);
 
@@ -799,7 +808,7 @@ export default function UploadHealthData() {
       });
     } else {
       await vanaSend(address as string);
-      isVotedRefresh();
+      isVanaSendRefresh();
       notification.success({
         message: "Success",
         description: "Send success",
@@ -1050,12 +1059,13 @@ export default function UploadHealthData() {
             disabled={
               !verifyStatus?.isVerified ||
               verifyStatus?.isVerified === -1 ||
-              isVoted
+              isVoted ||
+              isVanaSend
             }
             loading={sendTxnLoading || vanaSendLoading}
             onClick={() => setIsModalOpen(true)}
           >
-            {isVoted ? "Sent" : "Send"}
+            {isVoted || isVanaSend ? "Sent" : "Send"}
           </Button>
           {isVoted ? (
             <a
@@ -1064,6 +1074,21 @@ export default function UploadHealthData() {
                   ? bnbtestnet.blockExplorers.default.url +
                     `/address/${address}`
                   : bnb.blockExplorers.default.url + `/address/${address}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--mind-brand)] underline hover:underline hover:text-[var(--mind-brand)] text-[12px] sm:ml-[15px] ml-[0px] sm:mt-[0px] mt-[15px] sm:inline-block block"
+            >
+              View Transaction
+            </a>
+          ) : isVanaSend ? (
+            <a
+              href={
+                isDev() || isProd()
+                  ? mokshaTestnet.blockExplorers.default.url +
+                    `/address/${address}`
+                  : vanaMainnet.blockExplorers.default.url +
+                    `/address/${address}`
               }
               target="_blank"
               rel="noopener noreferrer"
