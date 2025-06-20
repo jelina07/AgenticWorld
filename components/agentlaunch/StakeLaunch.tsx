@@ -20,8 +20,15 @@ import {
 import { Button, Input, message, notification } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import Facuet from "../facuet/Facuet";
-import { useAccount } from "wagmi";
-import { mindnet, mindtestnet } from "@/sdk/wagimConfig";
+import { useAccount, useSwitchChain } from "wagmi";
+import {
+  bnb,
+  bnbtestnet,
+  mindnet,
+  mindtestnet,
+  mokshaTestnet,
+  vanaMainnet,
+} from "@/sdk/wagimConfig";
 import { useAsyncEffect } from "ahooks";
 import { Agent1ContractErrorCode } from "@/sdk/utils/script";
 import useRelayerStatusHandler from "@/hooks/useRelayerStatusHandler";
@@ -30,6 +37,7 @@ import Max from "../utils/Max";
 const successTip = "Launch Success !";
 
 const StakeLaunch = forwardRef((_, ref) => {
+  const { switchChain } = useSwitchChain();
   const { chainId, isConnected, address } = useAccount();
   const [amount, setAmount] = useState("");
   const { runAsync: agentStake, loading: agentStakeLoading } = useAgentStake({
@@ -151,19 +159,32 @@ const StakeLaunch = forwardRef((_, ref) => {
 
         <div className="flex justify-between mt-[10px] mb-[26px] text-[14px]">
           <span>FHE Balance:</span>
-          <div className="flex items-center gap-[3px]">
-            <span>
-              {loading
-                ? "loading..."
-                : balance === undefined || numberDigits(balance) + " FHE"}
+          {chainId === vanaMainnet.id || chainId === mokshaTestnet.id ? (
+            <span
+              onClick={() =>
+                switchChain({
+                  chainId: isDev() || isProd() ? bnbtestnet.id : bnb.id,
+                })
+              }
+              className="cursor-pointer"
+            >
+              Switch network
             </span>
-            <img
-              src="/icons/refresh.svg"
-              alt="refresh"
-              onClick={fheBalanceRefresh}
-              className={`cursor-pointer ${loading ? "refresh" : ""}`}
-            />
-          </div>
+          ) : (
+            <div className="flex items-center gap-[3px]">
+              <span>
+                {loading
+                  ? "loading..."
+                  : balance === undefined || numberDigits(balance) + " FHE"}
+              </span>
+              <img
+                src="/icons/refresh.svg"
+                alt="refresh"
+                onClick={fheBalanceRefresh}
+                className={`cursor-pointer ${loading ? "refresh" : ""}`}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex items-end gap-[10px]">

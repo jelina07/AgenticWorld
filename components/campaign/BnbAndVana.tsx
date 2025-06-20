@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import CampaignEnded from "../utils/campaignEnded";
 import CampaignCommingSoon from "../utils/campaignCommingSoon";
+import CampaignLive from "../utils/campaignLive";
 
 export default function BnbAndVana() {
   return (
@@ -13,11 +14,11 @@ export default function BnbAndVana() {
         </div>
       </div>
       <div className="text-[14px] font-[600] mt-[16px]">
-        Secure your health data with FHE - World Al Health Hubpowered by Vana &
-        Zama, enables privacy-preserving Al training on encrypted data.
+        Secure your health data with FHE - World AI Health Hub powered by VANA &
+        ZAMA, enables privacy-preserving AI training on encrypted data.
       </div>
       <div className="text-[16px] font-[800] mt-[16px] capitalize">
-        10,000,000 + ? $FHE for distribution
+        15,000,000 ? $FHE for distribution
       </div>
       <div>
         <div className="flex items-center justify-between gap-[5px] sm:w-2/3 flex-wrap rounded-tl-[8px] rounded-tr-[8px] py-[12px] px-[20px] mt-[25px] text-[14px] font-[600] bg-[#283d3a]">
@@ -39,8 +40,8 @@ export default function BnbAndVana() {
             Time: June 5 - June 23, 09:00 AM UTC, 2025
           </div>
           <div className="text-[14px] font-[600] mt-[8px]">
-            Train your agent in World Al Health Hub & Upload your Health data on
-            BNB Chain !
+            Deploy your agent to work in World AI Health Hub & Upload your
+            Health data on BNB Chain !
           </div>
           <div className="text-right mt-[12px]">
             <Link
@@ -57,16 +58,17 @@ export default function BnbAndVana() {
         <div className="flex items-center justify-between gap-[5px] sm:w-2/3 flex-wrap rounded-tl-[8px] rounded-tr-[8px] py-[12px] px-[20px] mt-[25px] text-[14px] font-[600] bg-[#283d3a]">
           <span>Phase 2</span>
           <span className="inline-block mx-[20px] text-[var(--mind-brand)]">
-            ? $FHE Rewards
+            5,000,000 $FHE Rewards
           </span>
-          <CampaignCommingSoon />
+          {/* <CampaignCommingSoon /> */}
+          <CampaignLive />
         </div>
         <div className="p-[18px] bg-[#1c1f1f] rounded-bl-[8px] rounded-br-[8px]">
           <div>
             <div className="flex justify-between items-center">
               <div className="text-[18px] font-[900]">
                 <span className="text-[var(--mind-brand)]">Mind Network</span> ×{" "}
-                <span className="text-[#4141e0]">VANA</span>
+                <span className="">VANA</span>
               </div>
             </div>
 
@@ -74,13 +76,14 @@ export default function BnbAndVana() {
               Time: June 23 - July 23
             </div>
             <div className="text-[14px] font-[600] mt-[8px]">
-              Mind Network ignites the DataDAO of World Al Healthon VANA -
-              powering FHE- encrypted health data storage and unlocking access
+              Mind Network ignites the DataDAO of World AI Health on VANA,
+              powering FHE-encrypted health data storage and unlocking access
               for trusted research pioneers.
             </div>
             <div className="text-[14px] font-[600] mt-[8px]">
-              Train your agent in World Al Health Hub & Upload youHealth data on
-              VANA Chain !
+              Deploy your agent to work in World AI Health Hub & Upload your
+              Health data on <span className="text-[#4141e9]"> VANA Chain</span>{" "}
+              !
             </div>
             <div className="text-right mt-[12px]">
               <Link
@@ -112,9 +115,9 @@ export default function BnbAndVana() {
               Time: June 23 - July 23
             </div>
             <div className="text-[14px] font-[600] mt-[8px]">
-              For those who missed out the first Phase of campaign: Train your
-              agent in World Al Health Hub & upload your HHealth data on BNB
-              Chain now!
+              For those who missed out the first Phase of campaign: <br />
+              Deploy your agent to work in World AI Health Hub & Upload your
+              Health data on BNB Chain !
             </div>
             <div className="text-right mt-[12px]">
               <Link

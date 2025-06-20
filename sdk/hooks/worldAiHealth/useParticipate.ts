@@ -17,11 +17,14 @@ export default function useParticipate(options?: Options<any, any>) {
       if (!address) {
         return;
       }
-      const res = await request.post(url, {
-        walletAddress: address,
-      });
-
-      return res;
+      try {
+        const res = await request.post(url, {
+          walletAddress: address,
+        });
+        return res;
+      } catch (error) {
+        return;
+      }
     },
     {
       manual: true,

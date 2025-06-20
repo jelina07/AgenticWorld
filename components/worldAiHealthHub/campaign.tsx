@@ -1,20 +1,26 @@
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { useMemo, useRef } from "react";
-import { useHubGetCurrentExp, useHubList, useIsVoted } from "@/sdk";
+import {
+  useAgentGetBnbTokenId,
+  useHubGetBnbCurrentExp,
+  useHubGetCurrentExp,
+  useHubList,
+  useIsVoted,
+} from "@/sdk";
 import { useAccount, useSwitchChain } from "wagmi";
 import Link from "next/link";
 import { bnb, bnbtestnet, mindnet, mindtestnet } from "@/sdk/wagimConfig";
 import { isDev, isProd } from "@/sdk/utils";
 import useHubLearningTime from "@/store/useHubLearningTime";
+import { useChainModal } from "@rainbow-me/rainbowkit";
 
 export default function Campaign() {
   const { isConnected, chainId, chain } = useAccount();
   console.log("chain", chain);
-
-  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const { switchChain } = useSwitchChain();
-  const isAgent = agentTokenId !== 0;
+  const { openChainModal } = useChainModal();
   const { hubLearningTime, refreshGetHubLearningTime } = useHubLearningTime();
+  const { data: bnbAgentTokenId } = useAgentGetBnbTokenId();
+  const isAgent = bnbAgentTokenId !== 0;
   const { data: hubList } = useHubList();
   const ids = useMemo(() => {
     return hubList?.map((item: any) => item.id) || [];
@@ -23,28 +29,23 @@ export default function Campaign() {
     learnSecond,
     loading: learnSecondLoading,
     refresh,
-  } = useHubGetCurrentExp({
-    tokenId: agentTokenId,
+  } = useHubGetBnbCurrentExp({
+    tokenId: bnbAgentTokenId,
     hubIds: ids,
   });
 
   const isLearned = useMemo(() => {
-    console.log("ids", ids);
     const index = ids.indexOf(5);
     return learnSecond !== undefined && learnSecond[index] > 0;
   }, [learnSecond]);
-
-  // const isLearned = useMemo(() => {
-  //   console.log("ids", ids);
-  //   const index = ids.indexOf(5);
-  //   return hubLearningTime.length && hubLearningTime[index] > 0;
-  // }, [hubLearningTime]);
 
   const {
     data: isVoted,
     refresh: refreshVoted,
     loading: isVotedLoading,
   } = useIsVoted();
+
+  console.log("isAgent", bnbAgentTokenId, isAgent);
 
   console.log("isVoted", isVoted);
 
@@ -55,20 +56,15 @@ export default function Campaign() {
           <div className="flex items-center gap-[20px]">
             <div className="text-[18px] font-[800]">
               World AI Health Campaign on{" "}
-              <span className="text-[#e7bb41]">BNB chain</span>
+              <span className="text-[#e7bb41]">BNB chain</span> and{" "}
+              <span className="text-[#4141e9]">VANA chain</span>
             </div>
-            {/* <span
-              className={`text-[var(--mind-brand)] text-[12px] px-[6px] py-[4px] border border-[var(--mind-brand)] bg-[#0f1a15] 
-                    rounded-[4px] inline-block font-[500]`}
-            >
-              Upcoming
-            </span> */}
           </div>
 
           <div className="mt-[12px] font-[600]">
-            <div>Time: June 5 - June 23, 09:00 AM UTC, 2025</div>
+            <div>Time: June 23 - July 23</div>
             <div>
-              <span>Rewards: Share in a 10,000,000 FHE prize pool.</span>
+              <span>Rewards: Share in a 5,000,000 FHE prize pool.</span>
               <a
                 href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/agenticworld-user-guide/world-ai-health-hub"
                 target="_blank"
@@ -83,17 +79,32 @@ export default function Campaign() {
             <div className="font-[700]">
               How to Participate in World AI Health Hub
             </div>
-            {chainId === mindnet.id || chainId === mindtestnet.id || !chain ? (
+            {chainId === mindnet.id ||
+            chainId === mindtestnet.id ||
+            (!chain && isConnected) ? (
               <span
                 className="inline-block mt-[15px] text-[var(--mind-brand)] cursor-pointer"
-                onClick={() =>
-                  switchChain({
-                    chainId: isDev() || isProd() ? bnbtestnet.id : bnb.id,
-                  })
-                }
+                onClick={() => openChainModal?.()}
               >
-                click to change network to BNB
+                click to change network to BNB chain or VANA chain
               </span>
+            ) : (chainId === bnb.id || chainId === bnbtestnet.id) &&
+              !isAgent ? (
+              <Link
+                href="/agentlaunch"
+                className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
+              >
+                Launch your Agent fisrt →
+              </Link>
+            ) : !isAgent ? (
+              <Link
+                href="/agentlaunch"
+                className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
+              >
+                You are currently on {chain?.name} chain, Please Launch your
+                Agent on <span className="text-[#DEB03D]">BNB Chain</span> fisrt
+                →
+              </Link>
             ) : !isConnected || isAgent ? (
               <>
                 <div
@@ -106,8 +117,8 @@ export default function Campaign() {
                       Task 1
                     </span>
                     <span className="ml-[10px]">
-                      Click the Start Working button to let your agent work in
-                      World AI Health Hub.
+                      Click the "Start Working" button on bnb chain to let your
+                      agent work in World AI Health Hub.
                       {isLearned ? " ✅" : ""}
                     </span>
                   </div>
@@ -145,12 +156,7 @@ export default function Campaign() {
                 </div>
               </>
             ) : (
-              <Link
-                href="/agentlaunch"
-                className="inline-block mt-[15px] text-[var(--mind-brand)] hover:text-[var(--mind-brand)] underline"
-              >
-                Go to create an Agent first !
-              </Link>
+              <></>
             )}
           </div>
         </div>
