@@ -14,11 +14,7 @@ import {
   TeePoolImplementationAbi,
 } from "@/sdk/blockChain/abi";
 import { getContractAddress } from "@/sdk/blockChain/address";
-import {
-  waitForTransactionReceipt,
-  readContract,
-  writeContract,
-} from "wagmi/actions";
+import { waitForTransactionReceipt, readContract, writeContract } from "wagmi/actions";
 import { Log, parseEventLogs, TransactionReceipt } from "viem";
 import { useState } from "react";
 import { exceptionHandler } from "@/sdk/utils/exception";
@@ -93,10 +89,7 @@ export default function useVanaSend(options?: Options<string, any>) {
       try {
         console.log("HEAD response1:");
 
-        const response = await fetch(
-          `https://fcno.mindnetwork.xyz/${fileHash}`,
-          { method: "get" }
-        );
+        const response = await fetch(`https://fcno.mindnetwork.xyz/${fileHash}`, { method: "get" });
         console.log("HEAD response2:", response.status);
 
         if (response.status === 200) {
@@ -113,25 +106,30 @@ export default function useVanaSend(options?: Options<string, any>) {
         // 上传到google
         await uploadToStorage(walletAddress, fileHash, signature);
       }
-
       const downloadUrl = `https://fcno.mindnetwork.xyz/${fileHash}`;
 
-      // 将downloadUrl 注册到 vana的DataRegistry合约
-      const { fileId, encryptedKey, publicKey } = await addFileToDataRegistry(
-        walletAddress,
-        downloadUrl,
-        signature,
-        chainId as number
-      );
+      let file_Id, public_key;
+      // 检查是否已经将文件注册到DataRegistry合约中
+      file_Id = await getFileId(chainId as number, downloadUrl);
+      console.log("🚀 ~ file_Id:", file_Id);
+      if (!file_Id) {
+        // 将downloadUrl 注册到 vana的DataRegistry合约
+        const { fileId, encryptedKey, publicKey } = await addFileToDataRegistry(
+          walletAddress,
+          downloadUrl,
+          signature,
+          chainId as number
+        );
+        file_Id = fileId;
+        public_key = publicKey;
+      } else {
+        public_key = await getPublicKey(chainId as number);
+      }
+
       setStep(2);
-      await requestContributionProof(
-        chainId as number,
-        fileId,
-        signature,
-        publicKey
-      );
+      await requestContributionProof(chainId as number, file_Id as number, signature, public_key);
       setStep(3);
-      await claimReward(chainId as number, fileId);
+      await claimReward(chainId as number, file_Id as number);
       return ""; // Return the string data, not the AxiosResponse
     },
     {
@@ -144,11 +142,7 @@ export default function useVanaSend(options?: Options<string, any>) {
   return { ...result, step };
 }
 
-async function uploadToStorage(
-  walletAddress: string,
-  fileHash: string,
-  signature: string
-) {
+async function uploadToStorage(walletAddress: string, fileHash: string, signature: string) {
   const dataPackage = {
     walletAddress,
     fileHash,
@@ -187,10 +181,20 @@ async function uploadToStorage(
   }
 }
 
-export async function clientSideEncrypt(
-  data: Blob,
-  signature: string
-): Promise<Blob> {
+async function getFileId(chainId: number, url: string) {
+  const dataRegistryAddress = getContractAddress(chainId, "DataRegistryProxy");
+  const dataRegistryAbi = DataRegistryImplementationAbi;
+
+  const fileId = (await readContract(config, {
+    address: dataRegistryAddress,
+    abi: dataRegistryAbi,
+    functionName: "fileIdByUrl",
+    args: [url],
+  })) as bigint;
+  return fileId;
+}
+
+export async function clientSideEncrypt(data: Blob, signature: string): Promise<Blob> {
   const dataBuffer = await data.arrayBuffer();
   const message = await openpgp.createMessage({
     binary: new Uint8Array(dataBuffer),
@@ -213,12 +217,20 @@ export async function clientSideEncrypt(
   return encryptedBlob;
 }
 
-async function addFileToDataRegistry(
-  walletAddress: string,
-  downloadUrl: string,
-  signature: string,
-  chainId: number
-) {
+async function getPublicKey(chainId: number) {
+  const abi = DataLiquidityPoolImplementationAbi;
+  const address = getContractAddress(chainId, "DataLiquidityPoolProxy");
+  const publicKey = await readContract(config, {
+    address,
+    abi,
+    functionName: "publicKey",
+    args: [],
+  });
+
+  return publicKey;
+}
+
+async function addFileToDataRegistry(walletAddress: string, downloadUrl: string, signature: string, chainId: number) {
   const abi = DataLiquidityPoolImplementationAbi;
   const address = getContractAddress(chainId, "DataLiquidityPoolProxy");
   const publicKey = await readContract(config, {
@@ -271,40 +283,25 @@ async function addFileToDataRegistry(
   const txReceipt = await waitForTransactionReceipt(config, {
     hash: tx,
   });
-  console.log(
-    "🚀 ~ addFileToDataRegistry ~ txReceipt:",
-    txReceipt.transactionHash
-  );
+  console.log("🚀 ~ addFileToDataRegistry ~ txReceipt:", txReceipt.transactionHash);
   //获取fileId
   const fileId = extractFileIdFromReceipt(txReceipt);
   console.log("🚀 ~ addFileToDataRegistry ~ fileId:", fileId);
   return { fileId, encryptedKey, signature, publicKey };
 }
 
-const encryptWithWalletPublicKey = async (
-  data: string,
-  publicKey: string
-): Promise<string> => {
+const encryptWithWalletPublicKey = async (data: string, publicKey: string): Promise<string> => {
   // Get consistent encryption parameters
   const { iv, ephemeralKey } = getEncryptionParameters();
 
-  const publicKeyBytes = Buffer.from(
-    publicKey.startsWith("0x") ? publicKey.slice(2) : publicKey,
-    "hex"
-  );
+  const publicKeyBytes = Buffer.from(publicKey.startsWith("0x") ? publicKey.slice(2) : publicKey, "hex");
   const uncompressedKey =
-    publicKeyBytes.length === 64
-      ? Buffer.concat([Buffer.from([4]), publicKeyBytes])
-      : publicKeyBytes;
+    publicKeyBytes.length === 64 ? Buffer.concat([Buffer.from([4]), publicKeyBytes]) : publicKeyBytes;
 
-  const encryptedBuffer = await eccrypto.encrypt(
-    uncompressedKey,
-    Buffer.from(data),
-    {
-      iv: Buffer.from(iv),
-      ephemPrivateKey: Buffer.from(ephemeralKey),
-    }
-  );
+  const encryptedBuffer = await eccrypto.encrypt(uncompressedKey, Buffer.from(data), {
+    iv: Buffer.from(iv),
+    ephemPrivateKey: Buffer.from(ephemeralKey),
+  });
 
   const encryptedHex = Buffer.concat([
     encryptedBuffer.iv,
@@ -328,15 +325,13 @@ export function getEncryptionParameters() {
   if (!generatedIV || !generatedEphemeralKey) {
     // 16-byte initialization vector (fixed value)
     generatedIV = new Uint8Array([
-      0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c,
-      0x0d, 0x0e, 0x0f, 0x10,
+      0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10,
     ]);
 
     // 32-byte ephemeral key (fixed value)
     generatedEphemeralKey = new Uint8Array([
-      0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc,
-      0xdd, 0xee, 0xff, 0x00, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,
-      0x90, 0xa0, 0xb0, 0xc0, 0xd0, 0xe0, 0xf0, 0x00,
+      0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x00, 0x10, 0x20, 0x30,
+      0x40, 0x50, 0x60, 0x70, 0x80, 0x90, 0xa0, 0xb0, 0xc0, 0xd0, 0xe0, 0xf0, 0x00,
     ]);
   }
 
@@ -390,21 +385,11 @@ export function extractFileIdFromReceipt(receipt: TransactionReceipt): number {
   }
 }
 
-async function requestContributionProof(
-  chainId: number,
-  fileId: number,
-  signature: string,
-  publicKey: string
-) {
+async function requestContributionProof(chainId: number, fileId: number, signature: string, publicKey: string) {
   const teePoolAddress = getContractAddress(chainId, "TeePoolProxy");
   const teePoolAbi = TeePoolImplementationAbi;
 
-  const gasEstimate2 = await estimateGasUtil(
-    teePoolAbi,
-    "requestContributionProof",
-    [fileId],
-    teePoolAddress
-  );
+  const gasEstimate2 = await estimateGasUtil(teePoolAbi, "requestContributionProof", [fileId], teePoolAddress);
   //Request contribution proof
   const hash = await writeContract(config, {
     address: teePoolAddress,
@@ -419,10 +404,7 @@ async function requestContributionProof(
     hash,
     confirmations: 1,
   });
-  console.log(
-    "🚀 ~ requestContributionProof ~ contributionProofReceipt:",
-    contributionProofReceipt
-  );
+  console.log("🚀 ~ requestContributionProof ~ contributionProofReceipt:", contributionProofReceipt);
 
   const jobIds = (await readContract(config, {
     address: teePoolAddress,
@@ -471,10 +453,7 @@ async function requestContributionProof(
   // Get consistent encryption parameters
   const { ivHex, ephemeralKeyHex } = getEncryptionParameters();
 
-  const dataLiquidityPoolAddress = getContractAddress(
-    chainId,
-    "DataLiquidityPoolProxy"
-  );
+  const dataLiquidityPoolAddress = getContractAddress(chainId, "DataLiquidityPoolProxy");
 
   // Create the proof request
   const nonce = Date.now().toString();
@@ -510,18 +489,10 @@ async function requestContributionProof(
       validateStatus: () => true, // 自己处理状态码，不让 axios 自动抛异常
     }
   );
-  console.log(
-    "🚀 ~ requestContributionProof ~ contributionProofResponse.data:",
-    contributionProofResponse.data
-  );
+  console.log("🚀 ~ requestContributionProof ~ contributionProofResponse.data:", contributionProofResponse.data);
   // 手动判断状态码
-  if (
-    contributionProofResponse.status < 200 ||
-    contributionProofResponse.status >= 300
-  ) {
-    throw new Error(
-      `TEE request failed: ${JSON.stringify(contributionProofResponse.data)}`
-    );
+  if (contributionProofResponse.status < 200 || contributionProofResponse.status >= 300) {
+    throw new Error(`TEE request failed: ${JSON.stringify(contributionProofResponse.data)}`);
   }
 
   const proofData = contributionProofResponse.data;
@@ -538,12 +509,7 @@ async function requestContributionProof(
 async function claimReward(chainId: number, fileId: number) {
   const abi = DataLiquidityPoolImplementationAbi as any;
   const address = getContractAddress(chainId, "DataLiquidityPoolProxy");
-  const gasEstimate3 = await estimateGasUtil(
-    abi,
-    "requestReward",
-    [BigInt(fileId), BigInt(1)],
-    address
-  );
+  const gasEstimate3 = await estimateGasUtil(abi, "requestReward", [BigInt(fileId), BigInt(1)], address);
   const hash = await writeContract(config, {
     address,
     abi,
