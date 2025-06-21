@@ -60,12 +60,7 @@ export const FHEKEY_REGISTRY_ADDRESS: Record<number, `0x${string}`> = {
   228: "0xA0006842E14313EBef80Bf74cE1803fE6f1Baf3B",
 };
 
-const vanaContracts = [
-  "DataRegistryProxy",
-  "TeePoolProxy",
-  "DataLiquidityPoolProxy",
-  "vanaReward",
-] as const;
+const vanaContracts = ["DataRegistryProxy", "TeePoolProxy", "DataLiquidityPoolProxy", "vanaReward"] as const;
 export type VanaContract = (typeof vanaContracts)[number];
 
 const addresses: Record<number, Record<VanaContract, Address>> = {
@@ -80,17 +75,15 @@ const addresses: Record<number, Record<VanaContract, Address>> = {
   1480: {
     DataRegistryProxy: "0x8C8788f98385F6ba1adD4234e551ABba0f82Cb7C",
     TeePoolProxy: "0xE8EC6BD73b23Ad40E6B9a6f4bD343FAc411bD99A",
-    DataLiquidityPoolProxy: "0x832674060C0e96ca4Dc901FA1C2dB02dB7da9435",
-    vanaReward: "0x",
+    DataLiquidityPoolProxy: "0xb917102F6e1F192be9FA9E70977a5A6454f68EAA",
+    vanaReward: "0x4814579e7C7a9d227f516d3D888A2734a758F7EC",
   },
 };
 
 export const getContractAddress = (chainId: number, contract: VanaContract) => {
   const contractAddress = addresses[chainId]?.[contract];
   if (!contractAddress) {
-    throw new Error(
-      `Contract address not found for ${contract} on chain ${chainId}`
-    );
+    throw new Error(`Contract address not found for ${contract} on chain ${chainId}`);
   }
   return contractAddress;
 };
