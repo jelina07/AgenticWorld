@@ -275,7 +275,12 @@ export default function UploadHealthData() {
   const { switchChain } = useSwitchChain();
   const { address, isConnected, chainId } = useAccount();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isBnb, setIsBnb] = useState(true);
+  // const [chainSelect, setChainSelect] = useState(
+  //   chainId === bnb.id || chainId === bnbtestnet.id ? "bnb" : "vana"
+  // );
+  const [isBnb, setIsBnb] = useState(
+    chainId === bnb.id || chainId === bnbtestnet.id ? true : false
+  );
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -1139,9 +1144,7 @@ export default function UploadHealthData() {
           <div>
             <Radio.Group
               onChange={selectChain}
-              defaultValue={
-                chainId === bnb.id || chainId === bnbtestnet.id ? "bnb" : "vana"
-              }
+              value={isBnb ? "bnb" : "vana"}
               style={{
                 display: "flex",
                 gap: "16px",
