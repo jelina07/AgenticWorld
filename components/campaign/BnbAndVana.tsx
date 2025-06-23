@@ -80,7 +80,7 @@ export default function BnbAndVana() {
             </div>
 
             <div className="text-[12px] font-[600] capitalize mt-[8px] text-[var(--mind-brand)]">
-              Time: June 23 - July 23
+              Time: June 23, 2025 - July 23, 09:00 AM UTC, 2025
             </div>
             <div className="text-[14px] font-[600] mt-[8px]">
               Mind Network ignites the DataDAO of World AI Health on VANA,
@@ -129,7 +129,7 @@ export default function BnbAndVana() {
             </div>
 
             <div className="text-[12px] font-[600] capitalize mt-[8px] text-[var(--mind-brand)]">
-              Time: June 23 - July 23
+              Time: June 23, 2025 - July 23, 09:00 AM UTC, 2025
             </div>
             <div className="text-[14px] font-[600] mt-[8px]">
               Deploy your agent to work in World AI Health Hub & Upload your

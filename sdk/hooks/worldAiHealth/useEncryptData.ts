@@ -25,7 +25,7 @@ import useValidateChainWalletLink from "../useValidateChainWalletLink";
 import { isDev, isMainnet, isMainnetio, isProd } from "@/sdk/utils";
 import { createPublicClient, keccak256, toBytes } from "viem";
 import axios from "axios";
-import { useSignMessage } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 import useAgentGetTokenIdStore from "@/store/useAgentGetTokenId";
 import { message } from "antd";
 import request from "@/sdk/request";
@@ -55,14 +55,15 @@ const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
 export default function useEncryptData(options?: Options<any, any>) {
   // const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
   // const isAgent = agentTokenId !== 0;
-  const { validateAsync, chainId, address } =
-    useValidateChainWalletLink(targetChain);
+  // const { validateAsync, chainId, address } =
+  //   useValidateChainWalletLink(targetChain);
+  const { chainId, address } = useAccount();
   const { signMessageAsync } = useSignMessage();
 
   const result = useRequest(
     async (userInputBinary: string, content?: any) => {
-      const isValid = await validateAsync?.();
-      if (!isValid || !chainId) {
+      // const isValid = await validateAsync?.();
+      if (!chainId) {
         return;
       }
       // if (!isAgent) {
