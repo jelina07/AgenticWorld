@@ -27,7 +27,7 @@ export default function useAgentGetBnbTokenId(
   const result = useRequest(
     async () => {
       if (!address || !chainId) {
-        return;
+        return 0;
       }
       const agentCount = (await publicClientBsc.readContract({
         abi: AGENT1_ABI,

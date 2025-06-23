@@ -3,24 +3,34 @@ import { Options } from "@/sdk/types";
 import { exceptionHandler } from "@/sdk/utils/exception";
 
 import { useRequest } from "ahooks";
-import { erc20Abi, formatEther } from "viem";
+import { createPublicClient, erc20Abi, formatEther } from "viem";
 import { readContract } from "wagmi/actions";
 import { useAccount } from "wagmi";
-import { config, mokshaTestnet, vanaMainnet } from "@/sdk/wagimConfig";
+import {
+  config,
+  getTransports,
+  mokshaTestnet,
+  vanaMainnet,
+} from "@/sdk/wagimConfig";
+import { isDev, isProd } from "@/sdk/utils";
 
+const quryVanaChainId = isDev() || isProd() ? mokshaTestnet.id : vanaMainnet.id;
+const publicClientVana = createPublicClient({
+  batch: {
+    multicall: true,
+  },
+  chain: isDev() || isProd() ? mokshaTestnet : vanaMainnet,
+  transport: getTransports(quryVanaChainId),
+});
 export default function useVanaHasSend(options?: Options<any | any, []>) {
   const { address, chainId } = useAccount();
   const result = useRequest(
     async () => {
-      if (
-        !address ||
-        !chainId ||
-        (chainId !== vanaMainnet.id && chainId !== mokshaTestnet.id)
-      ) {
+      if (!address || !chainId) {
         return;
       }
-      const rewardAddress = getContractAddress(chainId, "vanaReward");
-      const amount = (await readContract(config, {
+      const rewardAddress = getContractAddress(quryVanaChainId, "vanaReward");
+      const amount = (await publicClientVana.readContract({
         abi: erc20Abi,
         address: rewardAddress,
         functionName: "balanceOf",

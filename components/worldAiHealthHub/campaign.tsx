@@ -57,7 +57,7 @@ export default function Campaign() {
   };
 
   console.log("isAgent", bnbAgentTokenId, isAgent);
-  console.log("isVoted", isVoted);
+  console.log("isVoted", isVoted, isVanaSend);
 
   return (
     <div className="px-[32px] py-[28px] bg-[var(--bg-deep-grey)] rounded-[20px]">
@@ -72,9 +72,14 @@ export default function Campaign() {
           </div>
 
           <div className="mt-[12px] font-[600]">
-            <div>Time: June 23 - July 23</div>
             <div>
-              <span>Rewards: Share in a 5,000,000 FHE prize pool.</span>
+              Time: June 5 - June 23, 09:00 AM UTC (Phase 1); June 23 - July 23,
+              09:00 AM UTC (Phase 2)
+            </div>
+            <div>
+              <span>
+                Rewards (Phase 2): Share in a 5,000,000 $FHE prize pool.
+              </span>
               <a
                 href="https://docs.mindnetwork.xyz/minddocs/product/agenticworld/agenticworld-user-guide/world-ai-health-hub"
                 target="_blank"

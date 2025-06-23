@@ -53,26 +53,26 @@ const publicClientMind = createPublicClient({
 const quryMindChainId = isDev() || isProd() ? mindtestnet.id : mindnet.id;
 const targetChain: any = isDev() || isProd() ? bnbtestnet.id : bnb.id;
 export default function useEncryptData(options?: Options<any, any>) {
-  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
-  const isAgent = agentTokenId !== 0;
+  // const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  // const isAgent = agentTokenId !== 0;
   const { validateAsync, chainId, address } =
     useValidateChainWalletLink(targetChain);
   const { signMessageAsync } = useSignMessage();
 
   const result = useRequest(
-    async (userInputBinary: string, content) => {
+    async (userInputBinary: string, content?: any) => {
       const isValid = await validateAsync?.();
       if (!isValid || !chainId) {
         return;
       }
-      if (!isAgent) {
-        message.open({
-          type: "warning",
-          content: content,
-          duration: 5,
-        });
-        return;
-      }
+      // if (!isAgent) {
+      //   message.open({
+      //     type: "warning",
+      //     content: content,
+      //     duration: 5,
+      //   });
+      //   return;
+      // }
       //get publicKey
       const keySetId = (await publicClientMind.readContract({
         abi: WORLDAIHEALTHY_ABI,

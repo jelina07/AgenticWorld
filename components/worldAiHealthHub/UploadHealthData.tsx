@@ -17,6 +17,7 @@ import Encrypt from "@/public/icons/encrypt.svg";
 import Verify from "@/public/icons/verify.svg";
 import Send from "@/public/icons/send.svg";
 import {
+  useAgentGetBnbTokenId,
   useEncryptData,
   useGetUploadStatus,
   useGetVerifyQueue,
@@ -266,7 +267,7 @@ const content = (
     href="/agentlaunch"
     className="inline-block text-black hover:text-black underline text-[14px]"
   >
-    Go to create an Agent first !
+    Go to BNB chain and create an Agent first !
   </Link>
 );
 
@@ -665,7 +666,9 @@ export default function UploadHealthData() {
     ]
   );
 
-  const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  // const agentTokenId = useAgentGetTokenIdStore((state) => state.agentTokenId);
+  const { data: bnbAgentTokenId } = useAgentGetBnbTokenId();
+  const isAgent = bnbAgentTokenId !== 0;
   const {
     data: encryptData,
     runAsync: encryptDataRunAsync,
@@ -707,7 +710,7 @@ export default function UploadHealthData() {
     loading: learnSecondLoading,
     refresh: refreshHubGetCurrentExp,
   } = useHubGetBnbCurrentExp({
-    tokenId: agentTokenId,
+    tokenId: bnbAgentTokenId,
     hubIds: ids,
   });
 
@@ -752,24 +755,31 @@ export default function UploadHealthData() {
   console.log("setpCurrent", setpCurrent);
 
   const clickencryptData = async () => {
-    if (isLearned) {
-      try {
-        const res = await encryptDataRunAsync(
-          binaryFormatString.replace(/,/g, ""),
-          content
-        );
-        if (res)
-          notification.success({
-            message: "Success",
-            description: "Encrypt Success",
-          });
-        setIsRestart(false);
-        getUploadStatusRefresh();
-      } catch (error) {}
+    if (isAgent) {
+      if (isLearned) {
+        try {
+          const res = await encryptDataRunAsync(
+            binaryFormatString.replace(/,/g, "")
+          );
+          if (res)
+            notification.success({
+              message: "Success",
+              description: "Encrypt Success",
+            });
+          setIsRestart(false);
+          getUploadStatusRefresh();
+        } catch (error) {}
+      } else {
+        message.open({
+          type: "warning",
+          content: `You need to work on this hub on BNB chain first.`,
+          duration: 5,
+        });
+      }
     } else {
       message.open({
         type: "warning",
-        content: `You need to work on this hub first.`,
+        content: content,
         duration: 5,
       });
     }
@@ -1129,7 +1139,9 @@ export default function UploadHealthData() {
           <div>
             <Radio.Group
               onChange={selectChain}
-              defaultValue="bnb"
+              defaultValue={
+                chainId === bnb.id || chainId === bnbtestnet.id ? "bnb" : "vana"
+              }
               style={{
                 display: "flex",
                 gap: "16px",

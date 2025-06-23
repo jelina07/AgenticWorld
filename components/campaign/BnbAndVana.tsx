@@ -6,6 +6,7 @@ import CampaignCommingSoon from "../utils/campaignCommingSoon";
 import CampaignLive from "../utils/campaignLive";
 
 export default function BnbAndVana() {
+  const isParticipated1 = true;
   return (
     <div className="py-[30px] px-[50px] mt-[60px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-contain bg-no-repeat bg-[#070b0a]">
       <div className="flex justify-between items-center">
@@ -44,12 +45,11 @@ export default function BnbAndVana() {
             Health data on BNB Chain !
           </div>
           <div className="text-right mt-[12px]">
-            <Link
-              href="/agenticworld/5"
-              className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
-            >
-              Participate →
-            </Link>
+            <span className="text-[14px] font-[600] text-[var(--mind-grey)]">
+              {isParticipated1
+                ? "Participated, Awaiting Rewards Distribution"
+                : "Not Participated"}
+            </span>
           </div>
         </div>
       </div>
@@ -64,6 +64,10 @@ export default function BnbAndVana() {
           <CampaignLive />
         </div>
         <div className="p-[18px] bg-[#1c1f1f] rounded-bl-[8px] rounded-br-[8px]">
+          <div className="text-[14px] font-[600] my-[10px]">
+            For those who didn&apos;t participate in Phase 1, Phase 2 starts now
+            !
+          </div>
           <div>
             <div className="flex justify-between items-center">
               <div className="text-[18px] font-[900]">
@@ -86,23 +90,33 @@ export default function BnbAndVana() {
               !
             </div>
             <div className="text-right mt-[12px]">
-              <Link
-                href="/agentlaunch"
-                className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
-              >
-                New here? Launch your Agent on{" "}
-                <span className="text-[#DEB03D]">BNB Chain</span> fisrt →
-              </Link>
-              <br />
-              <Link
-                href="/agenticworld/5"
-                className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
-              >
-                Participate →
-              </Link>
+              {isParticipated1 ? (
+                <Link
+                  href="/agenticworld/5"
+                  className="text-[14px] font-[600] text-[var(--mind-grey)] cursor-pointer hover:text-[var(--mind-grey)]"
+                >
+                  Participated in Phase 1 →
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/agentlaunch"
+                    className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
+                  >
+                    New here? Launch your Agent on{" "}
+                    <span className="text-[#DEB03D]">BNB Chain</span> fisrt →
+                  </Link>
+                  <br />
+                  <Link
+                    href="/agenticworld/5"
+                    className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
+                  >
+                    Participate →
+                  </Link>
+                </>
+              )}
             </div>
           </div>
-
           <div className="mt-[20px]">
             <div className="flex justify-between items-center">
               <div className="text-[18px] font-[900]">
@@ -115,17 +129,25 @@ export default function BnbAndVana() {
               Time: June 23 - July 23
             </div>
             <div className="text-[14px] font-[600] mt-[8px]">
-              For those who missed out the first Phase of campaign: <br />
               Deploy your agent to work in World AI Health Hub & Upload your
-              Health data on BNB Chain !
+              Health data on <span className="text-[#DEB03D]">BNB Chain</span> !
             </div>
             <div className="text-right mt-[12px]">
-              <Link
-                href="/agenticworld/5"
-                className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
-              >
-                Participate →
-              </Link>
+              {isParticipated1 ? (
+                <Link
+                  href="/agenticworld/5"
+                  className="text-[14px] font-[600] text-[var(--mind-grey)] cursor-pointer hover:text-[var(--mind-grey)]"
+                >
+                  Participated in Phase 1 →
+                </Link>
+              ) : (
+                <Link
+                  href="/agenticworld/5"
+                  className="text-[14px] font-[600] text-[var(--mind-brand)] cursor-pointer hover:text-[var(--mind-brand)]"
+                >
+                  Participate →
+                </Link>
+              )}
             </div>
           </div>
         </div>

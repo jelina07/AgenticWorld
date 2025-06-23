@@ -17,22 +17,27 @@ export default function Page() {
       </div>
       <div className="max-w-[700px] mx-auto relative">
         <BnbAndVana />
-        <hr className="border-[var(--mind-brand)] mt-[30px]" />
+        <img
+          src="/icons/line.svg"
+          alt="line"
+          className="inline-block mt-[60px] w-full"
+        />
+        {/* <hr className="border-[var(--mind-brand)] mt-[30px]" /> */}
         <AirDropEnd />
         <BnbAirdropBox />
       </div>
 
-      <div className="max-w-[800px] mx-auto relative pb-[300px]">
-        {/* <div className="text-[20px] font-[900] absolute sm:left-[110px] left-[35px]">
+      {/* <div className="max-w-[800px] mx-auto relative pb-[300px]">
+        <div className="text-[20px] font-[900] absolute sm:left-[110px] left-[35px]">
           Airdrops Rules
         </div>
-        <AirdropRules /> */}
+        <AirdropRules />
         <img
           src="/icons/rule-icons.svg"
           alt="rule-icons"
           className="absolute left-[-50px] bottom-[-40px] sm:block hidden"
         />
-      </div>
+      </div> */}
     </div>
   );
 }
