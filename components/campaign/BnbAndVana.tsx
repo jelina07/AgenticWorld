@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useState } from "react";
 import CampaignEnded from "../utils/campaignEnded";
 import CampaignCommingSoon from "../utils/campaignCommingSoon";
 import CampaignLive from "../utils/campaignLive";
+import { useIsPhaseOne } from "@/sdk";
 
 export default function BnbAndVana() {
-  const isParticipated1 = true;
+  const { data: isParticipated1 } = useIsPhaseOne();
+  console.log("isParticipated1", isParticipated1);
+
   return (
     <div className="py-[30px] px-[50px] mt-[60px] rounded-[8px] bg-[url('/images/vhe-claim-bg.png')] bg-contain bg-no-repeat bg-[#070b0a]">
       <div className="flex justify-between items-center">

@@ -59,6 +59,7 @@ import useVanaSend from "./hooks/worldAiHealth/useVanaSend";
 import useAgentGetBnbTokenId from "./hooks/useAgentGetBnbTokenId";
 import useHubGetBnbCurrentExp from "./hooks/useHubGetBnbCurrentExp";
 import useVanaHasSend from "./hooks/worldAiHealth/useVanaHasSend";
+import useIsPhaseOne from "./hooks/worldAiHealth/useIsPhaseOne";
 
 export {
   useAirdropCheck,
@@ -122,4 +123,5 @@ export {
   useAgentGetBnbTokenId,
   useHubGetBnbCurrentExp,
   useVanaHasSend,
+  useIsPhaseOne,
 };
